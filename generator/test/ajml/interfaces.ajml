@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <application name="test">
+    <interfaces>
+      <frame>
+	<panel id="chat_room" width="100%" height="100%">
+	  <label id="user_name_label" content="名前" top="10px" left="20px"/>
+	  <textbox id="user_name" content="user_name" top="10px" left="100px"/>
+	  <label id="message_label" content="メッセージ" top="30px" left="20px"/>
+	  <textbox id="message" content="message" top="30px" left="100px"/>
+	  <button id="submit"  content="submit"  top="50px" left="100px">
+	    <event id="submit_message" type="onClick">
+	      <action type="db" table="chat" name="insert">
+		<param name="message">
+		  <value element="message.element" property="value"/>
+		</param>
+		<param name="user_name"> 
+		  <value element="user_name.element" property="value"/>
+		</param>
+		<param name="room_id">
+		  <string>1</string>
+		</param>
+		<param name="posted">
+		  <action type="javascript" name="ajweb.date.now" />
+		</param>
+	      </action>
+	    </event>
+	  </button>
+	  <table id="message_list" top="100px" left="100px" width="400px" height="500px">
+	    <data id="message_store" tablename="chat">
+	      <condition>
+		<eq property="room_id">
+		  <string>1</string>
+		</eq>    
+	      </condition> 
+	    </data>
+	  </table>
+	</panel>
+      </frame>
+    </interfaces>
+    <databases>
+      <database name="rooms">
+	<property name="name" type="string"/>
+	<property name="user" type="string"/>
+      </database>
+      <database name="messages">
+	<property name="user" type="string"/>
+	<property name="message" type="string"/>
+	<property name="posted" type="datetime"/>
+	<property name="roomId" type="int"/>
+      </database>
+    </databases>
+  </application>
+</ajml>

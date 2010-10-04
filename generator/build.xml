@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="generator" default="setup" basedir=".">
+	<property name="war.home" value="out" />
+	<property name="temp" value="out" />
+	<property name="web-app.name" value="default-app" />
+	<property name="web-app.home" value="${temp}/${web-app.name}" />
+	<property name="basedir" value="generator" />
+
+	<target name="compile">
+		<javac destdir="classes/" includeAntRuntime="no">
+			<src path="src"/>
+			<classpath>
+					<fileset dir="lib/">
+							<include name="*.jar"/>
+					</fileset>
+			</classpath>
+		</javac>
+	</target>
+	<target name="run" >
+		<java classname="ajweb.server.Main"  >
+			<arg value="${web-app.name}"/>
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="classes/"/>
+			</classpath>
+		</java>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<delete file="ajweb.jar"/> 
+		<jar destfile="ajweb.jar" 
+			update="false"
+			basedir="classes" />
+	</target>
+
+
+	<target name="doc">
+	</target>
+	<target name="test">
+	</target>
+
+	<target name="app_test" depends="jar">
+		<copy  todir="./test/app/test/WEB-INF/lib/">
+			<fileset dir="./lib/">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		<java classname="ajweb.server.Server">
+			<arg value="${basedir}/test/app/test/"/>
+			<arg value="test"/>
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="classes/"/>
+			</classpath>
+		</java>
+	</target>
+
+
+
+	<target name="generate">
+	</target>
+
+</project>

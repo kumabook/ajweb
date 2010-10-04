@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ajml-editor" default="run" basedir="."> 
+	<target name="run">
+		<java classname="ajweb.server.Server"  >
+			<classpath>
+				<pathelement location="../../editor/WEB-INF/classes/"/>
+				<pathelement location="../classes/"/>
+				<pathelement location="../lib/jetty-all-7.0.2.v20100331.jar/"/>
+				<fileset dir="../lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+</project>

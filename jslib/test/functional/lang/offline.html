@@ -1,0 +1,91 @@
+<html>
+<head>
+<meta charset="UTF-8">
+
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojox/grid/resources/Grid.css"/>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js" type="text/javascript"></script>   
+<!--    <script src="http://localhost/dojo/dojo.xd.js" type="text/javascript"></script>  -->
+    <script src="http://localhost/ajweb.js" type="text/javascript"></script> 
+    <script src="http://gear5.googlecode.com/hg/src/javascript/gear5.js"></script>
+
+
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+ajweb.offline.init();
+//alert(navigator.onLine);
+
+var ajweb_container = new dijit.layout.ContentPane({}, "ajweb_container");
+
+var chat_room = new ajweb.widget.panel( {"id":"chat_room","height":"100%","width":"100%"});
+var user_name_label = new ajweb.widget.label({"content":"名前","id":"user_name_label","left":"20px","top":"10px"});
+chat_room.add(user_name_label);
+var user_name = new ajweb.widget.textbox({"content":"user_name","id":"user_name","left":"100px","top":"10px"});
+chat_room.add(user_name);
+var message_label = new ajweb.widget.label({"content":"メッセージ","id":"message_label","left":"20px","top":"30px"});
+chat_room.add(message_label);
+var message = new ajweb.widget.textbox({"content":"message","id":"message","left":"100px","top":"30px"});
+chat_room.add(message);
+var submit = new ajweb.widget.button({"content":"submit","id":"submit","left":"100px","top":"50px"});
+
+dojo.connect(submit.widget, "onClick", null, function(){
+
+message_store.insert({message : "テスト1" ,user_name : "ひろき", posted : ajweb.date.now({})});
+//message_store.insert({message : "テスト2" ,user_name : "くまもと", posted : ajweb.date.now({})});
+//message_store.insert({message : "テスト3" ,user_name : "ひろき", posted : ajweb.date.now({})});
+//message_store.insert({message : "テスト4" ,user_name : "くまもと", posted : ajweb.date.now({})});
+var items = message_store.select();
+message_store.update({message : "テスト5" ,user_name : "くdsfまもと", posted : ajweb.date.now({}), id:items[2].id});
+
+//ajweb.send("dbservlet", "chat", "insert", {message : message.element.value,user_name : user_name.element.value,room_id : "1",posted : ajweb.date.now({})});
+});
+chat_room.add(submit);
+
+var message_store = new ajweb.data.store({ id: "message_store", tablename: "offline_test", url: "dbservlet",  properties: ["user_name", "message", "posted"], param: { op: "eq", property: "room_id", value: "1" }});
+
+message_store.fetch();
+ajweb.stores.push(message_store);
+//message_store.drop();
+
+var message_list = new ajweb.widget.table({"id":"message_list","structure":[{"field":"user_name","name":"名前"},{"field":"message","name":"メッセージ"},{"field":"posted","name":"投稿日時"}],"height":"500px","width":"400px","data":"message_store","left":"100px","top":"100px"});
+
+chat_room.add(message_list);
+//message_store.insert({user_name: "hiroki", message:"hello", posted: "100"});
+//        ajweb.polling("dbservlet", {chat : { op: "eq", property: "room_id", value: "1" }});
+
+ajweb_container.domNode.appendChild(chat_room.element);
+ajweb_container.startup();
+chat_room.startup();
+var count = 0;
+var str = "none";
+/*message_store.store.fetch({
+			//	  identity: params.id,
+		    query: {id :"18060"},
+	 onComplete: function(items, request){
+ count++;
+//	   alert(dojo.toJson(items));
+	   for(var i = 0; i < items.length; i++){
+//	     for(var j = 0; j < store.properties.length; j++){
+	  //     store.setValue(items[i], store.properties[j], params[properties[j]]);
+				  str = items[i].user_name;
+console.log(items[i].id.toString());
+	//     }
+	   }
+	 }
+	}
+      );
+
+alert(str);
+*/
+
+});
+</script>
+</head>
+<body>
+<h1>ajweb.offline.js test</h1>
+ <div  id="ajweb_container"></div>
+</body>
+</html>

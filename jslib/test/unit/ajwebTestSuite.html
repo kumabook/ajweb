@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>AjWeb System javaScript FrameWork Tests</title>
+    <link rel="stylesheet" type="text/css" href="../jsunit/css/jsUnitStyle.css">
+    <script type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+	<script type="text/javascript">
+        function suite() {
+			var suite = new JsUnitTestSuite();
+			suite.addTestPage("../unit/test.html");//testRunnerから見た位置
+			suite.addTestPage("../unit/lang/storeTest.html");//testRunnerから見た位置
+			suite.addTestPage("../unit/lang/sqlTest.html");
+			return suite;	
+		}
+
+    </script>
+</head>
+
+<body>
+<h1>AjWeb System javaScript FrameWork Tests</h1>
+
+<p>This page contains tests for the ajweb systems functions
+    that AjWeb System uses. To see them, take a look at the source.</p>
+</body>
+</html>

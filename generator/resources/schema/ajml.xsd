@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	    xmlns:ajml="http://www.tt.cs.titech.ac.jp/~kumamoto/ajml/"  elementFormDefault="qualified">
+
+
+<!-- インクルードファイルの設定-->
+ <xsd:include schemaLocation="container.xsd" />
+ <xsd:include schemaLocation="widget.xsd" />
+
+
+
+
+
+
+
+
+
+
+
+<!-- ルート要素 -->
+<xsd:element name="ajml">
+  <xsd:complexType>
+    <xsd:all>
+<!-- アプリケーション -->
+  <xsd:element name="application">
+    <xsd:complexType>
+    	<xsd:choice maxOccurs="unbounded">
+    		<xsd:group ref="containerGroup" maxOccurs="unbounded" />
+    		<!--コンテナ要素追加時はここに追加する -->
+    		<!--<xsd:element name="window" type="containerType"/> -->
+
+    		<xsd:element name="dbdata">
+    			<xsd:complexType>
+    				<xsd:sequence>
+    					<xsd:element name="description"
+    						type="dbPropertyType" />
+    				</xsd:sequence>
+    			</xsd:complexType>
+    		</xsd:element>
+    	</xsd:choice>
+    	<xsd:attribute name="root" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+ </xsd:element>
+
+
+
+  <!--  属性グループ   -->
+  <xsd:attributeGroup name="widgetAttriGroup">
+    <xsd:attribute name="id" type="xsd:string" use="optional"/>
+    <xsd:attribute name="default" type="xsd:string" use="optional"/>
+    <xsd:attribute name="content" type="xsd:string" use="optional" default="content"/>
+    <xsd:attribute name="color" type="xsd:string" use="optional" />
+    <xsd:attribute name="top" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="left" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="width" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="height" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="data" type="xsd:string" use="optional"/>
+  </xsd:attributeGroup>
+
+
+
+
+  <!--コンテナタイプ -->
+  <xsd:complexType name="containerType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:group ref="widgetGroup" maxOccurs="unbounded"/>
+      <xsd:group ref="containerGroup" maxOccurs="unbounded"/>
+    </xsd:choice>
+
+    <xsd:attributeGroup ref="widgetAttriGroup"/>
+
+  </xsd:complexType>
+
+
+
+  <!--  ウィジェットタイプ   -->
+  <xsd:complexType name="widgetType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:sequence minOccurs="0">
+	<xsd:element name="event" type="eventType" />
+      </xsd:sequence>
+      
+      <xsd:sequence minOccurs="0"  maxOccurs="unbounded">
+	<xsd:element name="th" type="tableStructureType" />
+      </xsd:sequence>
+      
+      <xsd:sequence minOccurs="0">
+	<xsd:element name="data" type="dataType" />
+      </xsd:sequence>
+    </xsd:choice>
+
+    <xsd:attributeGroup ref="widgetAttriGroup"/>
+  </xsd:complexType>
+	
+  <!--  イベントタイプ   -->
+  <xsd:complexType name="eventType">
+    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="action" type="actionType" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="optional" />
+    <xsd:attribute name="type" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  
+  
+  <!--  データタイプ   dbDataとむすびつく-->
+  <xsd:complexType name="dataType">
+    <xsd:all minOccurs="0">
+      <xsd:element name="condition" type="conditionType" />
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:string" />	
+    <xsd:attribute name="tablename" type="xsd:string" />	
+  </xsd:complexType>
+  
+  <!--  条件リストタイプ   -->
+  <xsd:complexType name="conditionType">
+    <xsd:all minOccurs="0">
+      <xsd:element name="eq" type="primitiveConditionType" />
+    </xsd:all>
+  </xsd:complexType>
+  <!--  条件タイプ   -->
+  <xsd:complexType name="primitiveConditionType">
+    <xsd:choice minOccurs="0">
+      <xsd:element name="value" type="valueType" />
+      <xsd:element name="string" type="xsd:string" />
+    </xsd:choice>
+    <xsd:attribute name="property" type="xsd:string" />
+    <xsd:attribute name="value" type="xsd:string" use="optional"/>
+  </xsd:complexType>
+  
+  
+  
+  <!--  テーブル構造タイプ   -->
+  <xsd:complexType name="tableStructureType">
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="field" type="xsd:string" />
+    <xsd:attribute name="width" type="xsd:string" use="optional" default="100px"/>
+  </xsd:complexType>
+  
+  <!--  アクションリストタイプ   -->
+  <xsd:complexType name="actionsType">
+    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="action" type="actionType" />
+    </xsd:sequence>
+  </xsd:complexType>
+	
+  <!--  アクションタイプ   -->
+  <xsd:complexType name="actionType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="param" type="paramType" />
+      <xsd:element name="condition" type="conditionType" />
+    </xsd:choice>
+    <xsd:attribute name="type" type="xsd:string" />
+    <xsd:attribute name="table" type="xsd:string" use="optional" />
+    <xsd:attribute name="name" type="xsd:string" use="optional" />
+  </xsd:complexType>
+	
+  <!--  actionの引数タイプ 値となる要素  -->
+  <xsd:complexType name="paramType">
+    <xsd:choice minOccurs="1">
+      <xsd:element name="value" type="valueType" />
+      <xsd:element name="string" type="xsd:string" />
+      <xsd:element name="int" type="xsd:int"/>
+      <xsd:element name="hash" type="hashType"/>
+      <xsd:element name="array" type="arrayType"/>
+
+      <xsd:element name="action"/>
+    </xsd:choice>
+    <xsd:attribute name="name" type="xsd:string"  />
+		
+  </xsd:complexType>
+	
+  <!--  他の要素の値を参照するタイプ   -->
+  <xsd:complexType name="valueType">
+    <xsd:attribute name="element" type="xsd:string" use="optional" />
+    <xsd:attribute name="property" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  
+  
+  <!--データベースの定義 タイプ-->
+  <xsd:complexType name="dbPropertyType">
+    <xsd:sequence >
+      <xsd:element name="property" minOccurs="1" maxOccurs="unbounded">
+	<xsd:complexType>
+	  <xsd:attribute name="name" type="xsd:string"/>
+	  <xsd:attribute name="type" type="xsd:string"/>
+	</xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="tablename" type="xsd:string"/>
+  </xsd:complexType>
+
+<!-- hash タイプ -->
+  <xsd:complexType name="hashType">
+    <xsd:sequence >
+      <xsd:element name="property" minOccurs="0" maxOccurs="unbounded">
+	<xsd:complexType>
+	  <xsd:attribute name="name" type="xsd:string"/>
+	</xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+<!-- array タイプ -->
+  <xsd:complexType name="arrayType">
+    <xsd:sequence>
+      <xsd:element name="value" type="valueType" />
+      <xsd:element name="string" type="xsd:string" />
+      <xsd:element name="int" type="xsd:int"/>
+      <xsd:element name="hash" type="hashType"/>
+      <xsd:element name="array" type="arrayType"/>
+      <xsd:element name="action"/>
+
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

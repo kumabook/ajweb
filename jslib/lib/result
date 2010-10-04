@@ -1,0 +1,54 @@
+Lint at line 13 character 13: Too many var statements.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 13 character 54: 'window' is not defined.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 13 character 68: Expected '===' and instead saw '=='.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 15 character 31: 'window' is not defined.
+IE:             !!window.attachEvent && !isOpera,
+
+Lint at line 19 character 35: Insecure '.'.
+MobileSafari:   /Apple.*Mobile/.test(ua)
+
+Lint at line 21 character 7: Move the invocation into the parens that contain the function.
+})()
+
+Lint at line 21 character 7: Wrap the entire immediate function invocation in parens.
+})()
+
+Lint at line 24 character 9: 'Builder' is not defined.
+var B = Builder;
+
+Lint at line 25 character 1: 'Builder' is not defined.
+Builder.dump(B);
+
+Lint at line 13 character 13: Too many var statements.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 13 character 54: 'window' is not defined.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 13 character 68: Expected '===' and instead saw '=='.
+var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+
+Lint at line 15 character 31: 'window' is not defined.
+IE:             !!window.attachEvent && !isOpera,
+
+Lint at line 19 character 35: Insecure '.'.
+MobileSafari:   /Apple.*Mobile/.test(ua)
+
+Lint at line 21 character 7: Move the invocation into the parens that contain the function.
+})()
+
+Lint at line 21 character 7: Wrap the entire immediate function invocation in parens.
+})()
+
+Lint at line 24 character 9: 'Builder' is not defined.
+var B = Builder;
+
+Lint at line 25 character 1: 'Builder' is not defined.
+Builder.dump(B);
+

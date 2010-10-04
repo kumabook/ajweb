@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AjWeb System javaScript Framework" default="jsconcat" basedir=".">
+
+	<property name="jssrc" value="src" />		
+	<target name="jstest">
+	</target>
+	<target name="doc"
+		description="make jsDoc">
+		<property name="jsdoc" value="lib/jsdoc-toolkit" />
+		<java jar="${jsdoc}/jsrun.jar" fork="true">
+			<arg file="${jsdoc}/app/run.js" />
+			<arg path="src/ajweb/"/>
+			<arg value="-d=doc" />
+			<arg value="-r=10" />
+			<arg value="-t=${jsdoc}/templates/jsdoc" />
+		</java>
+	</target>
+
+	<target name="run">
+		<java classname="ajweb.js.AjwebApiServer">
+			<classpath>
+				<fileset dir="../generator/lib">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="../generator/classes/"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="dist">
+		<exec executable="sh" dir="src/util/buildscripts/">
+			<arg line="build.sh profile=standard releaseDir=../../../dist loader=xdomain action=release"/>
+		</exec>
+	</target>
+
+</project>

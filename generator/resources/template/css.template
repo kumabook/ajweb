@@ -1,0 +1,2 @@
+.dojoxGridHeader { display:none; }
+label {font-size: 140%;}

@@ -1,0 +1,15 @@
+
+ajweb.join("dbservlet");;
+dojo.addOnLoad(function(){
+	var ajweb_container = new dijit.layout.ContentPane({}, "ajweb_container");
+	
+${ONLOAD}
+
+
+	ajweb_container.domNode.appendChild(${ROOTELEMENT}.element);
+	ajweb_container.startup();
+	${ROOTELEMENT}.startup();
+
+${STARTUP}
+	
+});

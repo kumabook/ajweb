@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--  ウィジェットグループ   -->
+  <xsd:group name="widgetGroup">
+    <xsd:sequence>
+      <xsd:choice>
+	<!--ウィジェット追加時はここに追加する 独自の型を定義してもよい  その場合はwidgetTypeを継承するとよい?-->
+	<!--TO DO できればプログラムから自動的に変更したい -->
+	<xsd:element name="textbox" type="widgetType"/>
+	<xsd:element name="label" type="widgetType"/>
+	<xsd:element name="button" type="widgetType"/>
+	<xsd:element name="table" type="widgetType"/>
+	<xsd:element name="select" type="widgetType"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:group>
+</xsd:schema>

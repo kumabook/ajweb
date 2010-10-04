@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd" >
+  <application root="root">
+    <panel id="root" height="100%" width="100%">
+      <textbox id="yourname" content="yourname" top="30px" left="100px"/>
+      <button id="hello_button"  content="Hello"  top="50px">
+	<event id="sayhello" type="onClick">
+	  <action type="bind" name="bind">
+	    <param name="input">
+	      <value element="name" property="widget.innerHTML"/>
+	    </param>
+	    <param name="to"> 
+	      <value element="yourname" property="element.value"/>
+	    </param>
+	  </action>
+	</event>
+      </button>
+      <label id="hello" content="Hello" top="120px" left="100px"></label>
+      <label id="name" content="   " top="120px" left="140px"></label>
+
+
+    </panel>
+  </application>
+</ajml>

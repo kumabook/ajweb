@@ -1,0 +1,20 @@
+---------------------
+ajweb project 
+Copyright (C) 2010, Hiroki Kumamoto(kumamoto@tt.cs.titech.ac.jp).
+
+---------------------
+
+
+Build and install
+--------------------
+
+ビルドにはJava, およびApache ant が必要です。
+
+% cd generator 
+% ant dist
+
+-------------
+
+Usage:
+----------
+% generator/bin/ajmlc 

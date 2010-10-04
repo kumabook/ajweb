@@ -1,0 +1,10 @@
+				${BACK};
+				if(tablename.equals("${TABLENAME}")){
+					
+					Condition condition = new Condition((String)param.get("op"),(String)param.get("property"), (String)param.get("value"));// let's make JSON-> Contion Utility method 
+					ArrayList<HashMap<String, String>> items = ${TABLENAME}.select(condition);// let's extend change => arraylist
+					${TABLENAME}.${ACTIONNAME}(condition);
+
+					change(req, resp,  session.getId(), tablename, "${ACTIONNAME}", items.get(0));
+				}
+					

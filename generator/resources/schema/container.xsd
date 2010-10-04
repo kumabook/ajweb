@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--  コンテナグループ   -->
+  <xsd:group name="containerGroup">
+    <xsd:sequence>
+      <xsd:choice>
+	<!--コンテナ要素追加時はここに追加する -->
+	<!--TO DO できればプログラムから自動的に変更したい -->
+        <xsd:element name="window" type="containerType"/>
+        <xsd:element name="panel" type="containerType"/>
+        <xsd:element name="frame" type="containerType"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:group>
+
+
+</xsd:schema>

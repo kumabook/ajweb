@@ -1,0 +1,34 @@
+ajweb generator 
+
+XML記述(ajmlファイル)から、warファイルを生成するJavaプログラムです。
+
+
+
+Directory Structure
+--------------------
+--------------------
+
+- bin  コマンドライン用のsh, batなど
+
+- src ソースコード
+
+- test テスト用ソースコードなど
+
+- resources templateファイルやサンプルajmlファイルなど
+
+- lib 外部ライブラリ
+
+--------------------
+--------------------
+
+
+
+環境変数AJWEB_HOME をajwebをインストールしたディレクトリを設定し、
+AJWEB_HOME/generator/bin/をパスに追加。
+
+---------------------
+---------------------
+
+%ajmlc [ajml file] 
+でwar作成
+

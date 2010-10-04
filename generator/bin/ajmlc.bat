@@ -1,0 +1,1 @@
+java -cp "classes;lib/tools.jar;lib/jetty-all-7.0.2.v20100331.jar;lib/servlet-api-2.5.jar;lib/derby.jar;" ajweb.generator.Main %1 %2 %3 %4 %5

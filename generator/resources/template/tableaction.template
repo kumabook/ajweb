@@ -1,0 +1,7 @@
+				${BACK};
+				if(tablename.equals("${TABLENAME}")){
+					${TABLENAME}.${ACTIONNAME}(param);
+
+					change(req, resp,  session.getId(), tablename, "${ACTIONNAME}", param);
+				}
+					

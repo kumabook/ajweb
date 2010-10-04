@@ -1,0 +1,42 @@
+<html>
+<head>
+<meta charset="UTF-8">
+
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojox/grid/resources/Grid.css"/>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/dojo.xd.js" type="text/javascript"></script>   
+<!--    <script src="http://localhost/dojo/dojo.xd.js" type="text/javascript"></script>  -->
+    <script src="http://localhost/ajweb.js" type="text/javascript"></script> 
+    <script src="http://gear5.googlecode.com/hg/src/javascript/gear5.js"></script>
+
+
+<script type="text/javascript">
+dojo.addOnLoad(function(){
+   
+   var store = new ajweb.data.Store({url:"rul", tablename: "test", properties: ["name", "val"],param:null});
+   alert(store);
+   store.drop();
+   store.create();
+   store.insert({name: "hiroki", val:"hello"});
+   store.insert({name: "kumamoto", val:"sdf"});
+   var result = store.select();
+   alert(result[0].name);
+   alert(result[0].id);
+   store.delete(result[0]);
+   alert(store.select()[0].name);
+   alert(ajweb.data.Store.create);
+});
+</script>
+da</head>
+<body onload="">
+<h1>Databaseのサンプル</h1>
+<select id="list" size="5" style="width: 100px"></select>
+<button onclick="remove()">削除</button><br>
+キー:<input type="text" id="name"><br>
+値:<input type="text" id="value">
+<button onclick="add()">追加</button><br>
+</body>
+</html>

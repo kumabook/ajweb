@@ -1,0 +1,10 @@
+		${BACK}
+		else if (action.equals("${ACTIONNAME}")) {//
+			try {
+				System.out.println("${ACTIONNAME} " + tablename + " " + param);
+				${TABLEACTION}
+
+         			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}

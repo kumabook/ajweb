@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd" >
+<application root="list_view">
+  <panel id="list_view" width="100%" height="100%" color="OldLace" top="0px" left="0px">
+
+
+      <label id="title" content="Calendar Application Demo" top="15px" left="10px"/>
+      <label id="title_label" content="title" top="60px" left="100px"/>
+      <textbox id="title_box" content="" top="60px" left="200px"/>
+      <label id="date_label" content="date" top="80px" left="100px"/>
+      <textbox id="date_box" content="1" top="80px" left="200px"/>
+
+    <button id="submit"  content="submit"  top="100px" left="100px">
+      <event id="submit_message" type="onClick">
+	  <action type="db" table="schedule" name="insert">
+	    <param name="title">
+	      <value element="title_box.element" property="value"/>
+	    </param>
+	    <param name="user_name"> 
+	      <string>ajweb</string>
+	    </param>
+	    <param name="place">
+	      <string>default</string>
+	    </param>
+	    <param name="description">
+	      <string>default</string>
+	    </param>
+	    <param name="date">
+	      <value element="date_box.element" property="value"/>
+	    </param>
+	    <param name="category">
+	      <string>default</string>
+	    </param>
+	  </action>
+      </event>
+    </button>
+
+
+    <button id="previous"  content="previous"  top="150px" left="20px">
+
+    </button>
+
+    <button id="next"  content="next"  top="150px" left="1000px">
+
+    </button>
+
+
+
+    <label id="start" content="2010/8/1" top="150px" left="100px"/>
+    <label id="between" content="〜" top="150px" left="200px"/>
+    <label id="end" content="2010/9/1" top="150px" left="250px"/>
+
+
+
+
+
+    <label id="day_1_label" content="day 1" top="200px" left="100px"/>
+    <table id="day_1" top="220px" left="100px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto" draggable="true"/>
+      <data id="day_1_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>1</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_2_label" content="day 2" top="200px" left="230px"/>
+    <table id="day_2" top="220px" left="230px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_2_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>2</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_3_label" content="day 3" top="200px" left="360px"/>
+    <table id="day_3" top="220px" left="360px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_3_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>3</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_4_label" content="day 4" top="200px" left="490px"/>
+    <table id="day_4" top="220px" left="490px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_4_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>4</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_5_label" content="day 5" top="200px" left="620px"/>
+    <table id="day_5" top="220px" left="620px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_5_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>5</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_6_label" content="day 5" top="200px" left="750px"/>
+    <table id="day_6" top="220px" left="750px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_6_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>6</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_7_label" content="day 7" top="200px" left="880px"/>
+    <table id="day_7" top="220px" left="880px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_7_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>7</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_8_label" content="day 8" top="350px" left="100px"/>
+    <table id="day_8" top="370px" left="100px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_8_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>8</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_9_label" content="day 9" top="350px" left="230px"/>
+    <table id="day_9" top="370px" left="230px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_9_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>9</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_10_label" content="day 10" top="350px" left="360px"/>
+    <table id="day_10" top="370px" left="360px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_10_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>10</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_11_label" content="day 11" top="350px" left="490px"/>
+    <table id="day_11" top="370px" left="490px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_4_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>11</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_12_label" content="day 12" top="350px" left="620px"/>
+    <table id="day_12" top="370px" left="620px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_12_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>12</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_13_label" content="day 13" top="350px" left="750px"/>
+    <table id="day_13" top="370px" left="750px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_13_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>13</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_14_label" content="day 15" top="350px" left="880px"/>
+    <table id="day_14" top="370px" left="880px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_14_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>14</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_15_label" content="day 15" top="500px" left="100px"/>
+    <table id="day_15" top="520px" left="100px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_15_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>15</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_16_label" content="day 16" top="500px" left="230px"/>
+    <table id="day_16" top="520px" left="230px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_16_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>16</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_17_label" content="day 17" top="500px" left="360px"/>
+    <table id="day_17" top="520px" left="360px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_17_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>17</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_18_label" content="day 18" top="500px" left="490px"/>
+    <table id="day_18" top="520px" left="490px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_18_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>18</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_19_label" content="day 19" top="500px" left="620px"/>
+    <table id="day_19" top="520px" left="620px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_19_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>19</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_20_label" content="day 20" top="500px" left="750px"/>
+    <table id="day_20" top="520px" left="750px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_20_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>20</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_21_label" content="day 21" top="500px" left="880px"/>
+    <table id="day_21" top="520px" left="880px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_21_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>21</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+
+    <label id="day_22_label" content="day 22" top="650px" left="100px"/>
+    <table id="day_22" top="670px" left="100px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_22_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>22</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_23_label" content="day 23" top="650px" left="230px"/>
+    <table id="day_23" top="670px" left="230px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_23_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>23</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_24_label" content="day 24" top="650px" left="360px"/>
+    <table id="day_24" top="670px" left="360px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_24_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>24</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_25_label" content="day 25" top="650px" left="490px"/>
+    <table id="day_25" top="670px" left="490px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_25_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>25</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_26_label" content="day 26" top="650px" left="620px"/>
+    <table id="day_26" top="670px" left="620px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_26_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>26</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_27_label" content="day 27" top="650px" left="750px"/>
+    <table id="day_27" top="670px" left="750px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_27_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>27</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+  
+
+    <label id="day_28_label" content="day 28" top="650px" left="880px"/>
+    <table id="day_28" top="670px" left="880px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_28_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>28</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_29_label" content="day 29" top="800px" left="100px"/>
+    <table id="day_29" top="820px" left="100px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_29_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>29</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+
+    <label id="day_30_label" content="day 30" top="800px" left="230px"/>
+    <table id="day_30" top="820px" left="230px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <th field="place" name="場所" width="auto"/>
+      <th field="description" name="内容" width="auto"/>
+      <data id="day_30_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>30</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+    <label id="day_31_label" content="day 31" top="800px" left="360px"/>
+    <table id="day_31" top="820px" left="360px" width="120px" height="120px" >
+      <th field="title" name="タイトル" width="auto"/>
+      <data id="day_31_store" tablename="schedule">
+	<condition>
+	  <eq property="date">
+	    <string>31</string>
+	  </eq>    
+	</condition> 
+      </data>
+    </table>
+
+  </panel>
+
+  <dbdata>
+    <description tablename="schedule">
+      <property name="user_name" type="string"/>
+      <property name="title" type="string"/>
+      <property name="date" type="string"/>
+<!--      <property name="time" type="datetime"/> -->
+      <property name="place" type="string"/>
+      <property name="category" type="string"/>
+      <property name="description" type="string"/>
+    </description>
+  </dbdata>
+
+</application>
+</ajml>

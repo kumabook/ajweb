@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AjWeb" default="compile" basedir=".">
+	<target name="generator">
+		<echo message="subant generator/build.xml"/>
+		<subant target="jar">
+			<fileset dir="." includes="generator/build.xml"/>
+		</subant>
+	</target>
+
+
+	<target name="js">
+	</target>
+
+
+	<target name="editor" depends="generator">
+		<copy todir="./js/dist/editor" overwrite="true">
+			<fileset dir="./editor"/>
+		</copy>
+	</target>
+
+	<target name="app_test" depends="jsconcat">
+		<!--	  <delete dir=".ajweb"/> --> 
+		<echo message="subant generator/build.xml"/>
+		<subant target="app_test">
+			<property name="basedir" value="./generator/"/>
+			<fileset dir="." includes="generator/build.xml"/>
+		</subant> 
+	</target>
+
+</project>
