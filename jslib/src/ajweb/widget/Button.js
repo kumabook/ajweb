@@ -7,29 +7,32 @@
  */
 dojo.provide("ajweb.widget.Button");
 dojo.require("dijit.form.Button");
-dojo.require("ajweb.widget._widget");
-dojo.declare("ajweb.widget.Button", ajweb.widget._widget,
+dojo.require("ajweb.widget.Widget");
+dojo.declare("ajweb.widget.Button", ajweb.widget.Widget,
+  /** @lends ajWeb.widget.Button.prototype */
 {
+
 	/**
 	 * Constructor 
-	 * @class widgetの抽象クラス 
-	 * @constructs
-	 * @extends ajWeb.widget._widget
-	 * @borrows ajWeb.Widget#id this.id
-	 * @borrows ajWeb.Widget#top this.top
-	 * @borrows ajWeb.Widget#left this.left
-	 * @borrows ajWeb.Widget#element this.element
-	 * @borrows ajWeb.Widget#parent this.parent
-	 * @borrows ajWeb.Widget#children this.children
-
+	 * @class Buttonクラス
+	 * 
+	 * @constructs 
+	 * @extends ajweb.widget.Widget
+	 * @borrows ajweb.widget.Widget#id this.id
+	 * @borrows ajweb.widget.Widget#top this.top
+	 * @borrows ajweb.widget.Widget#left this.left
+	 * @borrows ajweb.widget.Widget#element this.element
+	 * @borrows ajweb.widget.Widget#parent this.parent
+	 * @borrows ajweb.widget.Widget#children this.children
+	 
 	 * @param {Object} opt 設定オプション
 	 * @param {String} opt.id ウィジェットID
 	 * @param {Object} opt.top 親パネル上端からの相対位置
 	 * @param {Object} opt.left 親パネル左端からの相対位置
 	 * @param {Object} opt.height 
 	 * @param {Object} opt.width 
-	 * @param {AjWeb.Widget} opt.parent 親パネルへの参照
-	 * @param {Array<AjWeb.Widget>} opt.children 子ウィジェットへの参照
+	 * @param {ajweb.widget.Widget} opt.parent 親パネルへの参照
+	 * @param {Array<ajweb.widget.Widget>} opt.children 子ウィジェットへの参照
 
 	 * @param {String} opt.text ボタンに表示される文字列
 	 * @param {boolean} opt.enable ボタンが使用可能かどうか

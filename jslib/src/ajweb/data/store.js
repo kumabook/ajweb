@@ -1,6 +1,14 @@
+/**
+ * @fileOverview データクラスを定義。
+ * 
+ * @author Hiroki Kumamoto
+ * @version 1.0.0
+ */
+
+
 dojo.require("dojo.data.ItemFileWriteStore");
-dojo.provide("ajweb.data.store");
-dojo.declare("ajweb.data.store", null,
+dojo.provide("ajweb.data.Store");
+dojo.declare("ajweb.data.Store", null,
 {
   constructor : function(opt){
     this.url = opt.url;

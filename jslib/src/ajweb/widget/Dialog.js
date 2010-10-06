@@ -1,28 +1,28 @@
 dojo.provide("ajweb.widget.Dialog");
 dojo.require("dijit.Dialog");
-dojo.require("ajweb.widget._widget");
-dojo.declare("ajweb.widget.Dialog",ajweb.widget._widget,
-/** @lends AjWeb.Panel.prototype */ 
+dojo.require("ajweb.widget.Widget");
+dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
+/** @lends ajWeb.widget.Dialog.prototype */ 
  {
    /**
-	* @constructs
-	* @extends AjWeb.Widget
-	* @borrows AjWeb.Widget#id this.id
-	* @borrows AjWeb.Widget#top this.top
-	* @borrows AjWeb.Widget#left this.left
-	* @borrows AjWeb.Widget#element this.element
-	* @borrows AjWeb.Widget#parent this.parent
-	* @borrows AjWeb.Widget#children this.children
-	* 
-	* パネルを作成
-	* @param {Object} opt 設定オプション
-	* @param {String} opt.id ウィジェットID
-	* @param {Object} opt.top 親パネル上端からの相対位置
-	* @param {Object} opt.left 親パネル左端からの相対位置
-	* @param {Object} opt.height 親パネル左端からの相対位置
-	* @param {Object} opt.width 親パネル左端からの相対位置
-	* @param {Object} opt.onload ロード時に読み込まれる関数
-	*/
+    * @constructs 
+    * @extends ajweb.widget.Widget
+    * @borrows ajweb.widget.Widget#id this.id
+    * @borrows ajweb.widget.Widget#top this.top
+    * @borrows ajweb.widget.Widget#left this.left
+    * @borrows ajweb.widget.Widget#element this.element
+    * @borrows ajweb.widget.Widget#parent this.parent
+    * @borrows ajweb.widget.Widget#children this.children
+    
+    * パネルを作成
+    * @param {Object} opt 設定オプション
+    * @param {String} opt.id ウィジェットID
+    * @param {Object} opt.top 親パネル上端からの相対位置
+    * @param {Object} opt.left 親パネル左端からの相対位置
+    * @param {Object} opt.height 親パネル左端からの相対位置
+    * @param {Object} opt.width 親パネル左端からの相対位置
+    * @param {Object} opt.onload ロード時に読み込まれる関数
+    */
 
 
    constructor: function(opt){
@@ -107,6 +107,6 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget._widget,
    },
    /** デバッグ用メソッド*/
    inspect : function(){
-	 return "AjWeb.Dialog_" + this.id;
+	 return "ajWeb.widget.Dialog_" + this.id;
  }
  });

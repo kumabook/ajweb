@@ -1,17 +1,20 @@
 /*jslint browser:true */
 /**
- * @fileOverview AJWeb namespace
+ * @fileOverview ajwebの全体的な記述について
  * 
  * @author Hiroki Kumamoto
  * @version 1.0.0
  */
 
 /**
- * @class ajwebの名前空間およびプロパティを保持するstaticクラス
+ * @class 
  *
  *
  */
-var ajweb = {
+
+dojo.provide("ajweb");
+/** @namespace */
+var ajweb =  {
 	/** バージョン情報*/
 	Version: "1.0.0",
 	/** ブラウザ情報*/
@@ -25,7 +28,8 @@ var ajweb = {
 			Gecko:          ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1,
 			MobileSafari:   /Apple.*Mobile/.test(ua)
 		};
-	})()
+	  }	
+	)()
 };
 
 

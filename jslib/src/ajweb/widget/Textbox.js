@@ -6,21 +6,21 @@
  */
 dojo.provide("ajweb.widget.TextBox");
 dojo.require("dijit.form.TextBox");
-dojo.require("ajweb.widget._widget");
-dojo.declare("ajweb.widget.Textbox",ajweb.widget._widget,
-/** @lends AjWeb.Textbox */ 
+dojo.require("ajweb.widget.Widget");
+dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
+/** @lends ajweb.widget.Textbox */ 
 
 { 
   /** テキストボックスコンポーネントを作成します
    *
    * @constructs 
-   * @extends AjWeb.Widget
-   * @borrows AjWeb.Widget#id this.id
-   * @borrows AjWeb.Widget#top this.top
-   * @borrows AjWeb.Widget#left this.left
-   * @borrows AjWeb.Widget#element this.element
-   * @borrows AjWeb.Widget#parent this.parent
-   * @borrows AjWeb.Widget#children this.children
+   * @extends ajweb.widget.Widget
+   * @borrows ajweb.widget.Widget#id this.id
+   * @borrows ajweb.widget.Widget#top this.top
+   * @borrows ajweb.widget.Widget#left this.left
+   * @borrows ajweb.widget.Widget#element this.element
+   * @borrows ajweb.widget.Widget#parent this.parent
+   * @borrows ajweb.widget.Widget#children this.children
 
    * @param {Object} opt 設定オプション
    * @param {String} opt.id ウィジェットID

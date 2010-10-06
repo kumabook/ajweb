@@ -8,27 +8,27 @@ dojo.provide("ajweb.widget.Panel");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.widget._widget");
 dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
-/** @lends AjWeb.Panel.prototype */ 
+/** @lends ajWeb.widget.Panel.prototype */ 
  {
    /**
-	* @constructs
-	* @extends AjWeb.Widget
-	* @borrows AjWeb.Widget#id this.id
-	* @borrows AjWeb.Widget#top this.top
-	* @borrows AjWeb.Widget#left this.left
-	* @borrows AjWeb.Widget#element this.element
-	* @borrows AjWeb.Widget#parent this.parent
-	* @borrows AjWeb.Widget#children this.children
-	* 
-	* パネルを作成
-	* @param {Object} opt 設定オプション
-	* @param {String} opt.id ウィジェットID
-	* @param {Object} opt.top 親パネル上端からの相対位置
-	* @param {Object} opt.left 親パネル左端からの相対位置
-	* @param {Object} opt.height 親パネル左端からの相対位置
-	* @param {Object} opt.width 親パネル左端からの相対位置
-	* @param {Object} opt.onload ロード時に読み込まれる関数
-	*/
+    * @constructs 
+    * @extends ajweb.widget.Widget
+    * @borrows ajweb.widget.Widget#id as this.id
+    * @borrows ajweb.widget.Widget#top as this.top
+    * @borrows ajweb.widget.Widget#left as this.left
+    * @borrows ajweb.widget.Widget#element as this.element
+    * @borrows ajweb.widget.Widget#parent as this.parent
+    * @borrows ajweb.widget.Widget#children as this.children
+    * 
+    * パネルを作成
+    * @param {Object} opt 設定オプション
+    * @param {String} opt.id ウィジェットID
+    * @param {Object} opt.top 親パネル上端からの相対位置
+    * @param {Object} opt.left 親パネル左端からの相対位置
+    * @param {Object} opt.height 親パネル左端からの相対位置
+    * @param {Object} opt.width 親パネル左端からの相対位置
+    * @param {Object} opt.onload ロード時に読み込まれる関数
+    */
 
 
    constructor: function(opt){
@@ -82,7 +82,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
    /**
 	* 子ウィジェットを削除
 	* @return {boolean} 
-	* @param {AjWeb.Widget} 削除するwidget
+	* @param {ajWeb.widget._widget} 削除するwidget
 	*/
    remove : function(child) {
 	 for(var i = 0; i < this.children.length; i++){
@@ -107,7 +107,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
    },
    /** デバッグ用メソッド*/
    inspect : function(){
-	 return "AjWeb.Panel_" + this.id;
+	 return "ajWeb.widget.Panel_" + this.id;
  }
  });
 

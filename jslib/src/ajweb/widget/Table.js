@@ -9,9 +9,9 @@
 dojo.provide("ajweb.widget.Table");
 dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.dnd.Source");
-dojo.require("ajweb.widget._widget");
+dojo.require("ajweb.widget.Widget");
 dojo.require("dojo.data.ItemFileWriteStore");
-dojo.declare("ajweb.widget.Table", ajweb.widget._widget,
+dojo.declare("ajweb.widget.Table", ajweb.widget.Widget,
 {
 
 	constructor : function(opt){

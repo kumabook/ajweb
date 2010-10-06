@@ -1,6 +1,6 @@
 dojo.provide("ajweb.widget.Select");
 dojo.require("dijit.form.ComboBox");
-dojo.require("ajweb.widget._widget");
+dojo.require("ajweb.widget.Widget");
 dojo.require("dojo.data.ItemFileWriteStore");
 dojo.declare("ajweb.widget.Select", ajweb.widget._widget,
 {

@@ -1,8 +1,9 @@
 dojo.require("dojox.sql");
+dojo.require("ajweb");
 dojo.provide("ajweb.sql");
 dojo.declare("ajweb.sql", null, {});
 //ajweb.sql = {};
-ajweb = {};
+//ajweb = {};
 ajweb.sql = {};
 ajweb.sql.create = function(tablename, properties){
   var scheme = "(id INTEGER PRIMARY KEY ";

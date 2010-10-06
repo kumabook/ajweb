@@ -20,7 +20,7 @@
  */
 
 dojo.provide("ajweb.widget.Label");
-dojo.require("ajweb.widget._widget");
+dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Label", ajweb.widget._widget,
 {
 

@@ -13,7 +13,7 @@ dojo.require("ajweb.widget._widget");
  * @param {Object} opt.top 親パネル上端からの相対位置
  * @param {Object} opt.left 親パネル左端からの相対位置
  */
-dojo.declare("ajweb.widget.Frame", ajweb.widget._widget, {
+dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
 	constructor: function(opt){
 		this.id = opt.id;
 	
