@@ -1,7 +1,6 @@
-
 /**
- * @ fileOverview ボタンクラスを記述するファイル
- * 
+ * @fileOverview ボタンクラスを記述するファイル
+ *
  * @author Hiroki Kumamoto
  * @version 1.0.0
  */
@@ -9,14 +8,14 @@ dojo.provide("ajweb.widget.Button");
 dojo.require("dijit.form.Button");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Button", ajweb.widget.Widget,
-  /** @lends ajWeb.widget.Button.prototype */
+  /** @lends ajweb.widget.Button.prototype */
 {
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 * @class Buttonクラス
-	 * 
-	 * @constructs 
+	 *
+	 * @constructs
 	 * @extends ajweb.widget.Widget
 	 * @borrows ajweb.widget.Widget#id this.id
 	 * @borrows ajweb.widget.Widget#top this.top
@@ -24,13 +23,13 @@ dojo.declare("ajweb.widget.Button", ajweb.widget.Widget,
 	 * @borrows ajweb.widget.Widget#element this.element
 	 * @borrows ajweb.widget.Widget#parent this.parent
 	 * @borrows ajweb.widget.Widget#children this.children
-	 
-	 * @param {Object} opt 設定オプション
+
+	 * @param {Object} opt 初期化用オブジェクト
 	 * @param {String} opt.id ウィジェットID
 	 * @param {Object} opt.top 親パネル上端からの相対位置
 	 * @param {Object} opt.left 親パネル左端からの相対位置
-	 * @param {Object} opt.height 
-	 * @param {Object} opt.width 
+	 * @param {Object} opt.height
+	 * @param {Object} opt.width
 	 * @param {ajweb.widget.Widget} opt.parent 親パネルへの参照
 	 * @param {Array<ajweb.widget.Widget>} opt.children 子ウィジェットへの参照
 
@@ -42,13 +41,17 @@ dojo.declare("ajweb.widget.Button", ajweb.widget.Widget,
 	constructor : function(opt){
 
 		this.content = opt.content;
-		this.top = opt.top;
-		this.left = opt.left;
+		/** 高さ
+		 * @field*/
 		this.height = opt.height;
+		/** 幅
+		 * @field */
 		this.width = opt.width;
 		this.enable = opt.enable;
-		this.onclick = opt.onclick;		
-		this.widget= new dijit.form.Button({ 
+		/** クリック時の動作
+		 * @function */
+		this.onclick = opt.onclick;
+		this.widget= new dijit.form.Button({
 			id: this.id,
 			label: this.content
 		});

@@ -23,15 +23,15 @@ dojo.require("dijit.PopupMenuItem");
 dojo.require("dojox.grid.DataGrid");
 dojo.require("dojox.xml.parser");
 dojo.require("dojox.xml.DomParser");
+dojo.require("ajweb.data.Database");
 
-	
 ajweb.editor.generate = function(output_type){
 alert(output_type);
   var xml_str = '<?xml version="1.0" encoding="UTF-8"?>'
 	      + '<ajml>'
-	    
+
 	      + '</ajml>';
-	
+
     var xml = dojox.xml.parser.parse(xml_str);
 
 //  var xml = ajweb.xml.createDocument("ajml", null);
@@ -48,14 +48,14 @@ alert(output_type);
     //alert(ajweb.editor.editorCpList[i].id);
   }
 
-  var content = ajweb.xml.serialize(xml);  
+  var content = ajweb.xml.serialize(xml);
 
 //  content = '<?xml version="1.0" encoding="UTF-8"?><ajml  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd" >  <application root="root">    <panel id="root" height="100%" width="100%">      <textbox id="yourname" content="yourname" top="30px" left="100px"/>      <button id="hello_button"  content="Hello"  top="50px">	<event id="sayhello" type="onClick">	  <action type="bind" name="bind">	    <param name="input">	      <value element="name" property="widget.innerHTML"/>	    </param>	    <param name="to"> 	      <value element="yourname" property="element.value"/>	    </param>	  </action>	</event>      </button>      <label id="hello" content="Hello" top="120px" left="100px"></label>      <label id="name" content="   " top="120px" left="140px"></label>    </panel>  </application></ajml>';
 //  alert(content);
   ajweb.editor.modelEditor.ajmlFilename.setValue("hello");
   ajweb.editor.modelEditor.ajmlTextArea.setValue(content);
   ajweb.editor.modelEditor.outputType.setValue(output_type);
-  
+
 
   ajweb.editor.form.submit();
 //  ajweb.editor.form.execute();
@@ -66,10 +66,10 @@ alert(output_type);
 
 
 dojo.declare(
-  "ajweb.editor.ModelEditor", null, 
+  "ajweb.editor.ModelEditor", null,
   {
     constructor:
-    function(name, container_id, menu_id){ 
+    function(name, container_id, menu_id){
 
       var outerBc = new dijit.layout.BorderContainer(
       {
@@ -212,7 +212,7 @@ dojo.declare(
       if(outerBc)
 	outerBc.addChild(this.mainBc);
       this.mainBc.addChild(this.rightBc);
-      
+
       this.mainBc.addChild(this.toolboxCp);
       this.rightBc.addChild(this.bottomTc);
       this.bottomTc.addChild(this.propertyCp);
@@ -227,8 +227,8 @@ dojo.declare(
       }
       this.toolboxStore = new dojo.data.ItemFileWriteStore(
 	{
-	  data: {   
-	    'identifier': "name", 
+	  data: {
+	    'identifier': "name",
 	    'label' : "name",
 	    items: ajweb.editor.COMLIST
 	  }
@@ -241,7 +241,7 @@ dojo.declare(
 	   }, */
 	  rootId: "root",
 	  rootLabel: "uiComponent",
-	  childrenAttrs: ["children"] 
+	  childrenAttrs: ["children"]
 	}
       );
       this.toolboxTree = new dijit.Tree(
@@ -266,7 +266,7 @@ dojo.declare(
 	]
       };
 
-      ajweb.editor.propertyDataStore = new ajweb.data._store(
+      ajweb.editor.propertyDataStore = new dojo.data.ItemFileWriteStore(
 	{
 	  identifier: "id",
 	  data: {  items: []}
@@ -274,7 +274,7 @@ dojo.declare(
       );
       this.propertyDataGrid = new dojox.grid.DataGrid(
 		   {
-		     store: ajweb.editor.propertyDataStore, 
+		     store: ajweb.editor.propertyDataStore,
 		     structure: propertyDataGridStructure,
 		     onApplyCellEdit: function(inValue, inRowIndex, inFieldIndex)
 		     {
@@ -309,13 +309,13 @@ dojo.declare(
 		 this.projectStore = new dojo.data.ItemFileWriteStore(
 		   {
 //		     url: "./resources/project.json",// ここは変更可能に
-		     data: {  
+		     data: {
 		       identifier: "name",
 		       label: "name",
 		       items: []}
 		   }
 		 );
-		 
+
 
 		 this.projectTreeModel = new dijit.tree.ForestStoreModel(
 		   {
@@ -325,10 +325,10 @@ dojo.declare(
 		     },*/
 		     rootId: "root",
 		     rootLabel: "Application",
-		     childrenAttrs: ["children"] 
+		     childrenAttrs: ["children"]
 		   }
 		 );
-		 
+
 		 this.projectTree = new dijit.Tree(
 		   {
 		     id:"projecttree",
@@ -375,7 +375,7 @@ dojo.declare(
       outerBc.domNode.appendChild(this.generateForm.domNode);
       this.generateForm.domNode.style.visibility = "hidden";
       ajweb.editor.form = this.generateForm;
-      
+
 
     }
   }

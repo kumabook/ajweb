@@ -17,7 +17,7 @@ public class FunctionalTestServer {
 		ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setDirectoriesListed(true);
 		resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-		resource_handler.setResourceBase("functional");
+		resource_handler.setResourceBase("../");
 		
 		
 				
@@ -28,8 +28,8 @@ public class FunctionalTestServer {
 
 		server.start();
 		
-		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
+		//System.out.println("display application on browser");
+		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:80/"));	
 		server.join();	
 				

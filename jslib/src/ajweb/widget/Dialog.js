@@ -2,7 +2,7 @@ dojo.provide("ajweb.widget.Dialog");
 dojo.require("dijit.Dialog");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
-/** @lends ajWeb.widget.Dialog.prototype */ 
+/** @lends ajweb.widget.Dialog.prototype */ 
  {
    /**
     * @constructs 

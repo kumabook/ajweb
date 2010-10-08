@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ajml-editor" default="run" basedir="."> 
-	<target name="run">
-
-		<copy file="../generator/dist/ajweb.jar" todir="./WEB-INF/lib/" overwrite="true"/>
-		<java classname="ajweb.editor.Main"  >
-			<classpath>
-				<pathelement location="WEB-INF/classes/"/>
-				<pathelement location="../generator/classes/"/>
-				<pathelement location="../generator/lib/jetty-all-7.0.2.v20100331.jar/"/>
-				<fileset dir="../generator/lib">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</java>
-	</target>
+		<target name="compile">
+				<copy file="../generator/dist/ajweb.jar" todir="./WEB-INF/lib/" overwrite="true"/>
+				<mkdir dir="WEB-INF/classes"/>
+				<javac srcdir="WEB-INF/src/" destdir="WEB-INF/classes/">
+						<classpath>
+								<pathelement location="WEB-INF/lib/ajweb.jar"/>
+								<pathelement location="../generator/lib/servlet-api.jar"/>
+						</classpath>
+				</javac>
+		</target>
+		<target name="run" depends="compile">
+				<java classname="ajweb.editor.Main" > 
+						<classpath>
+								<pathelement location="WEB-INF/classes/"/> 
+								<pathelement location="../generator/classes/"/>
+								<fileset dir="../generator/lib">
+										<include name="*.jar"/>
+								</fileset>
+						</classpath>
+				</java>
+		</target>
 </project>

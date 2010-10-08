@@ -1,4 +1,16 @@
+/**
+ * @fileOverview 通信用の関数を定義
+ *
+ * @author Hiroki Kumamoto
+ * @version 1.0.0
+ */
+dojo.provide("ajweb.connect");
+
+
 ajweb.stores = [];//
+/** @namespace ajweb.connect */
+ajweb.connect = {};
+/** methodOf ajweb.connect# */
 ajweb.send = function(url, table, action, json, callback){
   console.log("ajweb.send " + table + "  " + action + "  ");
 //var json = ajweb.toJSON(params);
@@ -23,6 +35,7 @@ ajweb.send = function(url, table, action, json, callback){
     });
 };
 
+/** methodOf ajweb.connect# */
 ajweb.join = function(url){
   dojo.xhrPost(
     {
@@ -34,7 +47,7 @@ ajweb.join = function(url){
       },
       load: function(data, ioargs){
 	console.log("join  response=" + data);
-//	ajweb.polling(url); 
+//	ajweb.polling(url);
       },
       error:function(error, args){
 	console.log("join error! : "+ error);
@@ -42,6 +55,7 @@ ajweb.join = function(url){
     }
   );
 };
+/** methodOf ajweb.connect# */
 // 監視する対象 table 名とcondition(param)の配列   //グローバル変数を参照する
 ajweb.polling = function(url){
   var param = {};
@@ -60,16 +74,16 @@ ajweb.polling = function(url){
 	"param" : dojo.toJson(param)
       },
       load: function(data, ioargs){// サーバデータの変更の配列が送られてくる
-	console.log("polling response: " + dojo.toJson(data));	
+	console.log("polling response: " + dojo.toJson(data));
 	//		alert(dojo.toJson(data));
 	for(var i = 0; i < data.length; i++){
 	  for(var j = 0; j < ajweb.stores.length; j++){
 	    if(ajweb.stores[j].tablename == data[i].table){
-	      //		alert(ajweb.stores[j].param.value + " ==  " + data[i].item[ajweb.stores[j].param.property]); 
+	      //		alert(ajweb.stores[j].param.value + " ==  " + data[i].item[ajweb.stores[j].param.property]);
 	      if(ajweb.stores[j].param.value == data[i].item[ajweb.stores[j].param.property]){
 		if(data[i].action == "insert"){//テーブルが等しいだけで入れてよい？
 		  try{
-//		    console.log("insert " + dojo.toJson(data[i].item));	
+//		    console.log("insert " + dojo.toJson(data[i].item));
 		    ajweb.stores[j].store.newItem(data[i].item);
 		  } catch(e){
 		    console.log("error: newItem already exists");
@@ -79,7 +93,7 @@ ajweb.polling = function(url){
 		else if(data[i].action == "delete"){// conditiony要素からquery作成かまたは, dojo queryに対応?
 		  ajweb.stores[j].remove(data[i]);
 /*		  var query = {room_name :data[i].item.room_name};
-		  
+
 		  ajweb.stores[j].store.fetch({ query: query,
 						onComplete: function(items, request){
 						  for (var k = 0; k < items.length; k++){
@@ -108,6 +122,7 @@ ajweb.polling = function(url){
   );
 };
 
+/** methodOf ajweb.connect# */
 ajweb.sync = function(){
 //サーバの変更を取得
 
@@ -137,5 +152,5 @@ ajweb.sync = function(){
       error:function(error, args){
 	console.log("sync  error: "+ error);
       }
-    });  
+    });
 };

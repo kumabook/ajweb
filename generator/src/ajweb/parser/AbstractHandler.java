@@ -49,9 +49,6 @@ public abstract class AbstractHandler extends DefaultHandler {
                 public AbstractHandler create() { return new DatabasesHandler(); }});
         	handlers.put("events", new HandlerFactory() {//HandlerFactory
                 public AbstractHandler create() { return new EventsHandler(); }});
-        	
-        	handlers.put("window", new HandlerFactory() {//windowHandlerFactory
-                public AbstractHandler create() { return new WindowHandler(); }});
         	handlers.put("widget", new HandlerFactory() {
                 public AbstractHandler create() { return new WidgetHandler(); }});
         	handlers.put("dbdata", new HandlerFactory() {
@@ -61,7 +58,7 @@ public abstract class AbstractHandler extends DefaultHandler {
         	handlers.put("action", new HandlerFactory() {
                 public AbstractHandler create() { return new ActionHandler(); }});
         	handlers.put("event", new HandlerFactory() {
-                public AbstractHandler create() { return new EventHandler(); }});
+                public AbstractHandler create() { return new EventsHandler(); }});
         	
         }
         

@@ -1,10 +1,18 @@
+/**
+ * @ fileOverview sqlユーティリティ
+ *
+ * @author Hiroki Kumamoto
+ * @version 1.0.0
+ */
+
 dojo.require("dojox.sql");
 dojo.require("ajweb");
 dojo.provide("ajweb.sql");
 dojo.declare("ajweb.sql", null, {});
-//ajweb.sql = {};
-//ajweb = {};
+
+/** @namespace */
 ajweb.sql = {};
+/** @methodOf ajweb.sql */
 ajweb.sql.create = function(tablename, properties){
   var scheme = "(id INTEGER PRIMARY KEY ";
   for(var i = 0; i < properties.length; i++){
@@ -16,14 +24,14 @@ ajweb.sql.create = function(tablename, properties){
   console.log(SQL);
   dojox.sql(SQL);
 };
-
+/** @methodOf ajweb.sql */
 ajweb.sql.drop = function(tablename){
   var SQL = "DROP TABLE IF EXISTS " + tablename;
   console.log(SQL);
   dojox.sql(SQL);
 };
 
-
+/** @methodOf ajweb.sql */
 ajweb.sql.insert = function(tablename, properties, params){
   var properties_sql = "(";
   var values_sql = "(";
@@ -50,7 +58,7 @@ ajweb.sql.insert = function(tablename, properties, params){
   return params;
 };
 
-
+/** @methodOf ajweb.sql */
 ajweb.sql.remove = function(tablename, params){
   var id = params;
   if(!(id instanceof Number))
@@ -59,7 +67,7 @@ ajweb.sql.remove = function(tablename, params){
   console.log(SQL);
   dojox.sql(SQL);
 };
-
+/** @methodOf ajweb.sql */
 ajweb.sql.update = function(tablename, properties, params){
   var values_sql = "";
   for(var i = 0; i < properties.length; i++){
@@ -71,9 +79,9 @@ ajweb.sql.update = function(tablename, properties, params){
   values_sql += "";
   var SQL = "UPDATE " + tablename + " SET " + values_sql + " WHERE id = '" + params["id"] + "'";
   console.log(SQL);
-  dojox.sql(SQL);  
+  dojox.sql(SQL);
 };
-
+/** @methodOf ajweb.sql */
 ajweb.sql.select = function(tablename, properties, where){
   var SQL = "SELECT * FROM " + tablename; // " WHERE " + properties_sql + " VALUES " + values_sql;
   console.log(SQL);

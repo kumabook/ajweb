@@ -15,7 +15,6 @@ import ajweb.model.Application;
 import ajweb.model.DBData;
 import ajweb.model.Expression;
 import ajweb.model.Widget;
-import ajweb.model.Window;
 import ajweb.utils.Log;
 
 /**

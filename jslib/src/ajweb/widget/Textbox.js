@@ -37,12 +37,16 @@ dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
   constructor: function(opt){
 
 	this.content = opt.content;
+	/** サイズ
+	 * @field
+	 * */
 	this.size = opt.size;
 	this.width = opt.width;
 	this.height= opt.height;
-	//		this.value = value;
+	/** 入力値(初期値)
+	 * @field */
+	this.value = value;
 	this.parent = opt.parent;
-
 
 	this.widget = new dijit.form.TextBox({
 		id: this.id

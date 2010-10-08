@@ -7,6 +7,7 @@
 	<property name="basedir" value="generator" />
 
 	<target name="compile">
+		<mkdir dir="classes"/>
 		<javac destdir="classes/" includeAntRuntime="no">
 			<src path="src"/>
 			<classpath>
@@ -30,8 +31,8 @@
 
 
 	<target name="jar" depends="compile">
-		<delete file="ajweb.jar"/> 
-		<jar destfile="ajweb.jar" 
+			<delete file="dist/ajweb.jar"/> 
+			<jar destfile="dist/ajweb.jar" 
 			update="false"
 			basedir="classes" />
 	</target>

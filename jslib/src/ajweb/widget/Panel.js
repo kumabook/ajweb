@@ -8,7 +8,7 @@ dojo.provide("ajweb.widget.Panel");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.widget._widget");
 dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
-/** @lends ajWeb.widget.Panel.prototype */ 
+/** @lends ajweb.widget.Panel.prototype */ 
  {
    /**
     * @constructs 

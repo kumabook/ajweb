@@ -25,13 +25,23 @@ dojo.declare("ajweb.widget.Widget",null,
 	 */
 
 	constructor: function(opt){
-
+	/** {int} ウィジェットID 
+	 * @field */
 	  this.id = opt.id;
+	/** 親要素からの上端からの位置
+	 * @field */
 	  this.top = opt.top;
+	/** 親要素からの左端からの位置
+	 * @field */
 	  this.left = opt.left;
-
+	/** DOM要素への参照
+	 * @field */
 	  this.element = undefined;
+	/** 親ウィジェット
+	 * @field */
 	  this.parent = null;
+	/** 子ウィジェット
+	 * @field */
 	  this.children =[];
   },
   create: function(){
@@ -40,25 +50,12 @@ dojo.declare("ajweb.widget.Widget",null,
 	  this.element.style.top = this.top;
 	  this.element.style.left = this.left;
   },
-	/** ウィジェットID */
-	id : 0,
-	/** 親パネル上端からの相対位置*/
-	top : 0,
-	/** 親パネル左端からの相対位置*/
-	left : 0,
-	/** DOM要素への参照*/
-	element : null,
-	/** 親ウィジェット*/
-	parent: null,
-	/** 子ウィジェット*/
-	children: [], 
-	/** デバッグ用メソッド*/
-	inspect : function(){
-	  return "ajWeb.widget._widget" + this.id;
+   /** デバッグ用メソッド*/
+  inspect : function(){
+	  return "ajweb.widget._widget" + this.id;
   },
+	/** */
   startup: function(){
 	  this.widget.startup();
   }
   });
-
-

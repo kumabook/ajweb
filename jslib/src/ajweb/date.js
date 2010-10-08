@@ -1,22 +1,35 @@
+/**
+ * @fileOverview dateオブジェクト
+ *
+ * @author Hiroki Kumamoto
+ * @version 1.0.0
+ */
 dojo.provide("ajweb.date");
 dojo.declare("ajweb.date", null,
+/** @lends ajweb.date.prototype */
 {
+  /**
+   * @constructs
+   */
+  constructor : function(opt){
+  },
 
-	constructor : function(opt){
-	},
-
-	/**
-	 * inspectメソッド：デバッグ情報を出力
-	 * @return {String} デバッグ用出力
-	 *
-	 * @example
-	 *  button.inspect();
-	 */
-	inspect : function(){
-		return "dataStore" + this.id;
-	}
+  /**
+   * inspectメソッド：デバッグ情報を出力
+   * @return {String} デバッグ用出力
+   *
+   * @example
+   *  button.inspect();
+   */
+  inspect : function(){
+    return "dataStore" + this.id;
+  }
 });
 
+/**
+ * 現在の時刻を取得
+ * @methodOf ajweb.date#
+ */
 ajweb.date.now = function(){
 	var now = new Date();
 	var minutes = now.getMinutes();
