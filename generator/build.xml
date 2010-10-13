@@ -44,14 +44,8 @@
 	</target>
 
 	<target name="app_test" depends="jar">
-		<copy  todir="./test/app/test/WEB-INF/lib/">
-			<fileset dir="./lib/">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		<java classname="ajweb.server.Server">
-			<arg value="${basedir}/test/app/test/"/>
-			<arg value="test"/>
+		<copy file="./dist/ajweb.jar"  todir="./chat/app/test/WEB-INF/lib/"/>
+		<java classname="ajweb.server.AppTestServer">
 			<classpath>
 				<fileset dir="lib">
 					<include name="*.jar"/>
