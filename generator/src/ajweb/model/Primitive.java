@@ -26,12 +26,16 @@ public class Primitive implements Expression , ToJSONAble{
 //		elements.add("input");
 		elements.add("int");
 		elements.add("string");
-		elements.add("date");
 		elements.add("datetime");
+		elements.add("date");
+		elements.add("time");
+		
 		
 		elements.add("value");
 		elements.add("property");
-		elements.add("binding");
+		
+		elements.add("targetItem");
+		
 		//elements.add("th");
 		
 	}
@@ -51,7 +55,6 @@ public class Primitive implements Expression , ToJSONAble{
 	}
 	
 	public String toString(){
-//		return "\"" + type + ":" + value + attributes + "\"";
 		
 		if(type.equals(("string"))){
 			return "\"" + value + "\""; 
@@ -61,12 +64,17 @@ public class Primitive implements Expression , ToJSONAble{
 		}
 		else if(type.equals(("value"))){
 			if(attributes.containsKey("property"))//‘®«‚ğ‚Á‚Ä‚¢‚é‚©
-				return attributes.get("element") + "." + attributes.get("property");
+				//return attributes.get("element") + "." + attributes.get("property");
+				return value;
 			else
 				return attributes.get("element");
 		} else if(type.equals(("var"))){//•Ï”‚ğéŒ¾
 			return "var " + value + ";\n";
-		} else
+		}
+		else if(type.equals("datetime")){
+			return "datetime:" + value;
+		}
+		else
 			try {
 				throw new Exception("unknown value");
 			} catch (Exception e) {

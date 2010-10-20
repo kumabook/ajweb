@@ -9,22 +9,6 @@
 	  <label id="message_label" content="メッセージ" top="30px" left="20px"/>
 	  <textbox id="message" content="message" top="30px" left="100px"/>
 	  <button id="submit"  content="submit"  top="50px" left="100px">
-	    <event id="submit_message" type="onClick">
-	      <action type="db" table="chat" name="insert">
-		<param name="message">
-		  <value element="message.element" property="value"/>
-		</param>
-		<param name="user_name"> 
-		  <value element="user_name.element" property="value"/>
-		</param>
-		<param name="room_id">
-		  <string>1</string>
-		</param>
-		<param name="posted">
-		  <action type="javascript" name="ajweb.date.now" />
-		</param>
-	      </action>
-	    </event>
 	  </button>
 	  <table id="message_list" top="100px" left="100px" width="400px" height="500px">
 	    <data id="message_store" tablename="chat">
@@ -50,5 +34,8 @@
 	<property name="roomId" type="int"/>
       </database>
     </databases>
+
+    <events>
+    </events>
   </application>
 </ajml>

@@ -40,7 +40,17 @@
 
 	<target name="doc">
 	</target>
-	<target name="test">
+	<target name="test" depends="compile">
+			<junit haltonfailure="true" printsummary="on">
+					<formatter type="plain" usefile="false"/> 
+					<classpath>
+							<fileset dir="lib">
+									<include name="*.jar"/>
+							</fileset>
+							<pathelement location="classes/"/>
+					</classpath>
+					<test name="ajweb.AllTests"/>
+			</junit>
 	</target>
 
 	<target name="app_test" depends="jar">

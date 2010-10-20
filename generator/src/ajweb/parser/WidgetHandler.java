@@ -1,10 +1,10 @@
 package ajweb.parser;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import ajweb.db.AbstractCondition;
 import ajweb.model.Event;
 import ajweb.model.Expression;
@@ -46,7 +46,7 @@ public class WidgetHandler extends AbstractHandler {
 		}
 		else if(exp instanceof Event){
 			Event event = (Event) exp;
-			event.element = attributes.get("id");
+			event.target = attributes.get("id");
 			this.widget.events.add(event);
 		}
 		else if(exp instanceof AbstractCondition){
@@ -59,14 +59,9 @@ public class WidgetHandler extends AbstractHandler {
 		}
 	
 	
-	public void initialize(XMLReader newReader, AbstractHandler initParent,
-            Attributes attrs,String elementName) throws SAXException {
-		Log.fine("\t\tWidget Handler init: " + elementName);
-		parent = initParent;
-		super.initialize(newReader, initParent, attrs, elementName);
-	}
 	
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 		Log.fine("\t\tWidget Handler endElement: " + qName);
 		
@@ -87,6 +82,7 @@ public class WidgetHandler extends AbstractHandler {
 		}
 		
 //		System.out.println(qName + "   before  " + widget.properties);
+		
 		HashMap<String, Object> props = (HashMap) attributes;
 //		System.out.println("attributes  " + attributes);
 		widget.properties.putAll(props);

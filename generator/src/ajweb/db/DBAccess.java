@@ -204,7 +204,7 @@ public class DBAccess {
 		int index = 1;
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			
+//			System.out.println(index + "   " + e.getValue());
 			st.setString(index, e.getValue());
 			index++;
 		}
@@ -216,8 +216,11 @@ public class DBAccess {
 		conn.commit();
 		close();
 		
-		param.put("id" , ran+"");
-		return param;
+		
+		@SuppressWarnings("unchecked")
+		HashMap<String, String>result  = (HashMap<String, String>) param.clone();
+		result.put("id" , ran+"");
+		return result;
 			
 	}	
 		

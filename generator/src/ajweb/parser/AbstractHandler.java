@@ -1,6 +1,5 @@
 package ajweb.parser;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -49,16 +48,21 @@ public abstract class AbstractHandler extends DefaultHandler {
                 public AbstractHandler create() { return new DatabasesHandler(); }});
         	handlers.put("events", new HandlerFactory() {//HandlerFactory
                 public AbstractHandler create() { return new EventsHandler(); }});
+        	
         	handlers.put("widget", new HandlerFactory() {
                 public AbstractHandler create() { return new WidgetHandler(); }});
-        	handlers.put("dbdata", new HandlerFactory() {
-                public AbstractHandler create() { return new DBDataHandler(); }});
         	handlers.put("condition", new HandlerFactory() {
                 public AbstractHandler create() { return new ConditionHandler(); }});
+        	
+        	handlers.put("event", new HandlerFactory() {
+                public AbstractHandler create() { return new EventHandler(); }});
+        	
         	handlers.put("action", new HandlerFactory() {
                 public AbstractHandler create() { return new ActionHandler(); }});
-        	handlers.put("event", new HandlerFactory() {
-                public AbstractHandler create() { return new EventsHandler(); }});
+        	handlers.put("call", new HandlerFactory() {
+                public AbstractHandler create() { return new CallHandler(); }});
+        	handlers.put("param", new HandlerFactory() {
+                public AbstractHandler create() { return new ParamHandler(); }});
         	
         }
         
@@ -78,11 +82,10 @@ public abstract class AbstractHandler extends DefaultHandler {
         /**
          * 初期設定を行う。オーバーライドする場合は必ず最初に親クラスの呼び出しを行う。
          * @param initReader 現在パーシングに利用しているXMLReader
-         * @param initParent 親要素ハンドラ
          * @param attrs この要素の属性
          */
         protected void initialize(XMLReader newReader, AbstractHandler initParent,
-                Attributes attrs,String elementName) throws SAXException {
+        		Attributes attrs,String elementName) throws SAXException {
         	
         	reader = newReader;
         	this.attrs = attrs;
@@ -122,8 +125,9 @@ public abstract class AbstractHandler extends DefaultHandler {
         
         public void endElement(String uri, String localName, String qName)
             throws SAXException {
-        	if(!(expression == null))
+        	if(expression != null){
         		parent.addExpression(expression);
+        	}
         	Log.finest("super " + " aName  endElement  " + this + "  parent is " +  parent);
             reader.setContentHandler(parent);
         }

@@ -7,11 +7,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+import junit.framework.TestCase;
+
 import org.junit.*;
 
 import ajweb.utils.FileUtils;
 
-public class ConditionsTest {
+public class ConditionsTest extends TestCase{
 
 	HashMap<String, String> properties = new HashMap<String,String>();
 	{
@@ -34,14 +36,20 @@ public class ConditionsTest {
 	
 	@Before
 	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		try {
+			da.drop("test");
+		} catch (SQLException e){
+			
+		}
 		da.create("test", properties);
-				
+		
 		da.insert("test", properties, param);
 		
 		}	
 	
 	@After
 	public void tearDown() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		
 		da.drop("test");
 	}
 	@AfterClass

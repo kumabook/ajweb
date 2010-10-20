@@ -1,6 +1,5 @@
 package ajweb.parser;
 
-
 import java.util.HashMap;
 
 
@@ -10,15 +9,15 @@ import org.xml.sax.XMLReader;
 
 import ajweb.db.Condition;
 import ajweb.model.Action;
+import ajweb.model.Call;
 import ajweb.model.Expression;
-import ajweb.model.Primitive;
 import ajweb.utils.Log;
 
 
 public class ActionHandler extends AbstractHandler {
 	Action action = new Action();
 	HashMap<String, Expression> params = new HashMap<String, Expression>();
-	Expression value;
+	
 	Condition condition;
 	String name;
 	public void startElement(
@@ -33,29 +32,15 @@ public class ActionHandler extends AbstractHandler {
 	}
 	public void initialize(XMLReader newReader, AbstractHandler initParent,
             Attributes attrs,String elementName) throws SAXException {
-		
-		if(elementName.equals("action")){
-			action.id = attrs.getValue("name");
-			action.name = attrs.getValue("name");
-			action.type = attrs.getValue("type");
-			action.table = attrs.getValue("table");
-			
-		}
 		super.initialize(newReader, initParent, attrs, elementName);		
 		
 		
 	}
 	protected void addExpression(Expression exp) throws SAXException {
 		Log.fine("addExpression  action "  + exp  + "  " + this);
-		if(exp instanceof Primitive)
-			value = (Primitive) exp;
-		else if(exp instanceof Action){
-			value = (Action) exp;
+		if(exp instanceof Call){
+			action.add((Call) exp);
 		}
-		else if(exp instanceof Condition){
-				condition = (Condition) exp;
-				action.condition = condition;
-		}	
 	}
 
 	
@@ -68,14 +53,7 @@ public class ActionHandler extends AbstractHandler {
 			setExpression(action);
 			super.endElement(uri, localName, qName);
 		}
-		else if(qName.equals("param")){
-			action.param.put(name, value);
-			action.params.add(value);
-		}
-		
-		else 
-			super.endElement(uri, localName, qName);
-		
+				
 	}
 	
 	

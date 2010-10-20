@@ -83,9 +83,9 @@ public class Widget implements Expression{
 		}
 		
 		for(Event event: events){
-			for(Action action : event.actions){
+			//for(Action action : event.action){
 				
-				if(action.type.equals("db")){
+			/*	if(action.type.equals("db")){
 					if(action.name.equals("insert") || action.name.equals("update")){
 						Template table_action_template = new Template("tableaction");
 						table_action_template.apply("TABLENAME", action.table);
@@ -110,8 +110,8 @@ public class Widget implements Expression{
 							results.put(action.name, table_action_template);
 						}
 					}
-				}
-			}
+				}*/
+			//}
 		}
 		return servletActionTemplates;
 		

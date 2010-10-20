@@ -2,11 +2,11 @@
 <ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<application name="test">
 		<databases>
-			<database name="rooms">
+			<database id="rooms">
 				<property name="name" type="string"/>
 				<property name="user" type="string"/>
 			</database>
-			<database name="messages">
+			<database id="messages">
 				<property name="user" type="string"/>
 				<property name="message" type="string"/>
 				<property name="posted" type="datetime"/>

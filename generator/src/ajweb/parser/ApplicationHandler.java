@@ -1,7 +1,5 @@
 package ajweb.parser;
 
-
-
 import java.util.ArrayList;
 
 
@@ -12,7 +10,8 @@ import org.xml.sax.XMLReader;
 import ajweb.Config;
 import ajweb.model.Action;
 import ajweb.model.Application;
-import ajweb.model.DBData;
+import ajweb.model.Databases;
+import ajweb.model.Events;
 import ajweb.model.Expression;
 import ajweb.model.Widget;
 import ajweb.utils.Log;
@@ -42,7 +41,7 @@ public class ApplicationHandler extends AbstractHandler {
 	public void startElement(String uri, String localName, String qName, Attributes attrs)
     throws SAXException {
 		Log.fine("Application Handler startElemnt :" + qName);
-		System.out.println(qName);
+		//System.out.println(qName);
 		super.startElement(uri, localName, qName, attrs);
 	}
 		
@@ -53,7 +52,7 @@ public class ApplicationHandler extends AbstractHandler {
 		// TODO Auto-generated method stub
 		
 		super.initialize(newReader, initParent, attrs, elementName);
-		System.out.println("application    " + attributes.get("name"));
+		//System.out.println("application    " + attributes.get("name"));
 		application = new Application(Config.appName, Config.workDir);
 	}
 	@Override
@@ -61,10 +60,13 @@ public class ApplicationHandler extends AbstractHandler {
 //		System.out.println("application" +  "         children     "+exp);
 		if (exp instanceof Widget)
 			this.application.widgets.add((Widget) exp);
-		else if (exp instanceof DBData)
-			this.application.dbDatum.add((DBData) exp);
+		else if (exp instanceof Databases){
+			this.application.databases = ((Databases) exp);
+		}
 		else if (exp instanceof Action)
 			this.application.dbActions.add((Action) exp);
+		else if (exp instanceof Events)
+			this.application.events = (Events) exp;
 	}
 	
 	@Override

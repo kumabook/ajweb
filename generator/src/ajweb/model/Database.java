@@ -13,12 +13,12 @@ import ajweb.utils.Template;
  * @author hiroki
  *
  */
-public class DBData implements Expression{
+public class Database implements Expression{
 	public String name;
 	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	public String dbName = "jdbc:derby:" + System.getProperty("ajweb.work") + "derby";
 	public String type = "server";
-	public DBData(String name, String dbDriver,String dbName){
+	public Database(String name, String dbDriver,String dbName){
 		this.name = name;
 		this.dbDriver = dbDriver;
 		this.dbName = dbName;
@@ -60,6 +60,37 @@ public class DBData implements Expression{
 		
 		/*client のテーブルを定義を定義しているならクライアントテーブルjavaScriptを生成*/
 				
+	}
+	
+	public String toJavaSource(){
+		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
+		String properties_set = "";
+		while(ite.hasNext()){
+			
+			Entry<String, String> property = ite.next();
+			properties_set += "\t\tproperties.put(\"" + property.getKey() + "\", \"" + property.getValue() + "\");\n";
+			
+		}
+				
+		try {
+			Template dbTableTemplate = new Template("dbtable");
+			dbTableTemplate.apply("TABLENAME", name);
+//			dbName = Application.appName;
+			dbTableTemplate.apply("DBNAME", dbName);
+			dbTableTemplate.apply("DRIVERCLASSNAME", dbDriver);
+			
+			dbTableTemplate.apply("PROPERTIES", properties_set);
+
+			return dbTableTemplate.source;
+			
+		} catch (IOException e) {
+			// 
+			e.printStackTrace();
+		}
+		return "null";
+		
+		
+		
 	}
 	
 	public String toString() {

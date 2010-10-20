@@ -1,11 +1,13 @@
 package ajweb.db;
 
-import static org.junit.Assert.*;
+
 
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+
+import junit.framework.TestCase;
 
 
 import org.junit.After;
@@ -19,7 +21,7 @@ import ajweb.utils.FileUtils;
 
 
 
-public class DBAccessTest {
+public class DBAccessTest extends TestCase{
 
 	HashMap<String, String> properties = new HashMap<String,String>();
 	{
@@ -33,6 +35,16 @@ public class DBAccessTest {
 	
 	@Before
 	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		try {
+			da.drop("test");
+		} catch (SQLException e){
+			
+		}
+		try {
+			da.drop("create_test");
+		} catch (SQLException e){
+			
+		}
 		da.create("test", properties);
 		
 	}
@@ -62,6 +74,7 @@ public class DBAccessTest {
 			da.create("create_test", properties);
 			fail("cannot create same name table");
 		} catch (SQLException e){
+			da.drop("create_test");
 			//OK
 		}
 		
@@ -120,10 +133,11 @@ public class DBAccessTest {
 		param.put("user_name", "åFñ{ç_ãI");
 		param.put("posted", new Timestamp(System.currentTimeMillis()).toString());
 		
-		da.insert("test", properties, param);
-		da.delete("test", new Condition("eq", "id", "1"));
+		HashMap<String, String> result = da.insert("test", properties, param);
+		da.delete("test", new Condition("eq", "id", result.get("id")));
+//		System.out.println("_id " + result.get("id"));
 		assertEquals(0, da.select("test", properties, null).size());
-		
+
 		
 	}
 	

@@ -1,18 +1,18 @@
-
 package ajweb.db;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+import junit.framework.TestCase;
+
 import org.junit.*;
 
 import ajweb.utils.FileUtils;
 
-public class ConditionTest {
+public class ConditionTest extends TestCase{
 
 	HashMap<String, String> properties = new HashMap<String,String>();
 	{
@@ -35,6 +35,11 @@ public class ConditionTest {
 	
 	@Before
 	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		try {
+			da.drop("test");
+		} catch (SQLException e){
+			
+		}
 		da.create("test", properties);
 				
 		da.insert("test", properties, param);
