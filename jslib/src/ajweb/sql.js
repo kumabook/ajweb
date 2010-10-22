@@ -6,7 +6,7 @@
  */
 
 dojo.require("dojox.sql");
-dojo.require("ajweb");
+dojo.require("ajweb.define");
 dojo.provide("ajweb.sql");
 dojo.declare("ajweb.sql", null, {});
 
@@ -37,7 +37,7 @@ ajweb.sql.insert = function(tablename, properties, params){
   var values_sql = "(";
   if(!params.id)
     params.id = Math.floor(Math.random()*100000);
-  properties.push("id");
+    properties.push("id");
   for(var i = 0; i < properties.length; i++){
     if(params[properties[i]]){
       if(i!=0){

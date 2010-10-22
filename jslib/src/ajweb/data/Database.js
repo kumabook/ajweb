@@ -7,6 +7,7 @@
 
 
 dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("ajweb.sql");
 dojo.provide("ajweb.data.Database");
 /** @namespace */
 ajweb.data = {};
@@ -25,6 +26,9 @@ dojo.declare("ajweb.data.Database", null,
    *
    * */
   constructor : function(opt){
+        /** id
+     * @field */
+    this.id = opt.id;
     /** データベースアクセスのサーバプログラムのurl
      * @field */
     this.url = opt.url;
@@ -34,7 +38,7 @@ dojo.declare("ajweb.data.Database", null,
     /** カラムの配列
      * @field */
     this.properties = opt.properties;
-    this.properties.push("id");
+//    this.properties.push("id");
     var isContainId = false;
     this.param = opt.param;//condition
     /** 実際のデータを保持(dojo.data.ItemFileWriteStoreを利用)

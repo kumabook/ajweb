@@ -118,7 +118,7 @@ ajweb.editor.getX = function(container) {
   var x = 0;
   while(container) {
     x += container.offsetLeft;
-    container = container.offsetParent; 
+    container = container.offsetParent;
   }
   return x;
 };
@@ -126,7 +126,7 @@ ajweb.editor.getY = function(container) {
   var y = 0;
   while(container) {
   y += container.offsetTop;
-  container = container.offsetParent; 
+  container = container.offsetParent;
   }
   return y;
 };
@@ -150,7 +150,7 @@ ajweb.editor.getComponentType = function(widgetName){
     for(var j = 0; j < ajweb.editor.COMLIST[i].children.length; j++){
       if(widgetName == ajweb.editor.COMLIST[i].children[j].name){
 	return  ajweb.editor.COMLIST[i].children[j].widget_type[0];
-      }	   
+      }
     }
   }
   return null;
@@ -161,7 +161,7 @@ ajweb.editor.getComponent = function(widgetName){
       if(widgetName == ajweb.editor.COMLIST[i].children[j].name){
 
 	return  ajweb.editor._COMLIST[i].children[j];
-      }	   
+      }
     }
   }
   return null;
@@ -293,7 +293,7 @@ ajweb.editor.createModel = function(component, containerDom, that){
 	parentDom: containerDom
       });
   }
-  else 
+  else
     return null;
 
 };

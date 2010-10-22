@@ -1,6 +1,6 @@
-dojo.require.provide("ajweb.widget.Frame");
+dojo.provide("ajweb.widget.Frame");
 dojo.require("dijit.layout.StackContainer");
-dojo.require("ajweb.widget._widget");
+dojo.require("ajweb.widget.Widget");
 /**
  * フレームを作成
  *
@@ -16,10 +16,10 @@ dojo.require("ajweb.widget._widget");
 dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
 	constructor: function(opt){
 		this.id = opt.id;
-	
+
 		this.children = [];
 //		this.selectChild ;
-	
+
 	   if(opt.width) this.width = opt.width;
 	   else this.width = "100%";
 	   if(opt.height) this.height = opt.height;

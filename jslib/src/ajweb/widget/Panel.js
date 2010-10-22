@@ -1,17 +1,17 @@
-/** 
+/**
  * @fileOverview 画面を記述するファイル
  *
  * @author Hiroki Kumamoto
- * @version 1.0.0 
+ * @version 1.0.0
  */
 dojo.provide("ajweb.widget.Panel");
 dojo.require("dijit.layout.ContentPane");
-dojo.require("ajweb.widget._widget");
-dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
-/** @lends ajweb.widget.Panel.prototype */ 
+dojo.require("ajweb.widget.Widget");
+dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
+/** @lends ajweb.widget.Panel.prototype */
  {
    /**
-    * @constructs 
+    * @constructs
     * @extends ajweb.widget.Widget
     * @borrows ajweb.widget.Widget#id as this.id
     * @borrows ajweb.widget.Widget#top as this.top
@@ -19,7 +19,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
     * @borrows ajweb.widget.Widget#element as this.element
     * @borrows ajweb.widget.Widget#parent as this.parent
     * @borrows ajweb.widget.Widget#children as this.children
-    * 
+    *
     * パネルを作成
     * @param {Object} opt 設定オプション
     * @param {String} opt.id ウィジェットID
@@ -52,7 +52,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
 			 });
 		 this.element = this.widget.domNode;
 	},
-	startup: function(){
+   startup: function(){
 	//	alert("panel startup");
 		this.widget.startup();
 		this.widget.domNode.style.position = "absolute";
@@ -70,7 +70,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
 	},
    /**
 	* 子ウィジェットを追加
-	* @return {boolean} 
+	* @return {boolean}
 	* @param {AjWeb.Widget} 追加するwidget
 	*/
    add : function(child) {
@@ -81,7 +81,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget._widget,
    },
    /**
 	* 子ウィジェットを削除
-	* @return {boolean} 
+	* @return {boolean}
 	* @param {ajWeb.widget._widget} 削除するwidget
 	*/
    remove : function(child) {

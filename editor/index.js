@@ -1,11 +1,11 @@
 dojo.require("ajweb.widget.Button");
 
-
 dojo.addOnLoad(
   function(){
-    ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ui", "ajmlEditor", "menu");
-      
-       
+//    alert(ajweb.editor);
+   ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ui", "ajmlEditor", "menu");
+
+
   });
 
 
@@ -15,7 +15,7 @@ dojo.addOnLoad(
     alert("canvas not supported");
     return false;
   }
-  
+
   var ctx = canvas.getContext('2d');
   ctx.beginPath();
   ctx.moveTo(20, 20);
@@ -31,5 +31,5 @@ dojo.addOnLoad(
 
   ctx.stroke();
 
-  
+
 }*/

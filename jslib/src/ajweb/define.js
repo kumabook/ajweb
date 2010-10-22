@@ -8,27 +8,30 @@
 
 dojo.provide("ajweb.define");
 
-/** @namespace */
-ajweb =  {
-	/** バージョン情報*/
-	Version: "1.0.0",
-	/** ブラウザ情報*/
-	Browser: (function () {
-		var ua = navigator.userAgent;
-		var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
-		return {
-			IE:             !!window.attachEvent && !isOpera,
-			Opera:          isOpera,
-			WebKit:         ua.indexOf('AppleWebKit/') > -1,
-			Gecko:          ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1,
-			MobileSafari:   /Apple.*Mobile/.test(ua)
-		};
-		  }
-		)(),
-	  /** ajweb.widgetパッケージ*/
-     widget: {}
-};
+if(!ajweb){
 
+/** @namespace */
+  ajweb =  {
+    /** バージョン情報*/
+  Version: "1.0.0",
+    /** ブラウザ情報*/
+  Browser: (function () {
+	      var ua = navigator.userAgent;
+	      var isOpera = Object.prototype.toString.call(window.opera) == '[object Opera]';
+		return {
+		  IE:             !!window.attachEvent && !isOpera,
+		  Opera:          isOpera,
+		  WebKit:         ua.indexOf('AppleWebKit/') > -1,
+		  Gecko:          ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1,
+		  MobileSafari:   /Apple.*Mobile/.test(ua)
+		  };
+		}
+	      )(),
+  /** ajweb.widgetパッケージ*/
+  widget: {}
+  };
+}
+ajweb.stores = [];
 /**
  * javaScriptの値をJSON形式の文字列に変換
  * @methodOf ajweb

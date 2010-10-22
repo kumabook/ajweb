@@ -21,7 +21,7 @@
 
 dojo.provide("ajweb.widget.Label");
 dojo.require("ajweb.widget.Widget");
-dojo.declare("ajweb.widget.Label", ajweb.widget._widget,
+dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
 {
 
 	constructor : function(opt){
@@ -32,7 +32,7 @@ dojo.declare("ajweb.widget.Label", ajweb.widget._widget,
 		this.height = opt.height;
 		this.width = opt.width;
 		this.enable = opt.enable;
-		this.onclick = opt.onclick;		
+		this.onclick = opt.onclick;
 		this.widget= document.createElement("label");
 		this.widget.innerHTML = this.content;
 		this.widget.style.position = "absolute";
@@ -47,7 +47,7 @@ dojo.declare("ajweb.widget.Label", ajweb.widget._widget,
 	startup: function(){
 	},
 	setcontent: function(content){
-		this.element.innerHTML = content;	
+		this.element.innerHTML = content;
 	},
 
 	/**

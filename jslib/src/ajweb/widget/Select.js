@@ -2,7 +2,7 @@ dojo.provide("ajweb.widget.Select");
 dojo.require("dijit.form.ComboBox");
 dojo.require("ajweb.widget.Widget");
 dojo.require("dojo.data.ItemFileWriteStore");
-dojo.declare("ajweb.widget.Select", ajweb.widget._widget,
+dojo.declare("ajweb.widget.Select", ajweb.widget.Widget,
 {
 
 	constructor : function(opt){
@@ -12,7 +12,7 @@ dojo.declare("ajweb.widget.Select", ajweb.widget._widget,
 		this.left = opt.left;
 		this.height = opt.height;
 		this.width = opt.width;
-		this.enable = opt.enable; 
+		this.enable = opt.enable;
 //		this.data= new dojo.data.ItemFileWriteStore();//
 
 		this.data= opt.data;///文字列, これからstoreオブジェクト取得するように実装、サーバのJSON関数の実装により
@@ -25,14 +25,14 @@ dojo.declare("ajweb.widget.Select", ajweb.widget._widget,
 				this.store = ajweb.stores[i].store;//dojo store
 			}
 		}
-	
-		this.widget= new dijit.form.ComboBox({ 
+
+		this.widget= new dijit.form.ComboBox({
 			id: this.id,
 			width: this.width,
 		//	height: this.height,
-			store: this.store 
+			store: this.store
 			});
-					   
+
 			//this.widget= new dojox.grid.DataGrid(opt);
 		this.element = this.widget.domNode;
 
@@ -49,9 +49,9 @@ dojo.declare("ajweb.widget.Select", ajweb.widget._widget,
 //		widget.domNode.style.height = height;
 		widget.domNode.style.top = top;
 		widget.domNode.style.left = left;
-//		alert(widget);	
-//		alert(widget.domNode.style.height);	
-	
+//		alert(widget);
+//		alert(widget.domNode.style.height);
+
 	},
 
 	/**

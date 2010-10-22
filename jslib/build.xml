@@ -2,8 +2,6 @@
 <project name="AjWeb System javaScript Framework" default="jsconcat" basedir=".">
 
 	<property name="jssrc" value="src" />		
-	<target name="jstest">
-	</target>
 	<target name="doc"
 		description="make jsDoc">
 		<property name="jsdoc" value="lib/jsdoc-toolkit" />
@@ -33,4 +31,52 @@
 		</exec>
 	</target>
 
+	<target name="unittest" >
+			<condition property="browserFileNames"
+					value="C:¥Program Files¥Mozilla Firefox3¥firefox.exe"
+					description="this is light browser test : ie + firefox">
+					<os family="dos"/>
+			</condition>
+			<condition property="browserFileNames"
+					value="open"
+					description="this is light browser test : ie + firefox">
+					<os family="mac"/>
+			</condition>
+			<subant>
+					<property name="browserFileNames" value="${browserFileNames}"/>
+					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns"
+							value=""
+							/>
+					<property id="description" name="description"
+							value="ajweb javaScript framework test"
+							/>
+					<property id="ignoreUnresponsiveRemoteMachines"	name="ignoreUnresponsiveRemoteMachines"
+							value=""
+							/>
+					<property id="logsDirectory" name="logsDirectory"
+							value=""
+							/>
+					<property id="port" name="port"
+							value="8080"
+							/>
+					<property id="remoteMachineURLs" name="remoteMachineURLs"
+							value="http://localhost:8080"
+							/>
+					<property id="resourceBase" name="resourceBase"
+							value="."
+							/>
+
+					<property id="timeoutSeconds" name="timeoutSeconds" value=""/>
+					<property id="url" name="url"
+							value="http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html"
+							description="ajweb test suite"
+							/>
+					<property name="bin" location="test/jsunit/java/bin"/>
+					<property name="lib" location="test/jsunit/java/lib"/>
+					<property name="loggingPropertiesFile" location="logging.properties"/>
+					<filelist dir=".">
+							<file name="test/jsunit/build.xml"/>
+					</filelist>
+			</subant>
+	</target>
 </project>

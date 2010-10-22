@@ -7,13 +7,13 @@
 dojo.provide("ajweb.widget.TextBox");
 dojo.require("dijit.form.TextBox");
 dojo.require("ajweb.widget.Widget");
-dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
-/** @lends ajweb.widget.Textbox */ 
+dojo.declare("ajweb.widget.TextBox",ajweb.widget.Widget,
+/** @lends ajweb.widget.TextBox */
 
-{ 
+{
   /** テキストボックスコンポーネントを作成します
    *
-   * @constructs 
+   * @constructs
    * @extends ajweb.widget.Widget
    * @borrows ajweb.widget.Widget#id this.id
    * @borrows ajweb.widget.Widget#top this.top
@@ -45,7 +45,7 @@ dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
 	this.height= opt.height;
 	/** 入力値(初期値)
 	 * @field */
-	this.value = value;
+	this.value = opt.value;
 	this.parent = opt.parent;
 
 	this.widget = new dijit.form.TextBox({
