@@ -2,8 +2,10 @@ package ajweb.db;
 
 
 import java.io.File;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
@@ -82,6 +84,92 @@ public class ConditionTest extends TestCase{
 		assertEquals(param.get("user_name"), lt_result.get("user_name"));
 		assertEquals(param.get("posted"), lt_result.get("posted"));		
 		
+	}
+	@Test
+	public void testRelated() throws Exception{
+		String now = new Date(System.currentTimeMillis()).toString();
+		Condition gt = new Condition("gt", "posted", now);
+		
+		assertTrue(gt.related(Modification.parse("{ \"action\": \"insert\", \"table\": \"chat\", \"param\": " +
+											"{ " +
+												"\"user_name\": \"kumamoto\"," +
+												"\"message\": \"hello\"," +
+												"\"room_id\": 1," +
+												"\"posted\": \"2011-06-25 10:10:10\"" +
+											"}" +
+										"}").item, properties));
+	}
+	
+	@Test
+	public void test_parse(){
+		String condition_json = "{\"op\": \"eq\", \"property\": \"name\", \"value\": \"test\" }";
+		Condition condition = (Condition) Condition._parse(condition_json);
+		assertEquals(condition.operator, "eq");
+		assertEquals(condition.property, "name");
+		assertEquals(condition.value, "test");
+		
+		String and_json = "{\"op\": \"and\", " +
+								"\"left\": {\"op\": \"eq\", \"property\": \"name\", \"value\": \"test\" }, " +
+								"\"right\": {\"op\": \"eq\", \"property\": \"name\", \"value\": 1 }" +
+							"}";
+		
+		Conditions and = (Conditions) Condition._parse(and_json);
+		assertEquals(and.operator, "and");
+		Condition left = (Condition) and.children.get(0);
+		assertEquals(left.operator, "eq");
+		assertEquals(left.property, "name");
+		assertEquals(left.value, "test");
+		Condition right = (Condition) and.children.get(1);
+		assertEquals(right.operator, "eq");
+		assertEquals(right.property, "name");
+		assertEquals(right.value, "1");
+	}
+	@Test 
+	public void testParse(){
+
+		
+		String table_conditions_json = "{" +
+				"\"room\": " +
+					"[" +
+						"{\"op\": \"eq\", \"property\": \"name\", \"value\": \"test\" }" +
+						"{\"op\": \"eq\", \"property\": \"name\", \"value\": 1 }" +
+					"]," +
+				"\"chat\": " +
+					"[" +
+						"{\"op\": \"and\", " +
+							"\"left\": {\"op\": \"eq\", \"property\": \"name\", \"value\": \"test\" }, " +
+							"\"right\": {\"op\": \"eq\", \"property\": \"name\", \"value\": 1 }" +
+						"}" +
+					"]" +
+				"}";
+		
+		HashMap<String, ArrayList<AbstractCondition>> tableConditions = Condition.parse(table_conditions_json);
+		ArrayList<AbstractCondition> roomConditions = tableConditions.get("room");
+		assertEquals(roomConditions.size(), 2);
+		Condition condition1 = (Condition) roomConditions.get(0);
+		Condition condition2 = (Condition) roomConditions.get(1);
+		assertEquals(condition1.operator, "eq");
+		assertEquals(condition1.property, "name");
+		assertEquals(condition1.value, "test");
+		assertEquals(condition2.operator, "eq");
+		assertEquals(condition2.property, "name");
+		assertEquals(condition2.value, "1");
+		
+		
+		
+		ArrayList<AbstractCondition> chatConditions = tableConditions.get("chat");
+		
+		assertEquals(chatConditions.size(), 1);
+		Conditions and = (Conditions) chatConditions.get(0);
+		assertEquals(and.operator, "and");
+		Condition left = (Condition) and.children.get(0);
+		assertEquals(left.operator, "eq");
+		assertEquals(left.property, "name");
+		assertEquals(left.value, "test");
+		Condition right = (Condition) and.children.get(1);
+		assertEquals(right.operator, "eq");
+		assertEquals(right.property, "name");
+		assertEquals(right.value, "1");
 	}
 	
 }

@@ -7,15 +7,14 @@
 dojo.provide("ajweb.widget.Panel");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.widget.Widget");
-dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
+dojo.declare("ajweb.widget.Panel",
+	     ajweb.widget.Widget,
 /** @lends ajweb.widget.Panel.prototype */
  {
    /**
     * @constructs
     * @extends ajweb.widget.Widget
     * @borrows ajweb.widget.Widget#id as this.id
-    * @borrows ajweb.widget.Widget#top as this.top
-    * @borrows ajweb.widget.Widget#left as this.left
     * @borrows ajweb.widget.Widget#element as this.element
     * @borrows ajweb.widget.Widget#parent as this.parent
     * @borrows ajweb.widget.Widget#children as this.children
@@ -32,8 +31,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
 
 
    constructor: function(opt){
-	   this.id = opt.id;
-	   this.children = [];
+
 	if(opt.width) this.width = opt.width;
 	else this.width = "100%";
 	if(opt.height) this.height = opt.height;
@@ -44,14 +42,28 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
 	else this.left = "0px";
 	if(opt.color) this.color = opt.color;
 	else this.color = "white";
-	this.widget = new dijit.layout.ContentPane({
-		id : this.id,
-		content: "",
-			 style: "width: " + this.width + "; height: " + this.height + "; background-color: " + this.color + ";"
-			 ,onLoad :function(){ console.log("panel " + this.id + "  onload");}
-			 });
-		 this.element = this.widget.domNode;
+
 	},
+
+/*   startup: function(){
+     alert("startup panel");
+     for(var i = 0; i < this.children.length; i++){
+       //	alert(this.children[i].id  + "  startup");
+       this.children[i].startup();
+       //	this.element.appendChild(this.children[i].element);
+       //	  this.children[i].widget.startup();
+     }
+   },*/
+   createWidget: function(){
+
+     this.widget = new dijit.layout.ContentPane({
+		     id : this.id,
+		     content: "",
+			 style: "width: " + this.width + "; height: " + this.height + "; background-color: " + this.color + ";"
+			 ,onLoad :function(){ ajweb.log.trace("panel " + this.id + "  onload");}
+			 });
+     this.element = this.widget.domNode;
+   },
    startup: function(){
 	//	alert("panel startup");
 		this.widget.startup();
@@ -66,6 +78,8 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
 		for(var i = 0; i < this.children.length; i++){
 	//		alert(this.children[i].id  + "  startup");
 			this.children[i].startup();
+	//		this.element.appendChild(this.children[i].element);
+//			  this.children[i].widget.startup();
 		}
 	},
    /**
@@ -73,7 +87,7 @@ dojo.declare("ajweb.widget.Panel",ajweb.widget.Widget,
 	* @return {boolean}
 	* @param {AjWeb.Widget} 追加するwidget
 	*/
-   add : function(child) {
+   addChildWidget : function(child) {
 	 this.element.appendChild(child.element);
 	 this.children.push(child);
 	 child.parent = this;

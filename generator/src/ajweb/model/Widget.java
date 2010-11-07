@@ -16,8 +16,22 @@ public class Widget implements Expression{
 	public ArrayList<Event> events = new ArrayList<Event>();
 	public HashMap<String , Object> properties = new HashMap<String, Object>();
 	
+	public static ArrayList<String> widgets = new ArrayList<String>();
+	static {
+		widgets.add("button");
+		widgets.add("table");
+		widgets.add("th");
+		widgets.add("label");
+		widgets.add("textbox");
+		widgets.add("selectbox");
+		widgets.add("select");
+		widgets.add("panel");
+		widgets.add("frame");
+	}
 	
 	
+	
+	@SuppressWarnings("unchecked")
 	public String jsCode(){
 		String js_data = "";
 		HashMap<String, Object> json_prop = (HashMap<String, Object>) properties.clone();
@@ -75,6 +89,7 @@ public class Widget implements Expression{
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public HashMap<String, Template> servletCode(HashMap<String, Template> servletActionTemplates ) throws IOException{
 		HashMap<String, Template> results = servletActionTemplates;
 		for(int i = 0; i < this.children.size(); i++){

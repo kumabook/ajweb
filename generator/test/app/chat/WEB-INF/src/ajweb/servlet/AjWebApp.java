@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,28 +16,27 @@ import org.eclipse.jetty.util.ajax.JSON;
 
 import ajweb.db.Condition;
 
-import ajweb.servlet.AjWebServlet;
+import ajweb.servlet.AbstractServlet;
 import ajweb.db.*;
 
 
 @SuppressWarnings("serial")
-public class AjWebApp extends AjWebServlet {
+public class AjWebApp extends AbstractServlet {
 
 	
-	@SuppressWarnings("unchecked")
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {	
 		System.out.println("doGet");
 		
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
-		PrintWriter out = resp.getWriter();
-		ArrayList<HashMap<String, String>> result;
-		out.print("test ");
+		//PrintWriter out = resp.getWriter();
+		//ArrayList<HashMap<String, String>> result;
 
      }
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
@@ -63,7 +61,11 @@ public class AjWebApp extends AjWebServlet {
 			System.out.println("test pree" + action);
 			if(session.isNew()){
 					System.out.println("test before");
-				join(req, resp, session.getId());
+				try {
+					join(req, resp, session.getId());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 		System.out.println("test after");
 			}
 			return;
@@ -76,17 +78,17 @@ public class AjWebApp extends AjWebServlet {
 			System.out.println("sessionid: " + session.getId() + " , action: " + action + ", param:" + param_json);
 			if (action.equals("poll")){
 //			Condition condition = new Condition((String)param.get("op"),(String)param.get("property"), (String)param.get("value"));
+				HashMap<String, ArrayList<AbstractCondition>> relatedDatum = Condition.parse(param_json);
+				//HashMap<String, Condition> relatedDatum = new HashMap<String, Condition>();
 
-				HashMap<String, Condition> relatedDatum = new HashMap<String, Condition>();
-
-				Iterator<String> ite = param.keySet().iterator();
+				/*Iterator<String> ite = param.keySet().iterator();
 				while(ite.hasNext()){
 					String key = ite.next();
-					HashMap<String, String> con = (HashMap<String,String>)param.get(key);
-											
-					Condition condition = new Condition((String) con.get("op"), (String) con.get("property"),(String) con.get("value"));
+					HashMap<String, ArrayList<String>> con = (HashMap<String, ArrayList<String>>)param.get(key);
+					
+					//Condition condition = new Condition((String) con.get("op"), (String) con.get("property"),(String) con.get("value"));
 					relatedDatum.put(key, condition);
-				}
+				}*/
 			poll(req, resp, session.getId(), relatedDatum);
 			}
 			else if(action.equals("repoll")){

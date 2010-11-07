@@ -1,9 +1,9 @@
 package ajweb.parser;
 
+
 import java.util.ArrayList;
 
 import java.util.HashMap;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import ajweb.db.AbstractCondition;
 import ajweb.model.Event;
@@ -16,28 +16,11 @@ public class WidgetHandler extends AbstractHandler {
 
 	Widget widget = new Widget();
 	AbstractHandler parent;
-	ArrayList<HashMap<String, String>> tableStructure = new ArrayList<HashMap<String, String>>();
 	String data;
 	String tablename;
 	ArrayList<Widget> children = new ArrayList<Widget>();
 	
-	public void startElement(String uri, String localName, String qName, Attributes attrs)
-    throws SAXException {
-		Log.fine("\t\tWidget Handler startElemnt: " + qName);
-		if(qName.equals("th")){
-			HashMap<String, String> th = new HashMap<String, String>();
-			for(int i = 0; i < attrs.getLength(); i++){				
-				th.put(attrs.getQName(i), attrs.getValue(i));
-			}
-			tableStructure.add(th);
-		}
-		else if(qName.equals("data")){
-			data = attrs.getValue("id");
-			tablename = attrs.getValue("tablename");
-		}
-		else 
-			super.startElement(uri, localName, qName, attrs);
-	}
+	
 	
 	@Override
 		protected void addExpression(Expression exp) throws SAXException {
@@ -65,28 +48,12 @@ public class WidgetHandler extends AbstractHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 		Log.fine("\t\tWidget Handler endElement: " + qName);
 		
-		if(qName.equals("th") || qName.equals("data")) return;
-		
-		
-
-		
-		
-		
 		widget.id = (String) attributes.get("id");
 		widget.type = elementName;
 		
-		if (data != null) {
-			widget.properties.put("structure", tableStructure);
-			widget.properties.put("data", data);
-			widget.properties.put("tablename", tablename);	
-		}
-		
-//		System.out.println(qName + "   before  " + widget.properties);
-		
+				
 		HashMap<String, Object> props = (HashMap) attributes;
-//		System.out.println("attributes  " + attributes);
 		widget.properties.putAll(props);
-//		System.out.println("after   " + widget.properties);
 		setExpression(widget);
 
 		super.endElement(uri, localName, qName);

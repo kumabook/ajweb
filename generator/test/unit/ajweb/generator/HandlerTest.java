@@ -1,10 +1,11 @@
 package ajweb.generator;
 
-import static org.junit.Assert.*;
+
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import junit.framework.TestCase;
 
 import org.junit.*;
 import org.xml.sax.InputSource;
@@ -15,7 +16,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import ajweb.parser.AjmlHandler;
 import ajweb.utils.FileUtils;
 
-public class HandlerTest {
+public class HandlerTest extends TestCase{
 	
 	@Test
 	public void testAjmlHandler() throws SAXException, IOException{

@@ -2,45 +2,32 @@ package ajweb.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
-public class Primitive implements Expression , ToJSONAble{
-	static Set<String> elements;
+public class Primitive implements Parameterable, Expression , ToJSONAble{
+	public static Set<String> elements;
 	/**
-	 * 基本型の定義　子要素をもたない
-	 * int
-	 * string
-	 * 
-	 * 
-	 * date
-	 * datetime
-	 * 
-	 * var 
-	 * get
-	 * set
+	 * 値となる要素の定義　
 	 */
 	static {
-	
 		elements = new HashSet<String>();
-//		elements.add("input");
+		//基本型
 		elements.add("int");
 		elements.add("string");
+		elements.add("boolean");
+		elements.add("text");
 		elements.add("datetime");
 		elements.add("date");
 		elements.add("time");
-		
-		
-		elements.add("value");
-		elements.add("property");
-		
-		elements.add("targetItem");
-		
-		//elements.add("th");
+		elements.add("img");
+		elements.add("video");
 		
 	}
-	public String type;
-	public String value;
+	public String type;//要素名, 型
+	public String value;//literal
+	public HashMap<String, String> properties;
 	
 	public HashMap<String, String> attributes;
 	
@@ -49,30 +36,35 @@ public class Primitive implements Expression , ToJSONAble{
 		this.value = value;
 	}
 	
-	public static boolean isElement(String qName) {
-
-		return elements.contains(qName);
+	public Primitive(String type, HashMap<String, String> properties){
+		this.type = type;
+		this.properties = properties;
 	}
-	
-	public String toString(){
 		
-		if(type.equals(("string"))){
+	public String toJsCode(){
+		
+		if(type.equals(("string")) || (type.equals(("text")))){
 			return "\"" + value + "\""; 
 		}
-		else if(type.equals(("int"))){
-			return "\"" + value + "\""; 
-		}
-		else if(type.equals(("value"))){
-			if(attributes.containsKey("property"))//属性を持っているか
-				//return attributes.get("element") + "." + attributes.get("property");
-				return value;
-			else
-				return attributes.get("element");
-		} else if(type.equals(("var"))){//変数を宣言
-			return "var " + value + ";\n";
+		else if(type.equals(("int")) || type.equals(("boolean"))){
+			return  value; 
 		}
 		else if(type.equals("datetime")){
-			return "datetime:" + value;
+			String json ="ajweb.util.Date({";
+			Iterator<String>  it = properties.keySet().iterator();
+			while(it.hasNext()){
+				String key = it.next();
+				json += "key: " + properties.get(key);
+				if(it.hasNext())
+					json += ",";
+			}
+			return json;
+		}
+		else if(type.equals("date")){
+			return "datetime:";
+		}
+		else if(type.equals("time")){
+			return "datetime:";
 		}
 		else
 			try {
@@ -82,28 +74,15 @@ public class Primitive implements Expression , ToJSONAble{
 				e.printStackTrace();
 			}
 		return type;
-		
-		
 	}
-	public String toJSON(){
-		if(type.equals(("string"))){
-			return "\"" + value + "\""; 
-		}
-		else if(type.equals(("int"))){
-			return  value  ; 
-		}
-		else if(type.equals(("value"))){//変数の値をゲット
-			if(attributes.containsKey("property"))//属性を持っているか
-				return attributes.get("element") + "." + attributes.get("property");
-			else
-				return attributes.get("element");
-		} else
-			try {
-				throw new Exception("unknown value");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		return type;
+
+	@Override
+	public String toJSON() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+	@Override
+	public String toString(){
+		return value;
+	}
 }

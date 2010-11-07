@@ -1,7 +1,3 @@
-dojo.require("dijit.form.FilteringSelect");
-dojo.require("dijit.form.ComboBox");
-dojo.require("dojo.data.ItemFileReadStore");
-dojo.require("ajweb.define");
 dojo.require("ajweb.connect");
 dojo.require("ajweb.date");
 dojo.require("ajweb.widget.Frame");
@@ -10,154 +6,184 @@ dojo.require("ajweb.widget.Panel");
 dojo.require("ajweb.widget.Button");
 dojo.require("ajweb.widget.TextBox");
 dojo.require("ajweb.widget.Table");
+dojo.require("ajweb.widget.Th");
 dojo.require("ajweb.data.Database");
-
+dojo.require("ajweb.widget.SelectBox");
 
 dojo.addOnLoad(
-  function()
-  {
+  function(){
     ajweb.join("dbservlet");
-    var ajweb_container = new dijit.layout.ContentPane({}, "ajweb_container");
+    ajweb.log.level = "info";
+
+    //ここから自動生成
+    ajweb.addOnLoad(
+      function()
+      {
+	ajweb.log.trace("onLoad");
+	var ajweb_container = document.getElementById("ajweb_container");
 
     /*databasesの記述 */
-    var room_store  = new dojo.data.ItemFileWriteStore(
+    var room_database  = new ajweb.data.Database(
       {
-	data: {
-	  'identifier': "name",
-	  'label' : "name",
-	  items: [{id: 1,name: "ルーム1"}, {id: 2,name: "ルーム2"},{id: 3,name: "ルーム3"},{id: 4,name: "ルーム4"},{id: 5,name: "ルーム5"} ]
-	  }
-	});
+	id: "room_database",
+	tablename: "room",
+	url: "dbservlet",
+	properties: ["name"]
+	}
+    );
 
-        var message_store = new ajweb.data.Database({ id: "message_store",
-						  tablename: "chat",
-						  url: "dbservlet",
-						  properties: ["user_name", "message", "posted"],
-						  param: { op: "eq", property: "room_id", value: "1" }
-						});
-    ajweb.stores.push(message_store);
-    message_store.fetch();
-
-/*interfacesの記述 */
-    var root = new ajweb.widget.Frame({id: "root", top:"100px", left: "100px",height: "100%", width: "100%"});
-    var entrance = new ajweb.widget.Panel({id: "entrance", height: "100%", width: "100%"});
-    root.add(entrance);
-
-    var title_label = new ajweb.widget.Label({id: "title", content: "チャットアプリケーション", "left":"30px","top":"30px"});
-    ajweb_container.domNode.appendChild(title_label.element);
-    var select_room = new ajweb.widget.Label({"content":"ルーム選択","id":"room1_label","left":"0px","top":"0px"});
-    entrance.add(select_room);
-    var selectBox = new dijit.form.ComboBox(
+    var message_database = new ajweb.data.Database(
       {
-	id: "roomSelect",
-	style: {
-	  position: "absolute",
-	  top: "50px",
-	  left: "100px"
-	},
-	name: "room",
-	store: room_store,
-	searchAttr: "name"
+	id: "message_database",
+	tablename: "chat",
+	url: "dbservlet",
+	properties: ["user_name", "message", "posted"]
       }
     );
 
-    selectBox.placeAt(entrance.widget.domNode);
-    var selectButton = new ajweb.widget.Button({"content":"選択","id":"select","left":"370px","top":"45px"});
-    entrance.add(selectButton);
 
-    var chat_room = new ajweb.widget.Panel( {"id":"chat_room","height":"100%","width":"100%"});
-    var now_room = new ajweb.widget.Label({"content":"0","id":"room1_label","left":"60px","top":"0px"});
-    chat_room.add(now_room);
+/*interfacesの記述 */
+    var rootFrame = new ajweb.widget.Frame({id: "rootFrame", top:"100px", left: "100px",height: "100%", width: "100%"});
+    var roomSelectPanel = new ajweb.widget.Panel({id: "rootPanel", height: "100%", width: "100%"});
+    rootFrame.addChildWidget(roomSelectPanel);
 
-    var input_area = new ajweb.widget.Frame({"id": "input_area", "height": "120px", "width": "600px", top: "50px"});
-    var enter_input = new ajweb.widget.Panel({"id": "enter_input", "height": "100px", "width": "600px"});
-    var message_input = new ajweb.widget.Panel({"id": "message_input", "height": "100px", "width": "600px"});
-    input_area.add(enter_input);
-    input_area.add(message_input);
-    input_area.selectPanel({child:enter_input});
+    var titleLabel = new ajweb.widget.Label({id: "titleLabel", content: "チャットアプリケーション", "left":"30px","top":"30px"});
+    ajweb_container.appendChild(titleLabel.element);
+    var selectRoomLabel = new ajweb.widget.Label({"content":"ルーム選択","id":"selectRoomLabel","left":"0px","top":"0px"});
+    titleLabel.addChildWidget(selectRoomLabel);
 
-    chat_room.add(input_area);
-    var user_name_label = new ajweb.widget.Label({"content":"名前","id":"user_name_label","left":"40px","top":"6px"});
-    enter_input.add(user_name_label);
-    var user_name = new ajweb.widget.TextBox({"content":"user_name","id":"user_name","left":"100px","top":"10px", "value": ""});
-    enter_input.add(user_name);
+    var roomSelectBox = new ajweb.widget.SelectBox({id: "roomSelectBox", top: "50px", left: "100px", label: "name"});
 
-    var message_label = new ajweb.widget.Label({"content":"メッセージ","id":"message_label","left":"20px","top":"10px"});
-    message_input.add(message_label);
-    var message = new ajweb.widget.TextBox({"content":"message","id":"message","left":"150px","top":"10px","value": ""});
-    message_input.add(message);
-    var submit = new ajweb.widget.Button({"content":"送信","id":"submit","left":"100px","top":"50px"});
-    message_input.add(submit);
-    var exit_button = new ajweb.widget.Button({"content":"退室","id":"exit_button","left":"100px","top":"50px", "left": "350px"});
-    message_input.add(exit_button);
-    var enter_button = new ajweb.widget.Button({"content":"入室","id":"enter_button","left":"100px","top":"50px"});
-    var back_button = new ajweb.widget.Button({"content":"ルーム選択","id":"gack_button","left":"300px","top":"50px"});
-    enter_input.add(enter_button);
-    enter_input.add(back_button);
+    roomSelectPanel.addChildWidget(roomSelectBox);
+    var selectButton = new ajweb.widget.Button({"content":"選択","id":"selectButton","left":"370px","top":"45px"});
+    roomSelectPanel.addChildWidget(selectButton);
 
-    var message_list = new ajweb.widget.Table(
-      {"id":"message_list",
-       "tablename": "chat",
-       "structure": {
-	 defaultCell: {editable: true}, cells:
-	 [
-	   {"field":"user_name","name":"user",width: "auto", editable: true},
-	   {"field":"message","name":"message",width: "auto"},
-	   {"field":"posted","name":"posted",width: "350px"},
-	   {"field":"id","name":"id", hidden: "true"}
-	 ]
-       },
-       "height":"600px","width":"800px","data":"message_store","left":"100px","top":"200px"}
+    var chatRoomPanel = new ajweb.widget.Panel( {"id":"chatRoomPanel","height":"100%","width":"100%"});
+    var nowRoomLabel = new ajweb.widget.Label({"content":"0","id":"nowRoomLabel","left":"60px","top":"0px"});
+    chatRoomPanel.addChildWidget(nowRoomLabel);
+
+    var contentsFrame = new ajweb.widget.Frame({"id": "contentsFrame", "height": "120px", "width": "600px", top: "50px"});
+    var entrancePanel = new ajweb.widget.Panel({"id": "enterPanel", "height": "100px", "width": "600px"});
+    var messagePanel = new ajweb.widget.Panel({"id": "messagePanel", "height": "100px", "width": "600px"});
+    contentsFrame.addChildWidget(entrancePanel);
+    contentsFrame.addChildWidget(messagePanel);
+    contentsFrame.selectPanel({child:entrancePanel});
+
+    chatRoomPanel.addChildWidget(contentsFrame);
+    var userNameLabel = new ajweb.widget.Label({"content":"名前","id":"userNameLabel","left":"40px","top":"6px"});
+    entrancePanel.addChildWidget(userNameLabel);
+    var userNameTextbox = new ajweb.widget.TextBox({"content":"userNameTextbox","id":"user_name","left":"100px","top":"10px", "value": ""});
+    entrancePanel.addChildWidget(userNameTextbox);
+
+    var messageLabel = new ajweb.widget.Label({"content":"メッセージ","id":"message_label","left":"20px","top":"10px"});
+    messagePanel.addChildWidget(messageLabel);
+    var messageTextbox = new ajweb.widget.TextBox({"content":"message","id":"message","left":"150px","top":"10px","value": ""});
+    messagePanel.addChildWidget(messageTextbox);
+    var messageSubmitButton = new ajweb.widget.Button({"content":"送信","id":"messageSubmitButton","left":"100px","top":"50px"});
+    messagePanel.addChildWidget(messageSubmitButton);
+    var exitButton = new ajweb.widget.Button({"content":"退室","id":"exitButton","left":"100px","top":"50px", "left": "350px"});
+    messagePanel.addChildWidget(exitButton);
+    var enterButton = new ajweb.widget.Button({"content":"入室","id":"enterButton","left":"100px","top":"50px"});
+    var backButton = new ajweb.widget.Button({"content":"ルーム選択画面に戻る","id":"backButton","left":"300px","top":"50px"});
+    entrancePanel.addChildWidget(enterButton);
+    entrancePanel.addChildWidget(backButton);
+
+    var messageTable = new ajweb.widget.Table(
+      {"id":"messageTable",
+       "height":"600px","width":"800px","left":"100px","top":"200px"}
     );
 
-    chat_room.add(message_list);
-    ajweb_container.domNode.appendChild(root.element);
-    root.add(chat_room);
+    var th1 = new ajweb.widget.Th({"field":"user_name","name":"user",width: "auto", editable: true});
+    var th2 = new ajweb.widget.Th({"field":"message","name":"message",width: "auto"});
+    var th3 = new ajweb.widget.Th({"field":"posted","name":"posted",width: "350px"});
+    var th4 = new ajweb.widget.Th({"field":"id","name":"id"});
+    var th5 = new ajweb.widget.Th({"field":"room_id","name":"room_id"});
+    messageTable.addChildWidget(th1);
+    messageTable.addChildWidget(th2);
+    messageTable.addChildWidget(th3);
+    messageTable.addChildWidget(th4);
+    messageTable.addChildWidget(th5);
+
+
+    chatRoomPanel.addChildWidget(messageTable);
+    ajweb_container.appendChild(rootFrame.element);
+    rootFrame.addChildWidget(chatRoomPanel);
 
 /*eventsの記述 */
+    //初期画面の設定
+    dojo.connect(rootFrame, "startup", null, function(){
+	rootFrame.selectPanel({child:roomSelectPanel});
+    });
+
+
+    //入室画面の初期化
+    dojo.connect(roomSelectPanel, "startup", null, function(){
+      //チャットルームの一覧の取得
+		   room_database.select(null, function(items){
+		   roomSelectBox.load(items);
+	  });
+	}
+    );
+
+
+    //チャットルーム画面の初期化
     dojo.connect(selectButton.widget, "onClick", null, function(){
-		   root.selectPanel({child: chat_room});
-		   now_room.content = "4";
-		   message_store.param =  { op: "eq", property: "room_id", value:  "4"};
-		   ajweb.send("dbservlet", "", "repoll", {});
+		   rootFrame.selectPanel({child: chatRoomPanel});
+		   nowRoomLabel.setContent(roomSelectBox.getSelectItem().name);
+		   //メッセージリストの取得
+		   message_database.select({op: "eq", property: "room_id", value: roomSelectBox.getSelectItem().id}, function(items){
+		     messageTable.load(items);
+		   });
+//		   message_database.param = {op: "eq", property: "room_id", value: roomSelectBox.getSelectItem().id};
 
-		   now_room.element.innerHTML = selectBox.attr("value");
-		   message_store.fetch();
+		   ajweb.repoll("dbservlet");
 		 });
-    dojo.connect(submit.widget, "onClick", null, function(){
-    ajweb.send("dbservlet", "chat", "insert",
-		 {
-		   message : message.element.value,user_name : user_name.element.value,room_id : now_room.content,posted : ajweb.date.now({})});
+    //入室処理
+    dojo.connect(enterButton.widget, "onClick", null, function(){
+		   message_database.insert({message : userNameTextbox.widget.value + "が入室しました",user_name : "システム",room_id : roomSelectBox.getSelectItem().id, posted : ajweb.date.now({})});
+		   contentsFrame.selectPanel({child: messagePanel});
 		 });
+    //メッセージの送信
+    dojo.connect(messageSubmitButton.widget, "onClick", null, function(){
+		   message_database.insert({message : messageTextbox.widget.value,user_name : userNameTextbox.widget.value,room_id : roomSelectBox.getSelectItem().id,posted : ajweb.date.now({})});
+		 });
+    //メッセージの変更を反映
+	var insert_condition =       new ajweb.data.Condition(
+	{
+	  op: "eq",
+	  left: new ajweb.data.Item({database: message_database, property: "room_id"}),
+	  // right: new ajweb.data.Item({element: roomSelectBox, getter: ""})
+	  right: 'ajweb.byId("roomSelectBox").getSelectItem({property: "id"});'
+	}
+	);
+    message_database.addCondition(insert_condition);
 
-
-    dojo.connect(exit_button.widget, "onClick", null, function(){
-		   ajweb.send("dbservlet", "chat", "insert", {message : user_name.element.value + "が退室しました",user_name : "システム",room_id : now_room.content,posted : ajweb.date.now({})});
-		   input_area.selectPanel({child: enter_input});
+    dojo.connect(message_database, "onInsert", null ,
+		 function(targetItem, database){
+		   if(targetItem.room_id == roomSelectBox.getSelectItem().id)
+		     messageTable.insert(targetItem);
+		   });
+    //退出処理
+    dojo.connect(exitButton.widget, "onClick", null, function(){
+		   message_database.insert({message : userNameTextbox.widget.value + "が退室しました",user_name : "システム",room_id : roomSelectBox.getSelectItem().id,posted : ajweb.date.now({})});
+		   contentsFrame.selectPanel({child: entrancePanel});
     });
-
-    dojo.connect(enter_button.widget, "onClick", null, function(){
-		   ajweb.send("dbservlet", "chat", "insert", {message : user_name.element.value + "が入室しました",user_name : "システム",room_id : now_room.content,posted : ajweb.date.now({})});
-		   input_area.selectPanel({child: message_input});
+    //ルーム選択画面に戻る
+    dojo.connect(backButton.widget, "onClick", null, function(){
+		   rootFrame.selectPanel({child: roomSelectPanel});
     });
-
-
-    dojo.connect(back_button.widget, "onClick", null, function(){
-		   root.selectPanel({child: entrance});
-		 });
-
-
-
-
-
-    root.selectPanel({child:entrance});
-    ajweb_container.startup();
-    root.startup();
-
-
+    //ここまで自動生成
+//    alert(ajweb.byId("roomSelectBox"));
+//    alert(eval('ajweb.byId("roomSelectBox");'));
+    /*初期化処理 アプリケーション共通*/
+    rootFrame.startup();
     ajweb.polling("dbservlet");
+    dojo.connect(window, "offline", null, function(){
+      ajweb.polling("dbservlet");
+	});
+    }
+    );
 
-    message_list.startup();
-    selectBox.startup();
-  }
-);
+});
+
+

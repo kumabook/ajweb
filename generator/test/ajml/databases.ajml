@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<application name="test">
-		<databases>
-			<database id="rooms">
-				<property name="name" type="string"/>
-				<property name="user" type="string"/>
-			</database>
-			<database id="messages">
-				<property name="user" type="string"/>
-				<property name="message" type="string"/>
-				<property name="posted" type="datetime"/>
-				<property name="roomId" type="int"/>
-			</database>
-		</databases>
-	</application>
+  <application name="test">
+    <databases>
+      <database id="rooms">
+	<property name="name" type="string"/>
+	<init>
+	  <item><property name="name"><string>ルーム１</string></property></item>
+	  <item name="ルーム２"/>
+	  <item name="ルーム３"/>
+	  <item name="ルーム４"/>
+	  <item name="ルーム５"/>
+	</init>
+      </database>
+      <database id="messages">
+	<property name="user" type="string"/>
+	<property name="message" type="string"/>
+	<property name="posted" type="datetime"/>
+	<property name="roomId" type="int"/>
+      </database>
+    </databases>
+  </application>
 </ajml>

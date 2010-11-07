@@ -21,22 +21,19 @@ public class EventsHandlerTest extends TestCase {
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 		
 		assert(app.events instanceof Events);
-		
+		assertEquals(app.events.size(), 6);
 		assert(app.events.get(0) instanceof Event);
 		Event event0 = app.events.get(0);
 		
-		assertEquals(event0.target.toString(), "submit");
-		assertEquals(event0.type, "click");
+		assertEquals(event0.target.toString(), "root");
+		assertEquals(event0.type, "display");
 		
 		assert(event0.action.get(0) instanceof Call);
-		Call call0 = event0.action.get(0);
-		assertEquals(call0.element, "chat_db");
-		assertEquals(call0.func, "insert");
 		
-		assertEquals(call0.params.get(0).key, "message");
-		assertEquals(call0.params.get(0).value.type, "value");
-		assertEquals(call0.params.get(0).value.value, "message.value");
-		
+		//Call call0 = event0.action.get(0);
+		//assertEquals(call0.element, "chat_db");
+		//assertEquals(call0.func, "insert");
+		//assertEquals(call0.toJsCode(), "chat_db.insert({message:message.getValue(),user_name:user_name.getValue(),room_id:\"1\",posted:ajweb.Datime(0)});");
 	}
 		
 	

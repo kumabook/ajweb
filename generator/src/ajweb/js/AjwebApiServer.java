@@ -1,9 +1,5 @@
 package ajweb.js;
 
-import java.awt.Desktop;
-import java.net.URI;
-
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -30,7 +26,7 @@ public class AjwebApiServer{
 		server.start();
 		
 		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
+		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:80/"));	
 		server.join();	
 	}

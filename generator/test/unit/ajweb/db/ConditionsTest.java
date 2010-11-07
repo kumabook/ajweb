@@ -1,6 +1,5 @@
 package ajweb.db;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -8,9 +7,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-
 import org.junit.*;
-
 import ajweb.utils.FileUtils;
 
 public class ConditionsTest extends TestCase{
@@ -112,7 +109,7 @@ public class ConditionsTest extends TestCase{
 	}
 	
 	@Test
-	public void complexSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+	public void testComplexSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		Condition eq = new Condition("eq", "user_name", "åFñ{ç_ãI");
 		String now = new Timestamp(System.currentTimeMillis()).toString();
 		Condition gt = new Condition("gt", "posted", now);
@@ -129,4 +126,6 @@ public class ConditionsTest extends TestCase{
 		and.add(or);
 		assertEquals(0, da.select("test",  properties, and).size());
 	}
+	
+
 }

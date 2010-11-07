@@ -1,18 +1,21 @@
 package ajweb.server;
 
-import java.awt.Desktop;
+//import java.awt.Desktop;
 import java.io.File;
-
+import java.util.logging.Level;
 
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class AppTestServer {
-	static int port = 8080;
+	static int port = 8888;
 	static String ajwebHome = ".";
 
 	public static void main(String[] args) throws Exception {
+		ajweb.utils.Log.servletLogger.setLevel(Level.ALL);
+		
+		
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
 		ResourceHandler resource_handler = new ResourceHandler();
@@ -57,8 +60,8 @@ public class AppTestServer {
 		
 		server.start();
 		
-		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
+		//System.out.println("display application on browser");
+		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
 	}

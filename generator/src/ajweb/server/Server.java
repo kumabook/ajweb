@@ -73,7 +73,7 @@ org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(por
 		server.start();
 		
 		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
+		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
 	}
@@ -109,7 +109,7 @@ org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(por
 		server.start();
 		
 		//System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
+		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
 	}

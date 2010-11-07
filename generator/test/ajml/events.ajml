@@ -1,93 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <application name="test" id="app">
-
     <events>
+      <!-- 初期画面の設定-->
+      <event target="root" type="display">
+	<action>
+	  <call element="root" func="selectPanel">
+	    <param name="panel">
+	      <string>entrance_room</string>
+	    </param>
+	  </call>
+	</action>
+      </event>
+      <!-- 入室画面の初期化-->
+      <event target="entrance_room" type="display">
+	<action>
+	  <!-- チャットルームの一覧の取得-->
+	  <call element="roomSelect" func="load">
+	    <param name="datum">
+	      <select database="chatDB"/>
+	    </param>
+	  </call>
+	</action>
+      </event>
+      <!-- チャットルーム画面の初期化-->
+      <event target="chat_room" type="display">
+	<action>
+	  <!-- メッセージリストの取得-->
+	  <call element="message_list" func="load">
+	    <param name="datum">
+	      <selectByCondition database="chatDB">
+		<condition>
+		  <eq>
+		    <targetItem property="room_id"/>
+		    <get element="roomSelect" property="value">
+		      <param name="property">
+			<string>id</string>
+		      </param>
+		    </get>
+		  </eq>
+		</condition>
+	      </selectByCondition>
+	    </param>
+	  </call>
+	</action>
+      </event>
+      <!-- 入室処理-->
+      <event target="enterButton" type="Click">
+	<action>
+	  <insert database="chatDB">
+	    <param name="user_name">
+	      <get element="user_name_en" property="content"/>
+	    </param>
+	    <param name="enter_time"> 
+	      <datetime value="0" />
+	    </param>
+	  </insert>
+	</action>
+      </event> 
 
-	<event target="submit" type="click">
-	       <action>
-		<call  element="chat_db" func="insert">
-		      <param name="message">
-			<value element="message" property="value"/>
-			</param>
-			<param name="user_name"> 
-			       	<value element="user_name.element" property="value"/>
-			</param>
-			<param name="room_id">
-				<string>1</string>
-			</param>
-			<param name="posted">
-				<datetime value="0"/>
-			</param>
-	         </call>
-		</action>
-      	</event>
+      <!-- メッセージの送信-->
+      <event target="submit" type="click">
+	<action>
+	  <insert id="insert_message" database="chatDB">
+	    <param name="message">
+	      <get element="message" property="value"/>
+	    </param>
+	    <param name="user_name"> 
+	      <get element="user_name" property="value"/>
+	    </param>
+	    <param name="room_id">
+	      <get element="room_select" property="value"/>
+	    </param>
+	    <param name="posted">
+	      <datetime value="0"/>
+	    </param>
+	  </insert>
+	  <branch>
+	    <condition>
+	      <success func_id = "insert_message">
+	      </success>
+	    </condition>
+	    <then>
+	    </then>
+	    <else>
+	    </else>
+	  </branch>
+	</action>
+      </event>
+      <!-- メッセージの変更を反映-->
+      <event target="chatDB" type="insert">
+	<condition>
+	  <eq>
+	    <targetItem property="room_id"/>
+	    <get element="selectbox" property="selectedValue"/>
+	  </eq>
+	</condition>
+	<action>
+	  <call element="messageTable" func="insert">
+	    <param name="user_name">
+	      <targetItem property="userName"/>
+	    </param>
+	    <param name="message">
+	      <targetItem property="message"/>
+	    </param>
+	    <param name="posted">
+	      <targetItem property="message"/>
+	    </param>
+	  </call>
+	</action>
+      </event>
 
-<!--
-     	<event target="enterButton" type="onClick">
-		<action>
-			<call element="rooms_db" func="insert">
-				<param name="user_name">
-					<value element="user_name_en" property="content"/>
-				</param>
-				<param name="enter_time"> 
-				        <datetime value="0"/>
-				</param>
-			</call>
-		</action>
-	</event> 
-		
-	<event target="chatDB" type="insert">
-		<action>
-			<call element="messageTable" func="insert">
-				<param name="user_name">
-					<targetItem property="userName"/>
-				</param>
-				<param name="message">
-					<targetItem property="message"/>
-				</param>
-				<param name="posted">
-					<targetItem property="message"/>
-				</param>
-			</call>
-		</action>
-	</event>
--->
     </events>
-
+    
     <interfaces>
-      <frame>
-	<panel id="chat_room" width="100%" height="100%">
-	  <label id="user_name_label" content="名前" top="10px" left="20px"/>
-	  <textbox id="user_name" content="user_name" top="10px" left="100px"/>
-	  <label id="message_label" content="メッセージ" top="30px" left="20px"/>
-	  <textbox id="message" content="message" top="30px" left="100px"/>
-	  <button id="submit"  content="submit"  top="50px" left="100px">
-	  </button>
-	  <table id="message_list" top="100px" left="100px" width="400px" height="500px">
-	    <data id="message_store" tablename="chat">
-	      <condition>
-		<eq property="room_id">
-		  <string>1</string>
-		</eq>    
-	      </condition> 
-	    </data>
-	  </table>
-	</panel>
-      </frame>
     </interfaces>
     <databases>
-      <database id="rooms_db">
-	<property name="name" type="string"/>
-	<property name="user" type="string"/>
-      </database>
-      <database id="messages_db">
-	<property name="user" type="string"/>
-	<property name="message" type="string"/>
-	<property name="posted" type="datetime"/>
-	<property name="roomId" type="int"/>
-      </database>
     </databases>
-
+    
   </application>
 </ajml>

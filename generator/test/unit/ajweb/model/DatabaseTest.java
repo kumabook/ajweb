@@ -2,6 +2,7 @@ package ajweb.model;
 
 import java.io.IOException;
 
+
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -12,10 +13,10 @@ import ajweb.utils.Template;
 import junit.framework.TestCase;
 
 
-public class DatabasesTest extends TestCase{
+public class DatabaseTest extends TestCase{
 	
 	@Test
-	public void testDatabasesGenerate() throws IOException, SAXException{
+	public void testDatabaseGenerate() throws IOException, SAXException{
 		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "databases.ajml");
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 		
@@ -30,7 +31,7 @@ public class DatabasesTest extends TestCase{
 		
 		String properties_set = "";
 		properties_set += "\t\tproperties.put(\"" + "name" +"\", \"" + "string" + "\");\n";
-		properties_set += "\t\tproperties.put(\"" + "user" +"\", \"" + "string" + "\");\n";
+		
 		
 		dbTableTemplate.apply("PROPERTIES", properties_set);
 		

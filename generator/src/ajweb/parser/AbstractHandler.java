@@ -11,7 +11,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ajweb.model.Expression;
-import ajweb.model.Primitive;
 import ajweb.utils.Log;
 
 
@@ -22,7 +21,6 @@ public abstract class AbstractHandler extends DefaultHandler {
 		public static String rootElementName = "ajml";
 
 		HashMap<String, String> attributes;
-		String value;
 		
 		protected XMLReader reader;
         AbstractHandler parent;
@@ -53,16 +51,28 @@ public abstract class AbstractHandler extends DefaultHandler {
                 public AbstractHandler create() { return new WidgetHandler(); }});
         	handlers.put("condition", new HandlerFactory() {
                 public AbstractHandler create() { return new ConditionHandler(); }});
+        	handlers.put("predicate", new HandlerFactory() {
+                public AbstractHandler create() { return new PredicateHandler(); }});
+        	
         	
         	handlers.put("event", new HandlerFactory() {
                 public AbstractHandler create() { return new EventHandler(); }});
         	
         	handlers.put("action", new HandlerFactory() {
                 public AbstractHandler create() { return new ActionHandler(); }});
+        	handlers.put("branch", new HandlerFactory() {
+                public AbstractHandler create() { return new BranchHandler(); }});
         	handlers.put("call", new HandlerFactory() {
                 public AbstractHandler create() { return new CallHandler(); }});
         	handlers.put("param", new HandlerFactory() {
                 public AbstractHandler create() { return new ParamHandler(); }});
+        	
+        	handlers.put("get", new HandlerFactory() {
+                public AbstractHandler create() { return new GetHandler(); }});
+        	
+        	
+        	handlers.put("primitive", new HandlerFactory() {
+                public AbstractHandler create() { return new PrimitiveHandler(); }});
         	
         }
         
@@ -108,11 +118,11 @@ public abstract class AbstractHandler extends DefaultHandler {
             AbstractHandler h;
             HandlerFactory fac = (HandlerFactory)handlers.get(HandlerFactory.handleType(qName));
             if (fac == null) {
-                if (Primitive.isElement(qName)) {
-                    h = new PrimitiveHandler(qName);
-                } else {
+                //if (Primitive.isElement(qName)) {
+                    //h = new PrimitiveHandler(qName);
+                //} else {
                 	throw new SAXException("unknown element:" + qName);
-                }
+                //}
             } else {
                 h = fac.create();
             }

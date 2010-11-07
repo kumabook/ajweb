@@ -33,7 +33,7 @@
 	<target name="jar" depends="compile">
 			<delete file="dist/ajweb.jar"/> 
 			<jar destfile="dist/ajweb.jar" 
-			update="false"
+			update="true"
 			basedir="classes" />
 	</target>
 
@@ -54,8 +54,8 @@
 	</target>
 
 	<target name="app_test" depends="jar">
-		<copy file="./dist/ajweb.jar"  todir="./chat/app/test/WEB-INF/lib/"/>
-		<java classname="ajweb.server.AppTestServer">
+			<copy file="./dist/ajweb.jar"  todir="./test/app/chat/WEB-INF/lib/" overwrite="true"/>
+			<java classname="ajweb.server.AppTestServer">
 			<classpath>
 				<fileset dir="lib">
 					<include name="*.jar"/>

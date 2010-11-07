@@ -11,28 +11,14 @@
 	  <button id="submit"  content="submit"  top="50px" left="100px">
 	  </button>
 	  <table id="message_list" top="100px" left="100px" width="400px" height="500px">
-	    <data id="message_store" tablename="chat">
-	      <condition>
-		<eq property="room_id">
-		  <string>1</string>
-		</eq>    
-	      </condition> 
-	    </data>
+      	    <th field="user_name" name="名前"/>
+	    <th field="message" name="メッセージ"/>
+      	    <th field="posted" name="投稿日時"/>
 	  </table>
 	</panel>
       </frame>
     </interfaces>
     <databases>
-      <database name="rooms">
-	<property name="name" type="string"/>
-	<property name="user" type="string"/>
-      </database>
-      <database name="messages">
-	<property name="user" type="string"/>
-	<property name="message" type="string"/>
-	<property name="posted" type="datetime"/>
-	<property name="roomId" type="int"/>
-      </database>
     </databases>
 
     <events>

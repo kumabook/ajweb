@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>ajweb jslib test</title>
+    
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojox/grid/resources/Grid.css"/>
+    <script src="../../src/dojo/dojo.js" type="text/javascript"></script>   
+    <!--<script src="http://localhost/ajweb.js" type="text/javascript"></script> -->
+    <script src="http://gear5.googlecode.com/hg/src/javascript/gear5.js"></script>
+  </head>
+  <body>
+    <script language="javascript">
+      dojo.addOnLoad(function(){
+      console.log("dojo library loaded");
+      dojo.require("ajweb.define");
+      dojo.require("ajweb.connect");
+      dojo.require("ajweb.widget.Button");
+      });
+    </script>
+  </body>
+</html>

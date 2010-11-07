@@ -12,6 +12,15 @@ dojo.declare("ajweb.date", null,
    * @constructs
    */
   constructor : function(opt){
+    this.year = opt.year;
+    this.month = opt.month;
+    this.day = opt.day;
+    this.hour = opt.hour;
+    this.minute = opt.minute;
+    this.second = opt.second;
+
+    this.type = opt.type;
+    this.isRelative = opt.isRelative;
   },
 
   /**

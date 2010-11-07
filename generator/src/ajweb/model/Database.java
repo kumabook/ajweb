@@ -2,6 +2,7 @@ package ajweb.model;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -18,6 +19,7 @@ public class Database implements Expression{
 	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	public String dbName = "jdbc:derby:" + System.getProperty("ajweb.work") + "derby";
 	public String type = "server";
+	public ArrayList<HashMap<String, Parameterable>> initItem;
 	public Database(String name, String dbDriver,String dbName){
 		this.name = name;
 		this.dbDriver = dbDriver;
@@ -27,7 +29,7 @@ public class Database implements Expression{
 	/**
 	 * AJMLのdbdata要素からデータベース用のjavaコードを生成
 	 */
-	public void generate(String workDirectory, String appName) {
+	public void databaseGenerate(String workDirectory, String appName) {
 		String fs = FileUtils.fs;
 		//データベースのスキーマを取得
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
@@ -88,9 +90,6 @@ public class Database implements Expression{
 			e.printStackTrace();
 		}
 		return "null";
-		
-		
-		
 	}
 	
 	public String toString() {

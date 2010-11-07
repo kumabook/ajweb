@@ -1,7 +1,7 @@
 /**
  * @fileOverview テーブルクラスを記述するファイル
  *
- * @author Hiroki Kumamoto 
+ * @author Hiroki Kumamoto
  * @version 1.0.0
  *
  */
@@ -11,89 +11,108 @@ dojo.require("dojox.grid.DataGrid");
 dojo.require("dojo.dnd.Source");
 dojo.require("ajweb.widget.Widget");
 dojo.require("dojo.data.ItemFileWriteStore");
-dojo.declare("ajweb.widget.Table", ajweb.widget.Widget,
+dojo.declare("ajweb.widget.Table", //dijit._Widget,
+//	     dojox.grid.DataGrid,
+ajweb.widget.Widget,
+  /** @lends ajweb.widget.Table */
 {
+    /** テーブルコンポーネントを作成します
+     *
+     * @constructs
+     * @extends ajweb.widget.Widget
+     * @borrows ajweb.widget.Widget#id this.id
+     * @borrows ajweb.widget.Widget#parent this.parent
+     * @borrows ajweb.widget.Widget#children this.children
 
-	constructor : function(opt){
-		this.content = opt.content;
-		this.top = opt.top;
-		this.left = opt.left;
-		this.height = opt.height;
-		this.width = opt.width;
-		this.enable = opt.enable;
-		this.structure = opt.structure;		
-		this.rowHeight= opt.rowHeight;		
-		this.data= opt.data;///文字列, これからstoreオブジェクト取得するように実装、サーバのJSON関数の実装により
-		//delete opt.content;
-		//delete opt.top;
-		//delete opt.left;
-		//delete opt.enable;
-		for(var i = 0; i < ajweb.stores.length; i++){//ajweb.storesの中から対応するクライアントテーブルを取得
-			if(ajweb.stores[i].id == this.data){
-				//		this.store = ajweb.stores[i].store;//dojo store
-				this.store = ajweb.stores[i];//ajweb store
-			}
+     * @param {Object} opt 設定オプション
+     * @param {String} opt.id ウィジェットID
+     * @param {String} opt.parent 親フレームID
+     */
+  constructor : function(opt){
+
+	},
+  createWidget: function(){
+		this.structure = {
+		  defaultCell: {
+		      editable: true
+		  },
+		  cells: []
+		};
+    		this.store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: []}});
+		this.widget= new dojox.grid.DataGrid({
+		    id: this.id,
+		    style:{
+		      position: "absolute",
+		      top: this.top,
+		      left: this.left,
+		      width: this.width,
+		      height: this.height
+		    },
+		    draggable: true,
+		    structure: this.structure,
+		    store: this.store
+		    });
+		  this.element = this.widget.domNode;
+  },
+  /**
+   * th要素を追加
+   * @return {String} デバッグ用出力
+   *
+   */
+  addChildWidget: function(th){
+    this.structure.cells.push(th);
+  },
+  /**
+   *
+   *
+   */
+  insert : function(items){
+    if(!items) return;
+    if(dojo.isArray(items)){
+      for(var i = 0; i < items.length; i++){
+	this.store.newItem(items[i]);
+      }
+    }
+    this.store.newItem(items);
+  },
+
+  load : function(items){
+    this.clear();
+    for(var i = 0; i < items.length; i++){
+      this.store.newItem(items[i]);
+    }
+  },
+
+  clear : function(){
+    var store = this.store;
+    this.store.fetch({
+		  onComplete: function(items, request){
+		    for(var i = 0; i < items.length; i++){
+		      store.deleteItem(items[i]);
+		    }
+		  }
 		}
-	//	this._store = new dojo.data.ItemFileWriteStore({url: this.store});
+    );
+  },
 
-		this.widget= new dojox.grid.DataGrid({ 
-			id: this.id,
-			width: this.width,
-			height: this.height,
-			draggable: true,
-			structure: this.structure,
-			store: this.store.store
-			});
-					   
-			//this.widget= new dojox.grid.DataGrid(opt);
-		this.element = this.widget.domNode;
+  sort : function(){
 
-	},
-	startup :function(){
-//alert(this.id);
-		var store = this.store;	
-		var widget = this.widget;
-		var width = this.width;
-		var height = this.height;
-		var top = this.top;
-		var left = this.left;
-//		this.widget.startup();
-		//alert(this.widget.domNode.style.height);
-	//	store.fetch({ onComplete: function(items, request){
-	//	dojo.forEach(items, function(i){
-	///		store.newItem(i);		
-//		alert(i);	
-//	alert(this.store);
-		this.store.select();
-		//	});
+  },
 
-//		alert(widget);	
-//		alert(widget.domNode.style.height);	
-	
-	//	}
+  startup :function(){
+    this.widget.setStructure(this.structure);
+    this.widget.startup();
+  },
 
-
-	//});
-		widget.startup();
-		widget.domNode.style.position = "absolute";
-		widget.domNode.style.width = width;
-
-		widget.domNode.style.height = height;
-		widget.domNode.style.top = top;
-		widget.domNode.style.left = left;
-
-
-	},
-
-	/**
-	 * inspectメソッド：デバッグ情報を出力
-	 * @return {String} デバッグ用出力
-	 *
-	 * @example
-	 *  button.inspect();
-	 */
-	inspect : function(){
-		return "TableWidget" + this.id;
-	}
+  /**
+   * inspectメソッド：デバッグ情報を出力
+   * @return {String} デバッグ用出力
+   *
+   */
+  inspect : function(){
+    return "TableWidget" + this.id;
+  }
 });
+
+
 

@@ -102,18 +102,18 @@ public class Compiler {
 	 */
 	public static void setup(String temp,String appName) throws Exception{
 		String fs = Config.fs;
-		FileUtils.mkdir(".ajweb/");
+		FileUtils.mkdir(temp);
 		//System.out.println(new File(".ajweb/test.txt").createNewFile());
 		FileUtils.mkdir(temp);
 		FileUtils.mkdir(temp + fs + appName);
-		FileUtils.mkdir(temp + fs + appName + "/jslib");
+		//FileUtils.mkdir(temp + fs + appName + "/jslib");
 		FileUtils.mkdir(temp + fs + appName + "/WEB-INF");
 		FileUtils.mkdir(temp + fs + appName + "/WEB-INF/classes");
 		FileUtils.mkdir(temp + fs + appName + "/WEB-INF/src");
 		FileUtils.mkdir(temp + fs + appName + "/WEB-INF/lib");
 		  
-		FileUtils.copyFile(".." + fs + "js" + fs + "dist" + fs + "AjWeb.js", temp + fs + appName + "/AjWeb.js");
-		System.out.println(temp + fs + appName + fs + "WEB-INF/lib/test.txt");
+		//FileUtils.copyFile(".." + fs + "js" + fs + "dist" + fs + "AjWeb.js", temp + fs + appName + "/AjWeb.js");
+		//System.out.println(temp + fs + appName + fs + "WEB-INF/lib/test.txt");
 		
 		FileUtils.copyDir("lib/", temp + fs + appName + "/WEB-INF/lib/","jar");
 		//外部のjavaScriptライブラリは、http経由で読み込み

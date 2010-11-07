@@ -1,8 +1,6 @@
 package ajweb.parser;
 
 import java.util.ArrayList;
-
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import ajweb.model.Call;
@@ -14,12 +12,6 @@ public class CallHandler extends AbstractHandler{
 	Call call;
 	ArrayList<Param> params = new ArrayList<Param>();
 	
-	public void startElement(
-			String uri, String localName, String qName,
-			Attributes attrs) throws SAXException {
-		Log.fine("\t Call handler start" + qName);
-		super.startElement(uri, localName, qName, attrs);
-	}
 	
 	protected void addExpression(Expression exp) throws SAXException {
 		Log.fine("addExpression  action "  + exp  + "  " + this);
@@ -28,22 +20,19 @@ public class CallHandler extends AbstractHandler{
 			params.add((Param) exp);
 		}
 	}
-
 	
 	public void endElement(
 			String uri, String localName, String qName) throws SAXException{
 		Log.fine("\taction handler end " + qName );
 		
 		if(qName.equals("call")){
-			call = new Call();
-			call.element = attributes.get("element");
-			call.func = attributes.get("func");
-			call.params = params;
-			
-			
-			setExpression(call);
-			super.endElement(uri, localName, qName);
+			call = new Call(attributes.get("element"), attributes.get("func"), params);
 		}
+		else if(qName.equals("insert") || qName.equals("update") || qName.equals("delete")){
+			call = new Call(attributes.get("database"), elementName, params);
+		}
+		setExpression(call);
+		super.endElement(uri, localName, qName);
 	}
 	
 	

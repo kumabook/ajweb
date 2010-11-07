@@ -15,31 +15,27 @@ import ajweb.utils.Log;
 public class PrimitiveHandler extends AbstractHandler {
 	
 	Primitive primitive;
-	public PrimitiveHandler(String qName) {
-
-	}
+	String character;
+	
 
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		if(elementName.equals("value")){
-			String elem = attributes.get("element");
-			String prop = attributes.get("property");
-			primitive = new Primitive("value", elem + "." + prop );
-			primitive.attributes =  attributes;
+		if(elementName.equals("int") || elementName.equals("string") || elementName.equals("text")
+				|| elementName.equals("boolean")){
+			primitive = new Primitive(elementName, character);
 		}
-		else if(elementName.equals("datetime")){
-			primitive = new Primitive("datetime", attributes.get("value"));
+				
+		else if(elementName.equals("datetime") || elementName.equals("time") || elementName.equals("date")){
+			primitive = new Primitive(elementName, attributes);
 		}
-		else if(elementName.equals("")){
-			
+		else if(elementName.equals("img")){
+			primitive = new Primitive(elementName, attributes);
 		}
-		else if(elementName.equals("")){
-			
+		else if(elementName.equals("video")){
+			primitive = new Primitive(elementName, attributes);
 		}
-		else if(elementName.equals("")){
-			
-		}
+		
 		setExpression(primitive);
 		Log.fine("setExpression  " + primitive);
 		super.endElement(uri, localName, qName);
@@ -50,8 +46,8 @@ public class PrimitiveHandler extends AbstractHandler {
     	throws SAXException {
 		Log.fine("\t\t\t" + elementName + " chatacters");
     	if(elementName.equals("string")){
-    		value = new String(ch, start, length);
-    		primitive = new Primitive("string", value);
+    		character = new String(ch, start, length);
+    		//primitive = new Value("string", character);
     	}
     	Log.fine("value set : " + primitive);
     }

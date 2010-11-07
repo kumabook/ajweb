@@ -2,52 +2,44 @@
  * @fileOverview ラベル要素を記述するファイル
  *
  * @author Hiroki Kumamoto
- * @version 0.0.1
+ * @version 1.0.0
  */
 
-/**
- * ラベル要素を作成
- *
- * @class ラベル要素を表わすクラス
- *
- * @param {Object} opt 設定オプション
- * @param {String} opt.id ウィジェットID
- * @param {String} opt.parent 親パネルID
- * @param {Object} opt.top 親パネル上端からの相対位置
- * @param {Object} opt.left 親パネル左端からの相対位置
- * @param {String} opt.text ボタンに表示される文字列
- * @param {function} opt.onclick クリック時に行われる動作
- */
 
 dojo.provide("ajweb.widget.Label");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
+/** @lends ajweb.widget.Label */
 {
+    /** テキストを作成します
+     *
+     * @constructs
+     * @extends ajweb.widget.Widget
+     * @borrows ajweb.widget.Widget#id this.id
+     * @borrows ajweb.widget.Widget#element this.element
+     * @borrows ajweb.widget.Widget#parent this.parent
+     * @borrows ajweb.widget.Widget#children this.children
 
+     * @param {Object} opt 設定オプション
+     * @param {String} opt.id ウィジェットID
+     * @param {String} opt.parent 親フレームID
+     */
 	constructor : function(opt){
+	},
+	createWidget: function(){
+	  this.widget= document.createElement("label");
+	  this.widget.innerHTML = this.content;
+	  this.widget.style.position = "absolute";
+	  this.widget.style.top = this.top;
+	  this.widget.style.left = this.left;
 
-		this.content = opt.content;
-		this.top = opt.top;
-		this.left = opt.left;
-		this.height = opt.height;
-		this.width = opt.width;
-		this.enable = opt.enable;
-		this.onclick = opt.onclick;
-		this.widget= document.createElement("label");
-		this.widget.innerHTML = this.content;
-		this.widget.style.position = "absolute";
-//		this.widget.style.width = this.width;
-//		this.widget.style.height = this.height;
-		this.widget.style.top = this.top;
-		this.widget.style.left = this.left;
-
-		this.element = this.widget;
-
+	  this.element = this.widget;
 	},
 	startup: function(){
 	},
-	setcontent: function(content){
-		this.element.innerHTML = content;
+	setContent: function(content){
+	  this.content = content;
+	  this.element.innerHTML = content;
 	},
 
 	/**

@@ -45,20 +45,23 @@ public class Application implements Expression{
 		this.workDirectory = workDirectory;
 	}
 	public void generate() {
-		Log.fine("----------------------------Applicaiton generate()---------------------------");
-		
+		Log.logger.fine("----------------------------Applicaiton generate()---------------------------");
+				
 		try {
 
 			htmlGenerate();
+			Log.logger.info("generate " + workDirectory + FileUtils.fs + appName + "/index.html");
 			System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/index.html");
 			
 			cssGenerate();
+			Log.logger.info("generate " + workDirectory + FileUtils.fs + appName + "/index.css");
 			System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/index.css");
 			
 			jsGenerate();
+			Log.logger.info("generate " + workDirectory + FileUtils.fs + appName + "/index.js");
 			System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/index.js");
 						
-			dbJavaGenerate();
+			databaseGenerate();
 						
 			servletGenerate();
 		
@@ -112,9 +115,9 @@ public class Application implements Expression{
 	}
 
 	
-	public void dbJavaGenerate(){
+	public void databaseGenerate(){
 		for(int i = 0; i < databases.size(); i ++){
-			databases.get(i).generate(workDirectory, appName);
+			databases.get(i).databaseGenerate(workDirectory, appName);
 		}
 	}
 	

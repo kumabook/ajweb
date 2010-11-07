@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>ajweb jslib test</title>
+    <link rel="stylesheet" href="http://localhost/src/dijit/themes/soria/soria.css"/>
+    <link rel="stylesheet" href="http://localhost/src/dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="http://localhost/src/dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="http://localhost/src/dojox/grid/resources/Grid.css"/>
+
+<!--    <script src="../../../src/dojo/dojo.js" type="text/javascript"></script>    -->
+    <script src="http://localhost/src/dojo/dojo.js" type="text/javascript"></script> 
+    <script src="http://gear5.googlecode.com/hg/src/javascript/gear5.js"></script>
+  </head>
+  <body class="soria">
+    <div id="ajweb_container"></div>
+
+
+    <script language="javascript">
+      dojo.require("ajweb.widget.Table");
+      dojo.require("ajweb.widget.Th");
+      dojo.require("ajweb.widget.Panel");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.addOnLoad(function(){
+      console.log("dojo library loaded");
+      var ajweb_container = new dijit.layout.ContentPane({}, "ajweb_container");
+
+
+      var main = new ajweb.widget.Panel({id: "main", height: "100%", width: "100%"});
+      ajweb_container.domNode.appendChild(main.element);
+      var store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: [{id: "1", name: "test"}]}});
+      var table = new ajweb.widget.Table({id : "table" , top: "10px" , left: "10px", height:"100px", width: "100px" });
+
+
+      var th1 = new ajweb.widget.Th({"field":"id","name":"id", width:"auto"});
+      var th2 = new ajweb.widget.Th({"field":"name","name":"name", width:"auto"});
+  //    table.add({"field":"id","name":"id", width:"auto"});
+    //  table.add({"field":"name","name":"name", width:"auto"});
+      table.addChildWidget(th1);
+      table.addChildWidget(th2);
+
+
+      main.addChildWidget(table);
+      main.startup();
+      table.insert({id: "1", name: "test"});
+      table.insert({id: "2", name: "test"});
+      });
+    </script>
+  </body>
+</html>

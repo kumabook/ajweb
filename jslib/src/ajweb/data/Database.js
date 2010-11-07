@@ -5,13 +5,13 @@
  * @version 1.0.0
  */
 
-
-dojo.require("dojo.data.ItemFileWriteStore");
-dojo.require("ajweb.sql");
+dojo.require("ajweb.data.AbstractDatabase");
+dojo.require("ajweb.data.LocalDatabase");
+dojo.require("ajweb.data.Condition");
 dojo.provide("ajweb.data.Database");
-/** @namespace */
-ajweb.data = {};
-dojo.declare("ajweb.data.Database", null,
+
+
+dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
   /** @lends ajweb.data.Database.prototype */
 {
   /**
@@ -22,76 +22,37 @@ dojo.declare("ajweb.data.Database", null,
    * @param {String} opt.url データベースアクセスのサーバプログラムのurl
    * @param {String} opt.tablename テーブル名
    * @param {Array<String>} opt.properties カラム名の配列
-   * @param {param} opt.param condition 保留
    *
    * */
   constructor : function(opt){
-        /** id
-     * @field */
-    this.id = opt.id;
+
     /** データベースアクセスのサーバプログラムのurl
      * @field */
     this.url = opt.url;
-    /** テーブル名
+    this.type = "server";
+    /** キャッシュ用ローカルデータベース
      * @field */
-    this.tablename = opt.tablename;
-    /** カラムの配列
-     * @field */
-    this.properties = opt.properties;
-//    this.properties.push("id");
-    var isContainId = false;
-    this.param = opt.param;//condition
-    /** 実際のデータを保持(dojo.data.ItemFileWriteStoreを利用)
-      * @field */
-    this.store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: []}});
-    this.create();
-    this.history_tablename = opt.tablename + "_history";
-//  this.history_properties = opt.properties
-  },
-  /**
-   * データベース作成:
-   * @return
-   */
-  create : function() {
-    ajweb.sql.create(this.tablename, this.properties);
-  },
-  /**
-   * 削除
-   * @return
-   */
-  drop : function(){
-    ajweb.sql.drop(this.tablename);
-  },
-    /**
-   * サーバのデータをフェッチ
-   * @return
-   */
-  fetch : function(){//読み込みなおし、clearとselect
-    var store = this.store;
-    if(navigator.onLine){//onlineならサーバからデータを取得
-      ajweb.send("dbservlet",
-		 this.tablename,
-		 "select",
-		 null,
-		 function(data){
-		   var items = data.items;
-		   for(var i = 0; i < items.length; i++){
-		     console.log("fetch: " + dojo.toJson(items[i]));
-		     store.newItem(items[i]);
-		   }
-		 }
-		);
-    }
-    else{
-      this.clear();
-      var items = this.select();
-      for(var i = 0; i < items.length; i++){
-//	     alert(dojo.toJson(items[i]));
-	this.store.newItem(items[i]);
+    this.cacheDatabase = new ajweb.data.LocalDatabase(
+      {
+	id: this.id+"_cache",
+	tablename: this.id+"_cache",
+	properties: this.properties,
+	type: "local_cache"
       }
- }
+    );
+    /** 変更履歴用ローカルデータベース
+     * @field */
+    this.actionHistoryDataabse = new ajweb.data.LocalDatabase(
+      {
+	id: this.id+"_action_history",
+	tablename: this.id+"_action_history",
+	properties: this.properties.concat(["action", "timestamp"]),
+	type: "local_action_history"
+     }
+    );
+    ajweb.databases.push(this);//ポーリングを行うデータベースリストに追加
   },
-    /**
+  /**
    * insert
    * @return
    */
@@ -102,16 +63,14 @@ dojo.declare("ajweb.data.Database", null,
 		 "insert",
 		 params
 		);
-
     }
-    else {//offlineならローカルデータベースに保存し、変更履歴を保存。
+    else {//オフラインならローカルへ変更を保存し、変更履歴も保存
+    if(window.google && google.gears)
       var item = ajweb.sql.insert(this.tablename, this.properties, params);
-      this.store.newItem(item);
       this.saveHistory("insert",item);
-//      alert(dojo.toJson(item));
     }
   },
-    /**
+  /**
    * 削除
    * @return
    */
@@ -123,19 +82,9 @@ dojo.declare("ajweb.data.Database", null,
 		 params
 		);
     }
-    else {
+    else {//オフラインならローカルへ変更を保存し、変更履歴も保存
       ajweb.sql.remove(this.tablename, params);
       this.saveHistory("delete", params);
-      var store = this.store;
-      store.fetch({
-		  query: {id : params.id},
-		  onComplete: function(items, request){
-		    for(var i = 0; i < items.length; i++){
-		      store.deleteItem(items[i]);
-		    }
-		  }
-		  }
-		 );
     }
   },
     /**
@@ -143,135 +92,120 @@ dojo.declare("ajweb.data.Database", null,
    * @return
    */
   update: function(params){
-    //alert("update ");// + dojo.toJson(params));
     var json = ajweb.toJSON(params);
     if(navigator.onLine){
-      console.log("update online");
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "update",
 		 params
 		);
     }
-    else {
-    ajweb.sql.update(this.tablename, this.properties, params);
+    else {//オフラインならローカルへ変更を保存し、変更履歴も保存
+          if(window.google && google.gears)
+	    ajweb.sql.update(this.tablename, this.properties, params);
       var properties = this.properties;
-//      console.log(dojo.toJson(params));
       this.saveHistory("update", params);
-      var store = this.store;
-      store.fetch({
-		    query: {id : params.id},
-	 onComplete: function(items, request){//ここに重い処理はかかない
-	   for(var i = 0; i < items.length; i++){
-	     for(var j = 0; j < properties.length; j++){
-	       store.setValue(items[i], properties[j], params[properties[j]]);
-	     }
-	   }
-	 }
-	}
-      );
     }
   },
     /**
    * 取得
    * @return
    */
-  select: function(where){
+  select: function(where, next){
    var items;
     if(navigator.onLine){
-/*      ajweb.send("dbservlet",
+      ajweb.send("dbservlet",
 		 this.tablename,
 		 "select",
-		 null,
+		 where,
 		 function(data){
-		   items = data.items;
+		   next(data.items);
+		   //キャッシュとして保存
+		     //		 items = data.items;
 		 }
 		);
-      return items;*/
+//      return items;
+      return true;
     }
-//    else {
-      return ajweb.sql.select(this.tablename, this.properties, where);
-  //  }
-
+    else {//オフラインならローカルのデータベースにキャッシュされた値を読み込む
+      if(window.google && google.gears)
+	return ajweb.sql.select(this.tablename, this.properties, where);
+      return {};
+    }
   },
     /**
    * 履歴を保存
    * @return
    */
-  saveHistory : function(action, params){
+  saveActionHistory : function(action, params){
   var properties = this.properties;
     this.properties.push("action");
     params.action = action;
-    ajweb.sql.insert(this.history_tablename, this.properties, params);
+    if(window.google && google.gears)
+      ajweb.sql.insert(this.history_tablename, this.properties, params);
     this.properties.pop();
   },
+  getCache: function(){
+
+  },
   /**
-   * データをクリア
+   * キャッシュをクリア
    * @return
    */
-  clear: function(){
-    var store = this.store;
-    store.fetch({
-		  onComplete: function(items, request){
-		    for(var i = 0; i < items.length; i++){
-		      store.deleteItem(items[i]);
-		    }
-		  }
-		}
-	       );
+  clearCache: function(){
+
+  },
+  /**
+   * 変更履歴をクリア
+   * @return
+   */
+  clearActionHistory: function(){
+
+  },
+  /**
+   * 変更履歴を送信
+   * @return
+   */
+  sendActionHistory: function(){
+
   },
   /**
    * 履歴を取得
    * @return
    */
-  getHistory : function(){
+  getActionHistory : function(){
     this.properties.push("action");
-    var histories = ajweb.sql.select(this.history_tablename, this.properties);
+    if(window.google && google.gears)
+      var histories = ajweb.sql.select(this.history_tablename, this.properties);
     this.properties.pop();
     return histories;
   },
-	/**
-	 * inspectメソッド：デバッグ情報を出力
-	 * @return {String} デバッグ用出力
-	 *
-	 * @example
-	 *  button.inspect();
-	 */
+  /**
+   * inspectメソッド：デバッグ情報を出力
+   * @return {String} デバッグ用出力
+   */
   inspect : function(){
     return "dataStore" + this.id;
-  }
-});
-
-
-ajweb.data.Database.getStore = function(name){
+  },
+  onInsert: function(item){
+    ajweb.log.trace("onInsert: " + dojo.toJson(item));
+    ajweb.log.info("onInsert: " + dojo.toJson(item));
+  },
+  onDelete: function(){
+    ajweb.log.trace("onDelete: "  + dojo.toJson(item));
+  },
+  onUpdate: function(){
+    ajweb.log.trace("onUpdate: "  + dojo.toJson(item));
+  },
+  onChange: function(){
+    ajweb.log.trace("onChange: "  + dojo.toJson(item));
+  },
+  getStore: function(name){
   for(var i = 0; i < ajweb.stores.length; i++){
-    alert(ajweb.stores[i].tablename  + "  " + name);
+//    alert(ajweb.stores[i].tablename  + "  " + name);
     if(ajweb.stores[i].tablename == name)
       return ajweb.stores[i];
   }
   return null;
-};
-
-
-
-
-dojo.addOnLoad(function(){
-
-dojo.declare("ajweb.data._store", dojo.data.ItemFileWriteStore,
-	     {
-
-	       getItems: function(){
-		 var result = {};
-		 this.fetch({
-			      onComplete: function(items, request){
-				alert(items);
-				result = items;
-			      }
-
-			    });
-		 return result;
-	       }
-	     }
-	    );
-
+  }
 });

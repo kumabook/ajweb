@@ -29,7 +29,8 @@ public class FileUtils {
 	public static boolean mkdir(String dir){
 		  //setup作業用フォルダの作成
 		  File work = new File(dir);
-		  delete(work);
+		  if(!work.exists())
+			  delete(work);
 		  boolean b =  work.mkdir();
 		  if(b){
 //			  System.out.println("create   " + dir + "");

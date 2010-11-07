@@ -6,7 +6,7 @@
  */
 
 dojo.require("dojox.sql");
-dojo.require("ajweb.define");
+
 dojo.provide("ajweb.sql");
 dojo.declare("ajweb.sql", null, {});
 

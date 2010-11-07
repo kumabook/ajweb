@@ -14,6 +14,7 @@ import ajweb.utils.FileUtils;
 
 public class ApplicationHandlerTest {
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testApplicationHandler() throws SAXException, IOException{
 		//FileInputStream fi = new FileInputStream("resources" + FileUtils.fs + "test" +  FileUtils.fs + "root.ajml");

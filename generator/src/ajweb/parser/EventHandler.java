@@ -1,7 +1,5 @@
 package ajweb.parser;
 
-
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import ajweb.model.Action;
@@ -13,14 +11,6 @@ public class EventHandler extends AbstractHandler {
 	Event event;
 	Action action = new Action(); 
 	
-	public void startElement(String uri, String localName, String qName, Attributes attrs)
-    throws SAXException {
-		Log.fine("\t\tEvent Handler startElemnt: " + qName);
-		super.startElement(uri, localName, qName, attrs);
-		
-	}
-	
-	
 	@Override
 	protected void addExpression(Expression exp) throws SAXException {
 		if(exp instanceof Action){
@@ -31,7 +21,7 @@ public class EventHandler extends AbstractHandler {
 	
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 		Log.fine("\t\tEvent Handler endElement: " + qName);
-		
+			
 		if(qName.equals("event")){
 			//System.out.println("test  " + widget.children.get(0));
 			event = new Event();

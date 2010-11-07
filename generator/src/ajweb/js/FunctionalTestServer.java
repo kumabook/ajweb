@@ -1,6 +1,5 @@
 package ajweb.js;
 
-import java.awt.Desktop;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;

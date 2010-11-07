@@ -10,7 +10,7 @@ public class AllTests extends TestSuite{
 		//$JUnit-BEGIN$
 		suite.addTestSuite(EventsTest.class);
 		suite.addTestSuite(InterfacesTest.class);
-		suite.addTestSuite(DatabasesTest.class);
+		suite.addTestSuite(DatabaseTest.class);
 		//$JUnit-END$
 		return suite;
 	}

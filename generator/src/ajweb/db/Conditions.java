@@ -11,8 +11,8 @@ import java.util.HashMap;
  *
  */
 public class Conditions extends AbstractCondition {
-	public AbstractCondition leftside;
-	public AbstractCondition rightside;
+	//public AbstractCondition leftside;
+	//public AbstractCondition rightside;
 	public ArrayList<AbstractCondition> children;
 	public String operator;
 	
@@ -81,23 +81,23 @@ public class Conditions extends AbstractCondition {
 
 
 	@Override
-	public boolean related(HashMap<String, String> item) throws Exception {
+	public boolean related(HashMap<String, String> item, HashMap<String, String> properties) throws Exception {
 		if(operator.equals("and")){
 			for(int i = 0; i < children.size(); i++){
-				if(!children.get(i).related(item))
+				if(!children.get(i).related(item, properties))
 					return false;
 			}
 			return true;
 		}
 		else if(operator.equals("or")){
 			for(int i = 0; i < children.size(); i++){
-				if(children.get(i).related(item))
+				if(children.get(i).related(item, properties))
 					return true;
 			}
 			return false;
 		}
 		else if(operator.equals("not")){
-			return !children.get(0).related(item);
+			return !children.get(0).related(item, properties);
 		}
 		throw new Exception("unexpected condition operator");
 	}

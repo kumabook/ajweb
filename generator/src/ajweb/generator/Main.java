@@ -68,6 +68,7 @@ public class Main {
 	 * @param args
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		System.setProperty("ajweb.work",".ajweb" + ajweb.generator.Main.fs + "runtime");
 		String ajml;

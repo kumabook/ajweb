@@ -26,9 +26,13 @@
 	</target>
 
 	<target name="dist">
-		<exec executable="sh" dir="src/util/buildscripts/">
-			<arg line="build.sh profile=standard releaseDir=../../../dist loader=xdomain action=release"/>
-		</exec>
+			<copy todir="./work/" overwrite="true">
+					<fileset dir="./src/" includes="ajweb/**/*.js"/>
+			</copy>
+			<exec executable="sh" dir="./work/util/buildscripts/">
+					<arg line="build.sh profile=standard releaseDir=../../../dist loader=xdomain action=release"/>
+			</exec>
+			<exec executable="./bin/jslib_deploy"/> 
 	</target>
 
 	<target name="unittest" >
@@ -45,7 +49,7 @@
 			<subant>
 					<property name="browserFileNames" value="${browserFileNames}"/>
 					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns"
-							value=""
+							value="true"
 							/>
 					<property id="description" name="description"
 							value="ajweb javaScript framework test"
@@ -79,4 +83,42 @@
 					</filelist>
 			</subant>
 	</target>
+
+
+	<target name="_start_jsunit_server" >
+			<subant target="start_server">
+					<property id="description" name="description"
+							value="ajweb javaScript framework test"/>
+					<property id="port" name="port"	value="8000"/>
+					<property id="resourceBase" name="resourceBase"
+							value="../../"/>
+					<filelist dir=".">
+							<file name="test/jsunit/build.xml"/>
+					</filelist>
+			</subant>
+	</target>
+	<target name="start_jsunit_server">
+			<exec executable="ant" spawn="true">
+					<arg value="_start_jsunit_server"/>
+			</exec>
+			<exec executable="open">
+					<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
+			</exec>
+			<!--
+			http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html&autoRun=true&browserId=0&submitResults=localhost:8080/jsunit/acceptor -->
+	</target>
+	<target name="stop_jsunit_server" >
+			<subant target="stop_server">
+					<property id="description" name="description"
+							value="ajweb javaScript framework test"/>
+					<property id="port" name="port"	value="8000"/>
+					<property id="resourceBase" name="resourceBase"
+							value="../../"/>
+					<filelist dir=".">
+							<file name="test/jsunit/build.xml"/>
+					</filelist>
+			</subant>
+	</target>
+
+
 </project>

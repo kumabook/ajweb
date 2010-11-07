@@ -2,7 +2,9 @@ package ajweb.db;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * 条件式を表すクラス
@@ -11,9 +13,23 @@ import java.util.HashMap;
  */
 public class Condition extends AbstractCondition {
 	
+	
+	public static ArrayList<String> operators = new ArrayList<String>();
+	static {
+		operators.add("eq");
+		operators.add("neq");
+		operators.add("gt");
+		operators.add("gte");
+		operators.add("lt");
+		operators.add("lte");
+		operators.add("not");
+		operators.add("and");
+		operators.add("or");
+	}
+	
 	public String operator;
 	public String property;
-	public String param;
+	public String value;
 	
 	
 	
@@ -26,17 +42,19 @@ public class Condition extends AbstractCondition {
 	public Condition(String operator, String property, String param){
 		this.operator = operator;
 		this.property = property;
-		this.param = param;
+		this.value = param;
 	
 	}
 	
 	
 	public String toString(){
+		if(this.operator == null)
+			return "{}";
 		if(operator.equals("eq") || operator.equals("=") || operator.equals(">") || operator.equals("<") ||
 				operator.equals(">=") || operator.equals("<=") ||
 				operator.equals("!=") || operator.equals("<>"))
 		{
-			return property + operatorToSQL(operator) + param;
+			return property + operatorToSQL(operator) + value;
 		}
 		
 		return "unknown operator";
@@ -48,42 +66,83 @@ public class Condition extends AbstractCondition {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean related(HashMap<String, String> item) throws Exception{
-		if(this.operator.equals("=") || this.operator.equals("eq")){
-			return item.get(this.property).equals(this.param);
-		}
-		else if (this.operator.equals(">") ){
-			return Integer.parseInt(item.get(this.property)) > Integer.parseInt(this.param) ;
-		}
-		else if (this.operator.equals("<")){
-			return Integer.parseInt(item.get(this.property)) < Integer.parseInt(this.param) ;
-		}
-		else if (this.operator.equals(">=")){
-			return Integer.parseInt(item.get(this.property)) > Integer.parseInt(this.param) ;
-		}
-		else if (this.operator.equals("<=")){
-			return Integer.parseInt(item.get(this.property)) < Integer.parseInt(this.param) ;
-		}
-		else {
-			throw new Exception("unsupported condition operator");
+	@SuppressWarnings("deprecation")
+	public boolean related(HashMap<String, String> item, HashMap<String,String> properties) throws Exception{
+		String propertyType = properties.get(this.property);
+		long value = 0;
+		long item_value = 0;
+		boolean long_flag = false;
+		
+		if(propertyType.equals("datetime") || propertyType.equals("date") || propertyType.equals("time")){//文字列を数値に変換
+			//System.out.println(item.get(this.property));
+			Date date = new Date(this.value);
+			value = date.getTime();
+			Date item_date = new Date(item.get(this.property));
+			item_value = item_date.getTime();
 			
+			long_flag = true;
+		}
+		
+		if(propertyType.equals("int")){
+			value = Long.parseLong(this.value);
+			item_value = Long.parseLong((item.get(this.property)));
+			
+			long_flag = true;
+		}
+		if(long_flag){//数値で比較
+			
+			if(this.operator.equals("=") || this.operator.equals("eq")){
+				//return item.get(this.property).equals(this.value);
+				return item_value == value;
+			}
+			else if (this.operator.equals(">") || this.operator.equals("gt")){
+				//return Integer.parseInt(item.get(this.property)) > Integer.parseInt(this.value) ;
+				return item_value > value;
+			}
+			else if (this.operator.equals("<") || this.operator.equals("lt")){
+				return item_value < value;
+				//return Integer.parseInt(item.get(this.property)) < Integer.parseInt(this.value) ;
+			}
+			else if (this.operator.equals(">=")|| this.operator.equals("gte")){
+				return item_value >= value;
+				//return Integer.parseInt(item.get(this.property)) > Integer.parseInt(this.value) ;
+			}
+			else if (this.operator.equals("<=")|| this.operator.equals("lte")){
+				return item_value <= value;
+				//return Integer.parseInt(item.get(this.property)) < Integer.parseInt(this.value) ;
+			}
+			else {
+				throw new Exception("unsupported condition operator: " + this.operator);
+			}
+		}
+		else {//文字列で比較
+			if(this.operator.equals("=") || this.operator.equals("eq")){
+				//return item.get(this.property).equals(this.value);
+				return item.get(this.property).equals(this.value);
+			}
+			else {
+				throw new Exception("unsupported condition operator: " + this.operator);
+			}
 		}
 	}
-	
-	public String toPreparedSQL(){
+	/**
+	 * PreparedSQLに変換
+	 */
+	@Override
+	protected String toPreparedSQL(){
 		return property  + " "+ operatorToSQL(operator) + " " + "?";
 		}
 
 	
 	@Override
-	public void setPreparedSQL(PreparedStatement st) throws SQLException {
+	protected void setPreparedSQL(PreparedStatement st) throws SQLException {
 		int index = 1;
 		setPreparedSQLIndex(st, index);
 	}
 
 	@Override
 	protected int setPreparedSQLIndex(PreparedStatement st, int index) throws SQLException {
-		st.setString(index, param);
+		st.setString(index, value);
 		index = index + 1;
 		return index;
 	}
@@ -101,11 +160,67 @@ public class Condition extends AbstractCondition {
 		
 	}
 	
+	
 	public String toJSON(){
 		
-		return "{ op: \""+ operator +  "\", property: \""+ property +"\", value: " + param + " }";
+		return "{ op: \""+ operator +  "\", property: \""+ property +"\", value: " + value + " }";
 	}
 
-
+	@SuppressWarnings("unchecked")
+	static public HashMap<String, ArrayList<AbstractCondition>> parse(String json){
+		//HashMap<String, ArrayList<?>> tableConditions = (HashMap<String, ArrayList<?>>) org.eclipse.jetty.util.ajax.JSON.parse(json);
+		HashMap<String, Object[]> tableConditions = (HashMap<String, Object[]>) org.eclipse.jetty.util.ajax.JSON.parse(json);
+		
+		return parse(tableConditions);
+		
+	}
 	
+	
+	static public HashMap<String, ArrayList<AbstractCondition>>  parse(HashMap<String, Object[]> _tableConditions){
+		HashMap<String, ArrayList<AbstractCondition>> tableConditions  = new HashMap<String, ArrayList<AbstractCondition>>();
+		Iterator<String> ite = _tableConditions.keySet().iterator();
+		while(ite.hasNext()){
+			String key = ite.next();
+			Object[] _conditions = _tableConditions.get(key);
+			ArrayList<AbstractCondition> conditions = parse(_conditions);
+			tableConditions.put(key, conditions);
+			//ArrayList<HashMap<String, ?>> conditions = (ArrayList<HashMap<String, ?>>) obj.get(key);
+		}
+		return tableConditions;
+	}
+	
+	static public ArrayList<AbstractCondition> parse(Object[] _conditions){
+		ArrayList<AbstractCondition> conditions = new ArrayList<AbstractCondition>();
+		for(int i = 0; i < _conditions.length; i++){
+			conditions.add(_parse((HashMap<?, ?>) _conditions[i]));
+		}
+		return conditions;
+	}
+
+	static public AbstractCondition _parse(String json){
+		HashMap<?, ?> obj = (HashMap<?, ?>) org.eclipse.jetty.util.ajax.JSON.parse(json);
+		return _parse(obj);
+	}
+	
+	static public AbstractCondition _parse(HashMap<?, ?> obj){
+		String op = (String) obj.get("op");
+		if(op.equals("and") || op.equals("or")){
+			Conditions cons = new Conditions(op);
+		AbstractCondition left = _parse((HashMap<?, ?>) obj.get("left")); 
+		AbstractCondition right = _parse((HashMap<?, ?>) obj.get("right"));
+		cons.add(left);
+		cons.add(right);
+		return cons;
+		}
+		else if(op.equals("not")){
+			Conditions cons = new Conditions(op);
+			AbstractCondition operand = _parse((HashMap<?, ?>) obj.get("operand"));
+			cons.add(operand);
+			return cons;
+		}
+		else {
+			
+			return new Condition(op, (String) obj.get("property").toString(), (String) obj.get("value").toString());
+		}
+	}
 }

@@ -48,15 +48,9 @@ public class InterfacesHandler extends AbstractHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 		Log.fine("\t\tInterfaces Handler endElement: " + qName);
 		
-		if(qName.equals("th") || qName.equals("data")) return;
-		
 		widget.id = (String) attributes.get("id");
 		widget.type = elementName;
 		
-		if (data != null) {
-			widget.properties.put("structure", tableStructure);
-			widget.properties.put("data", data);
-		}
 		
 		
 		HashMap<String, Object> props = (HashMap) attributes;

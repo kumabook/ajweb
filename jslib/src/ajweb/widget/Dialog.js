@@ -2,18 +2,16 @@ dojo.provide("ajweb.widget.Dialog");
 dojo.require("dijit.Dialog");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
-/** @lends ajweb.widget.Dialog.prototype */ 
+/** @lends ajweb.widget.Dialog.prototype */
  {
    /**
-    * @constructs 
+    * @constructs
     * @extends ajweb.widget.Widget
     * @borrows ajweb.widget.Widget#id this.id
-    * @borrows ajweb.widget.Widget#top this.top
-    * @borrows ajweb.widget.Widget#left this.left
     * @borrows ajweb.widget.Widget#element this.element
     * @borrows ajweb.widget.Widget#parent this.parent
     * @borrows ajweb.widget.Widget#children this.children
-    
+
     * パネルを作成
     * @param {Object} opt 設定オプション
     * @param {String} opt.id ウィジェットID
@@ -26,9 +24,9 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
 
 
    constructor: function(opt){
-	   this.id = opt.id;
-	   this.children = [];
-	   this.content = opt.content;
+     this.id = opt.id;
+     this.children = [];
+     this.content = opt.content;
 	if(opt.width) this.width = opt.width;
 	else this.width = "100%";
 	if(opt.height) this.height = opt.height;
@@ -65,7 +63,7 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
 	},
    /**
 	* 子ウィジェットを追加
-	* @return {boolean} 
+	* @return {boolean}
 	* @param {AjWeb.Widget} 追加するwidget
 	*/
    add : function(child) {
@@ -76,7 +74,7 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
    },
    /**
 	* 子ウィジェットを削除
-	* @return {boolean} 
+	* @return {boolean}
 	* @param {AjWeb.Widget} 削除するwidget
 	*/
    remove : function(child) {

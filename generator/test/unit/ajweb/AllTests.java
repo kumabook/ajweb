@@ -1,6 +1,5 @@
 package ajweb;
 
-import ajweb.db.ConditionsTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

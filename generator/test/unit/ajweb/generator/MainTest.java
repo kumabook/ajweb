@@ -1,15 +1,18 @@
 package ajweb.generator;
 
-import static org.junit.Assert.*;
+
+
 
 import java.io.File;
 import java.sql.SQLException;
+
+import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Test;
 
 
-public class MainTest {
+public class MainTest extends TestCase{
 	@Test
 	public void testSetup() throws Exception {
 		String from = "lib/";
@@ -17,11 +20,11 @@ public class MainTest {
 		String type = "jar";
 		Compiler.setup(".ajweb", "chat");
 		//FileUtils.copyDir(from, to, type);
-		File to_dir = new File(to);
+		//File to_dir = new File(to);
 		File from_dir = new File(from);
 		
 		File[] from_files = from_dir.listFiles();
-		File[] to_files = to_dir.listFiles();
+		//File[] to_files = to_dir.listFiles();
 
 		System.out.println("test   " + from_files.length);
 		for(int i = 0; i < from_files.length; i++){
