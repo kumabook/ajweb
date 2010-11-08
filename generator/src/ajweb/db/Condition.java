@@ -66,7 +66,7 @@ public class Condition extends AbstractCondition {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
+	
 	public boolean related(HashMap<String, String> item, HashMap<String,String> properties) throws Exception{
 		String propertyType = properties.get(this.property);
 		long value = 0;
