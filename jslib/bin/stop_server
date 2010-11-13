@@ -1,0 +1,4 @@
+#!/bin/sh 
+#kill -9 `/usr/sbin/lsof -Fp -i:8000|sed 's/p//'`
+kill -9 `pgrep -n java`
+

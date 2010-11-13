@@ -44,6 +44,7 @@ function setUp(){
 
 function tearDown(){
   ajweb.databases = [];
+  ajweb.server_databases = [];
 }
 
 function testToJSON(){
@@ -94,6 +95,38 @@ function testEvaluate(){
 
 }
 
+function testRefEvaludate(){
+  var condition5 = new ajweb.data.Condition(
+		     {
+		       op: "eq",
+		       left: {id: 1, name: "test1" },
+		       right: 1
+		     });
+
+  assertTrue(condition5.evaluate());
+  var condition6 = new ajweb.data.Condition(
+		     {
+		       op: "eq",
+		       left: 2,
+		       right: {id: 1, name: "test1" }
+		     });
+  assertFalse(condition6.evaluate());
+  var condition7 = new ajweb.data.Condition(
+		     {
+		       op: "eq",
+		       left: {id: 2, name: "test2"},
+		       right: {id: 1, name: "test3"}
+		     });
+  assertFalse(condition7.evaluate());
+  var condition8 = new ajweb.data.Condition(
+		     {
+		       op: "eq",
+		       left: {id: 2, name: "test2"},
+		       right: {id: 2, name: "test3"}
+		     });
+  assertTrue(condition8.evaluate());
+}
+
 function testIsContainDatabaseItem(){
 
   assertTrue(condition1.isContainDatabaseItem());
@@ -124,11 +157,11 @@ function testToJSONConditions(){
   room_database.addCondition(condition1);
   message_database.addCondition(condition2);
 
-  assertEquals(ajweb.databases.length, 2);
-  assertEquals(ajweb.databases[0].tablename, "room_database");
-  assertEquals(ajweb.databases[1].tablename, "message_database");
-  assertEquals(ajweb.databases[0].conditions.length, 1);
-  assertEquals(ajweb.databases[1].conditions.length, 1);
+  assertEquals(ajweb.server_databases.length, 2);
+  assertEquals(ajweb.server_databases[0].tablename, "room_database");
+  assertEquals(ajweb.server_databases[1].tablename, "message_database");
+  assertEquals(ajweb.server_databases[0].conditions.length, 1);
+  assertEquals(ajweb.server_databases[1].conditions.length, 1);
 
 
   assertEquals(ajweb.data.toJSONConditions(),
@@ -145,8 +178,8 @@ function testToJSONConditions(){
   message_database.addCondition(or);
 
 
-  assertEquals(ajweb.databases[0].conditions.length, 2);
-  assertEquals(ajweb.databases[1].conditions.length, 2);
+  assertEquals(ajweb.server_databases[0].conditions.length, 2);
+  assertEquals(ajweb.server_databases[1].conditions.length, 2);
 
   assertEquals(ajweb.data.toJSONConditions(),
     ajweb.toJSON({
@@ -173,8 +206,8 @@ function testToJSONConditions(){
   room_database.addCondition(and_);
   message_database.addCondition(or_);
 
-  assertEquals(ajweb.databases[0].conditions.length, 3);
-  assertEquals(ajweb.databases[1].conditions.length, 3);
+  assertEquals(ajweb.server_databases[0].conditions.length, 3);
+  assertEquals(ajweb.server_databases[1].conditions.length, 3);
 
   assertEquals(ajweb.data.toJSONConditions(),
   ajweb.toJSON({

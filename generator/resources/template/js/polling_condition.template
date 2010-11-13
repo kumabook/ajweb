@@ -1,0 +1,7 @@
+new ajweb.data.Condition(
+				    {
+				    	op: "${OP}",
+					left: new ajweb.data.Item({database: ${DATABASE}, property: "${PROPERTY}"}),
+					right: '${FUNCTION}'
+				    }
+			)

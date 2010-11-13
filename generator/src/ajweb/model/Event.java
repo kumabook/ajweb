@@ -1,5 +1,8 @@
 package ajweb.model;
 
+import java.io.IOException;
+import ajweb.utils.Template;
+
 
 
 public class Event implements Expression{
@@ -7,13 +10,14 @@ public class Event implements Expression{
 	public String type;
 	//public String element;
 	public String target;
+	public AbstractCondition condition;
 	public Action action;
 	
 	public Event(){
 		
 	}
 	public void generate() {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
@@ -30,5 +34,34 @@ public class Event implements Expression{
 		//}
 		return js + "\t});\n";
 		
+	}
+	public String toJsSource(Databases databases) throws IOException {
+		String ACTION = action.toJsSource(null, null, null);
+		
+		Template event_tempate = new Template("js/event");
+		event_tempate.apply("TARGET", target);
+		event_tempate.apply("TYPE", type);
+		event_tempate.apply("ACTION", ACTION);
+		if(condition != null)
+			event_tempate.apply("CONDITION", condition.toJsSource(null, null, null));
+		else 
+			event_tempate.apply("CONDITION", "true");
+		
+		String polling_condiitons = "";
+		for(int i = 0; i < databases.size(); i++){
+			if(target.equals(databases.get(i).id)){
+				Template condition_template = new Template("js/addCondition");
+				
+				condition_template.apply("DATABASE", databases.get(i).id);
+				condition_template.apply("CONDITION", condition.toJsPollingCondition(databases.get(i).id, null, polling_condiitons, action));
+				
+				polling_condiitons += "\n" + condition_template.source;
+
+			}
+		}
+		
+		
+		CallBackItems._count = 0;
+		return event_tempate.source + polling_condiitons; 
 	}
 }

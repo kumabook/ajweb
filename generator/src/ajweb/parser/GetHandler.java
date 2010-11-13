@@ -2,7 +2,6 @@ package ajweb.parser;
 
 import java.util.ArrayList;
 
-
 import org.xml.sax.SAXException;
 
 import ajweb.model.Expression;
@@ -17,6 +16,8 @@ public class GetHandler extends AbstractHandler{
 	ArrayList<Param> params = new ArrayList<Param>();
 	Parameterable param;
 	
+	
+	
 	@Override
 	protected void addExpression(Expression exp) throws SAXException {
 		if(exp instanceof Param){
@@ -29,16 +30,21 @@ public class GetHandler extends AbstractHandler{
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
+		
 		if(qName.equals("get")){
 			String property = attributes.get("property");
-			String getter = "get" + property.substring(0, 1).toUpperCase() + property.substring(1).toLowerCase();
-			get = new Get(attributes.get("element"), getter);
+			String getter = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
+			get = new Get(attributes.get("element"), getter, params);
+		}
+		else if(qName.equals("select")){
+			get = new Get(attributes.get("database"), "select", params);
 		}
 		else if(qName.equals("selectById")){
-			get = new Get(attributes.get("database"), "selectById");
+			get = new Get(attributes.get("database"), "selectById", params);
 		}
 		else if(qName.equals("selectByCondition")){
-			get = new Get(attributes.get("database"), "selectByCondition");
+			
+			get = new Get(attributes.get("database"), "selectByCondition", params);
 		}
 		else if(qName.equals("targetItem")){
 			String property = attributes.get("property");
@@ -54,6 +60,9 @@ public class GetHandler extends AbstractHandler{
 		}
 		else if(qName.equals("math")){
 		//‚Ü‚¾–¢ŽÀ‘•	
+		}
+		else if(qName.equals("concat")){
+			get = new Get("String", "concat", params);
 		}
 		setExpression(get);
 		super.endElement(uri, localName, qName);

@@ -4,6 +4,7 @@
  * @author Hiroki Kumamoto
  * @version 1.0.0
  */
+dojo.require("ajweb.base");
 
 dojo.require("ajweb.data.AbstractDatabase");
 dojo.require("ajweb.data.LocalDatabase");
@@ -37,6 +38,7 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
 	id: this.id+"_cache",
 	tablename: this.id+"_cache",
 	properties: this.properties,
+//	properties_list: this.properties_list,
 	type: "local_cache"
       }
     );
@@ -46,22 +48,26 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
       {
 	id: this.id+"_action_history",
 	tablename: this.id+"_action_history",
-	properties: this.properties.concat(["action", "timestamp"]),
+	properties: this.properties,
+//	properties_list: this.properties_list.concat(["action", "timestamp"]),
 	type: "local_action_history"
      }
     );
-    ajweb.databases.push(this);//ポーリングを行うデータベースリストに追加
+
+    ajweb.server_databases.push(this);//ポーリングを行うデータベースリストに追加
+
   },
   /**
    * insert
    * @return
    */
   insert: function(params){
+
     if(navigator.onLine){//onlineならサーバに送信
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "insert",
-		 params
+		 this.encodeRefItem(params)
 		);
     }
     else {//オフラインならローカルへ変更を保存し、変更履歴も保存
@@ -97,7 +103,7 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "update",
-		 params
+		 this.encodeRefItem(params)
 		);
     }
     else {//オフラインならローカルへ変更を保存し、変更履歴も保存
@@ -111,13 +117,16 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * 取得
    * @return
    */
-  select: function(where, next){
+  select: function(next){
+    return this._select(null, next);
+  },
+  _select: function(json, next){
    var items;
     if(navigator.onLine){
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "select",
-		 where,
+		 json,
 		 function(data){
 		   next(data.items);
 		   //キャッシュとして保存
@@ -128,12 +137,24 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
       return true;
     }
     else {//オフラインならローカルのデータベースにキャッシュされた値を読み込む
-      if(window.google && google.gears)
-	return ajweb.sql.select(this.tablename, this.properties, where);
+      if(window.google && google.gears){
+	next(ajweb.sql.select(this.tablename, this.properties, where));
+	return {};
+	}
       return {};
     }
   },
-    /**
+  selectByCondition: function(where, next){
+    if(!where)
+      return this._select(null, next);
+    where = this.encodeRefItem(where);
+    var param = where.toJSON();
+    return this._select(param, next);
+  },
+  selctById: function(id, next){
+    return this._select({op: "eq", property: "id", value: id}, next);
+  },
+  /**
    * 履歴を保存
    * @return
    */
@@ -200,12 +221,14 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
   onChange: function(){
     ajweb.log.trace("onChange: "  + dojo.toJson(item));
   },
-  getStore: function(name){
-  for(var i = 0; i < ajweb.stores.length; i++){
-//    alert(ajweb.stores[i].tablename  + "  " + name);
-    if(ajweb.stores[i].tablename == name)
-      return ajweb.stores[i];
-  }
-  return null;
+  encodeRefItem: function(params){
+  for(var i= 0; i < this.properties_list.length; i++){
+      if(params[this.properties_list[i]] instanceof Object //参照型ならidに変換
+	&& !(params[this.properties_list[i]] instanceof ajweb.data.Item)){
+	params[this.properties_list[i]] =  params[this.properties_list[i]].id;
+      }
+    }
+    return params;
   }
 });
+

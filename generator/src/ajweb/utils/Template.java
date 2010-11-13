@@ -23,7 +23,7 @@ public class Template {
 	
 	private void setParam(){
 		
-		Pattern pattern = Pattern.compile("\\$\\{([A-Z]*)\\}");
+		Pattern pattern = Pattern.compile("\\$\\{(([A-Z]|_)*)\\}");
 		Matcher matcher = pattern.matcher(source);
 		while(matcher.find()){
 			this.param.put(matcher.group(1), null);
@@ -42,7 +42,6 @@ public class Template {
 			
 			source = matcher.replaceAll(value);// ’u‚«Š·‚¦‚é•¶Žš—ñ‚Ì’†‚Ì$‚ð‚à‚Æ‚É–ß‚·
 			source = source.replaceAll("\\\\\\$","\\$");
-
 		}
 	}
 	

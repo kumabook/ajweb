@@ -82,7 +82,7 @@ public class Main {
 			ajml = args[0];
 			
 			appName = new File(ajml).getName().replaceAll("\\..*", "");
-			Config.appName = appName;
+			//Config.appName = appName;
 		}
 		
 		for (int i = 1; i < args.length; ++i) {

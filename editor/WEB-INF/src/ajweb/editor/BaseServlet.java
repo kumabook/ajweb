@@ -1,5 +1,6 @@
 package ajweb.editor;
 
+import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -34,11 +35,11 @@ import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 
 
 import ajweb.Config;
-import ajweb.servlet.AjWebServlet;
+import ajweb.servlet.AbstractServlet;
 
 
 @SuppressWarnings("serial")
-public class BaseServlet extends AjWebServlet {
+public class BaseServlet extends AbstractServlet {
 
 		
 		@SuppressWarnings("unchecked")
@@ -173,5 +174,8 @@ public class BaseServlet extends AjWebServlet {
 					//PrintWriter res_writer = response.getWriter();
 					//res_writer.print(e.toString());
 			}
+		}
+		protected HashMap<String, String> getDatabaseProperties(String tablename){
+				return new HashMap<String, String>();
 		}
 }

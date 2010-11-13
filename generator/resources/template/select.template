@@ -1,3 +1,0 @@
-	if(tablename.equals("${TABLENAME}"))
-		result = ${TABLENAME}.select(condition);
-	else		

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import org.xml.sax.SAXException;
-import ajweb.db.AbstractCondition;
+
+import ajweb.data.AbstractCondition;
 import ajweb.model.Event;
 import ajweb.model.Expression;
 import ajweb.model.Widget;
@@ -13,6 +14,7 @@ import ajweb.utils.Log;
 
 
 public class WidgetHandler extends AbstractHandler {
+	static HashMap<String, Integer> widgetList = new HashMap<String, Integer>();
 
 	Widget widget = new Widget();
 	AbstractHandler parent;
@@ -49,9 +51,16 @@ public class WidgetHandler extends AbstractHandler {
 		Log.fine("\t\tWidget Handler endElement: " + qName);
 		
 		widget.id = (String) attributes.get("id");
-		widget.type = elementName;
 		
-				
+		widget.type = elementName;
+		if(widget.id == null){
+			if(widgetList.get(elementName) == null)
+				widgetList.put(elementName, 0);
+			int count = widgetList.get(elementName);
+			widget.id = elementName + "_" + count++;
+			widgetList.put(elementName, count);
+		}
+		
 		HashMap<String, Object> props = (HashMap) attributes;
 		widget.properties.putAll(props);
 		setExpression(widget);

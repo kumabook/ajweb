@@ -1,20 +1,17 @@
 package ajweb.parser;
 
+import static org.junit.Assert.*;
 import java.io.IOException;
-
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
 import ajweb.generator.Compiler;
 import ajweb.model.Application;
 import ajweb.model.Call;
 import ajweb.model.Event;
 import ajweb.model.Events;
 import ajweb.utils.FileUtils;
-import junit.framework.TestCase;
 
-
-public class EventsHandlerTest extends TestCase {
+public class EventsHandlerTest{
 	@Test
 	public void testEventsHandler() throws SAXException, IOException{
 		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "events.ajml");

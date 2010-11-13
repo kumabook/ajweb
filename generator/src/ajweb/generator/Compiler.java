@@ -80,7 +80,8 @@ public class Compiler {
 		javaCompile(workDir, app.appName);
 		
 		FileUtils.compression(workDir + FileUtils.fs + app.appName, warFile);
-		System.out.println("compress "  + workDir + FileUtils.fs +app.appName +"/* to war file");		
+		if(Config.isStandardOutput)
+			System.out.println("compress "  + workDir + FileUtils.fs +app.appName +"/* to war file");		
 	}
 	/**
 	 * アプリケーションオブジェクトからソースコードを生成
@@ -129,8 +130,8 @@ public class Compiler {
 	public static void javaCompile(String workDir, String appName) throws Exception{
 		String fs = System.getProperty("file.separator");
 		String ps = System.getProperty("path.separator");
-		
-		System.out.println("compile  Java File :");// + web_infDir + "classes/*");
+		if(Config.isStandardOutput)
+			System.out.println("compile  Java File :");// + web_infDir + "classes/*");
 		
 		String web_infDir = workDir + fs + appName +  fs + "WEB-INF";
 		String sourceDir = web_infDir + fs + "src" + fs;
@@ -161,13 +162,15 @@ public class Compiler {
 			for(int i = 0; i < srcFiles.length; i++){
 				if(srcFiles[i].getPath().endsWith(".java")){
 					args.add(srcFiles[i].getPath());
-					System.out.println("                    " + srcFiles[i].getPath());
+					if(Config.isStandardOutput)
+						System.out.println("                    " + srcFiles[i].getPath());
 				}
 			}
 			//System.out.println("compile " + args);
 			
 			com.sun.tools.javac.Main.compile(args.toArray(new String[0]));
-			System.out.println("compile complete. generate class files.");
+			if(Config.isStandardOutput)
+				System.out.println("compile complete. generate class files.");
 			
 		}
 	}

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.eclipse.jetty.util.ajax.JSON;
+
 import ajweb.utils.FileUtils;
 import ajweb.utils.Template;
 /**
@@ -15,84 +17,94 @@ import ajweb.utils.Template;
  *
  */
 public class Database implements Expression{
-	public String name;
+	public String id;
+	public String tablename;
 	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	public String dbName = "jdbc:derby:" + System.getProperty("ajweb.work") + "derby";
 	public String type = "server";
+	public String persistence = "permanent";
+	public HashMap<String, String> properties = new HashMap<String, String>();
+	public ArrayList<HashMap<String, String>> ref;
 	public ArrayList<HashMap<String, Parameterable>> initItem;
-	public Database(String name, String dbDriver,String dbName){
-		this.name = name;
+
+	public Database(String id, String tablename, String dbDriver,String dbName, String type, String persistence, ArrayList<HashMap<String, String>> ref){
+		this.id = id;
+		this.tablename = tablename;
 		this.dbDriver = dbDriver;
 		this.dbName = dbName;
+		this.type = type;
+		this.persistence = persistence;
+		this.ref = ref;
 	}
-	public HashMap<String, String> properties = new HashMap<String, String>();
+	
 	/**
 	 * AJMLのdbdata要素からデータベース用のjavaコードを生成
 	 */
 	public void databaseGenerate(String workDirectory, String appName) {
 		String fs = FileUtils.fs;
-		//データベースのスキーマを取得
-		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
-		String properties_set = "";
-		while(ite.hasNext()){
-			
-			Entry<String, String> property = ite.next();
-			properties_set += "\t\tproperties.put(\"" + property.getKey() + "\", \"" + property.getValue() + "\");\n";
-			
-		}
-				
-		try {
-			Template dbTableTemplate = new Template("dbtable");
-			dbTableTemplate.apply("TABLENAME", name);
-//			dbName = Application.appName;
-			dbTableTemplate.apply("DBNAME", dbName);
-			dbTableTemplate.apply("DRIVERCLASSNAME", dbDriver);
-			
-			dbTableTemplate.apply("PROPERTIES", properties_set);
-
-			//fileに書き出す
-			FileUtils.writeFile(workDirectory + fs + appName + fs + "WEB-INF" + fs +"src" + fs + "ajweb" + fs + "db" + fs + name + ".java", dbTableTemplate.source);
+		try {//fileに書き出す
+			FileUtils.writeFile(workDirectory + fs + appName + fs + "WEB-INF" + fs +"src" + fs + "ajweb" + fs + "db" + fs + tablename + ".java", toJavaSource());
 			System.out.println("generate " + workDirectory + fs +  appName + fs + 
 					"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "db" + 
-					fs  + name + ".java");			
+					fs  + tablename + ".java");			
 		} catch (IOException e) {
-			// 
 			e.printStackTrace();
 		}
-		
-		/*client のテーブルを定義を定義しているならクライアントテーブルjavaScriptを生成*/
-				
 	}
 	
-	public String toJavaSource(){
+	public String toJavaSource() throws IOException{
+		
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
 		String properties_set = "";
-		while(ite.hasNext()){
-			
+		while(ite.hasNext()){//データベースのスキーマ用のコードを生成
 			Entry<String, String> property = ite.next();
-			properties_set += "\t\tproperties.put(\"" + property.getKey() + "\", \"" + property.getValue() + "\");\n";
-			
+			if(!property.getValue().equals("ref"))//多対多に対応するなら変更するかも
+				properties_set += "\n\t\tproperties.put(\"" + property.getKey() + "\", \"" + property.getValue() + "\");";
 		}
 				
-		try {
-			Template dbTableTemplate = new Template("dbtable");
-			dbTableTemplate.apply("TABLENAME", name);
-//			dbName = Application.appName;
-			dbTableTemplate.apply("DBNAME", dbName);
-			dbTableTemplate.apply("DRIVERCLASSNAME", dbDriver);
+		Template dbTableTemplate = new Template("java/database");
+		dbTableTemplate.apply("TABLENAME", tablename);
+//				dbName = Application.appName;
+		dbTableTemplate.apply("DBNAME", dbName);
+		dbTableTemplate.apply("DRIVERCLASSNAME", dbDriver);
 			
-			dbTableTemplate.apply("PROPERTIES", properties_set);
+		dbTableTemplate.apply("PROPERTIES", properties_set);
 
-			return dbTableTemplate.source;
-			
-		} catch (IOException e) {
-			// 
-			e.printStackTrace();
+		return dbTableTemplate.source;
+	}
+	
+	public String toJsSource() throws IOException{
+		
+		Template tempate;
+		if(type.equals("server"))
+			tempate = new Template("js/database");
+		else 
+			tempate = new Template("js/local_database");
+		
+		tempate.apply("ID", id);
+		tempate.apply("TABLENAME", tablename);
+		tempate.apply("URL", "dbservlet");
+		
+		ArrayList<String> properties_list = new ArrayList<String>(); 
+		Iterator<String> ite = properties.keySet().iterator();
+		while(ite.hasNext()){
+			String key = ite.next();
+			properties_list.add(key);
 		}
-		return "null";
+
+		
+		
+		tempate.apply("PROPERTIES", JSON.toString(properties));
+	
+		tempate.apply("PROPERTIES_LIST", JSON.toString(properties_list));
+		tempate.apply("PERSISTENCE", persistence);
+		tempate.apply("REF", JSON.toString(ref));
+		
+		return tempate.source;
+		/*client のテーブルを定義を定義しているならクライアントテーブルjavaScriptを生成*/
 	}
 	
 	public String toString() {
-		return name + properties;
+		return tablename + properties;
 	}
 }

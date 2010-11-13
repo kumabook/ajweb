@@ -1,9 +1,11 @@
 package ajweb.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import ajweb.model.Param;
 
-import ajweb.db.Condition;
+import ajweb.data.Condition;
 
 public class JSON {
 	public static String toString(HashMap<String, ?> map){
@@ -39,5 +41,16 @@ public class JSON {
 		}
 		return json + "}";
 		
+	}
+	
+	public static String toString(ArrayList<Param> params){
+		String json = "{";
+		for(int i = 0; i < params.size(); i++){
+			json += params.get(i).toString();
+			if(i < params.size())
+				json += ",";
+		}
+		json += "}";
+		return json;
 	}
 }

@@ -18,8 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.continuation.ContinuationSupport;
 
-import ajweb.db.AbstractCondition;
-import ajweb.db.Modification;
+import ajweb.Config;
+import ajweb.data.AbstractCondition;
+import ajweb.data.Modification;
 import ajweb.utils.Log;
 
 
@@ -76,7 +77,7 @@ public abstract class AbstractServlet extends HttpServlet{
 			if (member._queue.size()>0){
 				/*変更を起きたらクライアントに反映*///一度に複数のmodificationsを伝搬してもよいかも今は後ろの一個ののみ
 				ArrayList<Modification> modifications = new ArrayList<Modification>();
-				while(member._queue.size() > 0)
+				while(member._queue.size() > 0)	// queueの中にmodificationがなければ
 					modifications.add(member._queue.poll());
 				
 				PrintWriter out = resp.getWriter();
@@ -84,8 +85,9 @@ public abstract class AbstractServlet extends HttpServlet{
 				}
 			else {
 				Continuation continuation = ContinuationSupport.getContinuation(req, resp);
+				continuation.setTimeout(Config.TIMEOUT);
 				if (continuation.isInitial()){
-					// queueの中にmodificationがなければ、一時停止してタイムアウトかmodificationをまつ
+					// 一時停止してタイムアウトかmodificationをまつ
 					Log.servletLogger.fine( "sessionid: " + member._sessionid + " suspend continuation");
 					continuation.suspend();
 					member._continuation=continuation;
@@ -111,35 +113,32 @@ public abstract class AbstractServlet extends HttpServlet{
 	protected synchronized void change(HttpServletRequest req, HttpServletResponse resp,
 			String sessionid, String tablename, String action, HashMap<String, String> item) throws Exception {
 		Log.servletLogger.fine(  "sessionid:"+ sessionid +"  が変更を加えたよ"  + " " + action);
-		//System.out.println( "sessionid:"+ sessionid +"  が変更を加えたよ"  + " " + action);
 		
-		
-		System.out.println(members.size());
 		//サーバーのデータをクライアントに伝搬させる
+		Log.servletLogger.fine("send modification to clients  clients.size:" + members.size());
 		if(members.size() > 0){
 			for (Member m:members.values()){//現在コネクションを張っているすべてのクライアントのキューに入れる
 				synchronized (m) {
 					Log.servletLogger.fine("現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
-					//System.out.println("現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
 					//クライアントに関係あるか判定
-					if(true/*m.relatedDBDatum.containsKey(tablename) && m.relatedDBDatum.get(tablename).related(item)*/){
-
-						Modification modification = new Modification(tablename, action , item);
-						
-						//modicationをキューに入れる
-						m._queue.add(modification); //chat
-						if (m._continuation!=null){
-							Log.servletLogger.fine("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "   resume continuation "); 
-							//System.out.println("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "   resume continuation "); 
-							m._continuation.resume();
-							m._continuation = null;
+					Modification modification = new Modification(tablename, action , item);
+					ArrayList<AbstractCondition> conditions = m.relatedDBDatum.get(tablename);
+					if(conditions != null){
+						for(int j = 0; j < conditions.size(); j++){
+							if(conditions.get(j).related(modification.item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
+								m._queue.add(modification); //modicationをキューに入れる
 						}
+					}
+					if (m._continuation!=null){
+						Log.servletLogger.fine("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "   resume continuation "); 
+						m._continuation.resume();
+						m._continuation = null;
 					}
 				}
 			}
 		}
-		PrintWriter out = resp.getWriter();
-		out.print("{action:\""+ action + "\"}");  
+//PrintWriter out = resp.getWriter();
+	//	out.print("{action:\""+ action +"\", ");  
 	}
 	/**
 	 * 複数のmodificationを受け取り、クライアントのキューに入れる (オフライン→オンライン時のクライアントの変更履歴の反映用)
@@ -152,16 +151,14 @@ public abstract class AbstractServlet extends HttpServlet{
 	protected synchronized void change(HttpServletRequest req, HttpServletResponse resp,
 			String sessionid, ArrayList<Modification> modifications) throws Exception {
 		Log.servletLogger.fine( "sessionid: が変更を加えたよ sessionid:" + sessionid + " " + modifications);
-		//System.out.println( "sessionid: が変更を加えたよ sessionid:" + sessionid + " " + modifications);
 
-		System.out.println(members.size());
 		//サーバーのデータをクライアントに伝搬させる
+		Log.servletLogger.fine("send modification to clients  clients.size:" + members.size());
 		if(members.size() > 0){
 			for (Member m:members.values()){//現在コネクションを張っているすべてのクライアントのキューに入れる
 				synchronized (m) {
-					ArrayList<Modification> m_modifications = new ArrayList<Modification>();//クライアントごとに変更のリストを再構成
+					//ArrayList<Modification> m_modifications = new ArrayList<Modification>();//クライアントごとに変更のリストを再構成
 					Log.servletLogger.fine( "現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
-					//System.out.println("現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
 					//クライアントに関係あるか判定
 					for(int i = 0; i < modifications.size(); i++){
 						String tablename = modifications.get(i).tablename;
@@ -169,16 +166,15 @@ public abstract class AbstractServlet extends HttpServlet{
 						//if(m.relatedDBDatum.containsKey(tablename) && m.relatedDBDatum.get(tablename).related(modifications.get(i).item)){
 						if(conditions != null){
 							for(int j = 0; j < conditions.size(); j++){
-								if(conditions.get(i).related(modifications.get(i).item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
-									m_modifications.add(modifications.get(i));//追加!
+								if(conditions.get(j).related(modifications.get(i).item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
+									m._queue.add(modifications.get(i));//追加!
+									//m_modifications.add(modifications.get(i));//追加!
 							}
 						}	
-					//											
 					//modicationをキューに入れる
-						m._queue.addAll((m_modifications)); 
-						if (true/*m._continuation != null && m_modifications.size() > 0*/){
+						//m._queue.addAll((m_modifications)); 
+						if (m._continuation != null && m._queue.size() > 0){
 							Log.servletLogger.fine("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "resume continuation "); 
-							//	System.out.println("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "resume continuation "); 
 							m._continuation.resume();
 							m._continuation = null;
 						}
@@ -186,17 +182,16 @@ public abstract class AbstractServlet extends HttpServlet{
 				}
 			}	
 		}
-		PrintWriter out = resp.getWriter();
-		out.print("{action: \""+ "change \"}");
+//		PrintWriter out = resp.getWriter();
+		//out.print("{action: \""+ "change \"}");
 	}
 	
-	protected synchronized void resume(){
+	protected synchronized void repoll(){
 		if(members.size() > 0){
-			for (Member m:members.values()){//現在コネクションを張っているすべてのクライアントのキューに入れる
+			for (Member m:members.values()){
 				synchronized (m) {
-					if (m._continuation != null ){
-						Log.servletLogger.fine("change the polling info : ポーリング情報が更新、コネクションを貼りなおす　　　　　session_id: " + m._sessionid + "resume continuation "); 
-						//System.out.println("change the polling info : ポーリング情報が更新、コネクションを貼りなおす　　　　　session_id: " + m._sessionid + "resume continuation "); 
+					if (m._continuation != null){
+						Log.servletLogger.fine("change the polling info : ポーリング情報が更新、コネクションを貼りなおす      session_id: " + m._sessionid + "resume continuation "); 
 						m._continuation.resume();
 						m._continuation = null;
 					}
@@ -205,4 +200,3 @@ public abstract class AbstractServlet extends HttpServlet{
 		}
 	}
 }
-

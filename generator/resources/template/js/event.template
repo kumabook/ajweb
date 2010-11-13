@@ -1,0 +1,3 @@
+		ajweb.connect(${TARGET}, "${TYPE}", null, ${CONDITION}, function(targetItem, database){
+			${ACTION}
+		});

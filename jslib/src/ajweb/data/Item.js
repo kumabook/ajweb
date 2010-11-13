@@ -12,6 +12,7 @@ dojo.declare("ajweb.data.Item", null,
   {
     constructor: function(opt){
 //      this.element = opt.element;
+      this.type = opt.type;// = "targetItem";
       this.database = opt.database;
       this.property = opt.property;
 

@@ -41,7 +41,7 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 		this.properties = properties;
 	}
 		
-	public String toJsCode(){
+	public String toJsSource(Flowable func, String key, Action rest){
 		
 		if(type.equals(("string")) || (type.equals(("text")))){
 			return "\"" + value + "\""; 
@@ -53,8 +53,8 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 			String json ="ajweb.util.Date({";
 			Iterator<String>  it = properties.keySet().iterator();
 			while(it.hasNext()){
-				String key = it.next();
-				json += "key: " + properties.get(key);
+				String _key = it.next();
+				json += "key: " + properties.get(_key);
 				if(it.hasNext())
 					json += ",";
 			}
@@ -78,11 +78,17 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 
 	@Override
 	public String toJSON() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	@Override
 	public String toString(){
 		return value;
 	}
+
+	@Override
+	public boolean isSelect() {
+		return false;
+	}
+
 }

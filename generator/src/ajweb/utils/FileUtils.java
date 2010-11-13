@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import ajweb.Config;
+
 
 public class FileUtils {
 	//public static String sep = File.separator;
@@ -57,7 +59,8 @@ public class FileUtils {
     }
     
 //    System.out.println("copy " + srcPath + " \t " + destPath);
-    System.out.println("generate " + srcPath + " to " +  destPath);
+    if(Config.isStandardOutput)
+    	System.out.println("generate " + srcPath + " to " +  destPath);
     Log.finest("copy " + srcPath + " to " + destPath);
     
 	}

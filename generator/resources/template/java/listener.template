@@ -1,0 +1,34 @@
+package ajweb.servlet;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import org.eclipse.jetty.util.ajax.JSON;
+import ajweb.data.*;
+
+public class AjWebListener implements ServletContextListener{
+
+    @SuppressWarnings("unchecked")
+    @Override
+	public void contextInitialized(ServletContextEvent arg0) {
+	System.out.println("context initialized");
+${CREATE}
+    }
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+		System.out.println("context destroyed");
+		try {
+			message.drop();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

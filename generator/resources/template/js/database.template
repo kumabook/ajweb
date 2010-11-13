@@ -1,0 +1,11 @@
+		var ${ID}  = new ajweb.data.Database(
+		    {
+			id: "${ID}",
+			tablename: "${TABLENAME}",
+			url: "${URL}",
+			properties: ${PROPERTIES},
+			properties_list: ${PROPERTIES_LIST},
+			persistence: "${PERSISTENCE}",
+			ref: ${REF}
+		    }
+		);

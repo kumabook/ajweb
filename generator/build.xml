@@ -4,21 +4,21 @@
 	<property name="temp" value="out" />
 	<property name="web-app.name" value="default-app" />
 	<property name="web-app.home" value="${temp}/${web-app.name}" />
-	<property name="basedir" value="generator" />
+	<property name="basedir" value="./" />
 
 	<target name="compile">
-		<mkdir dir="classes"/>
-		<javac destdir="classes/" includeAntRuntime="no">
-			<src path="src"/>
-			<classpath>
-					<fileset dir="lib/">
-							<include name="*.jar"/>
-					</fileset>
-			</classpath>
-		</javac>
+			<mkdir dir="classes"/>
+			<javac destdir="classes/" includeAntRuntime="no">
+					<src path="src"/>
+					<classpath>
+							<fileset dir="lib/">
+									<include name="*.jar"/>
+							</fileset>
+					</classpath>
+			</javac>
 	</target>
 	<target name="run" >
-		<java classname="ajweb.server.Main"  >
+		<java classname="ajweb.server.Main">
 			<arg value="${web-app.name}"/>
 			<classpath>
 				<fileset dir="lib">
@@ -31,17 +31,19 @@
 
 
 	<target name="jar" depends="compile">
-			<delete file="dist/ajweb.jar"/> 
-			<jar destfile="dist/ajweb.jar" 
+			<delete file="${basedir}/dist/ajweb.jar"/> 
+			<jar destfile="${basedir}/dist/ajweb.jar" 
 			update="true"
-			basedir="classes" />
+			basedir="${basedir}/classes" />
 	</target>
 
 
 	<target name="doc">
 	</target>
-	<target name="test" depends="compile">
-			<junit haltonfailure="true" printsummary="on">
+	<target name="unittest" depends="compile">
+			<echo message="${basedir}"/>
+			<junit haltonfailure="true" printsummary="on" dir="${basedir}" fork="on">
+					<sysproperty key="basedir" value="${basedir}"/>
 					<formatter type="plain" usefile="false"/> 
 					<classpath>
 							<fileset dir="lib">
@@ -54,13 +56,13 @@
 	</target>
 
 	<target name="app_test" depends="jar">
-			<copy file="./dist/ajweb.jar"  todir="./test/app/chat/WEB-INF/lib/" overwrite="true"/>
-			<java classname="ajweb.server.AppTestServer">
+			<copy file="${basedir}/dist/ajweb.jar"  todir="${basedir}/test/app/chat/WEB-INF/lib/" overwrite="true"/>
+			<java classname="ajweb.server.AppTestServer" dir="${basedir}">
 			<classpath>
-				<fileset dir="lib">
+					<fileset dir="${basedir}/lib">
 					<include name="*.jar"/>
 				</fileset>
-				<pathelement location="classes/"/>
+				<pathelement location="${basedir}/classes/"/>
 			</classpath>
 		</java>
 	</target>

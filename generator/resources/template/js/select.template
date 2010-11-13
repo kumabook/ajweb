@@ -1,0 +1,7 @@
+${DATABASE}.${SELECT}(
+					${PARAMS}
+					, function(${COUNT}){
+					${FUNC}
+					${REST}
+					}
+				);

@@ -17,9 +17,14 @@ import ajweb.utils.Log;
 public class DatabasesHandler extends AbstractHandler {
 	Databases databases = new Databases();
 	
-	String name;
+	String id;
+	String tablename;
 	String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
 	String dbName = "jdbc:derby:AJWEB";
+	String type = "server";
+	String persistence = "permanent";
+	ArrayList<HashMap<String, String>> ref;
+	
 	ArrayList<HashMap<String, Parameterable>> initItem;
 	HashMap<String, Parameterable> tempItem;
 	Parameterable property;
@@ -34,7 +39,15 @@ public class DatabasesHandler extends AbstractHandler {
 		Log.fine("\t" + this + " start " + "  uri: " + uri + "element :" + qName);
 		
 		if(qName.equals("database")){
-			name = attrs.getValue("id");
+			id = attrs.getValue("id");
+			tablename = attrs.getValue("tablename");
+			if(tablename == null)
+				tablename = attrs.getValue("id");
+			if(attrs.getValue("type") != null)
+				type = attrs.getValue("type");
+			if(attrs.getValue("persistence") != null)
+				persistence = attrs.getValue("persistance");
+			 ref = new ArrayList<HashMap<String, String>>();
 		}
 		else if(qName.equals("init")){
 			initItem = new ArrayList<HashMap<String, Parameterable>>();
@@ -84,14 +97,21 @@ public class DatabasesHandler extends AbstractHandler {
 			super.endElement(uri, localName, qName);
 		}
 		else if(qName == "database"){
-			Database database = new Database(name, dbDriver, dbName);
+			Database database = new Database(id, tablename, dbDriver, dbName, type, persistence, ref);
 			database.properties = (HashMap<String, String>) properties.clone();
 			database.initItem = initItem;
 			databases.add(database);
 		}
 		else if(qName == "property"){
-			if(!initFlag)
+			if(!initFlag){
 				properties.put(attributes.get("name"), attributes.get("type"));
+				if(attributes.get("type").equals("ref")){
+					HashMap<String, String> ref_property = new HashMap<String, String>();
+					ref_property.put("table", attributes.get("ref"));
+					ref_property.put("multiplicity", attributes.get("multiplicity"));
+					ref.add(ref_property);
+				}
+			}
 			else {
 				tempItem.put(property_name, property);
 			}

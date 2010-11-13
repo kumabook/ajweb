@@ -10,8 +10,8 @@ import ajweb.model.Expression;
 public class BranchHandler extends AbstractHandler{
 	Branch branch;
 	AbstractCondition condition;
-	Action truePath;
-	Action falsePath;
+	Action truePath = new Action();
+	Action falsePath = new Action();
 	@Override
 	protected void addExpression(Expression exp) throws SAXException {
 		if(exp instanceof AbstractCondition){

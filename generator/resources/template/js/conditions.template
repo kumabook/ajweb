@@ -1,0 +1,8 @@
+new ajweb.data.Conditions(
+				    {
+					op: "${OP}",
+					operator: ${OPERATOR},
+					left: ${LEFT},
+					right: ${RIGHT}
+				    }
+			)

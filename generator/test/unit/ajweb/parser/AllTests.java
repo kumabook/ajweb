@@ -1,18 +1,13 @@
 package ajweb.parser;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-public class AllTests extends TestSuite{
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		//$JUnit-BEGIN$
-		suite.addTestSuite(InterfacesHandlerTest.class);
-		suite.addTestSuite(DatabasesHandlerTest.class);
-		suite.addTestSuite(EventsHandlerTest.class);
-		//$JUnit-END$
-		return suite;
-	}
-
-}
+@RunWith(Suite.class)
+@SuiteClasses({
+	InterfacesHandlerTest.class,
+	DatabasesHandlerTest.class,
+	EventsHandlerTest.class
+})
+public class AllTests {}

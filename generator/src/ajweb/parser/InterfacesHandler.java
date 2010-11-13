@@ -1,13 +1,12 @@
 package ajweb.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 
-import ajweb.db.AbstractCondition;
+import ajweb.data.AbstractCondition;
 import ajweb.model.Event;
 import ajweb.model.Expression;
 import ajweb.model.Widget;
@@ -15,7 +14,6 @@ import ajweb.utils.Log;
 
 public class InterfacesHandler extends AbstractHandler {
 	Widget widget = new Widget();
-	ArrayList<HashMap<String, String>> tableStructure = new ArrayList<HashMap<String, String>>();
 	String data;
 	
 	public void startElement(String uri, String localName, String qName, Attributes attrs)
@@ -62,5 +60,6 @@ public class InterfacesHandler extends AbstractHandler {
 			this.setExpression(widget);
 			super.endElement(uri, localName, qName);
 		}
+		WidgetHandler.widgetList = new HashMap<String, Integer>();
 	}
 }

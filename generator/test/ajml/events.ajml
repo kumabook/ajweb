@@ -99,13 +99,13 @@
 	<action>
 	  <call element="messageTable" func="insert">
 	    <param name="user_name">
-	      <targetItem property="userName"/>
+	      <receivedItem property="userName"/>
 	    </param>
 	    <param name="message">
-	      <targetItem property="message"/>
+	      <receivedItem property="message"/>
 	    </param>
 	    <param name="posted">
-	      <targetItem property="message"/>
+	      <receivedItem property="message"/>
 	    </param>
 	  </call>
 	</action>

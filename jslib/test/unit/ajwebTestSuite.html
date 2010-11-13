@@ -7,11 +7,12 @@
     <script type="text/javascript">
       function suite() {
       var suite = new JsUnitTestSuite();
-      suite.addTestPage("../unit/ajweb/TestCaseTemplate.html");//testRunnerから見た位置
-      suite.addTestPage("../unit/ajweb/baseTest.html");
+//      suite.addTestPage("../unit/ajweb/TestCaseTemplate.html");
+      suite.addTestPage("../unit/ajweb/baseTest.html");//testRunnerから見た位置
       suite.addTestPage("../unit/ajweb/data/DatabaseTest.html");
+      suite.addTestPage("../unit/ajweb/data/LocalDatabaseTest.html");
       suite.addTestPage("../unit/ajweb/data/ConditionTest.html");
-      //			suite.addTestPage("../unit/ajweb/sqlTest.html");
+      suite.addTestPage("../unit/ajweb/data/sqlTest.html");
       return suite;
       }
     </script>

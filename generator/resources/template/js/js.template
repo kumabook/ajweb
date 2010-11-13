@@ -1,0 +1,32 @@
+${REQUIRE}
+
+dojo.addOnLoad(
+  function(){
+    ajweb.join("dbservlet");
+    ajweb.log.level = "info";
+
+
+    ajweb.addOnLoad(
+      function()
+      {
+	ajweb.log.trace("onLoad");
+	var ajweb_container = document.getElementById("ajweb_container");
+//ここから自動生成
+/*databasesの記述 */
+${DATABASES}
+/*interfacesの記述 */
+${INTERFACES}
+/*eventsの記述 */
+${EVENTS}
+//ここまで自動生成
+
+    /*初期化処理 アプリケーション共通*/
+        rootFrame.startup();
+    	ajweb.polling("dbservlet");
+	dojo.connect(window, "offline", null, function(){
+			     ajweb.polling("dbservlet");
+	});
+      }
+    );
+
+});

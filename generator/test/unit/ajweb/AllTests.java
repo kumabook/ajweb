@@ -1,20 +1,15 @@
 package ajweb;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
 
-public class AllTests {
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		//$JUnit-BEGIN$
-		
-		suite.addTest(ajweb.db.AllTests.suite());
-		suite.addTest(ajweb.parser.AllTests.suite());
-		suite.addTest(ajweb.model.AllTests.suite());
-		
-		//$JUnit-END$
-		return suite;
-	}
-
-}
+@RunWith(Suite.class)
+@SuiteClasses({
+	ajweb.data.AllTests.class,
+	ajweb.parser.AllTests.class, 
+	ajweb.model.AllTests.class,
+	ajweb.generator.AllTests.class
+	})
+public class AllTests {}

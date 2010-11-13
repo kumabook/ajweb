@@ -23,7 +23,6 @@ public class ConditionHandler extends AbstractHandler {
 			String uri, String localName, String qName) throws SAXException{
 		Log.fine("conditions handler end "  +   qName + "  "  + this);
 		setExpression(con);
-		
 		super.endElement(uri, localName, qName);
 	}
 	

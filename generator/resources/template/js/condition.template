@@ -1,0 +1,7 @@
+new ajweb.data.Condition(
+				    {
+				    	op: "${OP}",
+					left: ${LEFT}
+					right: ${RIGHT}
+				    }
+			).evaludate()

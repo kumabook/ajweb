@@ -7,7 +7,7 @@
 
 dojo.require("ajweb.data.AbstractDatabase");
 
-dojo.require("ajweb.sql");
+dojo.require("ajweb.data.sql");
 dojo.provide("ajweb.data.LocalDatabase");
 
 

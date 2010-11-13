@@ -1,18 +1,13 @@
 package ajweb.model;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-public class AllTests extends TestSuite{
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
-		//$JUnit-BEGIN$
-		suite.addTestSuite(EventsTest.class);
-		suite.addTestSuite(InterfacesTest.class);
-		suite.addTestSuite(DatabaseTest.class);
-		//$JUnit-END$
-		return suite;
-	}
-
-}
+@RunWith(Suite.class)
+@SuiteClasses({ 
+	EventsTest.class, 
+	InterfacesTest.class, 
+	DatabaseTest.class
+	})
+public class AllTests {}

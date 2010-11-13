@@ -1,0 +1,10 @@
+		var ${ID}  = new ajweb.data.LocalDatabase(
+		    {
+			id: "${ID}",
+			tablename: "${TABLENAME}",
+			url: "dbservlet",
+			properties: ${PROPERTIES},
+			persistence: "${PERSISTENCE}",
+			ref: ${REF}
+		    }
+		);

@@ -8,8 +8,8 @@ import javax.servlet.ServletContextListener;
 
 import org.eclipse.jetty.util.ajax.JSON;
 
-import ajweb.db.chat;
-import ajweb.db.room;
+import ajweb.data.message;
+import ajweb.data.room;
 
 
 public class AjWebListener implements ServletContextListener{
@@ -18,10 +18,11 @@ public class AjWebListener implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent arg0) {
 		System.out.println("context initialized");
 		try {
-			chat.create();
-			System.out.println("chat create");
+			message.create();
+			System.out.println("message create");
 		} catch (Exception e) {
-			System.out.println("chat is already exists");
+			System.out.println(e);
+			System.out.println("message table is already exists");
 		}	
 		
 		
@@ -38,7 +39,7 @@ public class AjWebListener implements ServletContextListener{
 			
 		} catch (Exception e) {
 			System.out.println(e);
-			System.out.println("room is already exists");
+			System.out.println("room table is already exists");
 			
 		}	
 			
@@ -50,7 +51,7 @@ public class AjWebListener implements ServletContextListener{
 	public void contextDestroyed(ServletContextEvent arg0) {
 		System.out.println("context destroyed");
 		try {
-			chat.drop();
+			message.drop();
 			
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

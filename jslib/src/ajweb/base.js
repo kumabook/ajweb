@@ -4,7 +4,6 @@
  * @author Hiroki Kumamoto
  * @version 1.0.0
  */
-
 dojo.provide("ajweb.base");
 
 if(!ajweb){
@@ -32,6 +31,8 @@ if(!ajweb){
 }
 
 ajweb.databases = [];
+
+ajweb.server_databases = [];
 ajweb.elements = [];
 ajweb.addElement = function(element){
   for(var i = 0; i < ajweb.elements; i++){

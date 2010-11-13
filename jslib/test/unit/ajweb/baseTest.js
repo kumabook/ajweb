@@ -1,10 +1,10 @@
 dojo.require("ajweb.base");
-dojo.require("ajweb.widget.SelectBox");
+dojo.require("ajweb.widget.Selectbox");
 function testById(){
-  var roomSelectBox = new ajweb.widget.SelectBox({id: "roomSelectBox", top: "50px", left: "100px", label: "name"});
+  var roomSelectbox = new ajweb.widget.Selectbox({id: "roomSelectbox", top: "50px", left: "100px", label: "name"});
 
   assertEquals(1, ajweb.elements.length);
-  assertEquals("roomSelectBox", ajweb.byId("roomSelectBox").id);
+  assertEquals("roomSelectbox", ajweb.byId("roomSelectbox").id);
 
 };
 

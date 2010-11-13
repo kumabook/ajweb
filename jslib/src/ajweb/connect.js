@@ -6,14 +6,11 @@
  */
 dojo.provide("ajweb.connect");
 
-
-
 /** @namespace ajweb.connect */
 ajweb.connect = {};
 /** methodOf ajweb.connect# */
 ajweb.send = function(url, table, action, json, callback){
   ajweb.log.trace("ajweb.send " + table + "  " + action + "  ");
-//var json = ajweb.toJSON(params);
   dojo.xhrPost(
     {
       url: url,
@@ -48,7 +45,7 @@ ajweb.join = function(url){
       load: function(data, ioargs){
 	ajweb.log.trace("join  response=" + data);
 	for(var i = 0; i < ajweb.onLoad.length; i++){
-	  ajweb.onLoad[i]();
+	  ajweb.onLoad[i]();//joinした後にアプリケーションコードを呼び出す
 	}
 //	ajweb.polling(url);
       },
@@ -61,13 +58,6 @@ ajweb.join = function(url){
 /** methodOf ajweb.connect# */
 // 監視する対象 table 名とcondition(param)の配列   //グローバル変数を参照する
 ajweb.polling = function(url){
-//  var param = {};
-//  var json = ajweb.data.getConditionsJSON();
-/*  for(var i = 0; i < ajweb.databases.length; i++){//	databaseのリストから ポーリング条件用のjson文字列を生成
-    ajweb.databases[i].getConditionsJSON();
-      param[ajweb.databases[i].tablename].push(ajweb.databases[i].conditions);
-
-  };*/
   var param = ajweb.data.toJSONConditions();
   ajweb.log.info(param);
   dojo.xhrPost(
@@ -76,7 +66,6 @@ ajweb.polling = function(url){
       handleAs: "json",
       content: {
 	"action": "poll",
-	//"param" : ajweb.toJSON(param)
 	"param" : param
       },
       load: function(data, ioargs){// サーバデータの変更の配列が送られてくる
@@ -84,8 +73,6 @@ ajweb.polling = function(url){
 	for(var i = 0; i < data.length; i++){
 	  for(var j = 0; j < ajweb.databases.length; j++){
 	    if(ajweb.databases[j].tablename == data[i].table){
-//	      		alert(ajweb.stores[j].param.value + " ==  " + data[i].item[ajweb.stores[j].param.property]);
-//	      if(ajweb.stores[j].param.value == data[i].item[ajweb.stores[j].param.property]){
 	      try{
 		if(data[i].action == "insert"){//テーブルが等しいだけで入れてよい？
 		    ajweb.databases[j].onInsert(data[i].item);
@@ -99,7 +86,6 @@ ajweb.polling = function(url){
 	      } catch(e){
 	      ajweb.log.error(e);
 	      }
-	//    }
 	    }
 	  }
 	}
@@ -174,4 +160,13 @@ ajweb.sync = function(){
 ajweb.onLoad = [];
 ajweb.addOnLoad = function(func){
   ajweb.onLoad.push(func);
+};
+
+
+ajweb.addEvent = function(target, type, condition, action){
+  dojo.connect(target, type, null, function(targetItem, database){
+    if(condition.evaluate())
+      action(targetItem);
+	 }
+  );
 };

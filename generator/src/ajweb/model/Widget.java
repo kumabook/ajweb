@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.eclipse.jetty.util.ajax.JSON;
 
-import ajweb.db.Condition;
+import ajweb.data.Condition;
 import ajweb.utils.Template;
 
 public class Widget implements Expression{
@@ -24,11 +24,31 @@ public class Widget implements Expression{
 		widgets.add("label");
 		widgets.add("textbox");
 		widgets.add("selectbox");
-		widgets.add("select");
 		widgets.add("panel");
 		widgets.add("frame");
 	}
 	
+	
+	public String toJsSource() throws IOException{
+		String jsSource = "";
+		Template widget_template = new Template("js/widget");
+		widget_template.apply("ID", id);
+		widget_template.apply("NAME", type);
+		widget_template.apply("PROPERTIES", JSON.toString(properties));
+		
+		jsSource += widget_template.source;
+		
+		for(int i = 0; i < children.size(); i++){
+			Template add_child_template = new Template("js/addChildWidget");
+			add_child_template.apply("PARENT", id);
+			add_child_template.apply("CHILD", children.get(i).id);
+			jsSource += children.get(i).toJsSource()
+				+ add_child_template.source;
+		}
+		
+		return jsSource;
+		
+	}
 	
 	
 	@SuppressWarnings("unchecked")

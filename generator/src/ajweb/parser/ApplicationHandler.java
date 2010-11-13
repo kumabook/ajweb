@@ -35,29 +35,16 @@ public class ApplicationHandler extends AbstractHandler {
 	*/
 	ArrayList<String> servlet = new ArrayList<String>();;
 	
-	
-	
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attrs)
-    throws SAXException {
-		Log.fine("Application Handler startElemnt :" + qName);
-		//System.out.println(qName);
-		super.startElement(uri, localName, qName, attrs);
-	}
-		
-	
 	@Override
 	protected void initialize(XMLReader newReader, AbstractHandler initParent,
 			Attributes attrs, String elementName) throws SAXException {
-		// TODO Auto-generated method stub
-		
+			
 		super.initialize(newReader, initParent, attrs, elementName);
 		//System.out.println("application    " + attributes.get("name"));
-		application = new Application(Config.appName, Config.workDir);
+		application = new Application(attributes.get("name"), Config.workDir);
 	}
 	@Override
 	protected void addExpression(Expression exp) throws SAXException {
-//		System.out.println("application" +  "         children     "+exp);
 		if (exp instanceof Widget)
 			this.application.widgets.add((Widget) exp);
 		else if (exp instanceof Databases){
@@ -72,16 +59,10 @@ public class ApplicationHandler extends AbstractHandler {
 	@Override
 	public void endElement(
 		String uri, String localName, String qName) throws SAXException{
-
 		Log.fine("ApplicaitonHandler endElement:" + qName);
-		
-		
 		setExpression(application);
-		
-
 		super.endElement(uri, localName, qName);
 	}
-	
 	
 	public void generate(){
 		this.application.generate();

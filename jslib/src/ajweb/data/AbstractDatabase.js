@@ -32,15 +32,26 @@ dojo.declare("ajweb.data.AbstractDatabase", null,
     /** テーブル名
      * @field */
     this.tablename = opt.tablename;
-    /** カラムの配列
+    /** カラムとその型のハッシュ
      * @field */
     this.properties = opt.properties;
+    /** カラムの配列
+     * @field */
+    this.properties_list = opt.properties_list;
+    /** 参照のテーブルのリスト
+     * @field */
+    this.ref = opt.ref;
+    /** ポーリング条件のリスト
+     * @field */
     this.conditions = [];
+    /** データベースのタイプ(サーバかクライアントか)
+     * @field */
     this.type = opt.type;
     ajweb.addElement(this);
+    ajweb.databases.push(this);//ポーリングを行うデータベースリストに追加
   },
   /**
-   * insert
+   * 挿入
    * @return
    */
   insert: function(params){
@@ -63,6 +74,19 @@ dojo.declare("ajweb.data.AbstractDatabase", null,
    */
   select: function(where, next){
   },
+  getRefItem: function(property){
+    var refDatabase;
+    if(this.ref[property]){
+      if(this.ref[property].multiplicity == "*"){
+	refDatabase = ajweb.data.getDatabaseById(property);
+	if(refDatabase)
+	  refDatabase.select();
+      }
+      else {
+
+      }
+    }
+  },
   /**
    * ajweb.data.AbstractDatabase を追加
    * @return
@@ -80,7 +104,7 @@ dojo.declare("ajweb.data.AbstractDatabase", null,
 
   onInsert: function(item){
     ajweb.log.trace("onInsert: " + dojo.toJson(item));
-    ajweb.log.info("onInsert: " + dojo.toJson(item));
+//    ajweb.log.info("onInsert: " + dojo.toJson(item));
   },
   onDelete: function(){
     ajweb.log.trace("onDelete: "  + dojo.toJson(item));

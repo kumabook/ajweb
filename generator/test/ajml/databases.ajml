@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <application name="test">
+  <application name="chat">
     <databases>
-      <database id="rooms">
+      <database id="room_database" tablename="room">
 	<property name="name" type="string"/>
+	<property name="message" type="ref" multiplicity="*" ref="message"/>
 	<init>
 	  <item><property name="name"><string>ルーム１</string></property></item>
 	  <item name="ルーム２"/>
@@ -12,12 +13,18 @@
 	  <item name="ルーム５"/>
 	</init>
       </database>
-      <database id="messages">
+      <database id="message_database" tablename="message">
 	<property name="user" type="string"/>
 	<property name="message" type="string"/>
 	<property name="posted" type="datetime"/>
-	<property name="roomId" type="int"/>
+	<property name="room" type="ref" multiplicity="1" ref="room"/>
       </database>
+<!--      <driver id="">
+	<driverClass/>
+	<databaseName/>
+	<user/>
+	<password/>
+      </driver> -->
     </databases>
   </application>
 </ajml>

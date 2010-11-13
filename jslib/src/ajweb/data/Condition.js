@@ -13,6 +13,7 @@ dojo.declare("ajweb.data.AbstractCondition", null,
       this.left = opt.left;
       this.right = opt.right;
       this.operand = opt.operand;
+      this.type = opt.type;
     },
     setLeft :function(left){
       this.left = left;
@@ -38,14 +39,16 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
   {
     evaluate: function(targetItem){
       var left, right;
-      if(this.left instanceof ajweb.data.Item)
+      left = this.encodeRefItem(this.left);
+      right = this.encodeRefItem(this.right);
+/*      if(this.left instanceof ajweb.data.Item)//ajweb.data.Itemはサーバのポーリング条件にのみ使う
 	left = targetItem[this.left.property];
       else
-	left = eval(this.left);
+	left = eval(this.left);//ポーリングの場合は，leftはコードの文字列になっているのでevalして
       if(this.right instanceof ajweb.data.Item)
 	right = targetItem[this.left.property];
       else
-	right = eval(this.right);
+	right = eval(this.right);*/
 
       if(this.op == "eq"){
 	return left == right;
@@ -68,14 +71,36 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
       throw new Error("unknown condition operator: " + this.op);
     },
     toJSON: function(){
-      var json_obj = {op:  this.op, property: this.left.property , value: eval(this.right)};
-      return json_obj;
+      var json_obj;
+      if(this.type == "select"){
+	if(this.left instanceof ajweb.data.Item)
+	  json_obj = {op:  this.op, property: this.left.property , value: this.right};
+	else
+	  json_obj = {op:  this.op, property: this.right.property , value:this.left};
+      }
+      else {
+	if(this.left instanceof ajweb.data.Item)
+	  json_obj = {op:  this.op, property: this.left.property , value: eval(this.right)};
+	else
+	  json_obj = {op:  this.op, property: this.right.property , value: eval(this.left)};
+      }
+
+      if(json_obj.value instanceof Object)//参照型だったら
+	json_obj.value = json_obj.value.id;
+
+	return json_obj;
     },
     isContainDatabaseItem: function(){
       if(this.left instanceof ajweb.data.Item || this.right instanceof ajweb.data.Item)
 	return true;
       else
 	return false;
+    },
+    encodeRefItem: function(operand){
+      if(operand instanceof Object) //参照型ならidに変換
+	return operand.id;
+      else
+	return operand;
     }
   }
 );

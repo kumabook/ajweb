@@ -7,9 +7,12 @@ public class TargetItem implements Parameterable, Expression{
 		this.property = property;
 	}
 	@Override
-	public String toJsCode() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toJsSource(Flowable func, String key, Action rest) {
+		return "new ajweb.data.Item({ property: \"" + property + "\"});";
+	}
+	@Override
+	public boolean isSelect() {
+		return false;
 	}
 }
 

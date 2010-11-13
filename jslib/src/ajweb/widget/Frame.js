@@ -13,13 +13,7 @@ dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
 	 });
        this.element = this.widget.domNode;
    },
-/*   selectPanel: function(panel){
 
-	   this.widget.selectChild(panel.widget);
-//	   alert("call select element starup");
-	   panel.startup();
-
-   },*/
    startup: function(){
 	   this.widget.startup();
 	   this.widget.domNode.style.position = "absolute";
@@ -29,7 +23,7 @@ dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
 	   this.widget.domNode.style.left = this.left;
 	   this.widget.domNode.style.backgroundColor= this.color;
 
-     //子供のstartup()を呼び出する
+     //子供のstartup()を呼び出しする
 //     for(var i = 0; i < this.children.length; i++){
        //	alert(this.children[i].id  + "  startup");
   //     this.children[i].startup();
@@ -64,9 +58,11 @@ dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
 	  this.selectChild =child;
   },
   selectPanel : function(params){
-	  this.widget.selectChild(params.child.id);
-	  this.setSelectChild(params.child);
-	 params.child.startup();
+//    var id = params.child;
+    var child = params.child;
+    this.widget.selectChild(child.widget);
+    this.setSelectChild(child);
+    child.startup();
 //	  this.startup();
   },
   onload : [],

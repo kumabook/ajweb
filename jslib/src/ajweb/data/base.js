@@ -1,5 +1,7 @@
+
 dojo.provide("ajweb.data.base");
 dojo.require("ajweb.base");
+
 
 if(!ajweb.data){
 /** @namespace */
@@ -9,15 +11,26 @@ if(!ajweb.data){
 
 ajweb.data.toJSONConditions = function(){
   var obj = {};
-
-  for(var i = 0; i < ajweb.databases.length; i++){
-    obj[ajweb.databases[i].tablename] = [];
-    for(var j = 0; j < ajweb.databases[i].conditions.length; j++){
-      if(ajweb.databases[i].conditions[j].isContainDatabaseItem()){
+  var databases = ajweb.server_databases;
+  for(var i = 0; i < databases.length; i++){
+    if(databases[i].type == "server"){
+      obj[databases[i].tablename] = [];
+      for(var j = 0; j < databases[i].conditions.length; j++){
+	if(databases[i].conditions[j].isContainDatabaseItem()){
 //	alert(j + "  " + ajweb.toJSON(ajweb.databases[i].conditions[j]));
-	obj[ajweb.databases[i].tablename].push(ajweb.databases[i].conditions[j]);
-      }
+	obj[databases[i].tablename].push(databases[i].conditions[j]);
+	  }
+	}
     }
   }
   return ajweb.toJSON(obj);
+};
+
+ajweb.data.getDatabaseById = function(id){
+  for(var i = 0; i < ajweb.databases[i].length; i++){
+    if(ajweb.databases[i].id == id){
+      return ajweb.databases[i];
+    }
+  }
+  return null;
 };

@@ -1,0 +1,7 @@
+	try {
+		${TABLENAME}.create();
+		System.out.println("${TABLENAME} create");
+${INITIALIZE}
+	} catch (Exception e) {
+		System.out.println("${TABLENAME} is already exists");
+	}

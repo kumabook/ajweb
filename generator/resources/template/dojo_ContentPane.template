@@ -1,3 +1,0 @@
-var /*NAME*/ = new dijit.layout.ContentPane({
-    id: /*ID*/,
-    parent: /**/
