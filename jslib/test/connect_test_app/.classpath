@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="WEB-INF/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/hiroki/ajweb/trunk/jslib/test/jsunit/java/lib/jetty_5.1.11/org.mortbay.jetty.jar"/>
+	<classpathentry kind="lib" path="/Users/hiroki/ajweb/trunk/jslib/test/jsunit/java/lib/javax/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="/Users/hiroki/ajweb/trunk/generator/dist/ajweb.jar"/>
+	<classpathentry kind="lib" path="/Users/hiroki/ajweb/trunk/generator/lib/jetty-all-7.0.2.v20100331.jar"/>
+	<classpathentry kind="output" path="WEB-INF/classes"/>
+</classpath>
