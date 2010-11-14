@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.jetty.util.ajax.JSON;
 
+import ajweb.Config;
 import ajweb.utils.FileUtils;
 import ajweb.utils.Template;
 /**
@@ -44,9 +45,10 @@ public class Database implements Expression{
 		String fs = FileUtils.fs;
 		try {//fileÇ…èëÇ´èoÇ∑
 			FileUtils.writeFile(workDirectory + fs + appName + fs + "WEB-INF" + fs +"src" + fs + "ajweb" + fs + "db" + fs + tablename + ".java", toJavaSource());
-			System.out.println("generate " + workDirectory + fs +  appName + fs + 
-					"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "db" + 
-					fs  + tablename + ".java");			
+			if(Config.isStandardOutput)
+				System.out.println("generate " + workDirectory + fs +  appName + fs + 
+						"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "db" + 
+						fs  + tablename + ".java");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

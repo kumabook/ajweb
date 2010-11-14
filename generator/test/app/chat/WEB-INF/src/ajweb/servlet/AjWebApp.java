@@ -26,7 +26,7 @@ public class AjWebApp extends AbstractServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {	
 		Log.serverLogger.fine("doGet");
-		
+		System.out.println("doGet");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		Log.serverLogger.fine("chat app doGet");

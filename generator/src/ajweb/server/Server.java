@@ -1,9 +1,7 @@
 package ajweb.server;
 
 import java.awt.Desktop;
-
 import java.net.URI;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
