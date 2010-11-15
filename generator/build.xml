@@ -54,8 +54,18 @@
 					<test name="ajweb.AllTests"/>
 			</junit>
 	</target>
-
-	<target name="app_test" depends="jar">
+	<target name="compile_unittest" depends="compile">
+			<mkdir dir="./test/classes"/>
+			<javac destdir="./test/classes" includeAntRuntime="no">
+					<src path="./test/unit/"/>
+					<classpath>
+							<fileset dir="./lib">
+									<include name="*.jar"/>
+							</fileset>
+					</classpath>
+			</javac>
+	</target>
+	<target name="app_test" depends="test_app_chat_compile">
 			<copy file="${basedir}/dist/ajweb.jar"  todir="${basedir}/test/app/chat/WEB-INF/lib/" overwrite="true"/>
 			<java classname="ajweb.server.AppTestServer" dir="${basedir}">
 			<classpath>
@@ -67,7 +77,18 @@
 		</java>
 	</target>
 
-
+	<target name="test_app_chat_compile" depends="jar">
+			<mkdir dir="./test/app/chat/WEB-INF/classes"/>
+			<javac destdir="./test/app/chat/WEB-INF/classes/" includeAntRuntime="no">
+					<src path="./test/app/chat/WEB-INF/src"/>
+					<classpath>
+							<fileset dir="./lib">
+									<include name="*.jar"/>
+							</fileset>
+							<pathelement location="./dist/ajweb.jar"/>
+					</classpath>
+			</javac>
+	</target>
 
 	<target name="generate">
 	</target>

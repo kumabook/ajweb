@@ -112,8 +112,8 @@
         <file file="${customJsUnitJarPath}"/>
     </path>
 
-    <target name="start_server" description="Starts a JsUnit Server">
-        <java fork="true" classname="net.jsunit.JsUnitServer">
+	<target name="start_server" description="Starts a JsUnit Server">
+		<java fork="true" classname="net.jsunit.JsUnitServer" dir="${basedir}">
             <classpath refid="classpath"/>
             <sysproperty key="java.util.logging.config.file" value="${loggingPropertiesFile}"/>
             <sysproperty key="browserFileNames" value="${browserFileNames}"/>
@@ -133,10 +133,12 @@
         </java>
     </target>
 
-    <target name="standalone_test" description="Runs tests on the local machine">
-        <junit showoutput="true" haltonerror="true" haltonfailure="true">
+	<target name="standalone_test" description="Runs tests on the local machine">
+			<echo message="${basedir}"/>
+			<junit showoutput="true" haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <classpath refid="classpath"/>
+			<sysproperty key="ajweb.jslib.basedir" value="${basedir}"/>
             <sysproperty key="java.util.logging.config.file" value="${loggingPropertiesFile}"/>
             <sysproperty key="browserFileNames" value="${browserFileNames}"/>
             <sysproperty key="description" value="${description}"/>

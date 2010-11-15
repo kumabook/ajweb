@@ -8,8 +8,10 @@ import javax.servlet.ServletContextListener;
 
 import org.eclipse.jetty.util.ajax.JSON;
 
+import ajweb.data.Sql;
 import ajweb.data.message;
 import ajweb.data.room;
+import ajweb.data.users;
 
 
 public class AjWebListener implements ServletContextListener{
@@ -41,7 +43,22 @@ public class AjWebListener implements ServletContextListener{
 			System.out.println(e);
 			System.out.println("room table is already exists");
 			
-		}	
+		}
+		
+		try {
+			users.create();
+			System.out.println("users create");
+			
+			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumabook\", \"password\": \""+Sql.encryption("password")+"\"}"));
+			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumamoto\", \"password\": \""+Sql.encryption("kumamoto")+"\"}"));
+			System.out.println(Sql.encryption("hiroki"));
+			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"hiroki\", \"password\": \""+Sql.encryption("hiroki")+"\"}"));
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("room table is already exists");
+			
+		}
 			
 			
 		

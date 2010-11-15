@@ -134,8 +134,6 @@ public class AjWebApp extends AbstractServlet {
 					else if(tablename.equals("room"))
 						change(req, resp,  session.getId(), tablename, "delete", room.delete(param));
 					else ;
-
-
 					;
 					
 					out.print("{ result : true");
@@ -143,6 +141,15 @@ public class AjWebApp extends AbstractServlet {
 					out.print("{ result : false");
 					e.printStackTrace();
 				}
+			}
+			else if(action.equals("login")){
+				boolean _result = false;
+				try {
+					_result = users.login((String) param.get("userid"), (String) param.get("password"));
+				} catch (Exception e) {
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
 			}
 		}
 	}

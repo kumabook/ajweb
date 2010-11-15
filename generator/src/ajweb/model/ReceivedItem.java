@@ -14,7 +14,7 @@ public class ReceivedItem implements Parameterable, Expression {
 			return "targetItem." + this.property ;
 	}
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 }

@@ -85,9 +85,7 @@ public class AjWebApp extends AbstractServlet {
 						result = message.select(condition);
 					else if(tablename.equals("room"))
 						result = room.select(condition);
-					else 
-
-
+					else
 					result = new ArrayList<HashMap<String, String>>();
 					out.print("{ items : " + JSON.toString(result) + "}");
 				} catch (Exception e) {
@@ -102,8 +100,6 @@ public class AjWebApp extends AbstractServlet {
 					else if(tablename.equals("room"))
 						change(req, resp,  session.getId(), tablename, "insert", room.insert(param));
 					else ;
-
-
 					;
 					
 					out.print("{ result : true");
@@ -119,8 +115,6 @@ public class AjWebApp extends AbstractServlet {
 					else if(tablename.equals("room"))
 						change(req, resp,  session.getId(), tablename, "update", room.update(param));
 					else ;
-
-
 					;
 					
 					out.print("{ result : true");
@@ -136,8 +130,6 @@ public class AjWebApp extends AbstractServlet {
 					else if(tablename.equals("room"))
 						change(req, resp,  session.getId(), tablename, "delete", room.delete(param));
 					else ;
-
-
 					;
 					
 					out.print("{ result : true }");
@@ -155,7 +147,6 @@ public class AjWebApp extends AbstractServlet {
 			return message.properties;	
 		}
 		else
-
 			return null;
 	}
 }

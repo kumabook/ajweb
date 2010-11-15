@@ -2,3 +2,5 @@ ajweb project memo
 
 レポジトリを作成． 2010/10/4 16:17
 
+
+jsunit を最新版に変更、および通信もテスト可能なようにAbstractJsUnitServerを修正 2010/11/14 17:11

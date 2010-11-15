@@ -21,10 +21,8 @@ public class EventsTest {
 		try {
 			app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "chat.ajml");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -32,7 +30,7 @@ public class EventsTest {
 	@Test
 	public void testToJsSource() throws IOException, SAXException{
 		events = app.events;
-		//System.out.println(events.toJsSource(app.databases));
+	//	System.out.println(events.toJsSource(app.databases));
 	}
 	
 	@Test
@@ -40,8 +38,7 @@ public class EventsTest {
 		Action action = app.events.get(0).action;
 		assertEquals(1, action.size());
 		Call call = (Call) action.get(0);
-		
-		assertEquals("root.selectPanel({panel:\"entrance_room\"});\n", call.toJsSource(null, null, new Action()));
+		assertEquals("root.selectPanel({panel:\"entrance_room\"});", call.toJsSource(null, null, new Action()));
 	}
 	
 	@Test
@@ -49,8 +46,8 @@ public class EventsTest {
 		Action action = new Action();
 		
 		ArrayList<Param> params = new ArrayList<Param>();
-		params.add(new Param("datum1", new Get("room", "select", new ArrayList<Param>())));
-		params.add(new Param("datum2", new Get("message", "select", new ArrayList<Param>())));
+		params.add(new Param("datum1", new Get("room", "select", null, new ArrayList<Param>())));
+		params.add(new Param("datum2", new Get("message", "select", null, new ArrayList<Param>())));
 		Call call = new Call("roomSelect", "load", params);
 		
 		assertEquals(2, call.params.size());
@@ -59,10 +56,9 @@ public class EventsTest {
 		assertEquals("room", get.element);
 		assertEquals("select", get.getter);
 		
-		
 		ArrayList<Param> params1 = new ArrayList<Param>();
-		params1.add(new Param("datum1", new Get("room1", "select", new ArrayList<Param>())));
-		params1.add(new Param("datum2", new Get("message1", "select", new ArrayList<Param>())));
+		params1.add(new Param("datum1", new Get("select", "room1", null, new ArrayList<Param>())));
+		params1.add(new Param("datum2", new Get("message1", "select", null, new ArrayList<Param>())));
 		Call call1 = new Call("table", "load", params1);
 		
 		action.add(call);
@@ -71,13 +67,22 @@ public class EventsTest {
 	}
 	
 	@Test
-	public void testToJsSourceCondition(){
-		
+	public void testToJsSourceCondition() throws IOException{
+		Condition con = new Condition("eq", new ReceivedItem("room"), new Get("room_database", "get", "SelectItem", new ArrayList<Param>()));
+		//System.out.println(con.toJsSource(null, null, null));
 	}
 	
 	@Test
-	public void testToJsSourceParam(){
-		
+	public void testToJsSourceParam() throws IOException{
+		ArrayList<Param> params = new ArrayList<Param>();
+		params.add(new Param("key", new Get("selectBox", "get", "selectItem")));
+		params.add(new Param("key1", new Primitive("int", "1")));
+		params.add(new Param("key2", new Primitive("string", "test")));
+		Get select = new Get("select", "selectId", null, params);
+		assertEquals("{ key: selectBox.getselectItem(), key1: 1, key2: \"test\"}", select.paramToJsSource(null, null, null));
 	}
+	
+	//@Test
+	//public void test
 	
 }

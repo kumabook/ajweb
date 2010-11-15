@@ -2,7 +2,7 @@ dojo.provide("ajweb.widget.Textbox");
 dojo.require("dijit.form.TextBox");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
-/** @lends ajweb.widget.TextBox */
+/** @lends ajweb.widget.Textbox */
 
 {
   /** テキストボックスコンポーネントを作成します
@@ -36,7 +36,7 @@ dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
                           left: this.left,
                           width: this.width
                         },
-                        value: this.value
+			value: this.value
         });
         this.element = this.widget.domNode;
 

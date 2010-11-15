@@ -1,5 +1,7 @@
 package ajweb.data;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -64,6 +66,9 @@ public class Sql {
 		if(st.equals("string")){
 			return "varchar(100)";
 		}
+		else if(st.equals("password")){
+			return "varchar(100)";
+		}
 		else if(st.equals("int")){
 			return "int";
 		}
@@ -82,6 +87,25 @@ public class Sql {
 		
 		return st;
 	}
+	
+	public static String encryption(String st) throws NoSuchAlgorithmException{
+		byte[] _bytes = st.getBytes();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(_bytes);
+		
+		byte[] bytes = md.digest();
+		
+		StringBuffer hexString = new StringBuffer();  
+		for (int i = 0; i < bytes.length; i++) {  
+			if ((0xff & bytes[i]) < 0x10) {  
+				hexString.append("0" + Integer.toHexString((0xFF & bytes[i])));  
+			} else {  
+				hexString.append(Integer.toHexString(0xFF & bytes[i]));  
+			}  
+		}  
+		return hexString.toString();
+	}
+	
 	/**
 	 * コネクションを取得
 	 * @return
@@ -116,12 +140,12 @@ public class Sql {
 	 * @throws ClassNotFoundException
 	 */
 	public void create(String tableName, HashMap<String,String> properties) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-	
-		String sql = "CREATE TABLE " + tableName + "( ";
+		String sql = "CREATE TABLE " + tableName + "( ";	
 		
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
 //		sql += "id int NOT NULL GENERATED ALWAYS AS IDENTITY primary key, ";
 		sql += "id int NOT NULL primary key, ";
+	
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
 			sql += e.getKey() + " " + getType(e.getValue());
@@ -132,6 +156,44 @@ public class Sql {
 		
 		Log.finer(sql);
 
+		conn = getConnection();
+		Statement st = conn.createStatement();
+		st.execute(sql);
+		st.close();
+		conn.commit();
+		close();
+		Log.finer("new table '" + tableName + "' created.");
+
+	}
+	
+	/**
+	 * IDカラムを指定してデータベーステーブルを作成
+	 * @param tableName テーブル名
+	 * @param properties スキーマのプロパティのハッシュ(名前とデータ型)
+	 * @throws SQLException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	public void create(String tableName, HashMap<String,String> properties, String idProperty) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	
+		String sql = "CREATE TABLE " + tableName + "( ";
+		
+		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
+//		sql += "id int NOT NULL GENERATED ALWAYS AS IDENTITY primary key, ";
+		sql += "id int NOT NULL primary key, ";
+		while(ite.hasNext()){
+			Entry<String, String> e = ite.next();
+			if(e.getKey().equals(idProperty))
+				sql += e.getKey() + " varchar(20) NOT NULL primary key"; 
+			else 
+				sql += e.getKey() + " " + getType(e.getValue());
+			if(ite.hasNext()) 
+				sql += " ,";
+		}
+		sql += " )";
+		
+		Log.finer(sql);
 		conn = getConnection();
 		Statement st = conn.createStatement();
 		st.execute(sql);
@@ -167,7 +229,7 @@ public class Sql {
 		
 	
 	/**
-	 * INSERT文を実行
+	 * INSERT文を実行(idを自動的に付加)
 	 * @param param
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
@@ -232,7 +294,8 @@ public class Sql {
 		return result;
 			
 	}	
-		
+			
+	
 	/**
 	 * update文を実行(idベースに変更する必要あり)
 	 * @param tableName
@@ -366,13 +429,42 @@ public class Sql {
 			
 			return result;
 		}
-		
-		public void close() throws SQLException{
-			if(this.conn == null)
-				return;
-			this.conn.close();
-			this.conn = null;
+	/**
+	 * idをもつレコードがのcheckdPropertyの値がcheckedValueと等しいかチェック
+	 * @param tableName
+	 * @param idProperty
+	 * @param id
+	 * @param checkedProperty
+	 * @param checkedValue
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public boolean check(String tableName, HashMap<String, String> properties, HashMap<String, String> param, String idProperty) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		Condition con = new Condition("eq", idProperty, param.get(idProperty));
+		ArrayList<HashMap<String, String>> result = select(tableName, properties, con);
+
+		if(result.size() == 1){// && result.get(0).containsKey(checkedProperty)){
+			Iterator<String> ite = param.keySet().iterator();
+			while(ite.hasNext()){
+				String key = ite.next();
+				if(!result.get(0).get(key).equals(param.get(key)))
+						return false;
+			}
+			return true;
 		}
+		else 
+			return false;
+	}
+		
+	public void close() throws SQLException{
+		if(this.conn == null)
+			return;
+		this.conn.close();
+		this.conn = null;
+	}
 				
 }
 

@@ -15,7 +15,7 @@ public class AjWebListener implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent arg0) {
 	System.out.println("context initialized");
 
-	try {
+try {
 		room.create();
 		System.out.println("room create");
 		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚P\"}"));
@@ -27,8 +27,7 @@ public class AjWebListener implements ServletContextListener{
 	} catch (Exception e) {
 		System.out.println("room is already exists");
 	}
-
-	try {
+try {
 		message.create();
 		System.out.println("message create");
 		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚P\"}"));
@@ -40,7 +39,6 @@ public class AjWebListener implements ServletContextListener{
 	} catch (Exception e) {
 		System.out.println("message is already exists");
 	}
-
     }
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {

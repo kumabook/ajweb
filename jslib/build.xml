@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="AjWeb System javaScript Framework" default="jsconcat" basedir=".">
+<project name="AjWeb System javaScript Framework" default="dist" basedir=".">
 
 	<property name="jssrc" value="src" />		
 	<property name="basedir" value="./" />		
@@ -35,19 +35,33 @@
 			</exec>
 			<exec executable="./bin/jslib_deploy"/> 
 	</target>
-
-	<target name="unittest" >
+	<target name="compile_connect_test_app">
+			<mkdir dir="./test/connect_test_app/WEB-INF/classes"/>
+			<javac destdir="./test/connect_test_app/WEB-INF/classes/" includeAntRuntime="no">
+					<src path="./test/connect_test_app/WEB-INF/src"/>
+					<classpath>
+							<fileset dir="../generator/lib/">
+									<include name="*.jar"/>
+							</fileset>
+							<pathelement location="../generator/dist/ajweb.jar"/>
+					</classpath>
+			</javac>
+	</target>
+	<target name="unittest" depends="compile_connect_test_app">
+			<echo message="${basedir}" />
 			<condition property="browserFileNames"
 					value="C:¥Program Files¥Mozilla Firefox3¥firefox.exe"
 					description="this is light browser test : ie + firefox">
 					<os family="dos"/>
 			</condition>
+			<!--value="./bin/launch_url_with_browser &apos;/Applications/Firefox.app&apos;" -->
 			<condition property="browserFileNames"
-					value="open"
+					value="open" 
 					description="this is light browser test : ie + firefox">
 					<os family="mac"/>
 			</condition>
 			<subant>
+					<property name="basedir" value="${basedir}"/>
 					<property name="browserFileNames" value="${browserFileNames}"/>
 					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns"
 							value="true"

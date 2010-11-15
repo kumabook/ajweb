@@ -47,7 +47,7 @@ public class Condition extends AbstractCondition{
 		condition_template.apply("OP", op);
 		condition_template.apply("LEFT", left.toJsSource(func, key, next));
 		condition_template.apply("RIGHT", "" + right.toJsSource(func, key, next));
-		return condition_template.source;
+		return condition_template.source.trim();
 		//return "new ajweb.data.Condition({op: " + op + ", left: " + left.toJsSource(next) +", right: " + right.toJsSource(next)+ "}).evaluete()";
 	}
 
@@ -59,11 +59,11 @@ public class Condition extends AbstractCondition{
 		condition_template.apply("DATABASE", database);
 		condition_template.apply("PROPERTY", receivedItem.property);
 		condition_template.apply("FUNCTION", "" + right.toJsSource(func, key, rest) + "");
-		return condition_template.source;
+		return condition_template.source.trim();
 	}
 
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 }

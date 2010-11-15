@@ -42,6 +42,7 @@ public class Template {
 			
 			source = matcher.replaceAll(value);// ’u‚«Š·‚¦‚é•¶Žš—ñ‚Ì’†‚Ì$‚ð‚à‚Æ‚É–ß‚·
 			source = source.replaceAll("\\\\\\$","\\$");
+			source = source.trim();
 		}
 	}
 	

@@ -31,14 +31,27 @@ function setUp(){
     }
   );
 
-  condition1 = new ajweb.data.Condition({op: "eq", left: new ajweb.data.Item({database: room_database, property: "name"}), right: '1'});
-  condition2 = new ajweb.data.Condition({op: "eq", left: new ajweb.data.Item({database: message_database, property: "user_name"}), right: '"kumamoto"'});
+  condition1 = new ajweb.data.Condition(
+    {
+      op: "eq",
+      left: function(){return new ajweb.data.Item({database: room_database, property: "name"});},
+      right: function(){return 1;}
+    }
+  );
+  condition2 = new ajweb.data.Condition(
+    {
+      op: "eq",
+      left: function(){return new ajweb.data.Item({database: message_database, property: "user_name"});},
+      right: function(){return "kumamoto";}
+    }
+  );
   and = new ajweb.data.Conditions({op: "and", left: condition1, right: condition2});
   or = new ajweb.data.Conditions({op: "or", left: condition1, right: condition2});
   not = new ajweb.data.Conditions({op: "not", operand: condition1});
 
-  condition3 = new ajweb.data.Condition({op: "eq", left: '1' , right: '2'});
-  condition4 = new ajweb.data.Condition({op: "eq", left: '"test"' , right: '"test"'});
+  condition3 = new ajweb.data.Condition({op: "eq", left: function(){return 1;} , right: function(){return 2;}});
+  condition4 = new ajweb.data.Condition({op: "eq", left: function(){return "test";} , right: function(){return "test";}});
+
 
 }
 
@@ -78,6 +91,7 @@ function testToJSON(){
 };
 
 function testEvaluate(){
+
   assertFalse(condition3.evaluate());
   assertTrue(condition4.evaluate());
   var and = new ajweb.data.Conditions({op: "and", left: condition3, right: condition4});
@@ -87,10 +101,10 @@ function testEvaluate(){
   assertTrue(or.evaluate());
   assertTrue(not.evaluate());
 
-  condition3.setLeft(2);
+  condition3.setLeft(function(){return 2;});
   assertTrue(condition3.evaluate());
 
-  condition4.setRight('"test1"');
+  condition4.setRight(function(){ return '"test1"';});
   assertFalse(condition4.evaluate());
 
 }
@@ -99,35 +113,35 @@ function testRefEvaludate(){
   var condition5 = new ajweb.data.Condition(
 		     {
 		       op: "eq",
-		       left: {id: 1, name: "test1" },
-		       right: 1
+		       left: function(){return {id: 1, name: "test1" };},
+		       right: function(){return 1;}
 		     });
 
   assertTrue(condition5.evaluate());
   var condition6 = new ajweb.data.Condition(
 		     {
 		       op: "eq",
-		       left: 2,
-		       right: {id: 1, name: "test1" }
+		       left: function(){return 2;},
+		       right:function(){return {id: 1, name: "test1" };}
 		     });
   assertFalse(condition6.evaluate());
   var condition7 = new ajweb.data.Condition(
 		     {
 		       op: "eq",
-		       left: {id: 2, name: "test2"},
-		       right: {id: 1, name: "test3"}
+		       left: function(){return {id: 2, name: "test2"};},
+		       right: function(){return {id: 1, name: "test3"};}
 		     });
   assertFalse(condition7.evaluate());
   var condition8 = new ajweb.data.Condition(
 		     {
 		       op: "eq",
-		       left: {id: 2, name: "test2"},
-		       right: {id: 2, name: "test3"}
+		       left: function(){return {id: 2, name: "test2"};},
+		       right: function(){return {id: 2, name: "test3"};}
 		     });
   assertTrue(condition8.evaluate());
 }
 
-function testIsContainDatabaseItem(){
+function dtestIsContainDatabaseItem(){
 
   assertTrue(condition1.isContainDatabaseItem());
   assertTrue(condition2.isContainDatabaseItem());

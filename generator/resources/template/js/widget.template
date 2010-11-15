@@ -1,1 +1,1 @@
-		var ${ID} = new ajweb.widget.${NAME}(${PROPERTIES});
+var ${ID} = new ajweb.widget.${NAME}(${PROPERTIES});

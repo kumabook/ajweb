@@ -14,6 +14,9 @@ public class Get implements Parameterable, Expression{
 		elements.add("selectById");
 		elements.add("selectByCondition");
 		elements.add("selectRefItem");
+		elements.add("login");
+		elements.add("check");
+		
 		
 		//算術計算
 		elements.add("math");
@@ -26,56 +29,69 @@ public class Get implements Parameterable, Expression{
 	}
 	public String element;
 	public String getter;
+	public String property;
 	public ArrayList<Param> params;
 	public Parameterable param;
 	
-	public Get(String element, String getter, ArrayList<Param> params){
+	public Get(String element,String getter, String property, ArrayList<Param> params){
 		this.element = element;
 		this.getter = getter;
+		this.property = property;
 		this.params = params;
 	}
-	public Get(String element, String getter, Parameterable param){
+	public Get(String element,String getter,String property, Parameterable param){
 		this.element = element;
 		this.getter = getter;
+		this.property = property;
 		this.param = param;
+	}
+	public Get(String element,String getter, String property){
+		this.element = element;
+		this.getter = getter;
+		this.property = property;
 	}
 	
 	public String paramToJsSource(Flowable func, String key, Action rest) throws IOException{
-		String json = "{";
-		for(int i = 0; i < params.size(); i++){
-			json += params.get(i).key + ":" + ""+ params.get(i).value.toJsSource(func, key, rest) + "";
+		if(this.params==null)
+			if(this.param==null)
+				return "";
+			else 
+				return param.toJsSource(func, key, rest);
+		else {
+			String json = "{ ";
+			for(int i = 0; i < params.size(); i++){
+			json += params.get(i).key + ":" + " "+ params.get(i).value.toJsSource(func, key, rest) + "";
 			if(i != params.size()-1)
-				json += ",";
-			else
-				json+= "}";
+				json += ", ";
+			}
+			json+= "}";
+			return json;
 		}
-		return json;
 	};
 
 	@Override
 	public String toJsSource(Flowable func, String key, Action rest) throws IOException {
 		String jsSource = "";
 		
-		if(getter.equals("get")){
+		if(!isContainCallback()){
 			
 			Template getter_template = new Template("js/getter");
 			getter_template.apply("ELEMENT", element);
 			getter_template.apply("GETTER", getter);
+			if(property==null)
+				property = "";
+			getter_template.apply("PROPERTY", property);
 			getter_template.apply("PARAMS", paramToJsSource(func, key, rest));
-			
 
-			jsSource = getter_template.source;
+			jsSource = getter_template.source.trim();
 		}
 		else {//select系だったらコールバックにfunc({key:items ....};  rest  を追加する
 			Template select_template = new Template("js/select");
 			select_template.apply("DATABASE", element);
 			select_template.apply("SELECT", getter);
 			select_template.apply("PARAMS", paramToJsSource(func, key, rest));
-			
 			select_template.apply("COUNT", key);
-			
 			select_template.apply("FUNC", func.toJsSource(func, key, rest));
-			
 			select_template.apply("REST", rest.toJsSource(null, null, null));
 			jsSource = select_template.source;
 			//CallBackItems.count--; //引数の衝突を避けるためにコールバックの深さを減らす
@@ -90,9 +106,10 @@ public class Get implements Parameterable, Expression{
 		return "get: " + element	;
 	}
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		if(getter.equals("select") || getter.equals("selectById") 
-				|| getter.equals("selectByCondition") || getter.equals("selectRefItem"))
+				|| getter.equals("selectByCondition") || getter.equals("selectRefItem") 
+					|| getter.equals(("check")) || getter.equals("login"))
 			return true;
 		else
 			return false;

@@ -87,7 +87,7 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 	}
 
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 

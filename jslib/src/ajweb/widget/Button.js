@@ -46,11 +46,17 @@ dojo.declare("ajweb.widget.Button",
 	      width: this.width
 	    }
 	  });
-	    this.element = this.widget.domNode;
-	  },
-	  startup: function(){
-	    this.widget.startup();
-	  },
+	  this.element = this.widget.domNode;
+	  dojo.connect(this.widget, "onClick", this, function(){
+			 this.onClick();
+	  });
+	},
+	onClick: function(){
+
+	},
+	startup: function(){
+	  this.widget.startup();
+	},
   /**
    * inspectメソッド：デバッグ情報を出力
    * @return {String} デバッグ用出力
@@ -60,3 +66,5 @@ dojo.declare("ajweb.widget.Button",
 		return "ButtonWidget" + this.id;
 	}
 });
+
+

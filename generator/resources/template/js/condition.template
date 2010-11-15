@@ -1,7 +1,7 @@
 new ajweb.data.Condition(
 				    {
 				    	op: "${OP}",
-					left: ${LEFT}
-					right: ${RIGHT}
+					left: function(receivedItem){return ${LEFT};},
+					right: function(receivedItem){return ${RIGHT};}
 				    }
-			).evaludate()
+			)

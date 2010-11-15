@@ -52,7 +52,7 @@ public class Call implements Expression, Flowable{
 				//ajweb.utils.JSON.toString(params));
 		boolean selectFlag = false;
 		for(int i = 0; i < params.size(); i++){
-			if(params.get(i).value.isSelect()){//select系のコールバックで値を受け取るものがあれば、残りの処理をコールバックで渡す
+			if(params.get(i).value.isContainCallback()){//select系のコールバックで値を受け取るものがあれば、残りの処理をコールバックで渡す
 				Param param = params.remove(i);
 				String _key = param.key;
 				Get select = (Get) param.value;

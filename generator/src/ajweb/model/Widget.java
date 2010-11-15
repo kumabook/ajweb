@@ -24,6 +24,8 @@ public class Widget implements Expression{
 		widgets.add("label");
 		widgets.add("textbox");
 		widgets.add("selectbox");
+		widgets.add("passwordbox");
+		widgets.add("dialog");
 		widgets.add("panel");
 		widgets.add("frame");
 	}
@@ -36,14 +38,14 @@ public class Widget implements Expression{
 		widget_template.apply("NAME", type);
 		widget_template.apply("PROPERTIES", JSON.toString(properties));
 		
-		jsSource += widget_template.source;
+		jsSource += "\t\t\t" + widget_template.source;
 		
 		for(int i = 0; i < children.size(); i++){
 			Template add_child_template = new Template("js/addChildWidget");
 			add_child_template.apply("PARENT", id);
 			add_child_template.apply("CHILD", children.get(i).id);
-			jsSource += children.get(i).toJsSource()
-				+ add_child_template.source;
+			jsSource += "\n" + children.get(i).toJsSource()
+				+ "\n\t\t\t" + add_child_template.source;
 		}
 		
 		return jsSource;

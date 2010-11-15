@@ -38,7 +38,8 @@ public class InterfacesTest {
 		}
 		
 		File widget = new File("test/file/source/widget.js");
-		assertEquals(INTERFACES, FileUtils.read(widget));
+		
+		assertEquals(INTERFACES.trim(), FileUtils.read(widget).trim());
 		
 	}
 }

@@ -18,7 +18,7 @@ public class CallBackItems implements Parameterable{
 	}
 
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 

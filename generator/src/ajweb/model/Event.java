@@ -40,7 +40,8 @@ public class Event implements Expression{
 		
 		Template event_tempate = new Template("js/event");
 		event_tempate.apply("TARGET", target);
-		event_tempate.apply("TYPE", type);
+		String onType = "on" + type.substring(0, 1).toUpperCase() + type.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É‚µ‚Äon‚ð‚Â‚¯‚é
+		event_tempate.apply("TYPE", onType);
 		event_tempate.apply("ACTION", ACTION);
 		if(condition != null)
 			event_tempate.apply("CONDITION", condition.toJsSource(null, null, null));
@@ -55,7 +56,7 @@ public class Event implements Expression{
 				condition_template.apply("DATABASE", databases.get(i).id);
 				condition_template.apply("CONDITION", condition.toJsPollingCondition(databases.get(i).id, null, polling_condiitons, action));
 				
-				polling_condiitons += "\n" + condition_template.source;
+				polling_condiitons += "\n\t\t" + condition_template.source;
 
 			}
 		}

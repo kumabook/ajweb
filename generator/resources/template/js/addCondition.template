@@ -1,2 +1,2 @@
-		${DATABASE}.addCondition(${CONDITION}
+${DATABASE}.addCondition(${CONDITION}
 		);

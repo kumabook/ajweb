@@ -36,7 +36,7 @@ public class DatabaseTest {
 		Database rooms = databases.get(0);
 		
 		File room = new File("test/file/source/room.java");
-		assertEquals(rooms.toJavaSource(), FileUtils.read(room));
+		assertEquals(rooms.toJavaSource(), FileUtils.read(room).trim());
 		//System.out.println(FileUtils.read(room));
 		//System.out.println(databases.get(1).toJavaSource());
 	}
@@ -48,14 +48,15 @@ public class DatabaseTest {
 		assertEquals(databases.get(0).tablename, "room");
 		
 		File servlet = new File("test/file/source/servlet.java");
-		assertEquals(FileUtils.read(servlet), databases.toServletSource(app.appName));
+		assertEquals(FileUtils.read(servlet).trim(), databases.toServletSource(app.appName));
 	}
 		
 	@Test
 	public void testToListenerSource() throws IOException{
 		File listener = new File("test/file/source/listener.java");
 		String source = databases.toListenerSource();
-		assertEquals(FileUtils.read(listener), source);
+		
+		assertEquals(FileUtils.read(listener).trim(), source);
 	}
 	
 	@Test
@@ -64,7 +65,7 @@ public class DatabaseTest {
 		Database message_database = databases.get(1);
 		
 		File database_js = new File("test/file/source/database.js");
-		assertEquals(FileUtils.read(database_js), message_database.toJsSource());
+		assertEquals(FileUtils.read(database_js).trim(), message_database.toJsSource());
 	}
 		
 }

@@ -9,7 +9,7 @@
 
 		<target name="unittest">
 				<subant target="unittest" buildpath="jslib"> 
-						<property name="basedir" value="jslib"/>
+						<!--	<property name="basedir" value="jslib"/> -->
 				</subant>
 				<subant target="unittest" buildpath="generator">
 						<!--		<property name="basedir" value="generator"/> -->

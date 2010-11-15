@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
+  <display-name>ajweb test chat app </display-name>
   <listener>
   	<listener-class>ajweb.servlet.AjWebListener</listener-class>
   </listener>
@@ -17,7 +18,10 @@
     <url-pattern>/dbservlet</url-pattern>
   </servlet-mapping>
   
-  
+  <context-param>
+  	<param-name>app_name</param-name>
+  	<param-value>chat</param-value>
+  </context-param>
   
 <!--  ${SERVLET} -->
   

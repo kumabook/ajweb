@@ -2,7 +2,7 @@ package ajweb.data;
 
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +24,7 @@ public class message {
 		properties.put("room", "int");
 	}
 	
-	static String dbName = "jdbc:derby:" + Config.workDir + "/dferbyd";
+	static String dbName = "jdbc:derby:" + Config.workDir + "/derby/chat";
 	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
 	static String tableName = "message";
 	
@@ -58,6 +58,7 @@ public class message {
 	public static HashMap<String, String> update(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		return sql.update(tableName, properties, param);
 	}
-
+	
+	
 }
 

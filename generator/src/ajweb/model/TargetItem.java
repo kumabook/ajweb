@@ -11,7 +11,7 @@ public class TargetItem implements Parameterable, Expression{
 		return "new ajweb.data.Item({ property: \"" + property + "\"});";
 	}
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 }

@@ -7,7 +7,21 @@
 dojo.provide("ajweb.data.Condition");
 
 dojo.declare("ajweb.data.AbstractCondition", null,
+/** @lends ajweb.data.AbstractCondition.prototype */
 {
+/**
+ * Constructor
+ * @class conditionのスーパークラス
+ *
+ * @constructs
+ *
+ * @param {Object} opt 初期化用のパラメータオブジェクト
+ * @param {String} opt.op operator名
+ * @param {Function} opt.left
+ * @param {Function} opt.right
+ * @param {Function} opt.operand
+ * @param {String} opt.type
+ */
   constructor : function(opt){
       this.op = opt.op;
       this.left = opt.left;
@@ -34,13 +48,15 @@ dojo.declare("ajweb.data.AbstractCondition", null,
 );
 
 
-
 dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
+/** @lends ajweb.data.Condition.prototype */
   {
     evaluate: function(targetItem){
       var left, right;
-      left = this.encodeRefItem(this.left);
-      right = this.encodeRefItem(this.right);
+      left = this.encodeRefItem(this.left(targetItem));
+      right = this.encodeRefItem(this.right(targetItem));
+//      left = this.encodeRefItem(this.left);
+//      right = this.encodeRefItem(this.right);
 /*      if(this.left instanceof ajweb.data.Item)//ajweb.data.Itemはサーバのポーリング条件にのみ使う
 	left = targetItem[this.left.property];
       else
@@ -72,17 +88,19 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
     },
     toJSON: function(){
       var json_obj;
+      var left = this.left();
+      var right = this.right();
       if(this.type == "select"){
-	if(this.left instanceof ajweb.data.Item)
-	  json_obj = {op:  this.op, property: this.left.property , value: this.right};
+	if(left instanceof ajweb.data.Item)
+	  json_obj = {op:  this.op, property: this.left.property , value: right};
 	else
-	  json_obj = {op:  this.op, property: this.right.property , value:this.left};
+	  json_obj = {op:  this.op, property: this.right.property , value:left};
       }
       else {
-	if(this.left instanceof ajweb.data.Item)
-	  json_obj = {op:  this.op, property: this.left.property , value: eval(this.right)};
+	if(left instanceof ajweb.data.Item)
+	  json_obj = {op:  this.op, property: left.property , value: right};
 	else
-	  json_obj = {op:  this.op, property: this.right.property , value: eval(this.left)};
+	  json_obj = {op:  this.op, property: right.property , value: left};
       }
 
       if(json_obj.value instanceof Object)//参照型だったら
@@ -91,7 +109,7 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
 	return json_obj;
     },
     isContainDatabaseItem: function(){
-      if(this.left instanceof ajweb.data.Item || this.right instanceof ajweb.data.Item)
+      if(this.left() instanceof ajweb.data.Item || this.right() instanceof ajweb.data.Item)
 	return true;
       else
 	return false;
@@ -106,17 +124,18 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
 );
 
 dojo.declare("ajweb.data.Conditions", ajweb.data.AbstractCondition,
+/** @lends ajweb.data.Conditions.prototype */
 {
 
-  evaluate: function(){
+  evaluate: function(targetItem){
     if(this.op == "and"){
-      return this.left.evaluate() && this.right.evaluate();
+      return this.left.evaluate(targetItem) && this.right.evaluate(targetItem);
     }
     else if(this.op == "or"){
-      return this.left.evaluate() || this.right.evaluate();
+      return this.left.evaluate(targetItem) || this.right.evaluate(targetItem);
     }
     else if(this.op == "not"){
-      return !this.operand.evaluate();
+      return !this.operand.evaluate(targetItem);
     }
     else
       throw new Error("unknown condition operator:" + this.op);

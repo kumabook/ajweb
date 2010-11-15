@@ -34,3 +34,11 @@ ajweb.data.getDatabaseById = function(id){
   }
   return null;
 };
+ajweb.data.login = function(params, next){
+  ajweb.send("dbservlet",
+	     "users",
+	     "login",
+	     params,
+	     next
+  );
+};

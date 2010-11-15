@@ -61,13 +61,14 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * insert
    * @return
    */
-  insert: function(params){
+  insert: function(params, next){
 
     if(navigator.onLine){//onlineならサーバに送信
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "insert",
-		 this.encodeRefItem(params)
+		 this.encodeRefItem(params),
+		 next
 		);
     }
     else {//オフラインならローカルへ変更を保存し、変更履歴も保存
@@ -80,12 +81,13 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * 削除
    * @return
    */
-  remove: function(params){
+  remove: function(params, next){
     if(navigator.onLine){
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "delete",
-		 params
+		 params,
+		 next
 		);
     }
     else {//オフラインならローカルへ変更を保存し、変更履歴も保存
@@ -97,13 +99,14 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * 更新
    * @return
    */
-  update: function(params){
+  update: function(params, next){
     var json = ajweb.toJSON(params);
     if(navigator.onLine){
       ajweb.send("dbservlet",
 		 this.tablename,
 		 "update",
-		 this.encodeRefItem(params)
+		 this.encodeRefItem(params),
+		 next
 		);
     }
     else {//オフラインならローカルへ変更を保存し、変更履歴も保存
@@ -154,6 +157,22 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
   selctById: function(id, next){
     return this._select({op: "eq", property: "id", value: id}, next);
   },
+  check: function(params, next){
+    if(navigator.onLine){//onlineならサーバに送信
+      ajweb.send("dbservlet",
+		 this.tablename,
+		 "check",
+		 this.encodeRefItem(params),
+		 next
+		);
+    }
+    else {//オフラインならローカルへ変更を保存し、変更履歴も保存 要検討
+    if(window.google && google.gears)
+      var item = ajweb.sql.insert(this.tablename, this.properties, params);
+      this.saveHistory("check",item);
+    }
+  },
+
   /**
    * 履歴を保存
    * @return

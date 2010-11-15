@@ -104,7 +104,8 @@ public abstract class AbstractJsUnitServer {
         
 //      File appDir = new File("../../../generator/test/app");
 //		File[] apps = appDir.listFiles();
-        File webAppDir = new File("../connect_test_app");
+		String basedir = System.getProperty("ajweb.jslib.basedir");
+        File webAppDir = new File(basedir + "/test/connect_test_app");
 		WebApplicationContext webapp = new WebApplicationContext();
 		System.out.println("app " + webAppDir.getName() + "  deploy on test server");
 		webapp.setContextPath("/connect_test_app");
@@ -112,9 +113,9 @@ public abstract class AbstractJsUnitServer {
 		webapp.setDefaultsDescriptor(webAppDir.getAbsolutePath() + "/WEB-INF/web.xml");
 		webapp.setResourceBase(webAppDir.getAbsolutePath() + "/");
 		webapp.addClassPath(webAppDir.getAbsolutePath() + "/WEB-INF/classes");
-		webapp.addClassPath("../../../generator/dist/ajweb.jar");
-		webapp.addClassPath("../../../generator/lib/jetty-all-7.0.2.v20100331.jar");
-		webapp.addClassPath("../../../generator/lib/derby.jar");
+		webapp.addClassPath(basedir + "/../generator/dist/ajweb.jar");
+		webapp.addClassPath(basedir + "/../generator/lib/jetty-all-7.0.2.v20100331.jar");
+		webapp.addClassPath(basedir + "/../generator/lib/derby.jar");
 		
         ResourceHandler resource_handler = new ResourceHandler();
         resourceHandler.setDirAllowed(false);

@@ -134,3 +134,15 @@ ajweb.log.fatal = function(log){
   if(ajweb.log.getLevelValue(ajweb.log.level) <= ajweb.log.getLevelValue("fatal"))
     console.fatal(log);
 };
+
+
+ajweb.addEvent = function(target, type, condition, callback){
+ return  dojo.connect(target, type, null, function(receivedItem, database){
+    var con = condition;
+    if(!condition instanceof ajweb.data.AbstractCondition)
+      con = condition.evaluate(receivedItem, database);
+    if(con){
+      callback(receivedItem, database);
+      }
+    });
+};

@@ -28,9 +28,9 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
      this.children = [];
      this.content = opt.content;
 	if(opt.width) this.width = opt.width;
-	else this.width = "100%";
+	else this.width = "100px";
 	if(opt.height) this.height = opt.height;
-	else this.height = "100%";
+	else this.height = "100px";
 	if(opt.top) this.top = opt.top;
 	else this.top = "0px";
 	if(opt.left) this.left = opt.left;
@@ -39,11 +39,12 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
 	else this.color = "white";
 	this.widget = new dijit.Dialog({
 		id : this.id,
-		content: opt.content,
-			 style: "width: " + this.width + "; height: " + this.height + "; background-color: " + this.color + ";"
-			 ,onLoad :function(){ console.log("panel " + this.id + "  onload");}
-			 });
-		 this.element = this.widget.domNode;
+		content: this.content,
+		style: "width: " + this.width + "; height: " + this.height + "; background-color: " + this.color + ";",
+		onLoad :function(){ console.log("panel " + this.id + "  onload");},
+		title: this.title
+	});
+	this.element = this.widget.domNode;
 	},
 	startup: function(){
 	//	alert("panel startup");
@@ -88,12 +89,15 @@ dojo.declare("ajweb.widget.Dialog",ajweb.widget.Widget,
 	   return false;
 	 }
 
- },
- show: function(){
+   },
+   show: function(){
 
 	this.onShow();
-	this.element.show();
- },
+	this.widget.show();
+   },
+   onShow: function(){
+
+   },
 
    /** ロード時に呼び出される関数を保持する配列*/
    onload : [],

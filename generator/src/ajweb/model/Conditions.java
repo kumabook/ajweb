@@ -60,7 +60,7 @@ public class Conditions extends AbstractCondition{
 	}
 
 	@Override
-	public boolean isSelect() {
+	public boolean isContainCallback() {
 		return false;
 	}
 	
