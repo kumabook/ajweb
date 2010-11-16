@@ -2,6 +2,7 @@ package ajweb.parser;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import ajweb.model.Application;
 import ajweb.model.Database;
-import ajweb.model.Parameterable;
+import ajweb.model.Param;
 import ajweb.generator.Compiler;
 import ajweb.utils.FileUtils;
 
@@ -17,7 +18,7 @@ public class DatabasesHandlerTest {
 	
 	@Test
 	public void testDatabasesHandler() throws SAXException, IOException{
-		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "databases.ajml");
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "databases.ajml"));
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 			Database room = app.databases.get(0);
 			assertEquals(room.id, "room_database");
@@ -48,14 +49,18 @@ public class DatabasesHandlerTest {
 			assertEquals(message_ref.get(0).get("multiplicity"), "1");
 			
 			
+			assertEquals(5, room.initItems.size());
+			assertEquals(0, message.initItems.size());
 			
-			ArrayList<HashMap<String, Parameterable>> items = room.initItem;
 			
-			assertEquals(items.get(0).get("name").toString(), "ƒ‹[ƒ€‚P");
-			assertEquals(items.get(1).get("name").toString(), "ƒ‹[ƒ€‚Q");
-			assertEquals(items.get(2).get("name").toString(), "ƒ‹[ƒ€‚R");
-			assertEquals(items.get(3).get("name").toString(), "ƒ‹[ƒ€‚S");
-			assertEquals(items.get(4).get("name").toString(), "ƒ‹[ƒ€‚T");
+			//ArrayList<HashMap<String, Parameterable>> items = room.initItem;
+			ArrayList<ArrayList<Param>> items = room.initItems;
+			
+			assertEquals(Param.paramToJavaSource(items.get(0)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ƒ‹[ƒ€‚P\\\\\\\\\"}");
+			assertEquals(Param.paramToJavaSource(items.get(1)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ƒ‹[ƒ€‚Q\\\\\\\\\"}");
+			assertEquals(Param.paramToJavaSource(items.get(2)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ƒ‹[ƒ€‚R\\\\\\\\\"}");
+			assertEquals(Param.paramToJavaSource(items.get(3)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ƒ‹[ƒ€‚S\\\\\\\\\"}");
+			assertEquals(Param.paramToJavaSource(items.get(4)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ƒ‹[ƒ€‚T\\\\\\\\\"}");
 			
 	}
 	

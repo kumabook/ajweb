@@ -40,12 +40,21 @@ public abstract class AbstractHandler extends DefaultHandler {
         	handlers.put("application", new HandlerFactory() {//windowHandlerFactory
                 public AbstractHandler create() { return new ApplicationHandler(); }});
         	
-        	handlers.put("interfaces", new HandlerFactory() {//HandlerFactory
-                public AbstractHandler create() { return new InterfacesHandler(); }});
+        	
         	handlers.put("databases", new HandlerFactory() {//HandlerFactory
                 public AbstractHandler create() { return new DatabasesHandler(); }});
-        	handlers.put("events", new HandlerFactory() {//HandlerFactory
-                public AbstractHandler create() { return new EventsHandler(); }});
+        	handlers.put("database", new HandlerFactory() {//HandlerFactory
+                public AbstractHandler create() { return new DatabaseHandler(); }});
+        	
+        	handlers.put("init", new HandlerFactory() {
+                public AbstractHandler create() { return new InitHandler(); }});
+        	handlers.put("item", new HandlerFactory() {
+                public AbstractHandler create() { return new ItemHandler(); }});
+        	handlers.put("property", new HandlerFactory() {
+                public AbstractHandler create() { return new ParamHandler(); }});
+        	
+        	handlers.put("interfaces", new HandlerFactory() {
+                public AbstractHandler create() { return new InterfacesHandler(); }});
         	
         	handlers.put("widget", new HandlerFactory() {
                 public AbstractHandler create() { return new WidgetHandler(); }});
@@ -54,6 +63,8 @@ public abstract class AbstractHandler extends DefaultHandler {
         	handlers.put("predicate", new HandlerFactory() {
                 public AbstractHandler create() { return new PredicateHandler(); }});
         	
+        	handlers.put("events", new HandlerFactory() {//HandlerFactory
+                public AbstractHandler create() { return new EventsHandler(); }});
         	
         	handlers.put("event", new HandlerFactory() {
                 public AbstractHandler create() { return new EventHandler(); }});

@@ -1,13 +1,9 @@
 package ajweb.parser;
 
 import java.util.ArrayList;
-
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-
-import ajweb.Config;
 import ajweb.model.Action;
 import ajweb.model.Application;
 import ajweb.model.Databases;
@@ -25,14 +21,6 @@ import ajweb.utils.Log;
 public class ApplicationHandler extends AbstractHandler {
 	Application application;
 		
-
-	/*static String workDirectory;
-	static String appName;
-	static {
-		workDirectory = Main.workDirectory;
-		appName = Main.appName;
-	}
-	*/
 	ArrayList<String> servlet = new ArrayList<String>();;
 	
 	@Override
@@ -41,7 +29,7 @@ public class ApplicationHandler extends AbstractHandler {
 			
 		super.initialize(newReader, initParent, attrs, elementName);
 		//System.out.println("application    " + attributes.get("name"));
-		application = new Application(attributes.get("name"), Config.workDir);
+		application = new Application(attributes.get("name"));
 	}
 	@Override
 	protected void addExpression(Expression exp) throws SAXException {
@@ -64,9 +52,9 @@ public class ApplicationHandler extends AbstractHandler {
 		super.endElement(uri, localName, qName);
 	}
 	
-	public void generate(){
+	/*public void generate(){
 		this.application.generate();
-	}
+	}*/
 	
 	public String toString(){
 		return "ApplicaitonHandler";

@@ -194,12 +194,12 @@ dojo.addOnLoad(
 		 });
     //入室処理
     ajweb.addEvent(enterButton.widget, "onClick", true, function(){
-		   message_database.insert({message : userNameTextbox.widget.value + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem().id, posted : ajweb.date.now({})});
+		     message_database.insert({message : userNameTextbox.widget.value + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.date.now({})});
 		   contentsFrame.selectPanel({child: messagePanel});
 		 });
     //メッセージの送信
     ajweb.addEvent(messageSubmitButton.widget, "onClick", true, function(){
-		   message_database.insert({message : messageTextbox.widget.value,user_name : userNameTextbox.widget.value,room : roomSelectbox.getSelectItem().id,posted : ajweb.date.now({})});
+		   message_database.insert({message : messageTextbox.widget.value,user_name : userNameTextbox.widget.value,room : roomSelectbox.getSelectItem({property: "id"}),posted : ajweb.date.now({})});
 		 });
     //メッセージの変更を反映
     var insert_condition = new ajweb.data.Condition(

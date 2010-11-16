@@ -103,7 +103,7 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void test_parse(){
+	public void testParseCondition(){
 		String condition_json = "{\"op\": \"eq\", \"property\": \"name\", \"value\": \"test\" }";
 		Condition condition = (Condition) Condition._parse(condition_json);
 		assertEquals(condition.operator, "eq");
@@ -127,7 +127,7 @@ public class ConditionTest {
 		assertEquals(right.value, "1");
 	}
 	@Test 
-	public void testParse(){
+	public void testParseActionCondition(){
 
 		
 		String table_conditions_json = "{" +

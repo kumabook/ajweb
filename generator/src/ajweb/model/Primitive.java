@@ -91,4 +91,31 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 		return false;
 	}
 
+	@Override
+	public String toJavaSource() {
+
+	if(type.equals(("string")) || (type.equals(("text")))){
+		return "\\\\\\\\\"" + value + "\\\\\\\\\""; 
+	}
+	else if(type.equals(("int")) || type.equals(("boolean"))){
+		return  value; 
+	}
+	else if(type.equals("datetime")){
+	
+	}
+	else if(type.equals("date")){
+		return "datetime:";
+	}
+	else if(type.equals("time")){
+		return "datetime:";
+	}
+	else
+		try {
+			throw new Exception("unknown value");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	return type;
+	}
 }

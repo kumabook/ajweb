@@ -70,26 +70,26 @@ public class Main {
 	 */
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
-		System.setProperty("ajweb.work",".ajweb" + ajweb.generator.Main.fs + "runtime");
+		//System.setProperty("ajweb.work",".ajweb" + ajweb.generator.Main.fs + "runtime");
 		String ajml;
+		Boolean source = false; //ソースのままを生成するか
 		Boolean run = false; // サーバーを実行するかどうか
 		Boolean clean = false; // データベースを削除するかどうか
 		if(args.length == 0){
-			System.out.println("ajmlc:ajml ファイルを入力してください");
+			System.out.println("ajmlc: please input ajml file!");
 			return;
 		}
 		else {
 			ajml = args[0];
-			
-			appName = new File(ajml).getName().replaceAll("\\..*", "");
-			//Config.appName = appName;
+			appName = new File(ajml).getName().replaceAll("\\..*", ""); //ajml中にapplicaitonの名前がない場合
 		}
-		
+		//コンパイルオプションを取得
 		for (int i = 1; i < args.length; ++i) {
             if ("-appname".equals(args[i])) {
-            	
                 appName = args[++i];
-                
+            } 
+            else if ("-source".equals(args[i])) {
+                run = true;
             } 
             else if ("-run".equals(args[i])) {
                 run = true;
@@ -97,16 +97,14 @@ public class Main {
             else if ("-clean".equals(args[i])) {
                 clean = true;
             } 
-            else {
+            else if ("-help".equals(args[i])){
             	System.err.println("ajmlc:引数指定の誤り：未知の引数が指定されました");
             }
 		}
 		
-		
-		
 		System.out.println("ajml : "  + ajml + ",  appName : " + appName);
 //		generate("resources/" + ajml);
-		generate(ajml);
+	//	generate(ajml);
 		
 		/*if(clean){
 			for(DBData dbdata: AjmlHandler.app.dbDatum){
@@ -130,54 +128,5 @@ public class Main {
 		if(run) //作成されたアプリを立ち上げるデバッグ用
 			Server.runSource(workDirectory +fs+ appName, appName);
 	}
-
-	/**
-	 * ajmlファイルを読み込み、html,javascript,javaファイルを作成
-	 * @param path
-	 * @throws Exception 
-	 */
-	public static void generate(String path) throws Exception{
-		System.out.println("ajmlc   appName: " + appName);
-
-		try{
-			Application app = Compiler.parse(path);
-			Compiler.generate(app, Config.workDir, appName + ".war");
-		
-		} catch (SAXException e ){
-			System.out.println("ajmlc:error  ajmlの構文が間違っています :" + path);
-			e.printStackTrace();
-		    System.exit(0);
-		}
-	}
 	
-	public static void generate(InputSource is) throws Exception{
-		System.out.println("ajmlc   appName: " + appName);
-
-		try{
-			Application app = Compiler.parse(is);
-			Compiler.generate(app, Config.workDir, appName + ".war");
-		
-		} catch (SAXException e ){
-			System.out.println("ajmlc:error  ajmlの構文が間違っています ");
-			e.printStackTrace();
-		}
-	}
 }
-
-class SchemaErr implements ErrorHandler {
-	   // 致命的なエラーが発生した場合
-	  public void fatalError(SAXParseException e) {
-	    System.out.println("致命的なエラー: " + e.getLineNumber() +"行目");
-	    System.out.println(e.getMessage());
-	  }
-	   // エラーが発生した場合
-	  public void error(SAXParseException e) {
-	    System.out.println("エラー: " + e.getLineNumber() +"行目");
-	    System.out.println(e.getMessage());
-	  }
-	   // 警告が発生した場合
-	  public void warning(SAXParseException e) {
-	    System.out.println("警告: " + e.getLineNumber() + "行目");
-	    System.out.println(e.getMessage());
-	  }
-	}

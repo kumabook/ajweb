@@ -3,7 +3,8 @@ package ajweb.generator;
 import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 import ajweb.Config;
@@ -12,19 +13,18 @@ import ajweb.utils.FileUtils;
 
 public class CompilerTest {
 	
-	Application app;
+	static Application app;
 	
-	@Before
-	public void setUp(){
+	@BeforeClass
+	public static void beforeClass() throws Exception{
 		Config.isStandardOutput = false;
-		try {
-			app = Compiler.parse("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}		
+		Config.workDir = "test/temp";
+		
+		app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
+		Compiler.setup(Config.workDir + "/" + app.appName);
+
 	}
+	
 	@Test
 	public void testParse() throws IOException, SAXException{
 		assertEquals("test", app.appName);
@@ -32,9 +32,6 @@ public class CompilerTest {
 	
 	@Test
 	public void testSetup() throws Exception{
-		Config.workDir = "test/temp";
-		
-		Compiler.setup(Config.workDir, "test");
 		File appDirectory = new File(Config.workDir + FileUtils.fs +  app.appName);
 //		File jslib = new File(Config.workDir + FileUtils.fs + appName + FileUtils.fs + "jslib");
 		File web_inf = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF");
@@ -48,33 +45,58 @@ public class CompilerTest {
 		assertTrue(classes.isDirectory());
 		assertTrue(src.isDirectory());
 		assertTrue(lib.isDirectory());
-		
-		FileUtils.delete(new File(Config.workDir + FileUtils.fs + "test"));
+
 	}
+	
 	@Test
 	public void testJavaCompile() throws Exception{
-		//Compiler.javaCompile(Config.workDir, "test");
+		boolean result = Compiler.javaCompile("test/file/compile");
+		assertTrue(result);
+		File room_classes = new File("test/file/compile/WEB-INF/classes/ajweb/data/room.class");
+		File message_classes = new File("test/file/compile/WEB-INF/classes/ajweb/data/message.class");
+		File users_classes = new File("test/file/compile/WEB-INF/classes/ajweb/data/users.class");
+		
+		File servlet_classes = new File("test/file/compile/WEB-INF/classes/ajweb/servlet/AjWebServlet.class");
+		File listener_classes = new File("test/file/compile/WEB-INF/classes/ajweb/servlet/AjWebListener.class");
+		
+		assertTrue(room_classes.exists());
+		assertTrue(message_classes.exists());
+		assertTrue(users_classes.exists());
+		
+		assertTrue(servlet_classes.exists());
+		assertTrue(listener_classes.exists());
+		
+		FileUtils.delete(new File("test/file/compile/WEB-INF/classes/ajweb"));
+		
+		boolean false_result = Compiler.javaCompile("test/file/false_compile");
+		assertFalse(false_result);
+		
 	}
 	
+	@Test
+	public void testGenerateWar() throws Exception{
+		Compiler.generateWar(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), new File("test/temp/test.war"));
+		File warFile = new File("test/temp/test.war");
+		assertTrue(warFile.exists());		
+		warFile.delete();
+		assertFalse(new File(Config.workDir + "/chat").exists());
+	}
 	
-	public void testGenerate() throws Exception{
-		Config.workDir = "test/temp";
+	@Test
+	public void testGenerateSource() throws Exception {
+		String sourcePath = Config.workDir+"test";
+		Compiler.generateSource(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), sourcePath);
 		
-		Application app_chat = Compiler.parse("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml");
-
-		Compiler.setup(Config.workDir, app_chat.appName);
-		//Compiler.generate(app, Config.workDir, "test.war");
-		Compiler.generate(app, Config.workDir, "test.war");
-		
-		File war = new File("test.war");
-		assertTrue(war.exists());
-		//war.delete();
-		
-		File temp_dir = new File(Config.workDir + FileUtils.fs + app_chat.appName);
-		FileUtils.delete(temp_dir);
-		
+		File sourceDir = new File(sourcePath);
+		assertTrue(sourceDir.exists());		
+		FileUtils.delete(sourceDir);
+		assertFalse(sourceDir.exists());
 		
 	}
-
+	
+	@AfterClass
+	public static void afterClass(){
+		FileUtils.delete(new File(Config.workDir + FileUtils.fs + app.appName));
+	}
 	
 }

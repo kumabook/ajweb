@@ -7,10 +7,10 @@
 	<property name="message" type="ref" multiplicity="*" ref="message"/>
 	<init>
 	  <item><property name="name"><string>ルーム１</string></property></item>
-	  <item name="ルーム２"/>
-	  <item name="ルーム３"/>
-	  <item name="ルーム４"/>
-	  <item name="ルーム５"/>
+	  <item><property name="name"><string>ルーム２</string></property></item>
+	  <item><property name="name"><string>ルーム３</string></property></item>
+	  <item><property name="name"><string>ルーム４</string></property></item>
+	  <item><property name="name"><string>ルーム５</string></property></item>
 	</init>
       </database>
       <database id="message_database" tablename="message">

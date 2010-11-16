@@ -114,4 +114,9 @@ public class Get implements Parameterable, Expression{
 		else
 			return false;
 	}
+	@Override
+	public String toJavaSource() {
+		// 現時点ではサーバ側では使わない
+		return null;
+	}
 }

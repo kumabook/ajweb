@@ -4,6 +4,7 @@ package ajweb.parser;
 import ajweb.generator.Compiler;
 import ajweb.model.Application;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class ApplicationHandlerTest {
 	@Test
 	public void testApplicationHandler() throws SAXException, IOException{
 		//FileInputStream fi = new FileInputStream("resources" + FileUtils.fs + "test" +  FileUtils.fs + "root.ajml");
-		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "root.ajml");
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "root.ajml"));
 		
 		
 	}			

@@ -1,6 +1,8 @@
 package ajweb.parser;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.io.IOException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -14,7 +16,7 @@ import ajweb.utils.FileUtils;
 public class EventsHandlerTest{
 	@Test
 	public void testEventsHandler() throws SAXException, IOException{
-		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "events.ajml");
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "events.ajml"));
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 		
 		assert(app.events instanceof Events);

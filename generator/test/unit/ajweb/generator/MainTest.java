@@ -18,7 +18,7 @@ public class MainTest extends TestCase{
 		String from = "lib/";
 		String to = ".ajweb/chat/WEB-INF/lib/";
 		String type = "jar";
-		Compiler.setup(".ajweb", "chat");
+		Compiler.setup("test/temp");
 		//FileUtils.copyDir(from, to, type);
 		//File to_dir = new File(to);
 		File from_dir = new File(from);

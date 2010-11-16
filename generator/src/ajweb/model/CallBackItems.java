@@ -21,5 +21,10 @@ public class CallBackItems implements Parameterable{
 	public boolean isContainCallback() {
 		return false;
 	}
+	@Override
+	public String toJavaSource() {
+		// 現時点ではサーバ側では使わない
+		return null;
+	}
 
 }

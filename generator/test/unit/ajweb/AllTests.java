@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ajweb.data.AllTests.class,
 	ajweb.parser.AllTests.class, 
 	ajweb.model.AllTests.class,
-	ajweb.generator.AllTests.class
+	ajweb.generator.AllTests.class,
+	ajweb.utils.AllTests.class
 	})
 public class AllTests {}

@@ -5,28 +5,24 @@ import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-
 import org.eclipse.jetty.util.ajax.JSON;
-
 import ajweb.data.*;
-
 import ajweb.servlet.AbstractServlet;
 import ajweb.utils.Log;
 
 
 @SuppressWarnings("serial")
-public class AjWebApp extends AbstractServlet {
+public class AjWebServlet extends AbstractServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {	
 		Log.serverLogger.fine("doGet");
 		System.out.println("doGet");
+		
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		Log.serverLogger.fine("chat app doGet");
@@ -141,6 +137,20 @@ public class AjWebApp extends AbstractServlet {
 					out.print("{ result : false");
 					e.printStackTrace();
 				}
+			}
+			else if(action.equals("check")){
+				boolean _result = false;
+				try {
+					if(tablename.equals("message"))
+						message.check(param);
+					else if(tablename.equals("room"))
+						room.check(param);
+					else if(tablename.equals("users"))
+						users.check(param);
+				} catch(Exception e){
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
 			}
 			else if(action.equals("login")){
 				boolean _result = false;

@@ -30,11 +30,6 @@ try {
 try {
 		message.create();
 		System.out.println("message create");
-		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚P\"}"));
-		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚Q\"}"));
-		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚R\"}"));
-		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚S\"}"));
-		message.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚T\"}"));
 
 	} catch (Exception e) {
 		System.out.println("message is already exists");

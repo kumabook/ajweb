@@ -16,8 +16,9 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class Server extends Thread{
 	static int port = 8080;
 	static String ajwebHome = ".";
+	
 	static public void run(String appName) throws Exception{
-org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
+		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 
 		ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setDirectoriesListed(true);
@@ -44,6 +45,7 @@ org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(por
 	static public void runSource(String appName) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
+		
 		ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setDirectoriesListed(true);
 		resource_handler.setCacheControl("no-cache");
@@ -66,14 +68,17 @@ org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(por
 		HandlerList handlers = new HandlerList();
 		handlers.setHandlers(new Handler[] { new LogHandler(), cache_handler, webapp, resource_handler,  new DefaultHandler() });
 		server.setHandler(handlers);
+		
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		
 		server.start();
+		
 		
 		System.out.println("display application on browser");
 		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
+		
 	}
 	static public void runSource(String baseDir, String appName) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);

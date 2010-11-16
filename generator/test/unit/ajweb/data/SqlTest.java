@@ -2,25 +2,22 @@ package ajweb.data;
 
 
 import static org.junit.Assert.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ajweb.data.Condition;
 import ajweb.data.Sql;
-import ajweb.Config;
 
 public class SqlTest{
 	
-	static String derby_dir = Config.test_derby_dir; 
-	
-	
+	public static String derby_dir = "test/derby/"; 
+	public static String appName = "test";
 	
 	static HashMap<String, String> properties = new HashMap<String,String>();
 	{
@@ -30,7 +27,7 @@ public class SqlTest{
 		properties.put("posted", "datetime");
 	}
 	static Sql da = new Sql("org.apache.derby.jdbc.EmbeddedDriver",
-				"jdbc:derby:" + derby_dir + "/test");
+				"jdbc:derby:" + derby_dir + appName);
 	
 	static HashMap<String, String> userProperties = new HashMap<String, String>();
 	static {
@@ -62,7 +59,9 @@ public class SqlTest{
 
 		}
 		da.create("test", properties);
-		da.create("users", userProperties, "userid");		
+		ArrayList<String> idProperties = new ArrayList<String>();
+		idProperties.add("userid");
+		da.create("users", userProperties, idProperties);		
 	}
 	
 	@After
@@ -189,29 +188,33 @@ public class SqlTest{
 		param.put("password", Sql.encryption("hiroki"));
 		param.put("role", "admin");
 		param.put("mail", "hiroki.kum@gmail.com");
+		
+		
 		da.insert("users", userProperties, param);
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> userParam = (HashMap<String, String>) JSON.parse("{\"user_id\": \"hiroki\", \"password\": \""+Sql.encryption("hiroki")+"\"}");
-		assertTrue(da.check("users", userProperties, userParam, "user_id"));
+		userParam.put("idProperty", "user_id");
+		assertTrue(da.check("users", userProperties, userParam));
 		
 		userParam.put("user_id", "kumamoto");
-		assertFalse(da.check("users", userProperties, userParam, "user_id"));//idが間違ってる
+
+		assertFalse(da.check("users", userProperties, userParam));//idが間違ってる
 		userParam.put("user_id", "hiroki");
 		try{
-			da.check("users", userProperties, userParam, "userid");//idのプロパティが間違ってる
+			da.check("users", userProperties, userParam);//idのプロパティが間違ってる
 		} catch (Exception e){
 			//OK
 		}
 		userParam.put("password", "hiroki");
 		try{
-			da.check("users", userProperties, userParam, "userid");//チェックする値が間違ってる
+			da.check("users", userProperties, userParam);//チェックする値が間違ってる
 		} catch (Exception e){
 			//OK
 		}
 		userParam.put("password", Sql.encryption(("hiroki")));
 		userParam.put("test", "test");
 		try{
-			da.check("users", userProperties, userParam, "userid");//不正なプロパティ
+			da.check("users", userProperties, userParam);//不正なプロパティ
 		} catch (Exception e){
 			//OK
 		}

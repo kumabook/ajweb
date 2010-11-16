@@ -4,22 +4,19 @@ package ajweb.model;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import ajweb.Config;
 import ajweb.data.Condition;
 import ajweb.utils.FileUtils;
 import ajweb.utils.Log;
-
 import ajweb.utils.Template;
 
 public class Application implements Expression{
 	public String rootElement = "root";//application rootid ëÆê´ÇéQè∆
 	public String appName = "default";
-	String workDir = Config.workDir;
+	public String outDir;
+	//String workDir = Config.workDir;
 		//public ArrayList<Widget> widgets
 	
 	public ArrayList<Widget> widgets = new ArrayList<Widget>();
@@ -36,47 +33,35 @@ public class Application implements Expression{
 	static public Boolean isPolling = false;
 	
 	
-	public Application(String appName, String workDirectory){
+	public Application(String appName){
 		this.appName = appName;
-		this.workDir = workDirectory;
 	}
-	public void generate() {
+	public void generate() throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Log.logger.fine("----------------------------Applicaiton generate()---------------------------");
-				
-		try {
-
-			htmlGenerate();
-			Log.logger.info("generate " + workDir + FileUtils.fs + appName + "/index.html");
-			System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.html");
-			
-			cssGenerate();
-			Log.logger.info("generate " + workDir + FileUtils.fs + appName + "/index.css");
-			System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.css");
-			
-			jsGenerate();
-			Log.logger.info("generate " + workDir + FileUtils.fs + appName + "/index.js");
-			System.out.println("generate " + workDir+ FileUtils.fs + appName + "/index.js");
-						
-			databases.databaseGenerate(workDir, appName);
-						
-			databases.servletGenerate(workDir, appName);
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		htmlGenerate();
+		cssGenerate();
+		jsGenerate();
+		databaseGenerate();
+		servletGenerate();
 	}
-	
 	
 	public void htmlGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template html_template;
-		html_template = new Template("html/html");
-		FileUtils.writeFile(workDir + FileUtils.fs + appName + "/index.html", html_template.source);	
+		html_template = new Template("resources/html");
+		FileUtils.writeFile(outDir + "/index.html", html_template.source);
+		Log.logger.info("generate " + outDir + "/index.html");
+		if(Config.isStandardOutput)
+			System.out.println("generate " + outDir + "/index.html");
 	}
 	
 	public void cssGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template css_template;
-		css_template = new Template("html/css");
-		FileUtils.writeFile(workDir +  FileUtils.fs + appName + "/index.css", css_template.source);
+		css_template = new Template("resources/css");
+		FileUtils.writeFile(outDir + "/index.css", css_template.source);
+		Log.logger.info("generate " + outDir + "/index.css");
+		if(Config.isStandardOutput)
+			//System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.css");
+			System.out.println("generate " + outDir + "/index.css");
 	}
 
 	public void jsGenerate() throws IOException{
@@ -91,7 +76,6 @@ public class Application implements Expression{
 		DATABASES = databases.toJsSource();
 		
 		//interfaces generate
-		
 		Widget interfaces = widgets.get(0);
 		interfaces.id = "rootFrame";
 		HashMap<String ,String> rootProperties = new HashMap<String, String>();
@@ -101,7 +85,6 @@ public class Application implements Expression{
 		rootProperties.put("top", "0px");
 		rootProperties.put("left", "0px");
 		
-		
 		for(int i = 0; i < interfaces.children.size(); i++){
 			INTERFACES += interfaces.children.get(i).toJsSource();
 		}
@@ -110,19 +93,42 @@ public class Application implements Expression{
 				
 		events.toJsSource(databases);
 		
-		
-
 		js_template.apply("REQUIRE", REQUIRE);
 		js_template.apply("DATABASES", DATABASES);
 		js_template.apply("INTERFACES", INTERFACES);
 		js_template.apply("EVENTS", EVENTS);
 //		js_template.apply("ROOTELEMENT", rootElement);
-		FileUtils.writeFile(workDir + Config.fs +appName + "/index.js", js_template.source);
-		Log.fine("create js file");
+		FileUtils.writeFile(outDir + "/index.js", js_template.source);
+		Log.logger.info("generate " + outDir + "/index.js");
+		if(Config.isStandardOutput)
+			System.out.println("generate " + outDir+ "/index.js");
 	}
 	
-	public void databaseGenerate(){
-		databases.databaseGenerate(workDir, appName);
+	public void databaseGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+		String fs = FileUtils.fs;
+		for(int i = 0; i < databases.size(); i++){
+			FileUtils.writeFile(outDir+ "/WEB-INF"+fs+"src"+fs+"ajweb"+fs +"data"+fs+
+					databases.get(i).tablename + ".java", databases.get(i).toJavaSource());
+			if(Config.isStandardOutput)
+				System.out.println("generate "+ outDir + fs+	"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "data" + 
+						fs  + databases.get(i).tablename + ".java");			
+		}
+	}
+	
+	public void servletGenerate() throws IOException{
+		//--------------servlet generate---------------------------------
+		FileUtils.writeFile(outDir +"/WEB-INF/src/ajweb/servlet/AjWebServlet.java", databases.toServletSource(appName));
+		if(Config.isStandardOutput)
+			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
+		//--------------listener generate---------------------------------
+		FileUtils.writeFile(outDir + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", databases.toListenerSource());
+		if(Config.isStandardOutput)
+			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
+		/*web_xml generate*/
+		Template web_xml_template = new Template("resources/web.xml");
+		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source);
+		if(Config.isStandardOutput)
+			System.out.println("generate " + outDir + "/WEB-INF/web.xml");
 	}
 	
 	public String toString(){

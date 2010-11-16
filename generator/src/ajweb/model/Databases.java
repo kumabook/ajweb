@@ -2,34 +2,12 @@ package ajweb.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import ajweb.utils.FileUtils;
 import ajweb.utils.Template;
 
 @SuppressWarnings("serial")
 public class Databases extends ArrayList<Database> implements Expression{
 	//public ArrayList<DBData> datum;
-	public void databaseGenerate(String workDirectory, String appName){
-		for(int i = 0; i < size(); i ++){
-			get(i).databaseGenerate(workDirectory, appName);
-		}
-	}
-	
-	public void servletGenerate(String workDirectory, String appName) throws IOException{
-		//--------------servlet generate---------------------------------
-		FileUtils.writeFile(workDirectory + FileUtils.fs + appName + "/WEB-INF/src/ajweb/servlet/AjWebApp.java", toServletSource(appName));
-		System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
-		//--------------listener generate---------------------------------
-		FileUtils.writeFile(workDirectory + FileUtils.fs + appName + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", toListenerSource());
-		System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
-		/*web_xml generate*/
-		Template web_xml_template = new Template("web.xml");
-		FileUtils.writeFile(workDirectory + FileUtils.fs + appName + "/WEB-INF/web.xml", web_xml_template.source);
-		System.out.println("generate " + workDirectory + FileUtils.fs + appName + "/WEB-INF/web.xml");
-	}
 
-	
 	public String toServletSource(String appname) throws IOException{
 		Template servlet_template = new Template("java/servlet");
 		String SELECT, INSERT, UPDATE, DELETE, GETPROPERITIES;
@@ -87,15 +65,8 @@ public class Databases extends ArrayList<Database> implements Expression{
 			Template create_template = new Template("java/create");
 			create_template.apply("TABLENAME", database.tablename);
 			String INITIALIZE = "";
-			for(int j = 0; j < database.initItem.size(); j++){
-				String json = "{";
-				Iterator<String> ite = database.initItem.get(j).keySet().iterator();
-				while(ite.hasNext()){
-					String key = ite.next();
-					json += "\\\\\\\\\"" + key + "\\\\\\\\\": \\\\\\\\\"" + database.initItem.get(j).get(key).toString() + "\\\\\\\\\"";
-					if(ite.hasNext()) json += ", ";
-				}
-				json += "}";
+			for(int j = 0; j < database.initItems.size(); j++){
+				String json = Param.paramToJavaSource(database.initItems.get(j));
 				INITIALIZE += "\t\t" + database.tablename + ".insert((HashMap<String, String>) JSON.parse(\"" + json + "\"));\n";	
 			}
 			

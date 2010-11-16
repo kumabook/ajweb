@@ -21,7 +21,7 @@ import ajweb.utils.Log;
 
 
 @SuppressWarnings("serial")
-public class AjWebApp extends AbstractServlet {
+public class AjWebServlet extends AbstractServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {	

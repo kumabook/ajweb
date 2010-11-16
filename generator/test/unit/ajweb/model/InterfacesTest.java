@@ -18,7 +18,7 @@ public class InterfacesTest {
 	
 	@Test
 	public void testToJsSource() throws IOException, SAXException{
-		app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "interfaces.ajml");
+		app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "interfaces.ajml"));
 		
 		String INTERFACES = "";
 		Widget interfaces = app.widgets.get(0);

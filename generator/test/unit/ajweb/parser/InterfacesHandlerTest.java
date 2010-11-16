@@ -2,6 +2,8 @@ package ajweb.parser;
 
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.io.IOException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -14,7 +16,7 @@ public class InterfacesHandlerTest {
 	
 	@Test
 	public void testInterfacesHandler() throws SAXException, IOException{
-		Application app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "interfaces.ajml");
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "interfaces.ajml"));
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 		assertTrue(app instanceof Application);
 		for(int i = 0; i < app.widgets.size(); i++){

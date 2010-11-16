@@ -21,7 +21,7 @@ public class DatabaseTest {
 	@BeforeClass
 	public static void setUp(){
 		try {
-			app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "databases.ajml");
+			app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "databases.ajml"));
 			databases = app.databases;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -36,9 +36,11 @@ public class DatabaseTest {
 		Database rooms = databases.get(0);
 		
 		File room = new File("test/file/source/room.java");
+
 		assertEquals(rooms.toJavaSource(), FileUtils.read(room).trim());
+		//System.out.println(databases.get(0).toJavaSource())
 		//System.out.println(FileUtils.read(room));
-		//System.out.println(databases.get(1).toJavaSource());
+		
 	}
 	
 	@Test
@@ -55,7 +57,7 @@ public class DatabaseTest {
 	public void testToListenerSource() throws IOException{
 		File listener = new File("test/file/source/listener.java");
 		String source = databases.toListenerSource();
-		
+//		System.out.println(source);
 		assertEquals(FileUtils.read(listener).trim(), source);
 	}
 	

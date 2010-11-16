@@ -120,12 +120,13 @@ public class FileUtils {
 	 * @param appName
 	 * @throws Exception
 	 */
-	public static void compression(String basePath,String appName) throws Exception{
+	public static void compression(File baseDir,File zipFile) throws Exception{
 		
-		File baseDir = new File(basePath);
-		File warFile = new File(appName);
-		File[] files = { new File(basePath)};
-		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(warFile));
+		//File baseDir = new File(basePath);
+		//File warFile = new File(appName);
+		//File[] files = { new File(basePath)};
+		File[] files = { baseDir };
+		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
 		encode(zos, files, baseDir);
 		
 		zos.close();

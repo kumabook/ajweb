@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	EventsTest.class, 
 	InterfacesTest.class, 
-	DatabaseTest.class
+	DatabaseTest.class,
+	ApplicationTest.class
 	})
 public class AllTests {}

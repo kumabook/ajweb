@@ -2,6 +2,7 @@ package ajweb.model;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class EventsTest {
 	@BeforeClass
 	public static void setUp(){
 		try {
-			app = Compiler.parse("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "chat.ajml");
+			app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "chat.ajml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
@@ -38,7 +39,7 @@ public class EventsTest {
 		Action action = app.events.get(0).action;
 		assertEquals(1, action.size());
 		Call call = (Call) action.get(0);
-		assertEquals("root.selectPanel({panel:\"entrance_room\"});", call.toJsSource(null, null, new Action()));
+		assertEquals("root.selectPanel({panel:\"loginPanel\"});", call.toJsSource(null, null, new Action()));
 	}
 	
 	@Test
@@ -68,7 +69,7 @@ public class EventsTest {
 	
 	@Test
 	public void testToJsSourceCondition() throws IOException{
-		Condition con = new Condition("eq", new ReceivedItem("room"), new Get("room_database", "get", "SelectItem", new ArrayList<Param>()));
+//		Condition con = new Condition("eq", new ReceivedItem("room"), new Get("room_database", "get", "SelectItem", new ArrayList<Param>()));
 		//System.out.println(con.toJsSource(null, null, null));
 	}
 	

@@ -11,11 +11,11 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class AppTestServer {
 	static int port = 8888;
 	static String ajwebHome = ".";
-
+	//public static org.eclipse.jetty.server.Server ajwebServer;
 	public static void main(String[] args) throws Exception {
 		ajweb.utils.Log.servletLogger.setLevel(Level.ALL);
 		
-		
+		//ajwebServer = new org.eclipse.jetty.server.Server(port);
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
 		ResourceHandler resource_handler = new ResourceHandler();
@@ -49,20 +49,27 @@ public class AppTestServer {
 				handlers.addHandler(webapp);
 			}
 		}
-		
+
 		
 		
 		handlers.addHandler(resource_handler);
 		handlers.addHandler(new DefaultHandler());
-		
+		//ajwebServer.setHandler(handlers);
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		
-		server.start();
+		//server.start();
+		//ajwebServer.start();
+		//server.join();	
+		//ajwebServer.join();	
 		
+		
+		
+		server.start();
+		server.join();	
 		//System.out.println("display application on browser");
 		//Desktop desktop = Desktop.getDesktop();
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
-		server.join();	
+		
 	}
 }

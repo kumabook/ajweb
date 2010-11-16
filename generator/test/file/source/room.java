@@ -14,6 +14,7 @@ import ajweb.data.AbstractCondition;
 public class room {
 	
 	public static HashMap<String, String> properties = new HashMap<String, String>();
+	public static ArrayList<String> idProperties = new ArrayList<String>();
 	static {
 		properties.put("name", "string");
 	}
@@ -26,7 +27,7 @@ public class room {
 	
 	
 	public static void create() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-	    sql.create(tableName, properties);
+	    sql.create(tableName, properties, idProperties);
 	}
 	
 	public static void drop() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -51,5 +52,9 @@ public class room {
 	
 	public static HashMap<String, String> update(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		return sql.update(tableName, properties, param);
+	}
+
+	public static boolean check(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		return sql.check(tableName, properties, param);
 	}
 }

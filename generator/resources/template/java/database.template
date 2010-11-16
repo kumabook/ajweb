@@ -14,8 +14,9 @@ import ajweb.data.AbstractCondition;
 public class ${TABLENAME} {
 	
 	public static HashMap<String, String> properties = new HashMap<String, String>();
-	static {${PROPERTIES}
-	}
+	public static ArrayList<String> idProperties = new ArrayList<String>();
+	static {
+${PROPERTIES}${IDPROPERTIES}	}
 	
 	static String dbName = "${DBNAME}";
 	static String driverClassName = "${DRIVERCLASSNAME}";
@@ -25,7 +26,7 @@ public class ${TABLENAME} {
 	
 	
 	public static void create() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-	    sql.create(tableName, properties);
+	    sql.create(tableName, properties, idProperties);
 	}
 	
 	public static void drop() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -50,5 +51,9 @@ public class ${TABLENAME} {
 	
 	public static HashMap<String, String> update(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		return sql.update(tableName, properties, param);
+	}
+
+	public static boolean check(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		return sql.check(tableName, properties, param);
 	}
 }

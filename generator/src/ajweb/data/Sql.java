@@ -167,7 +167,7 @@ public class Sql {
 	}
 	
 	/**
-	 * IDカラムを指定してデータベーステーブルを作成
+	 * 主キーカラムを指定してデータベーステーブルを作成
 	 * @param tableName テーブル名
 	 * @param properties スキーマのプロパティのハッシュ(名前とデータ型)
 	 * @throws SQLException
@@ -175,7 +175,7 @@ public class Sql {
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 */
-	public void create(String tableName, HashMap<String,String> properties, String idProperty) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void create(String tableName, HashMap<String,String> properties, ArrayList<String> idProperties) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 	
 		String sql = "CREATE TABLE " + tableName + "( ";
 		
@@ -184,8 +184,8 @@ public class Sql {
 		sql += "id int NOT NULL primary key, ";
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			if(e.getKey().equals(idProperty))
-				sql += e.getKey() + " varchar(20) NOT NULL primary key"; 
+			if(idProperties.contains(e.getKey()))
+				sql += e.getKey() + " " + getType(e.getValue()) + " NOT NULL primary key"; 
 			else 
 				sql += e.getKey() + " " + getType(e.getValue());
 			if(ite.hasNext()) 
@@ -442,15 +442,18 @@ public class Sql {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public boolean check(String tableName, HashMap<String, String> properties, HashMap<String, String> param, String idProperty) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-		Condition con = new Condition("eq", idProperty, param.get(idProperty));
+	public boolean check(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> clone = (HashMap<String, String>) param.clone();
+		String idProperty = clone.remove("idProperty");
+		Condition con = new Condition("eq", idProperty, clone.get(idProperty));
 		ArrayList<HashMap<String, String>> result = select(tableName, properties, con);
 
 		if(result.size() == 1){// && result.get(0).containsKey(checkedProperty)){
-			Iterator<String> ite = param.keySet().iterator();
+			Iterator<String> ite = clone.keySet().iterator();
 			while(ite.hasNext()){
 				String key = ite.next();
-				if(!result.get(0).get(key).equals(param.get(key)))
+				if(!result.get(0).get(key).equals(clone.get(key)))
 						return false;
 			}
 			return true;

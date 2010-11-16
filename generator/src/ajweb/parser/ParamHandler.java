@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 import ajweb.model.Expression;
 import ajweb.model.Param;
 import ajweb.model.Parameterable;
+import ajweb.model.Primitive;
 
 public class ParamHandler extends AbstractHandler{
 	public Param param;
@@ -24,6 +25,8 @@ public class ParamHandler extends AbstractHandler{
 		param = new Param();
 		param.key = attributes.get("name");
 		param.value = value;
+		if(param.value == null)
+			param.value = new Primitive("string", attributes.get("value"));
 		
 		setExpression(param);
 		super.endElement(uri, localName, qName);

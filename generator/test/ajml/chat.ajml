@@ -6,8 +6,38 @@
     
     <!-- データモデル -->
     <databases>
+
+    <!-- ユーザテーブル -->
+      <database id="users" tablename="users">
+  	<property name="userid" type="string" primary="true"/>
+  	<property name="password" type="password"/>
+  	<property name="role" type="string"/>
+  	<property name="mail" type="string"/>
+	<init>
+	  <item>
+	    <property name="userid" value="kumamoto"/>
+	    <property name="password" value="kumamoto"/>
+	    <property name="role" value="admin"/>
+	    <property name="mail" value="hiroki.kum@gmail.com"/>
+	  </item>
+	  <item>
+	    <property name="userid" value="hiroki"/>
+	    <property name="password" value="hiroki"/>
+	    <property name="role" value="user"/>
+	    <property name="mail" value="hiroki.kum@gmail.com"/>
+	  </item>
+	  <item>
+	    <property name="userid" value="kumabook"/>
+	    <property name="password" value="kumabook"/>
+	    <property name="role" value="user"/>
+	    <property name="mail" value="hiroki.kum@gmail.com"/>
+	  </item>
+	</init>
+      </database>
+
+
     <!-- チャットルームの一覧を保持するテーブル -->
-      <database id="room">
+      <database id="room" tablename="room">
   	<property name="name" type="string"/>
 	<property name="message" type="ref" multiplicity="*" ref="message"/>
 	<init>
@@ -19,7 +49,7 @@
 	</init>
       </database>
       <!-- チャットのメッセージを保持するテーブル -->
-      <database id="message">
+      <database id="message" tablename="message">
 	<property name="room" type="ref" multiplicity="1" ref="room"/>
       	<property name="message" type="string"/>
       	<property name="user_name" type="string"/>
@@ -88,16 +118,46 @@
 	<action>
 	  <call element="root" func="selectPanel">
 	    <param name="panel">
-	      <string>entrance_room</string>
+	      <string>loginPanel</string>
 	    </param>
 	  </call>
 	</action>
       </event>
+
+<!-- ログイン処理 -->
+      <event target="loginButton" type="click">
+	<action>
+	  <login>
+	    <param name="userid">
+	      <get element="userIdTextbox" property="value"/>
+	    </param>
+	    <param name="password">
+	      <get element="passwordTextbox" property="value"/>
+	    </param>
+	  </login>
+	  <branch>
+	    <condition>
+	      <success/>
+	    </condition>
+	    <then>
+	      <call element="roomFrame" func="selectPanel">
+		<param name="datum">
+		  <string>roomSelectPanel</string>
+		</param>
+	      </call>
+	    </then>
+	    <else>
+	      <call element="loginFailDialog" func="show"/>
+	    </else>
+	  </branch>
+	</action>
+      </event>
+
       <!-- 入室画面の初期化-->
-      <event target="entrance_room" type="display">
+      <event target="roomSelectPanel" type="display">
 	<action>
 	  <!-- チャットルームの一覧の取得-->
-	  <call element="roomSelect" func="load">
+	  <call element="roomSelectbox" func="load">
 	    <param name="datum">
 	      <select database="room"/>
 	    </param>
@@ -105,20 +165,30 @@
 	</action>
       </event>
       <!-- チャットルーム画面の初期化-->
-      <event target="chat_room" type="display">
+      <event target="selectButton" type="click">
 	<action>
+	  <!-- ページを遷移-->
+	  <call element="rootFrame" func="selectPanel">
+	    <param name="child">
+	      <string>chatRoomPanel</string>
+	    </param>
+	  </call>
+	  <!-- ルーム名を表示-->
+	  <call element="nowRoomLabel" func="setContent">
+	    <get element="roomSelectbox" property="selectItem">
+	      <param name="property">
+		<string>name</string>
+	      </param>
+	    </get>
+	  </call>
 	  <!-- メッセージリストの取得-->
-	  <call element="message_list" func="load">
+	  <call element="messageTable" func="load">
 	    <param name="datum">
 	      <selectByCondition database="chatDB">
 		<condition>
 		  <eq>
-		    <targetItem property="room_id"/>
-		    <get element="roomSelect" property="value">
-		      <param name="property">
-			<string>id</string>
-		      </param>
-		    </get>
+		    <targetItem property="room"/>
+		    <get element="roomSelect" property="value"/>
 		  </eq>
 		</condition>
 	      </selectByCondition>
@@ -156,10 +226,13 @@
 	      </concat>
 	    </param>
 	    <param name="user_name">
-	      <get element="user_name_en" property="content"/>
+	      <get element="userNameTextbox" property="value"/>
 	    </param>
 	    <param name="enter_time"> 
 	      <datetime value="0" />
+	    </param>
+	    <param name="room">
+	      <get element="roomSelect" property="value"/>
 	    </param>
 	  </insert>
 	</action>
@@ -170,13 +243,13 @@
 	<action>
 	  <insert id="insert_message" database="message">
 	    <param name="message">
-	      <get element="message" property="value"/>
+	      <get element="messageTextbox" property="value"/>
 	    </param>
 	    <param name="user_name"> 
-	      <get element="user_name" property="value"/>
+	      <get element="userNameTextbox" property="value"/>
 	    </param>
 	    <param name="room">
-	      <get element="room_select" property="value"/>
+	      <get element="roomSelectbox" property="SelectItem"/>
 	    </param>
 	    <param name="posted">
 	      <datetime value="0"/>
@@ -198,21 +271,24 @@
       <event target="message" type="insert">
 	<condition>
 	  <eq>
-	    <receivedItem property="room_id"/>
-	    <get element="selectbox" property="selectedValue"/>
+	    <receivedItem property="room"/>
+	    <get element="roomSelectbox" property="selectItem"/>
 	  </eq>
 	</condition>
 	<action>
 	  <call element="messageTable" func="insert">
-	    <param name="user_name">
-	      <targetItem property="userName"/>
+	    <param name="item">
+	      <receivedItem/>
+	    </param>
+<!--	    <param name="user_name">
+	      <receivedItem property="user_name"/>
 	    </param>
 	    <param name="message">
-	      <targetItem property="message"/>
+	      <receivedItem property="message"/>
 	    </param>
 	    <param name="posted">
-	      <targetItem property="posted"/>
-	    </param>
+	      <receivedItem property="posted"/>
+	    </param> -->
 	  </call>
 	</action>
       </event>
