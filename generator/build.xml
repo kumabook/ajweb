@@ -17,17 +17,6 @@
 					</classpath>
 			</javac>
 	</target>
-	<target name="run" >
-		<java classname="ajweb.server.Main">
-			<arg value="${web-app.name}"/>
-			<classpath>
-				<fileset dir="lib">
-					<include name="*.jar"/>
-				</fileset>
-				<pathelement location="classes/"/>
-			</classpath>
-		</java>
-	</target>
 
 
 	<target name="jar" depends="compile">
@@ -77,10 +66,13 @@
 			<copy file="${basedir}/dist/ajweb.jar"  todir="${basedir}/test/app/chat/WEB-INF/lib/" overwrite="true"/>
 			<java classname="ajweb.server.AppTestServer" dir="${basedir}">
 			<classpath>
-					<fileset dir="${basedir}/lib">
-					<include name="*.jar"/>
-				</fileset>
-				<pathelement location="${basedir}/classes/"/>
+					<fileset dir="${basedir}/lib/compiler/">
+							<include name="*.jar"/>
+					</fileset>
+					<fileset dir="${basedir}/lib/servlet/">
+							<include name="*.jar"/>
+					</fileset>
+					<pathelement location="${basedir}/classes/"/>
 			</classpath>
 		</java>
 	</target>
@@ -98,7 +90,5 @@
 			</javac>
 	</target>
 
-	<target name="generate">
-	</target>
 
 </project>

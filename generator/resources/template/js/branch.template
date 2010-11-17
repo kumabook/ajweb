@@ -1,6 +1,2 @@
-					if(${CONDIITON}){
-						${THEN}
-					}
-					else {
-						${ELSE}
-					}
+					if(${CONDITION}){${THEN}}
+					else {${ELSE}}

@@ -9,9 +9,9 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.channels.FileChannel;
@@ -179,27 +179,29 @@ public class FileUtils {
 	
 	
 	public static String read(File file) throws IOException{
-		FileReader in = new FileReader(file);
-		BufferedReader br = new BufferedReader(in);
-		String result = "";
+		
+		InputStreamReader is = new InputStreamReader(new FileInputStream(file), "UTF-8");
+		BufferedReader br = new BufferedReader(is);
+
+		String result = br.readLine();
 		String line;
 		while ((line = br.readLine()) != null) {
-			result += line + "\n";
+				result += "\n" + line;
 		}	
         br.close();
-        in.close();
+        is.close();
 		
 		return result;
 		
 		
 	}
 	
-	public static boolean writeFile(String path, String str) throws FileNotFoundException, UnsupportedEncodingException, IOException{
+	public static boolean writeFile(String path, String str, boolean isOverWrite) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		
 		File file = new File(path);
 		file.getParentFile().mkdirs();
 		
-		if (file.createNewFile()){
+		if (file.createNewFile() || isOverWrite){
 			FileOutputStream fos = new FileOutputStream(file);
 			OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
 			BufferedWriter bw = new BufferedWriter(osw);

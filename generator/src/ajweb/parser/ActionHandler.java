@@ -21,6 +21,7 @@ public class ActionHandler extends AbstractHandler {
 	
 	public void endElement(
 			String uri, String localName, String qName) throws SAXException{
+		action.elementName = elementName;//action then else ‚ð‹æ•Ê
 		setExpression(action);
 		super.endElement(uri, localName, qName);
 	}

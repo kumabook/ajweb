@@ -54,10 +54,11 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 			Iterator<String>  it = properties.keySet().iterator();
 			while(it.hasNext()){
 				String _key = it.next();
-				json += "key: " + properties.get(_key);
+				json += _key + ": " + properties.get(_key);
 				if(it.hasNext())
 					json += ",";
 			}
+			json += "})";
 			return json;
 		}
 		else if(type.equals("date")){

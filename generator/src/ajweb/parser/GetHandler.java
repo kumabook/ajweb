@@ -54,8 +54,6 @@ public class GetHandler extends AbstractHandler{
 		}
 		else if(qName.equals("receivedItem")){
 			//String property = attributes.get("property");
-			if(property == null)
-				property = "";
 			get = new ReceivedItem(property);
 		}
 		else if(qName.equals("math")){

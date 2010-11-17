@@ -1,11 +1,8 @@
 package ajweb.server;
 
-import java.awt.Desktop;
-import java.net.URI;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
-
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -14,35 +11,34 @@ import org.eclipse.jetty.webapp.WebAppContext;
  *
  */
 public class Server extends Thread{
-	static int port = 8080;
 	static String ajwebHome = ".";
 	
-	static public void run(String appName) throws Exception{
+	
+	static public void run(String war, String appName, int port) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 
-		ResourceHandler resource_handler = new ResourceHandler();
+		/*ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setDirectoriesListed(true);
 		resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-		resource_handler.setResourceBase(ajwebHome + "/resources/htdocs");
+		resource_handler.setResourceBase(ajwebHome + "/resources/htdocs");*/
 		
 		WebAppContext webapp = new WebAppContext();
+		webapp.setResourceBase(appName);
 		webapp.setContextPath("/"+appName);
-		webapp.setWar(appName+".war");
+		webapp.setWar(war);
 		
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { new LogHandler(), webapp, resource_handler,  new DefaultHandler() });
+		handlers.setHandlers(new Handler[] { new LogHandler(), webapp, /*resource_handler,*/  new DefaultHandler() });
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		server.start();
 		
-		System.out.println("access application on browser");
-		Desktop desktop = Desktop.getDesktop();
-		desktop.browse(new URI("http://localhost:" + port + "/" + appName));	
+
 		server.join();
 		
 	}
 	
-	static public void runSource(String appName) throws Exception{
+	/*static public void runSource(String appName, int port) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
 		
@@ -79,20 +75,20 @@ public class Server extends Thread{
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
 		
-	}
-	static public void runSource(String baseDir, String appName) throws Exception{
+	}*/
+	static public void runSource(String sourceDir, String appName, int port) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
-		ResourceHandler resource_handler = new ResourceHandler();
+		/*ResourceHandler resource_handler = new ResourceHandler();
 		resource_handler.setDirectoriesListed(true);
 		resource_handler.setWelcomeFiles(new String[]{ "index.html" });
 		resource_handler.setResourceBase(ajwebHome + "/resources/htdocs");
 		resource_handler.setCacheControl("no-cache");
-
+*/
 		
 		CacheManifestHandler cache_handler = new CacheManifestHandler();
 		cache_handler.setDirectoriesListed(true);
-		cache_handler.setResourceBase(".");
+		cache_handler.setResourceBase(sourceDir);
 		cache_handler.setCacheControl("no-cache");
 
 		
@@ -100,11 +96,11 @@ public class Server extends Thread{
 		webapp.setContextPath("/"+appName);
 //		webapp.setWar(appName+".war");
 		webapp.setDescriptor("./WEB-INF/web.xml");
-		webapp.setResourceBase(baseDir);
+		webapp.setResourceBase(sourceDir);
 		webapp.setParentLoaderPriority(true);
 		
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { new LogHandler(), cache_handler, webapp, resource_handler,  new DefaultHandler() });
+		handlers.setHandlers(new Handler[] { new LogHandler(), cache_handler, webapp, /*resource_handler,*/  new DefaultHandler() });
 		server.setHandler(handlers);
 		
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
@@ -116,14 +112,5 @@ public class Server extends Thread{
 		//desktop.browse(new URI("http://localhost:8080/" + appName));	
 		server.join();	
 	}
-	public static void main(String[] args) throws Exception {
-		
-//		System.out.println(args[0]);
-		
-		String baseDir = args[0];
-		String appName = args[1];//"chat";
-//		if(args[0].isEmpty())
-//		appName = args[0]; 
-		runSource(baseDir + "/", appName);
-	}
+
 }

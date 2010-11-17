@@ -34,6 +34,13 @@ public class FileUtilsTest {
 				file.delete();
 			}
 		}
-		
+	}
+	
+	@Test
+	public void testRead() throws IOException{
+		File readFile = new File("test/file/read/read.txt");
+		assertTrue(readFile.exists());
+		String test = FileUtils.read(readFile);
+		assertEquals("‚±‚ñ‚É‚¿‚Í\nƒnƒ[", test);
 	}
 }

@@ -9,9 +9,9 @@ public class ReceivedItem implements Parameterable, Expression {
 	@Override
 	public String toJsSource(Flowable func, String key, Action rest) {
 		if(this.property==null)
-			return "targetItem" ;
+			return "receivedItem" ;
 		else
-			return "targetItem." + this.property ;
+			return "receivedItem." + this.property ;
 	}
 	@Override
 	public boolean isContainCallback() {

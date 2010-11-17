@@ -18,11 +18,11 @@ public class Action extends ArrayList<Flowable> implements Expression{
 		String jsSource = "";
 		//if(rest != null)
 //			this.addAll(rest);
-		@SuppressWarnings("unchecked")
-		ArrayList<Flowable> clone = (ArrayList<Flowable>) clone();
+		Action clone = (Action) clone();
 		while(clone != null && !clone.isEmpty()){
 			Flowable action = clone.remove(0);
-			jsSource += action.toJsSource(func, key, this);
+//			System.out.println(action);
+			jsSource += action.toJsSource(func, key, clone) + "\n\t\t\t";
 		}
 		
 		return jsSource;

@@ -1,79 +1,91 @@
 package ajweb.server;
-import java.awt.Desktop;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.net.URI;
 
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.webapp.WebAppContext;
 /**
  * デバック用、
  * @author hiroki
  *
  */
 public class Main extends Thread{
-	static int port = 8080;
 	static String ajwebHome = ".";
-	static public void run(String appName) throws Exception{
-		Server server = new Server(port);
-		
-		ResourceHandler resource_handler = new ResourceHandler();
-		resource_handler.setDirectoriesListed(true);
-		resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-		resource_handler.setResourceBase(ajwebHome + "/resources/htdocs");
-		
-		
-		WebAppContext webapp = new WebAppContext();
-		webapp.setContextPath("/"+appName);
-		webapp.setWar(appName+".war");
-		
-		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { new LogHandler(), webapp, resource_handler,  new DefaultHandler() });
-		server.setHandler(handlers);
-		System.out.println("start");
-		server.start();
-		
-		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
-		desktop.browse(new URI("http://localhost:8080/" + appName));	
-		server.join();
-		
-	}
+	
 	public static void main(String[] args) throws Exception {
-		System.setProperty("ajweb.work",".ajweb" + ajweb.generator.Main.fs + "runtime");
-//		System.out.println(System.getProperty("ajweb.work"));
-		
-		String warFile;
-		Boolean run = false;
-		//ajweb run ${warFile} で.warファイルを実行
+		String[]  testArgs = {"chat.war"};
+		args = testArgs;
+		int port = 8080;
+		String appName = null;
+		String target = null; //
+		boolean isWar = true; //war か　ソースディレクトリか
+		Boolean isClean = false; // データベースを削除するかどうか
 		if(args.length == 0){
-			System.out.println("ajweb:error  アプリケーションファイルを入力してください");
+			System.out.println("ajweb: please input war file!");
 			return;
 		}
 		else {
-			warFile = args[0];
-						
+//			 target = args[0];
+//			appName = new File(target).getName().replaceAll("\\..*", ""); //ajml中にapplicaitonの名前がない場合
 		}
-		
+		//オプションを取得
 		for (int i = 1; i < args.length; ++i) {
-			if ("-run".equals(args[i])) {
-                run = true;
+            if ("-appname".equals(args[i])) {
+                appName = args[++i];
             } 
-            else {
-            	System.err.println("引数指定の誤り：未知の引数が指定されました");
+            else if ("-source".equals(args[i])) {
+                isWar = false;
+                File targetFile = new File(args[i]);
+                if(appName==null)
+                	appName = targetFile.getName();
+                target = targetFile.getPath();
+                
+            } 
+            else if ("-war".equals(args[i])) {
+                isWar = true;
+                File targetFile = new File(args[i]);
+                appName = targetFile.getName();
+                target = targetFile.getPath();
+                
+            } 
+            else if ("-port".equals(args[i])) {//作成されたアプリを立ち上げる  
+                port = Integer.parseInt(args[i+1]);
+            } 
+            else if ("-clean".equals(args[i])) {//データベース初期化するか
+                isClean = true;
+            } 
+            else if ("-help".equals(args[i])){
+            	System.err.println("ajweb:引数指定の誤り：未知の引数が指定されました");
             }
 		}
 		
-		            
-		if(run) //作成されたアプリを立ち上げるデバッグ用
-			ajweb.server.Server.run(warFile.replaceAll("\\..*", ""));
-		else 
-			System.out.println("アクションが指定されていません");
-			
 
+		if(isClean){
+			
+		}
+
+		if(appName==null){
+			File targetFile = new File(args[0]);
+			if(targetFile.isDirectory())
+				appName = targetFile.getName();
+			else 
+				appName = targetFile.getName().replaceAll("\\..*", "");
+		}
 		
+		if(target==null){
+			target = new File(args[0]).getPath();
+		}
+		
+		System.out.println("ajweb launch application: " + target +" appName " +  appName + ":" + port);
+		
+		if(isWar)
+			ajweb.server.Server.run(target, appName, port);
+		else
+			ajweb.server.Server.runSource(target, appName, port);
+	
+		
+		System.out.println("access application on browser");
+		Desktop desktop = Desktop.getDesktop();
+		desktop.browse(new URI("http://localhost:" + port + "/" + appName));	
 	}
 }

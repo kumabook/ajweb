@@ -35,7 +35,8 @@ public class Widget implements Expression{
 		String jsSource = "";
 		Template widget_template = new Template("js/widget");
 		widget_template.apply("ID", id);
-		widget_template.apply("NAME", type);
+		String Type = type.substring(0, 1).toUpperCase() + type.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É‚µ‚Äon‚ð‚Â‚¯‚é
+		widget_template.apply("NAME", Type);
 		widget_template.apply("PROPERTIES", JSON.toString(properties));
 		
 		jsSource += "\t\t\t" + widget_template.source;

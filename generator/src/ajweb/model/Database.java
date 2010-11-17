@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import org.eclipse.jetty.util.ajax.JSON;
+
+import ajweb.Config;
 import ajweb.utils.Template;
 /**
  * データベーステーブルをあらわすクラス
@@ -16,7 +18,7 @@ public class Database implements Expression{
 	public String id;
 	public String tablename;
 	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-	public String dbName = "jdbc:derby:" + System.getProperty("ajweb.work") + "derby";
+	public String dbName = "jdbc:derby:" + Config.derbyDir;
 	public String type = "server";
 	public String persistence = "permanent";
 	public HashMap<String, String> properties = new HashMap<String, String>();
@@ -36,7 +38,7 @@ public class Database implements Expression{
 	}
 	
 	/**
-	 * AJMLのdbdata要素からデータベース用のjavaコードを生成
+	 * AJMLのdatabase要素からデータベース用のjavaコードを生成
 	 */
 	
 	public String toJavaSource() throws IOException{

@@ -15,7 +15,7 @@ import ajweb.utils.Template;
 public class Application implements Expression{
 	public String rootElement = "root";//application rootid ëÆê´ÇéQè∆
 	public String appName = "default";
-	public String outDir;
+	//public String outDir;
 	//String workDir = Config.workDir;
 		//public ArrayList<Widget> widgets
 	
@@ -36,35 +36,35 @@ public class Application implements Expression{
 	public Application(String appName){
 		this.appName = appName;
 	}
-	public void generate() throws FileNotFoundException, UnsupportedEncodingException, IOException {
+	public void generate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Log.logger.fine("----------------------------Applicaiton generate()---------------------------");
-		htmlGenerate();
-		cssGenerate();
-		jsGenerate();
-		databaseGenerate();
-		servletGenerate();
+		htmlGenerate(outDir);
+		cssGenerate(outDir);
+		jsGenerate(outDir);
+		databaseGenerate(outDir);
+		servletGenerate(outDir);
 	}
 	
-	public void htmlGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+	public void htmlGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template html_template;
 		html_template = new Template("resources/html");
-		FileUtils.writeFile(outDir + "/index.html", html_template.source);
-		Log.logger.info("generate " + outDir + "/index.html");
+		FileUtils.writeFile(outDir + "/index.html", html_template.source, Config.isOverWrite);
+		Log.logger.fine("generate " + outDir + "/index.html");
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/index.html");
 	}
 	
-	public void cssGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+	public void cssGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template css_template;
 		css_template = new Template("resources/css");
-		FileUtils.writeFile(outDir + "/index.css", css_template.source);
-		Log.logger.info("generate " + outDir + "/index.css");
+		FileUtils.writeFile(outDir + "/index.css", css_template.source, Config.isOverWrite);
+		Log.logger.fine("generate " + outDir + "/index.css");
 		if(Config.isStandardOutput)
 			//System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.css");
 			System.out.println("generate " + outDir + "/index.css");
 	}
 
-	public void jsGenerate() throws IOException{
+	public void jsGenerate(String outDir) throws IOException{
 		Template js_template = new Template("js/js");
 		
 		String REQUIRE = "";
@@ -91,42 +91,42 @@ public class Application implements Expression{
 						
 		//events generate
 				
-		events.toJsSource(databases);
+		EVENTS = events.toJsSource(databases);
 		
 		js_template.apply("REQUIRE", REQUIRE);
 		js_template.apply("DATABASES", DATABASES);
 		js_template.apply("INTERFACES", INTERFACES);
 		js_template.apply("EVENTS", EVENTS);
 //		js_template.apply("ROOTELEMENT", rootElement);
-		FileUtils.writeFile(outDir + "/index.js", js_template.source);
-		Log.logger.info("generate " + outDir + "/index.js");
+		FileUtils.writeFile(outDir + "/index.js", js_template.source, Config.isOverWrite);
+		Log.logger.fine("generate " + outDir + "/index.js");
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir+ "/index.js");
 	}
 	
-	public void databaseGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+	public void databaseGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		String fs = FileUtils.fs;
 		for(int i = 0; i < databases.size(); i++){
 			FileUtils.writeFile(outDir+ "/WEB-INF"+fs+"src"+fs+"ajweb"+fs +"data"+fs+
-					databases.get(i).tablename + ".java", databases.get(i).toJavaSource());
+					databases.get(i).tablename + ".java", databases.get(i).toJavaSource(), Config.isOverWrite);
 			if(Config.isStandardOutput)
 				System.out.println("generate "+ outDir + fs+	"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "data" + 
 						fs  + databases.get(i).tablename + ".java");			
 		}
 	}
 	
-	public void servletGenerate() throws IOException{
+	public void servletGenerate(String outDir) throws IOException{
 		//--------------servlet generate---------------------------------
-		FileUtils.writeFile(outDir +"/WEB-INF/src/ajweb/servlet/AjWebServlet.java", databases.toServletSource(appName));
+		FileUtils.writeFile(outDir +"/WEB-INF/src/ajweb/servlet/AjWebServlet.java", databases.toServletSource(appName), Config.isOverWrite);
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
 		//--------------listener generate---------------------------------
-		FileUtils.writeFile(outDir + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", databases.toListenerSource());
+		FileUtils.writeFile(outDir + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", databases.toListenerSource(), Config.isOverWrite);
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
 		/*web_xml generate*/
 		Template web_xml_template = new Template("resources/web.xml");
-		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source);
+		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source, Config.isOverWrite);
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/WEB-INF/web.xml");
 	}

@@ -55,6 +55,7 @@ public class Event implements Expression{
 				
 				condition_template.apply("DATABASE", databases.get(i).id);
 				condition_template.apply("CONDITION", condition.toJsPollingCondition(databases.get(i).id, null, polling_condiitons, action));
+//				condition_template.apply("CONDITION", condition.toJsSource(null, null, null));
 				
 				polling_condiitons += "\n\t\t" + condition_template.source;
 

@@ -7,12 +7,13 @@ import org.xml.sax.SAXException;
 import ajweb.model.Call;
 import ajweb.model.Expression;
 import ajweb.model.Param;
+import ajweb.model.Parameterable;
 import ajweb.utils.Log;
 
 public class CallHandler extends AbstractHandler{
 	Call call;
 	ArrayList<Param> params = new ArrayList<Param>();
-	
+	Parameterable param;
 		
 	protected void addExpression(Expression exp) throws SAXException {
 		Log.fine("addExpression  action "  + exp  + "  " + this);
@@ -20,6 +21,10 @@ public class CallHandler extends AbstractHandler{
 		if(exp instanceof Param){
 			params.add((Param) exp);
 		}
+		else if(exp instanceof Parameterable){
+			param = (Parameterable) exp;
+		}
+			
 	}
 	
 	public void endElement(
@@ -27,10 +32,16 @@ public class CallHandler extends AbstractHandler{
 		Log.fine("\taction handler end " + qName );
 		
 		if(qName.equals("call")){
-			call = new Call(attributes.get("element"), attributes.get("func"), params);
+			if(params.size() != 0)
+				call = new Call(attributes.get("element"), attributes.get("func"), params);
+			else if(param != null)
+				call = new Call(attributes.get("element"), attributes.get("func"), param);
+			else 
+				call = new Call(attributes.get("element"), attributes.get("func"));
 		}
-		else if(qName.equals("insert") || qName.equals("update") || qName.equals("delete")){
+		else/* if(qName.equals("insert") || qName.equals("update") || qName.equals("delete"))*/{
 			call = new Call(attributes.get("database"), elementName, params);
+			call.isCallback = true;
 		}
 		
 		setExpression(call);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import ajweb.Config;
 import ajweb.model.Database;
 import ajweb.model.Expression;
 import ajweb.model.Item;
@@ -16,7 +18,7 @@ public class DatabaseHandler extends AbstractHandler{
 	String id;
 	String tablename;
 	String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-	String dbName = "jdbc:derby:AJWEB";
+	String dbName = "jdbc:derby:" + Config.derbyDir;
 	String type = "server";
 	String persistence = "permanent";
 	ArrayList<HashMap<String, String>> ref = new ArrayList<HashMap<String, String>>();

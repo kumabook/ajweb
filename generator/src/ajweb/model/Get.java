@@ -14,8 +14,8 @@ public class Get implements Parameterable, Expression{
 		elements.add("selectById");
 		elements.add("selectByCondition");
 		elements.add("selectRefItem");
-		elements.add("login");
-		elements.add("check");
+//		elements.add("login");
+//		elements.add("check");
 		
 		
 		//ZpŒvZ
@@ -77,9 +77,12 @@ public class Get implements Parameterable, Expression{
 			
 			Template getter_template = new Template("js/getter");
 			getter_template.apply("ELEMENT", element);
+			
 			getter_template.apply("GETTER", getter);
 			if(property==null)
 				property = "";
+			else 
+				property =  property.substring(0, 1).toUpperCase() + property.substring(1);//1•¶š–Ú‚ğ‘å•¶š‚É‚µ‚Äon‚ğ‚Â‚¯‚é
 			getter_template.apply("PROPERTY", property);
 			getter_template.apply("PARAMS", paramToJsSource(func, key, rest));
 
@@ -94,7 +97,6 @@ public class Get implements Parameterable, Expression{
 			select_template.apply("FUNC", func.toJsSource(func, key, rest));
 			select_template.apply("REST", rest.toJsSource(null, null, null));
 			jsSource = select_template.source;
-			//CallBackItems.count--; //ˆø”‚ÌÕ“Ë‚ğ”ğ‚¯‚é‚½‚ß‚ÉƒR[ƒ‹ƒoƒbƒN‚Ì[‚³‚ğŒ¸‚ç‚·
 		}
 			
 		return jsSource;

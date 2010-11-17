@@ -1,3 +1,16 @@
+dojo.require("ajweb.connect");
+dojo.require("ajweb.date");
+dojo.require("ajweb.widget.Frame");
+dojo.require("ajweb.widget.Label");
+dojo.require("ajweb.widget.Panel");
+dojo.require("ajweb.widget.Dialog");
+dojo.require("ajweb.widget.Button");
+dojo.require("ajweb.widget.Textbox");
+dojo.require("ajweb.widget.Table");
+dojo.require("ajweb.widget.Th");
+dojo.require("ajweb.data.Database");
+dojo.require("ajweb.widget.Selectbox");
+dojo.require("ajweb.widget.Passwordbox");
 ${REQUIRE}
 
 dojo.addOnLoad(
@@ -11,16 +24,14 @@ dojo.addOnLoad(
       {
 	ajweb.log.trace("onLoad");
 	var ajweb_container = document.getElementById("ajweb_container");
-//ここから自動生成
-/*databasesの記述 */
+/*-----------------------------------ここから自動生成-------------------------------*/
+/*databases model */
 ${DATABASES}
-/*interfacesの記述 */
+/*interfaces model */
 ${INTERFACES}
-/*eventsの記述 */
+/*events model */
 ${EVENTS}
-//ここまで自動生成
-
-    /*初期化処理 アプリケーション共通*/
+/*-----------------------------------generated source-------------------------------*/   
         rootFrame.startup();
     	ajweb.polling("dbservlet");
 	dojo.connect(window, "offline", null, function(){

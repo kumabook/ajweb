@@ -120,7 +120,9 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * 取得
    * @return
    */
-  select: function(next){
+  select: function(param, next){
+    if(param instanceof Function)
+      next = param;
     return this._select(null, next);
   },
   _select: function(json, next){
@@ -155,6 +157,8 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
     return this._select(param, next);
   },
   selctById: function(id, next){
+    if(id instanceof Object)
+      id = id.id;
     return this._select({op: "eq", property: "id", value: id}, next);
   },
   check: function(params, next){

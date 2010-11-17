@@ -89,7 +89,6 @@ public class CompilerTest {
 	}
 	@Test
 	public void testGenerateSource() throws Exception {
-		Thread.sleep(5000);
 		String sourcePath = Config.workDir+"/test";
 		Compiler.generateSource(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), sourcePath);
 		

@@ -17,7 +17,7 @@ ajweb.data.toJSONConditions = function(){
       obj[databases[i].tablename] = [];
       for(var j = 0; j < databases[i].conditions.length; j++){
 	if(databases[i].conditions[j].isContainDatabaseItem()){
-//	alert(j + "  " + ajweb.toJSON(ajweb.databases[i].conditions[j]));
+//	alert(j + "  " + ajweb.toJSON(databases[i].conditions[j]));
 	obj[databases[i].tablename].push(databases[i].conditions[j]);
 	  }
 	}

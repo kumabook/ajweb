@@ -38,8 +38,8 @@ public class DatabaseTest {
 		File room = new File("test/file/source/room.java");
 
 		assertEquals(rooms.toJavaSource(), FileUtils.read(room).trim());
-		//System.out.println(databases.get(0).toJavaSource())
-		//System.out.println(FileUtils.read(room));
+//		System.out.println(databases.get(0).toJavaSource());
+//		System.out.println(FileUtils.read(room));
 		
 	}
 	
@@ -58,6 +58,7 @@ public class DatabaseTest {
 		File listener = new File("test/file/source/listener.java");
 		String source = databases.toListenerSource();
 //		System.out.println(source);
+//		System.out.println(FileUtils.read(listener));
 		assertEquals(FileUtils.read(listener).trim(), source);
 	}
 	

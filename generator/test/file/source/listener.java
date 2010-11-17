@@ -18,11 +18,11 @@ public class AjWebListener implements ServletContextListener{
 try {
 		room.create();
 		System.out.println("room create");
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚P\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚Q\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚R\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚S\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ƒ‹[ƒ€‚T\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ãƒ«ãƒ¼ãƒ ï¼‘\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ãƒ«ãƒ¼ãƒ ï¼’\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ãƒ«ãƒ¼ãƒ ï¼“\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ãƒ«ãƒ¼ãƒ ï¼”\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ãƒ«ãƒ¼ãƒ ï¼•\"}"));
 
 	} catch (Exception e) {
 		System.out.println("room is already exists");

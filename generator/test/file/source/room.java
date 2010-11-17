@@ -19,7 +19,7 @@ public class room {
 		properties.put("name", "string");
 	}
 	
-	static String dbName = "jdbc:derby:AJWEB";
+	static String dbName = "jdbc:derby:temp/derby";
 	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
 	static String tableName = "room";
 	

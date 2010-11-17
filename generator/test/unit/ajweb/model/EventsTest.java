@@ -31,7 +31,7 @@ public class EventsTest {
 	@Test
 	public void testToJsSource() throws IOException, SAXException{
 		events = app.events;
-	//	System.out.println(events.toJsSource(app.databases));
+		//System.out.println(events.toJsSource(app.databases));
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class EventsTest {
 		Action action = app.events.get(0).action;
 		assertEquals(1, action.size());
 		Call call = (Call) action.get(0);
-		assertEquals("root.selectPanel({panel:\"loginPanel\"});", call.toJsSource(null, null, new Action()));
+		assertEquals("rootFrame.selectPanel({panel:\"loginPanel\"});", call.toJsSource(null, null, new Action()));
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class EventsTest {
 		params.add(new Param("key1", new Primitive("int", "1")));
 		params.add(new Param("key2", new Primitive("string", "test")));
 		Get select = new Get("select", "selectId", null, params);
-		assertEquals("{ key: selectBox.getselectItem(), key1: 1, key2: \"test\"}", select.paramToJsSource(null, null, null));
+		assertEquals("{ key: selectBox.getSelectItem(), key1: 1, key2: \"test\"}", select.paramToJsSource(null, null, null));
 	}
 	
 	//@Test

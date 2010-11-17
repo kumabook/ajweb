@@ -1,45 +1,39 @@
 package ajweb.generator;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.logging.Logger;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
 import ajweb.Config;
 import ajweb.model.Application;
 import ajweb.parser.AjmlHandler;
 import ajweb.utils.FileUtils;
 
+
 public class Compiler {
 	
-	public static String js_file;
-	public static String lib_directory;
 	
-	/**
-	 * ajmlを読み込んで、applicationオブジェクトを生成
-	 * @param ajml_file
-	 * @return
-	 * @throws IOException 
-	 * @throws SAXException 
-	 */
-	public static Application parse(File ajml, String outDir) throws IOException, SAXException{
-		Application app = parse(ajml);
-		app.outDir = outDir;
-		return app;
-	}
+	public static String workDirectory = Config.workDir;
+	public static String appName;
+	public static Logger logger;
+	
+	
+	static public String fs = Config.fs;
+	static public String ps = Config.ps;
+		
+	
+	
 	
 	public static Application parse(File ajml) throws IOException, SAXException{
 		
@@ -89,17 +83,29 @@ public class Compiler {
 	public static void generateWar(File ajml, File warFile) throws Exception{
 		
 		Application app = parse(ajml);
-		app.outDir = Config.workDir + app.appName;
-		setup(app.outDir);
-		app.generate();
-		javaCompile(app.outDir);
+		String outDir = Config.workDir + app.appName;
+//		app.outDir = Config.workDir + app.appName;
+		setup(outDir);
+		app.generate(outDir);
+		boolean result = javaCompile(outDir);
 		
-		FileUtils.compression(new File(app.outDir), warFile);
-		if(Config.isStandardOutput)
-			System.out.println("compress "  + app.outDir +"/* to war file");
-		FileUtils.delete(new File(app.outDir));
-		if(Config.isStandardOutput)
-			System.out.println("cleanup work directory");
+		if(warFile==null){
+			warFile = new File(app.appName + ".war");
+		}
+		
+		if(result){
+			FileUtils.compression(new File(outDir), warFile);
+			if(Config.isStandardOutput)
+				System.out.println("compress "  + outDir +"/* to war file");
+			
+			FileUtils.delete(new File(outDir));
+			if(Config.isStandardOutput)
+				System.out.println("cleanup work directory");
+		
+			if(Config.isStandardOutput)
+				System.out.println("generate app complete: " + warFile.getPath());
+		}
+		
 	}
 	/**
 	 * アプリケーションオブジェクトからソースコードを生成
@@ -108,10 +114,14 @@ public class Compiler {
 	 * @throws Exception 
 	 */
 	public static void generateSource(File ajml, String outDir) throws Exception{
-		Application app = parse(ajml, outDir);
+		Application app = parse(ajml);
 		setup(outDir);
-		app.generate();
-		javaCompile(outDir);
+		app.generate(outDir);
+		boolean result = javaCompile(outDir);
+		if(result){
+			if(Config.isStandardOutput)
+				System.out.println("generate app complete: " + outDir);
+			}
 	}
 	/**
 	 * 作業ディレクトリの作成、フレームワークコードのコピー

@@ -92,9 +92,9 @@ dojo.declare("ajweb.data.Condition", ajweb.data.AbstractCondition,
       var right = this.right();
       if(this.type == "select"){
 	if(left instanceof ajweb.data.Item)
-	  json_obj = {op:  this.op, property: this.left.property , value: right};
+	  json_obj = {op:  this.op, property: left.property , value: right};
 	else
-	  json_obj = {op:  this.op, property: this.right.property , value:left};
+	  json_obj = {op:  this.op, property: right.property , value:left};
       }
       else {
 	if(left instanceof ajweb.data.Item)

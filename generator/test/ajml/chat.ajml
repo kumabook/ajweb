@@ -67,7 +67,7 @@
 	  <label id="userIdLabel" content="ユーザID"  top="30px" left="30px"/>
     	  <textbox id="userIdTextbox" content="" top="30px" left="130px"/>
 	  <label id="passwordLabel" content="パスワード" top="60px" left="30px" />
-    	  <passwordbox id="userIdTextbox" content="" top="60px" left="130px"/>
+    	  <passwordbox id="passwordbox" content="" top="60px" left="130px"/>
     	  <button id="loginButton"  content="ログイン" top="90px" left="30px"/>
 	</panel>
 	<!-- ログインメッセージダイアログ -->
@@ -114,9 +114,9 @@
     <!--イベントモデル -->
     <events>
       <!-- 初期画面の設定-->
-      <event target="root" type="display">
+      <event target="rootFrame" type="display">
 	<action>
-	  <call element="root" func="selectPanel">
+	  <call element="rootFrame" func="selectPanel">
 	    <param name="panel">
 	      <string>loginPanel</string>
 	    </param>
@@ -141,7 +141,7 @@
 	    </condition>
 	    <then>
 	      <call element="roomFrame" func="selectPanel">
-		<param name="datum">
+		<param name="panel">
 		  <string>roomSelectPanel</string>
 		</param>
 	      </call>
@@ -239,7 +239,7 @@
       </event> 
 
       <!-- メッセージの送信-->
-      <event target="submit" type="click">
+      <event target="messageSubmitButton" type="click">
 	<action>
 	  <insert id="insert_message" database="message">
 	    <param name="message">

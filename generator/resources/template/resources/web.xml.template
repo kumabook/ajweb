@@ -9,7 +9,7 @@
   </listener>
   <servlet>
     <servlet-name>dbservlet</servlet-name>
-    <servlet-class>ajweb.servlet.AjWebApp</servlet-class>
+    <servlet-class>ajweb.servlet.AjWebServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>

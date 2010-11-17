@@ -42,7 +42,7 @@ public class Condition extends AbstractCondition{
 	@Override
 	public String toJsSource(Flowable func, String key, Action next) throws IOException {
 		if(op.equals("success"))
-				return "new ajweb.beforeAction()";
+				return "item.result";
 		Template condition_template = new Template("js/condition");
 		condition_template.apply("OP", op);
 		condition_template.apply("LEFT", left.toJsSource(func, key, next));
@@ -53,12 +53,12 @@ public class Condition extends AbstractCondition{
 
 	@Override
 	public String toJsPollingCondition(String database, Flowable func, String key, Action rest) throws IOException {
-		Template condition_template = new Template("js/polling_condition");
+		Template condition_template = new Template("js/condition");
 		ReceivedItem receivedItem = (ReceivedItem) left;
 		condition_template.apply("OP", op);
-		condition_template.apply("DATABASE", database);
-		condition_template.apply("PROPERTY", receivedItem.property);
-		condition_template.apply("FUNCTION", "" + right.toJsSource(func, key, rest) + "");
+//		condition_template.apply("DATABASE", database);
+		condition_template.apply("LEFT",  "new ajweb.data.Item({database:" +database + ", property: \"" + receivedItem.property +"\"})");
+		condition_template.apply("RIGHT", right.toJsSource(func, key, rest));
 		return condition_template.source.trim();
 	}
 
