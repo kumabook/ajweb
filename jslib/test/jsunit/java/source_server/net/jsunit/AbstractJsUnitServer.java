@@ -114,8 +114,8 @@ public abstract class AbstractJsUnitServer {
 		webapp.setResourceBase(webAppDir.getAbsolutePath() + "/");
 		webapp.addClassPath(webAppDir.getAbsolutePath() + "/WEB-INF/classes");
 		webapp.addClassPath(basedir + "/../generator/dist/ajweb.jar");
-		webapp.addClassPath(basedir + "/../generator/lib/jetty-all-7.0.2.v20100331.jar");
-		webapp.addClassPath(basedir + "/../generator/lib/derby.jar");
+		webapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
+		webapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
 		
         ResourceHandler resource_handler = new ResourceHandler();
         resourceHandler.setDirAllowed(false);

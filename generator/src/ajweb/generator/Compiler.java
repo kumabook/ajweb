@@ -1,8 +1,9 @@
 package ajweb.generator;
 
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class Compiler {
 		//FileUtils.copyFile(".." + fs + "js" + fs + "dist" + fs + "AjWeb.js", temp + fs + appName + "/AjWeb.js");
 		//System.out.println(temp + fs + appName + fs + "WEB-INF/lib/test.txt");
 		
-		FileUtils.copyDir("lib/",  outDir + "/WEB-INF/lib/","jar");
+		FileUtils.copyDir("lib/servlet",  outDir + "/WEB-INF/lib/","jar");
 		//外部のjavaScriptライブラリは、http経由で読み込み
 				
 				
@@ -157,13 +158,13 @@ public class Compiler {
 			args.add(web_infDir +fs+ "classes");
 			args.add("-classpath");
 		
-
-			File[] libfiles = new File("lib/").listFiles();
 			String classpath = "." + fs +   ps +  "."+ fs + "classes" + ps;
+			/*File[] libfiles = new File("lib/").listFiles();
+		
 			for(int i = 0; i < libfiles.length; i++){
 				if(libfiles[i].getPath().endsWith(".jar"))
 					classpath += libfiles[i].getPath() + ps;
-			}
+			}*/
 		
 			File[] libfiles_web_inf = new File(web_infDir+fs+"lib").listFiles();
 			for(int i = 0; i < libfiles_web_inf.length; i++){
@@ -184,7 +185,7 @@ public class Compiler {
 				}
 			}
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			int result = compiler.run(null, null, new FileOutputStream(outDir + "/classes/javacErr.log"), args.toArray(new String[0]));
+			int result = compiler.run(null, null, /*null*/new ByteArrayOutputStream(), args.toArray(new String[0]));
 			
 			//int result = com.sun.tools.javac.Main.compile(args.toArray(new String[0]));
 			if(Config.isStandardOutput)

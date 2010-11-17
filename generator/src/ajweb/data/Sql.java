@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Map.Entry;
-
 import ajweb.utils.Log;
 
 /**
@@ -121,9 +120,20 @@ public class Sql {
 
 			Properties props = new Properties();
 			props.put("create", "true");
-			if(conn == null)
-				 conn = DriverManager.getConnection(dbName,props);//ここのデータベース名は設定
+			if(conn == null){
+//				boolean isSuccess = false;
+//				while(!isSuccess){
+//					try{
+						conn = DriverManager.getConnection(dbName,props);//ここのデータベース名は設定
+//						isSuccess = true;
+//					} catch (SQLException e){
+//						System.out.println("もう一回");
+//						isSuccess = false;
+//					}
+//				}
+			}
 			conn.setAutoCommit(false);
+			
 			
 			return conn;
 	}

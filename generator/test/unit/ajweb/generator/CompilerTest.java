@@ -3,7 +3,6 @@ package ajweb.generator;
 import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -13,25 +12,29 @@ import ajweb.utils.FileUtils;
 
 public class CompilerTest {
 	
-	static Application app;
+	
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
 		Config.isStandardOutput = false;
-		Config.workDir = "test/temp";
+		Config.workDir = "test/temp/";
 		
-		app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
-		Compiler.setup(Config.workDir + "/" + app.appName);
+		
+		
 
 	}
 	
 	@Test
 	public void testParse() throws IOException, SAXException{
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
 		assertEquals("test", app.appName);
 	}
 	
-	@Test
+	
+	
 	public void testSetup() throws Exception{
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
+		Compiler.setup(Config.workDir + "/" + app.appName);
 		File appDirectory = new File(Config.workDir + FileUtils.fs +  app.appName);
 //		File jslib = new File(Config.workDir + FileUtils.fs + appName + FileUtils.fs + "jslib");
 		File web_inf = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF");
@@ -47,6 +50,18 @@ public class CompilerTest {
 		assertTrue(lib.isDirectory());
 
 	}
+	@Test
+	public void testGenerateWar() throws Exception{
+		
+		Compiler.generateWar(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), new File("test/temp/test.war"));
+		File warFile = new File("test/temp/test.war");
+		assertTrue(warFile.exists());		
+		warFile.delete();
+		File outDir = new File(Config.workDir + "/chat");
+		outDir.delete();
+		assertFalse(outDir.exists());
+	}	
+		
 	
 	@Test
 	public void testJavaCompile() throws Exception{
@@ -72,31 +87,25 @@ public class CompilerTest {
 		assertFalse(false_result);
 		
 	}
-	
-	@Test
-	public void testGenerateWar() throws Exception{
-		Compiler.generateWar(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), new File("test/temp/test.war"));
-		File warFile = new File("test/temp/test.war");
-		assertTrue(warFile.exists());		
-		warFile.delete();
-		assertFalse(new File(Config.workDir + "/chat").exists());
-	}
-	
 	@Test
 	public void testGenerateSource() throws Exception {
-		String sourcePath = Config.workDir+"test";
+		Thread.sleep(5000);
+		String sourcePath = Config.workDir+"/test";
 		Compiler.generateSource(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "chat.ajml"), sourcePath);
 		
 		File sourceDir = new File(sourcePath);
-		assertTrue(sourceDir.exists());		
-		FileUtils.delete(sourceDir);
-		assertFalse(sourceDir.exists());
+		assertTrue(sourceDir.exists());
+//		FileUtils.delete(sourceDir);
+//		assertFalse(sourceDir.exists());
 		
 	}
 	
-	@AfterClass
+
+
+
+	
 	public static void afterClass(){
-		FileUtils.delete(new File(Config.workDir + FileUtils.fs + app.appName));
+		//FileUtils.delete(new File(Config.workDir + FileUtils.fs + app.appName));
 	}
 	
 }

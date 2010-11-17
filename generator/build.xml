@@ -40,16 +40,20 @@
 
 	<target name="doc">
 	</target>
-	<target name="unittest" depends="compile">
+	<target name="unittest" depends="compile,compile_unittest">
 			<echo message="${basedir}"/>
 			<junit haltonfailure="true" printsummary="on" dir="${basedir}" fork="on">
 					<sysproperty key="basedir" value="${basedir}"/>
 					<formatter type="plain" usefile="false"/> 
 					<classpath>
-							<fileset dir="lib">
-									<include name="*.jar"/>
-							</fileset>
-							<pathelement location="classes/"/>
+						<fileset dir="./lib/compiler/">
+							<include name="*.jar"/>
+						</fileset>
+						<fileset dir="./lib/servlet/">
+							<include name="*.jar"/>
+						</fileset>
+						<pathelement location="classes/"/>
+						<pathelement location="test/classes/"/>
 					</classpath>
 					<test name="ajweb.AllTests"/>
 			</junit>
@@ -59,9 +63,13 @@
 			<javac destdir="./test/classes" includeAntRuntime="no">
 					<src path="./test/unit/"/>
 					<classpath>
-							<fileset dir="./lib">
-									<include name="*.jar"/>
-							</fileset>
+						<fileset dir="./lib/compiler/">
+							<include name="*.jar"/>
+						</fileset>
+						<fileset dir="./lib/servlet/">
+							<include name="*.jar"/>
+						</fileset>
+						<pathelement location="classes/"/>
 					</classpath>
 			</javac>
 	</target>

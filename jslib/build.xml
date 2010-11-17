@@ -40,10 +40,13 @@
 			<javac destdir="./test/connect_test_app/WEB-INF/classes/" includeAntRuntime="no">
 					<src path="./test/connect_test_app/WEB-INF/src"/>
 					<classpath>
-							<fileset dir="../generator/lib/">
-									<include name="*.jar"/>
-							</fileset>
-							<pathelement location="../generator/dist/ajweb.jar"/>
+						<fileset dir="../generator/lib/servlet/">
+							<include name="*.jar"/>
+						</fileset>
+						<fileset dir="../generator/lib/compiler/">
+							<include name="*.jar"/>
+						</fileset>
+						<pathelement location="../generator/dist/ajweb.jar"/>
 					</classpath>
 			</javac>
 	</target>

@@ -23,7 +23,7 @@ public class ConditionsTest {
 		properties.put("posted", "datetime");
 	}
 	static Sql da = new Sql("org.apache.derby.jdbc.EmbeddedDriver",
-				"jdbc:derby:" + SqlTest.derby_dir + "/test");
+				"jdbc:derby:" + SqlTest.derby_dir + "test");
 	static HashMap<String, String> param;
 	{
 		param = new HashMap<String, String>();

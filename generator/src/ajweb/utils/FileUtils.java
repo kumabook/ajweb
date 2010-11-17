@@ -91,10 +91,10 @@ public class FileUtils {
 	public static void copyDirectory(String srcDir, String destDir, String[] typeList) throws IOException{
 		org.apache.commons.io.FileUtils.copyDirectory(new File(srcDir), new File(destDir), (FileFilter) new dojoFileFilter(typeList));
 	}
-	public static void delete(File f){
+	public static boolean delete(File f){
 //		System.out.println("delete " + f.getAbsolutePath());
 		  if( f.exists()==false ){
-		        return ;
+		        return true;
 		    }
 
 		    if(f.isFile()){
@@ -106,11 +106,23 @@ public class FileUtils {
 //		        System.out.println(files.length);
 		        for(int i=0; i < files.length; i++){
 		        	Log.finest("delete"+ files[i].getAbsolutePath());	
-		        	//System.out.println("delete"+ files[i].getAbsolutePath());
-		            delete(files[i]);
+		            boolean result = false;
+		            while(!result){
+		            	 result = delete(files[i]);
+//		            	 System.out.println("sleep" + files[i].getName());
+		            	 //try {
+//							Thread.sleep(100);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+		            }
+		            //System.out.println("delete  "+ files[i].getAbsolutePath() + result);
 		        }
-		        f.delete();
+		        boolean result = f.delete();
+//		        System.out.println("delete   "+ f.getAbsolutePath() + "  " + result);
+		        return result;
 		    }
+			return false;
 
 	}
 	
