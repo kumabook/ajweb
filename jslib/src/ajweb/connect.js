@@ -28,6 +28,7 @@ ajweb.send = function(url, table, action, json, callback){
       },
       error:function(error, args){
 	ajweb.log.error(action + " error! : "+ error);
+	//alert("システムエラー!!");
       }
     });
 };

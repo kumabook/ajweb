@@ -35,7 +35,6 @@ dojo.declare("ajweb.widget.Th",
 	createWidget :function(){
 
 	},
-	startup: function(){
+	display: function(){
 	}
-
 });

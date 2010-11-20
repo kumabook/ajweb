@@ -60,7 +60,10 @@ dojo.declare("ajweb.widget.Widget", null,
 	 * 要素がすべて生成された後のタイミングで呼び出される。
 	 * このメソッドをオーバライドし、DOMの調整を行う。
 	 */
-  startup: function(){
+  display: function(){
+    this.onDisplay();
+  },
+  onDisplay: function(){
 
   }
-  });
+});

@@ -12,15 +12,43 @@ dojo.declare("ajweb.date", null,
    * @constructs
    */
   constructor : function(opt){
+    this.date = new Date();
+    if(!opt)
+      return;
+    if(opt.year)
+      this.date.setFullYear(opt.year);
+    if(opt.months)
+      this.date.setMonth(opt.months);
+    if(opt.date)
+      this.date.setDate(opt.date);
+    if(opt.hours)
+      this.date.setHours(opt.hours);
+    if(opt.minutes)
+      this.date.setMinutes(opt.minutes);
+    if(opt.seconds)
+      this.date.setSeconds(opt.seconds);
+/*
     this.year = opt.year;
     this.month = opt.month;
     this.day = opt.day;
     this.hour = opt.hour;
     this.minute = opt.minute;
     this.second = opt.second;
-
+*/
     this.type = opt.type;
     this.isRelative = opt.isRelative;
+  },
+  toJSON: function(){
+      return this.toDateString(this.date.getFullYear())+"-"+ this.toDateString(this.date.getMonth()) +"-"+
+	this.toDateString(this.date.getDate())+" "+this.toDateString(this.date.getHours())+":" +
+	  this.toDateString(this.date.getMinutes())+":"+ this.toDateString(this.date.getSeconds());
+  },
+  toDateString: function(param){
+    if(param < 10){
+	return  "0" + param;
+    }
+    else
+      return param;
   },
 
   /**

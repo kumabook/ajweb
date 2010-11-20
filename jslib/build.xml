@@ -14,8 +14,14 @@
 			<arg value="-t=${jsdoc}/templates/jsdoc" />
 		</java>
 	</target>
-
-	<target name="run">
+	<target name="clean">
+			<delete dir="./temp"/>
+			<delete dir="./work/ajweb/"/>
+			<delete dir="./derby.log"/>
+			<delete dir="./error.log"/>
+			<delete dir="./doc/"/>
+	</target>
+	<target name="run_api_server">
 		<java classname="ajweb.js.AjwebApiServer">
 			<classpath>
 				<fileset dir="../generator/lib">
@@ -35,6 +41,7 @@
 			</exec>
 			<exec executable="./bin/jslib_deploy"/> 
 	</target>
+
 	<target name="compile_connect_test_app">
 			<mkdir dir="./test/connect_test_app/WEB-INF/classes"/>
 			<javac destdir="./test/connect_test_app/WEB-INF/classes/" includeAntRuntime="no">
@@ -50,6 +57,7 @@
 					</classpath>
 			</javac>
 	</target>
+
 	<target name="unittest" depends="compile_connect_test_app">
 			<echo message="${basedir}" />
 			<condition property="browserFileNames"
@@ -122,7 +130,7 @@
 		<!--
 			http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html&autoRun=true&browserId=0&submitResults=localhost:8080/jsunit/acceptor -->
 	</target>
-	<target name="open_junit_server">
+	<target name="open_jsunit_runner">
 			<exec executable="open">
 					<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
 			</exec>
@@ -130,19 +138,5 @@
 	<target name="stop_jsunit_server" >
 			<exec executable="bin/stop_server">
 			</exec>
-			<!--
-			http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html&autoRun=true&browserId=0&submitResults=localhost:8080/jsunit/acceptor -->
-			<!--			<subant target="stop_server">
-					<property id="description" name="description"
-							value="ajweb javaScript framework test"/>
-					<property id="port" name="port"	value="8000"/>
-					<property id="resourceBase" name="resourceBase"
-							value="../../"/>
-					<filelist dir=".">
-							<file name="test/jsunit/build.xml"/>
-					</filelist>
-			</subant>  -->
 	</target>
-
-
 </project>

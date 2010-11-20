@@ -27,24 +27,28 @@ dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
   constructor: function(opt){
   },
   createWidget: function(){
-        this.widget = new dijit.form.TextBox({
-                        id: this.id,
-//                      maxLength: 10,
-                        style: {
-                          position: "absolute",
-                          top: this.top,
-                          left: this.left,
-                          width: this.width
-                        },
-			value: this.value
-        });
-        this.element = this.widget.domNode;
+    this.widget = new dijit.form.TextBox({
+        id: this.id,
+    //                      maxLength: 10,
+        style: {
+          position: "absolute",
+          top: this.top,
+          left: this.left,
+          width: this.width
+        },
+	value: this.value
+    });
+    this.element = this.widget.domNode;
 
   },
   getValue: function(){
     return this.widget.value;
   },
-  startup: function(){
+  display: function(){
     this.widget.startup();
+    this.onDisplay();
+  },
+  onDisplay: function(){
+
   }
 });

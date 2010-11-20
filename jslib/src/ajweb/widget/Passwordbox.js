@@ -49,7 +49,11 @@ dojo.declare("ajweb.widget.Passwordbox",ajweb.widget.Widget,
     return CybozuLabs.MD5.calc(this.widget.value);
   },
 
-  startup: function(){
+  display: function(){
     this.widget.startup();
+    this.onDisplay();
+  },
+  onDisplay: function(){
+
   }
 });

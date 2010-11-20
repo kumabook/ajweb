@@ -32,27 +32,27 @@ ajweb.widget.Widget,
 
 	},
   createWidget: function(){
-		this.structure = {
-		  defaultCell: {
-		      editable: true
-		  },
-		  cells: []
-		};
-    		this.store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: []}});
-		this.widget= new dojox.grid.DataGrid({
-		    id: this.id,
-		    style:{
-		      position: "absolute",
-		      top: this.top,
-		      left: this.left,
-		      width: this.width,
-		      height: this.height
-		    },
-		    draggable: true,
-		    structure: this.structure,
-		    store: this.store
-		    });
-		  this.element = this.widget.domNode;
+    this.structure = {
+      defaultCell: {
+	editable: true
+      },
+      cells: []
+    };
+    this.store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: []}});
+    this.widget= new dojox.grid.DataGrid({
+      id: this.id,
+      style:{
+	position: "absolute",
+	top: this.top,
+	left: this.left,
+	width: this.width,
+	height: this.height
+      },
+      draggable: true,
+      structure: this.structure,
+      store: this.store
+	});
+    this.element = this.widget.domNode;
   },
   /**
    * th要素を追加
@@ -68,6 +68,8 @@ ajweb.widget.Widget,
    */
   insert : function(items){
     if(!items) return;
+    if(items.item)
+      items = items.item;
     if(dojo.isArray(items)){
       for(var i = 0; i < items.length; i++){
 	this.store.newItem(items[i]);
@@ -76,10 +78,10 @@ ajweb.widget.Widget,
     this.store.newItem(items);
   },
 
-  load : function(items){
+  load : function(param){
     this.clear();
-    for(var i = 0; i < items.length; i++){
-      this.store.newItem(items[i]);
+    for(var i = 0; i < param.datum.length; i++){
+      this.store.newItem(param.datum[i]);
     }
   },
 
@@ -99,11 +101,12 @@ ajweb.widget.Widget,
 
   },
 
-  startup :function(){
+  display: function(){
     this.widget.setStructure(this.structure);
     this.widget.startup();
   },
-
+  onDisplay: function(){
+  },
   /**
    * inspectメソッド：デバッグ情報を出力
    * @return {String} デバッグ用出力

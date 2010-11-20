@@ -13,7 +13,7 @@ dojo.provide("ajweb.data.LocalDatabase");
 
 
 dojo.declare("ajweb.data.LocalDatabase", ajweb.data.AbstractDatabase,
-  /** @lends ajweb.data.AbstractDatabase.prototype */
+  /** @lends ajweb.data.LocalDatabase.prototype */
 {
   /**
    * データベースクラス

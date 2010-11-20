@@ -35,12 +35,15 @@ dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
 
 	  this.element = this.widget;
 	},
-	startup: function(){
+	display: function(){
+	  this.onDisplay();
 	},
 	setContent: function(content){
 	  this.content = content;
 	  this.element.innerHTML = content;
 	},
+	onDisplay: function(){
+    	},
 
 	/**
 	 * inspectメソッド：デバッグ情報を出力

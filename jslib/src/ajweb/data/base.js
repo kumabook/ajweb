@@ -42,3 +42,8 @@ ajweb.data.login = function(params, next){
 	     next
   );
 };
+
+ajweb.data.String = {};
+ajweb.data.String.concat = function(param){
+  return param.left + param.right;
+};

@@ -14,7 +14,7 @@ dojo.declare("ajweb.data.sql", null, {});
 
 /** @namespace */
 ajweb.data.sql = {};
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.create = function(tablename, properties){
   var scheme = "(id INTEGER  KEY ";
   for(var i = 0; i < properties.length; i++){
@@ -26,14 +26,14 @@ ajweb.data.sql.create = function(tablename, properties){
   ajweb.log.trace(SQL);
   dojox.sql(SQL);
 };
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.drop = function(tablename){
   var SQL = "DROP TABLE IF EXISTS " + tablename;
   ajweb.log.trace(SQL);
   dojox.sql(SQL);
 };
 
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.insert = function(tablename, properties, params){
   var properties_sql = "(";
   var values_sql = "(";
@@ -60,7 +60,7 @@ ajweb.data.sql.insert = function(tablename, properties, params){
   return params;
 };
 
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.remove = function(tablename, params){
   var id = params;
   if(!(id instanceof Number))
@@ -69,7 +69,7 @@ ajweb.data.sql.remove = function(tablename, params){
   ajweb.log.trace(SQL);
   dojox.sql(SQL);
 };
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.update = function(tablename, properties, params){
   var values_sql = "";
   for(var i = 0; i < properties.length; i++){
@@ -83,7 +83,7 @@ ajweb.data.sql.update = function(tablename, properties, params){
   ajweb.log.trace(SQL);
   dojox.sql(SQL);
 };
-/** @methodOf ajweb.sql */
+/** @methodOf ajweb.data.sql */
 ajweb.data.sql.select = function(tablename, properties, where){
   //conditionをもとに実装
   var SQL = "SELECT * FROM " + tablename; // " WHERE " + properties_sql + " VALUES " + values_sql;

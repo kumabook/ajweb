@@ -30,114 +30,94 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
    * @param {Object} opt.size 大きさ
    * @param {Object} opt.onload
    */
-	constructor : function(opt){
+  constructor : function(opt){
 
-	},
+  },
   /**
    * this.elementにDOMノードを設定
    *
    */
-	createWidget : function(){
-	  this.store = new dojo.data.ItemFileWriteStore({ data: {identifier: "id", label: this.label, items: []}});
-	  this.items = [];
-	  this.widget= new dijit.form.ComboBox({
-	    id: this.id,
-	    top: this.top,
-	    left: this.left,
-	    width: this.width,
-	    store: this.store,
-	    style: {
-	      position: "absolute",
-	      top: "50px",
-	      left: "100px"
-	    },
-	    name: "room",
-	    store: this.store,
-	    searchAttr: "name"
-	      });
-	  //this.widget= new dojox.grid.DataGrid(opt);
-	      this.element = this.widget.domNode;
-	},
-	/**
-	 * データベース要素のidとカラム名を指定して候補を代入
-	 */
-	load: function(param){
-	  var newItems;
-	  if(param.datum!=null)
-	    newItems= param.datum;
-	  else 
-	    newItems= param;
-	  var that = this;
+  createWidget : function(){
+    this.store = new dojo.data.ItemFileWriteStore({ data: {identifier: "id", label: this.label, items: []}});
+    this.items = [];
+    this.widget= new dijit.form.ComboBox({
+      id: this.id,
+      store: this.store,
+      style: {
+	position: "absolute",
+	top: this.top,
+	left: this.left,
+	width: this.width,
+	height: this.height
+      },
+      name: "room",
+      searchAttr: "name"
+      });
+    this.element = this.widget.domNode;
+  },
+  /**
+   * データベース要素のidとカラム名を指定して候補を代入
+   */
+  load: function(param){
+    var newItems;
+    if(param.datum!=null)
+      newItems= param.datum;
+    else
+      newItems= param;
+    var that = this;
 
-	  this.clear();
- 	  for(var i = 0; i < newItems.length; i++){
-	        this.newItem(newItems[i]);
-	  }
-/*
-          this.store.fetch({
-            onItem: function(item, request){
-	      that.store.deleteItem(item);
-	    },
-	    onComplete: function(items, request){
-	      that.store.save();//store._pendingをクリア
-	      that.items = [];
-	      for(var i = 0; i  < newItems.length; i++){
-		that.newItem(newItems[i]);
-	      }
-	    }
-	  }
-	  );*/
-	},
-	clear : function(){
-	  var store = this.store;
-	  this.store.fetch({
-	    onComplete: function(items, request){
-	      for(var i = 0; i < items.length; i++){
-		store.deleteItem(items[i]);
-	      }
-	    }
-	  }
-	);
-	store.save();
-	},
-
-	newItem: function(item){
-	  this.items.push(dojo.mixin({},item));
-	  this.store.newItem(item);
-	},
-	getValue: function(){
-	  return  this.widget.getValue();
-
-	},
-	getSelectItem: function(param){
-	  var value = this.widget.getValue();
-	  for(var i = 0; i <  this.items.length; i++){
-	    if(this.items[i][this.label] == value){
-	      if(!param)
-		return this.items[i];
-	      else
-		return this.items[i][param.property];
-	    }
-	  }
-	  return 0;
-	},
-
-	startup :function(){
-		this.widget.startup();
-	},
-	/**
-	 * inspectメソッド：デバッグ情報を出力
-	 * @return {String} デバッグ用出力
-	 *
-	 * @example
-	 *  button.inspect();
-	 */
-
-	inspect : function(){
-		return "Selectbox:" + this.id;
-	},
-	reload: function(){
-
+    this.clear();
+    for(var i = 0; i < newItems.length; i++){
+      this.newItem(newItems[i]);
+    }
+  },
+  clear : function(){
+    var store = this.store;
+    this.store.fetch({
+      onComplete: function(items, request){
+	for(var i = 0; i < items.length; i++){
+	  store.deleteItem(items[i]);
 	}
+      }
+    }
+    );
+    store.save();
+  },
+
+  newItem: function(item){
+    this.items.push(dojo.mixin({},item));
+    this.store.newItem(item);
+  },
+  getValue: function(){
+    return  this.widget.getValue();
+  },
+  getSelectItem: function(param){
+    var value = this.widget.getValue();
+    for(var i = 0; i <  this.items.length; i++){
+      if(this.items[i][this.label] == value){
+	if(!param || !param.property){
+	  return this.items[i];
+	}
+	else
+	  return this.items[i][param.property];
+	}
+      }
+      return 0;
+  },
+
+  display :function(){
+    this.widget.startup();
+    this.onDisplay();
+  },
+  onDisplay:function(){},
+  /**
+   * inspectメソッド：デバッグ情報を出力
+   * @return {String} デバッグ用出力
+   */
+  inspect : function(){
+    return "Selectbox:" + this.id;
+  },
+  reload: function(){
+  }
 });
 

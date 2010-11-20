@@ -62,7 +62,6 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * @return
    */
   insert: function(params, next){
-
     if(navigator.onLine){//onlineならサーバに送信
       ajweb.send("dbservlet",
 		 this.tablename,
@@ -246,8 +245,12 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
   },
   encodeRefItem: function(params){
   for(var i= 0; i < this.properties_list.length; i++){
+//    if(params[this.properties_list[i]] instanceof ajweb.data.date || //参照型ならidに変換
+  //     params[this.properties_list[i]] instanceof ajweb.dataItem)
       if(params[this.properties_list[i]] instanceof Object //参照型ならidに変換
-	&& !(params[this.properties_list[i]] instanceof ajweb.data.Item)){
+	&& !(params[this.properties_list[i]] instanceof ajweb.data.Item
+	     || params[this.properties_list[i]] instanceof ajweb.date)
+	){
 	params[this.properties_list[i]] =  params[this.properties_list[i]].id;
       }
     }

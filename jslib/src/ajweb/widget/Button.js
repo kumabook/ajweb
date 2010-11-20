@@ -32,39 +32,42 @@ dojo.declare("ajweb.widget.Button",
 	 * @param {function} opt.onclick クリック時に行われる動作
 	 */
 
-	constructor : function(opt){
-	},
-	createWidget :function(){
-    	  this.widget= new dijit.form.Button({
-	    id: this.id,
-	    label: this.content,
-	    style: {
-	      position: "absolute",
-	      top: this.top,
-	      left: this.left,
-	      height: this.height,
-	      width: this.width
-	    }
-	  });
-	  this.element = this.widget.domNode;
-	  dojo.connect(this.widget, "onClick", this, function(){
-			 this.onClick();
-	  });
-	},
-	onClick: function(){
+  constructor : function(opt){
+  },
+  createWidget :function(){
+    this.widget= new dijit.form.Button({
+      id: this.id,
+      label: this.content,
+      style: {
+	position: "absolute",
+	top: this.top,
+	left: this.left,
+	height: this.height,
+	width: this.width
+      }
+    });
+    this.element = this.widget.domNode;
+    dojo.connect(this.widget, "onClick", this, function(){
+		   this.onClick();
+    });
+  },
+  onClick: function(){
+  },
+  display: function(){
+    this.widget.startup();
+    this.onDisplay();
+  },
+  onDisplay : function(){
 
-	},
-	startup: function(){
-	  this.widget.startup();
-	},
+  },
   /**
    * inspectメソッド：デバッグ情報を出力
    * @return {String} デバッグ用出力
    *
    */
-	inspect : function(){
-		return "ButtonWidget" + this.id;
-	}
+  inspect : function(){
+    return "ButtonWidget" + this.id;
+  }
 });
 
 

@@ -31,57 +31,29 @@ dojo.declare("ajweb.widget.Panel",
 
 
    constructor: function(opt){
-
-	if(opt.width) this.width = opt.width;
-	else this.width = "100%";
-	if(opt.height) this.height = opt.height;
-	else this.height = "100%";
-	if(opt.top) this.top = opt.top;
-	else this.top = "0px";
-	if(opt.left) this.left = opt.left;
-	else this.left = "0px";
-	if(opt.color) this.color = opt.color;
-	else this.color = "white";
-
-	},
-
-/*   startup: function(){
-     alert("startup panel");
-     for(var i = 0; i < this.children.length; i++){
-       //	alert(this.children[i].id  + "  startup");
-       this.children[i].startup();
-       //	this.element.appendChild(this.children[i].element);
-       //	  this.children[i].widget.startup();
-     }
-   },*/
+   },
    createWidget: function(){
 
      this.widget = new dijit.layout.ContentPane({
 		     id : this.id,
 		     content: "",
-			 style: "width: " + this.width + "; height: " + this.height + "; background-color: " + this.color + ";"
-			 ,onLoad :function(){ ajweb.log.trace("panel " + this.id + "  onload");}
-			 });
+		     style: {
+		       width: this.width,
+		       height: this.height,
+		       backgroundColor: this.color
+		     },
+		     onLoad :function(){ ajweb.log.trace("panel " + this.id + "  onload");}
+     });
      this.element = this.widget.domNode;
    },
-   startup: function(){
-	//	alert("panel startup");
-		this.widget.startup();
-		this.widget.domNode.style.position = "absolute";
-		this.widget.domNode.style.width = this.width;
-		this.widget.domNode.style.height = this.height;
-		this.widget.domNode.style.top = this.top;
-		this.widget.domNode.style.left = this.left;
-		this.widget.domNode.style.backgroundColor= this.color;
-
-		//子供のstartup()を呼び出する
-		for(var i = 0; i < this.children.length; i++){
-	//		alert(this.children[i].id  + "  startup");
-			this.children[i].startup();
-	//		this.element.appendChild(this.children[i].element);
-//			  this.children[i].widget.startup();
-		}
-	},
+   display: function(){
+     this.widget.startup();
+     this.onDisplay();
+     //子供のstartup()を呼び出する
+     for(var i = 0; i < this.children.length; i++){
+       this.children[i].display();
+     }
+   },
    /**
 	* 子ウィジェットを追加
 	* @return {boolean}
@@ -109,8 +81,9 @@ dojo.declare("ajweb.widget.Panel",
 	   return false;
 	 }
 
- },
-
+   },
+   onDisplay: function(){
+   },
    /** ロード時に呼び出される関数を保持する配列*/
    onload : [],
    /** ロード時に呼び出される関数を登録*/
