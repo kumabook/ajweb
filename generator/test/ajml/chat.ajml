@@ -8,26 +8,26 @@
     <databases>
 
     <!-- ユーザテーブル -->
-      <database id="users" tablename="users">
-  	<property name="userid" type="string" primary="true"/>
+      <database id="users" tablename="users" dbName="jdbc:derby:temp/test/">
+  	<property name="user_id" type="string" primary="true"/>
   	<property name="password" type="password"/>
   	<property name="role" type="string"/>
   	<property name="mail" type="string"/>
 	<init>
 	  <item>
-	    <property name="userid" value="kumamoto"/>
+	    <property name="user_id" value="kumamoto"/>
 	    <property name="password" value="kumamoto"/>
 	    <property name="role" value="admin"/>
 	    <property name="mail" value="hiroki.kum@gmail.com"/>
 	  </item>
 	  <item>
-	    <property name="userid" value="hiroki"/>
+	    <property name="user_id" value="hiroki"/>
 	    <property name="password" value="hiroki"/>
 	    <property name="role" value="user"/>
 	    <property name="mail" value="hiroki.kum@gmail.com"/>
 	  </item>
 	  <item>
-	    <property name="userid" value="kumabook"/>
+	    <property name="user_id" value="kumabook"/>
 	    <property name="password" value="kumabook"/>
 	    <property name="role" value="user"/>
 	    <property name="mail" value="hiroki.kum@gmail.com"/>
@@ -37,7 +37,7 @@
 
 
     <!-- チャットルームの一覧を保持するテーブル -->
-      <database id="room" tablename="room">
+      <database id="room" tablename="room" dbName="jdbc:derby:temp/test/">
   	<property name="name" type="string"/>
 	<property name="message" type="ref" multiplicity="*" ref="message"/>
 	<init>
@@ -49,7 +49,7 @@
 	</init>
       </database>
       <!-- チャットのメッセージを保持するテーブル -->
-      <database id="message" tablename="message">
+      <database id="message" tablename="message" dbName="jdbc:derby:temp/test/">
 	<property name="room" type="ref" multiplicity="1" ref="room"/>
       	<property name="message" type="string"/>
       	<property name="user_name" type="string"/>
@@ -60,7 +60,7 @@
 
     <!-- UIモデル -->
     <interfaces>
-      <frame id="rootFrame">
+      <frame id="rootFrame" top="0px" left="0px" width="100%" height="100%">
 
 	<!-- ログイン画面 -->
 	<panel id="loginPanel" height="100%" width="100%">
@@ -75,7 +75,7 @@
 	<!-- チャットルーム選択画面 -->
 	<panel id="roomSelectPanel" width="100%" height="100%">
 	  <label id="selectRoomLabel" content="ルーム選択" left="0px" top="0px"/>
-    	  <selectbox id="roomSelectbox"  top="100px" left="100px"/>
+    	  <selectbox id="roomSelectbox"  top="50px" left="100px" label="name"/>
     	  <button id="selectButton"  content="選択"  top="45px" left="370px"/>
   	</panel>
 
@@ -100,12 +100,12 @@
 	    </panel>
 	  </frame>
 
-      	  <table id="messageTable" top="200px" left="100px" width="600px" height="800px">
-      	    <th field="user_name" name="名前"/>
-	    <th field="message" name="メッセージ"/>
-      	    <th field="posted" name="投稿日時"/>
-      	    <th field="id" name="id"/>
-      	    <th field="room" name="room"/>
+      	  <table id="messageTable" top="200px" left="100px" width="800px" height="600px">
+      	    <th field="user_name" name="名前" width="auto"/>
+	    <th field="message" name="メッセージ" width="auto"/>
+      	    <th field="posted" name="投稿日時" width="350px"/>
+      	    <th field="id" name="id" width="auto"/>
+      	    <th field="room" name="room" width="auto"/>
       	  </table>
 	</panel>
       </frame>
@@ -118,7 +118,7 @@
 	<action>
 	  <call element="rootFrame" func="selectPanel">
 	    <param name="panel">
-	      <string>loginPanel</string>
+	      <element>loginPanel</element>
 	    </param>
 	  </call>
 	</action>
@@ -132,7 +132,7 @@
 	      <get element="userIdTextbox" property="value"/>
 	    </param>
 	    <param name="password">
-	      <get element="passwordTextbox" property="value"/>
+	      <get element="passwordbox" property="value"/>
 	    </param>
 	  </login>
 	  <branch>
@@ -140,9 +140,9 @@
 	      <success/>
 	    </condition>
 	    <then>
-	      <call element="roomFrame" func="selectPanel">
+	      <call element="rootFrame" func="selectPanel">
 		<param name="panel">
-		  <string>roomSelectPanel</string>
+		  <element>roomSelectPanel</element>
 		</param>
 	      </call>
 	    </then>
@@ -169,8 +169,8 @@
 	<action>
 	  <!-- ページを遷移-->
 	  <call element="rootFrame" func="selectPanel">
-	    <param name="child">
-	      <string>chatRoomPanel</string>
+	    <param name="panel">
+	      <element>chatRoomPanel</element>
 	    </param>
 	  </call>
 	  <!-- ルーム名を表示-->
@@ -184,24 +184,24 @@
 	  <!-- メッセージリストの取得-->
 	  <call element="messageTable" func="load">
 	    <param name="datum">
-	      <selectByCondition database="chatDB">
+	      <selectByCondition database="message">
 		<condition>
 		  <eq>
 		    <targetItem property="room"/>
-		    <get element="roomSelect" property="value"/>
+		    <get element="roomSelectbox" property="selectItem"/>
 		  </eq>
 		</condition>
 	      </selectByCondition>
 <!--	      <selectRefItem database="room" ref="message">
-		<get element="roomSelect" property="value"/>
+		<get element="roomSelectbox" property="value"/>
 	      </selectRefItem>-->
 <!---
 	      <selectByCondition database="message">
 		<eq>
 		  <targetItem property="room_id"/>
-		  <get element="roomSelect" property="value">
+		  <get element="roomSelectbox" property="value">
 		    <param name="property">
-		      <string>id</string>
+		      <strin>id</string>
 		    </param>
 		  </get>
 		</eq>
@@ -218,7 +218,7 @@
 	    <param name="message">
 	      <concat>
 		<param name="left">
-		  <get element="user" property="value"/>
+		  <get element="userNameTextbox" property="value"/>
 		</param>
 		<param name="right">
 		  <string>が入室しました。</string>
@@ -228,13 +228,18 @@
 	    <param name="user_name">
 	      <get element="userNameTextbox" property="value"/>
 	    </param>
-	    <param name="enter_time"> 
-	      <datetime value="0" />
+	    <param name="posted"> 
+	      <datetime/>
 	    </param>
 	    <param name="room">
-	      <get element="roomSelect" property="value"/>
+	      <get element="roomSelectbox" property="selectItem"/>
 	    </param>
 	  </insert>
+	  <call element="contentsFrame" func="selectPanel">
+	    <param name="panel">
+	      <element>messagePanel</element>
+	    </param>
+	  </call>
 	</action>
       </event> 
 
@@ -249,10 +254,10 @@
 	      <get element="userNameTextbox" property="value"/>
 	    </param>
 	    <param name="room">
-	      <get element="roomSelectbox" property="SelectItem"/>
+	      <get element="roomSelectbox" property="selectItem"/>
 	    </param>
 	    <param name="posted">
-	      <datetime value="0"/>
+	      <datetime/>
 	    </param>
 	  </insert>
 	  <branch>
@@ -292,9 +297,53 @@
 	  </call>
 	</action>
       </event>
+      <!-- 退室処理-->      
+      <event target="exitButton" type="click">
+	<action>
+	  <insert database="message">
+	    <param name="message">
+	      <concat>
+		<param name="left">
+		  <get element="userNameTextbox" property="value"/>
+		</param>
+		<param name="right">
+		  <string>が退室しました。</string>
+		</param>
+	      </concat>
+	    </param>
+	    <param name="user_name">
+	      <get element="userNameTextbox" property="value"/>
+	    </param>
+	    <param name="posted"> 
+	      <datetime/>
+	    </param>
+	    <param name="room">
+	      <get element="roomSelectbox" property="selectItem"/>
+	    </param>
+	  </insert>
+	  <call element="contentsFrame" func="selectPanel">
+	    <param name="panel">
+	      <element>entrancePanel</element>
+	    </param>
+	  </call>
+	</action>
+      </event>
+      <event target="backButton" type="click"> 
+	<action>
+	  <call element="rootFrame" func="selectPanel">
+	    <param name="panel">
+	      <element>roomSelectPanel</element>
+	    </param>
+	  </call>
+	</action>
+      </event>
+      <!-- ルーム選択画面戻る-->      
+      
     </events>
   </application>
 </ajml>
+
+
 
 
 

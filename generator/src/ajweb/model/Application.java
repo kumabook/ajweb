@@ -1,12 +1,12 @@
 package ajweb.model;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import ajweb.Config;
+import ajweb.JarClassLoader;
 import ajweb.data.Condition;
 import ajweb.utils.FileUtils;
 import ajweb.utils.Log;
@@ -44,7 +44,38 @@ public class Application implements Expression{
 		databaseGenerate(outDir);
 		servletGenerate(outDir);
 	}
-	
+	/**
+	 * 作業ディレクトリの作成、フレームワークコードのコピー
+	 * @param temp  作業用ディレクトリの名前
+	 * @param appName　アプリケーションの名前
+	 * @throws IOException 
+	 * @throws UnsupportedEncodingException 
+	 * @throws Exception
+	 */
+	public void setup(String outDir) throws UnsupportedEncodingException, IOException {
+		//System.out.println(new File(".ajweb/test.txt").createNewFile());
+		FileUtils.mkdir(outDir);
+		//FileUtils.mkdir(temp + fs + appName + "/jslib");
+		FileUtils.mkdir(outDir + "/WEB-INF");
+		FileUtils.mkdir(outDir + "/WEB-INF/classes");
+		FileUtils.mkdir(outDir + "/WEB-INF/src");
+		FileUtils.mkdir(outDir + "/WEB-INF/lib");
+		  
+		JarClassLoader jcl = new JarClassLoader();
+		if(jcl.isLaunchedFromJar()) {			
+			String lib_servletDir = "lib/servlet/";
+			String web_inf_libDir = outDir + "/WEB-INF/lib/";
+			
+			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "servlet-api.jar"),   web_inf_libDir + "servlet-api.jar");
+			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "servlet-api-2.5.jar"),   web_inf_libDir + "servlet-api-2.5.jar");
+			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "derby.jar"),   web_inf_libDir + "derby.jar");
+			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "jetty-all-7.0.2.v20100331.jar"),   web_inf_libDir + "jetty-all-7.0.2.v20100331.jar");
+		}
+		else
+			FileUtils.copyDir("lib/servlet",  outDir + "/WEB-INF/lib/","jar");
+		//外部のjavaScriptライブラリは、http経由で読み込み
+				
+	}
 	public void htmlGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template html_template;
 		html_template = new Template("resources/html");

@@ -35,6 +35,12 @@ public class PrimitiveHandler extends AbstractHandler {
 		else if(elementName.equals("video")){
 			primitive = new Primitive(elementName, attributes);
 		}
+		else if(elementName.equals("element")){
+
+			if(attributes.containsKey("property"))
+				character =  character + "." + attributes.get("property");
+			primitive = new Primitive(elementName, character);
+		}
 		
 		setExpression(primitive);
 		Log.fine("setExpression  " + primitive);
@@ -45,10 +51,7 @@ public class PrimitiveHandler extends AbstractHandler {
     public void characters(char[] ch, int start, int length)
     	throws SAXException {
 		Log.fine("\t\t\t" + elementName + " chatacters");
-    	if(elementName.equals("string")){
-    		character = new String(ch, start, length);
-    		//primitive = new Value("string", character);
-    	}
+   		character = new String(ch, start, length);
     	Log.fine("value set : " + primitive);
     }
 	

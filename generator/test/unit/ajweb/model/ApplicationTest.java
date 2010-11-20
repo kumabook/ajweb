@@ -1,6 +1,7 @@
 package ajweb.model;
 
 import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class ApplicationTest{
 		try {
 			app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" +  FileUtils.fs + "chat.ajml"));
 			outDir = Config.workDir + app.appName;
-			Compiler.setup(outDir);
+			app.setup(outDir);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
@@ -32,6 +33,25 @@ public class ApplicationTest{
 		}
 	}
 
+	public void testSetup() throws Exception{
+		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
+		app.setup(Config.workDir + "/" + app.appName);
+		File appDirectory = new File(Config.workDir + FileUtils.fs +  app.appName);
+//		File jslib = new File(Config.workDir + FileUtils.fs + appName + FileUtils.fs + "jslib");
+		File web_inf = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF");
+		File classes = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF" + FileUtils.fs + "classes");
+		File src = new File(Config.workDir + FileUtils. fs + app.appName + FileUtils.fs + "WEB-INF" + FileUtils.fs + "src");
+		File lib = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF"+ FileUtils.fs +FileUtils.fs +"lib");
+		
+		assertTrue(appDirectory.isDirectory());
+	//	assertTrue(jslib.isDirectory());
+		assertTrue(web_inf.isDirectory());
+		assertTrue(classes.isDirectory());
+		assertTrue(src.isDirectory());
+		assertTrue(lib.isDirectory());
+
+	}
+	
 	@Test
 	public void testHtmlGenerate() throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		app.htmlGenerate(outDir);

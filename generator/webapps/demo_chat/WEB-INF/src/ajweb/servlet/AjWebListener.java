@@ -47,7 +47,7 @@ public class AjWebListener implements ServletContextListener{
 		
 		try {
 			users.create();
-			System.out.println("users create");
+			System.out.println("users create chat");
 			
 			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumabook\", \"password\": \""+Sql.encryption("password")+"\"}"));
 			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumamoto\", \"password\": \""+Sql.encryption("kumamoto")+"\"}"));

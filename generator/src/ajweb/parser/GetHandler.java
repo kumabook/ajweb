@@ -40,11 +40,11 @@ public class GetHandler extends AbstractHandler{
 			get = new Get(attributes.get("database"), "select", property, params);
 		}
 		else if(qName.equals("selectById")){
-			get = new Get(attributes.get("database"), "selectById", property, params);
+			get = new Get(attributes.get("database"), "selectById", property, param);
 		}
 		else if(qName.equals("selectByCondition")){
 			
-			get = new Get(attributes.get("database"), "selectByCondition", property, params);
+			get = new Get(attributes.get("database"), "selectByCondition", property, param);
 		}
 		else if(qName.equals("targetItem")){
 			//String property = attributes.get("property");
@@ -60,7 +60,7 @@ public class GetHandler extends AbstractHandler{
 		//‚Ü‚¾–¢ŽÀ‘•	
 		}
 		else if(qName.equals("concat")){
-			get = new Get("String", "concat", property, params);
+			get = new Get("ajweb.data.String", "concat", property, params);
 		}
 		setExpression(get);
 		super.endElement(uri, localName, qName);

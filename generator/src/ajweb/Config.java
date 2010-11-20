@@ -17,4 +17,7 @@ public class Config {
 	public static long TIMEOUT = 60000;//ポーリングのタイムアウトmillsecond
 	public static int port = 8080;
 	
+	public static boolean isJar = false;
+	
+	
 }

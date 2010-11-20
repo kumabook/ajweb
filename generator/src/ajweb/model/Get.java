@@ -55,8 +55,9 @@ public class Get implements Parameterable, Expression{
 		if(this.params==null)
 			if(this.param==null)
 				return "";
-			else 
+			else {
 				return param.toJsSource(func, key, rest);
+			}
 		else {
 			String json = "{ ";
 			for(int i = 0; i < params.size(); i++){
@@ -119,6 +120,11 @@ public class Get implements Parameterable, Expression{
 	@Override
 	public String toJavaSource() {
 		// 現時点ではサーバ側では使わない
+		return null;
+	}
+	@Override
+	public String toJavaSource(String string) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

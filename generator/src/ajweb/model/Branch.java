@@ -25,4 +25,17 @@ public class Branch implements Expression, Flowable{
 		branch_template.apply("ELSE", falsePath.toJsSource(func, key, rest));
 		return branch_template.source;
 	}
+
+
+	public boolean isCallback() {
+		boolean flag = false;
+		flag = condition.isContainCallback();
+		for(int i = 0; i < truePath.size(); i++){
+			flag = flag || truePath.get(i).isCallback();
+		}
+		for(int i = 0; i < falsePath.size(); i++){
+			flag = flag || falsePath.get(i).isCallback();
+		}
+		return flag;
+	}
 }

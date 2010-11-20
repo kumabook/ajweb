@@ -39,7 +39,7 @@ public class EventsTest {
 		Action action = app.events.get(0).action;
 		assertEquals(1, action.size());
 		Call call = (Call) action.get(0);
-		assertEquals("rootFrame.selectPanel({panel:\"loginPanel\"});", call.toJsSource(null, null, new Action()));
+		assertEquals("rootFrame.selectPanel({panel:loginPanel});", call.toJsSource(null, null, new Action()));
 	}
 	
 	@Test

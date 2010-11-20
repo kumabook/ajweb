@@ -10,7 +10,7 @@ public class Main {
  //      FileUtils.compression("../editor/", "editor.war");
 		//System.out.println("create editor.war");
 		
-         Server.runSource(".", "editor", 1234);
+         Server.runSource(".", "editor", 80);
          
      }
  }

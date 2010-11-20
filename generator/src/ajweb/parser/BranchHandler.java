@@ -22,7 +22,7 @@ public class BranchHandler extends AbstractHandler{
 			if(action.elementName.equals("then")){
 				truePath = action;
 			}
-			else if(action.elementName.equals("then")){
+			else if(action.elementName.equals("else")){
 				falsePath = action;
 			}
 		}

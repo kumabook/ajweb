@@ -19,5 +19,10 @@ public class TargetItem implements Parameterable, Expression{
 		//現時点ではサーバ側では使わない
 		return null;
 	}
+	@Override
+	public String toJavaSource(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

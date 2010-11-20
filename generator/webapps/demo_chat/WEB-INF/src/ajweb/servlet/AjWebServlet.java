@@ -142,11 +142,11 @@ public class AjWebServlet extends AbstractServlet {
 				boolean _result = false;
 				try {
 					if(tablename.equals("message"))
-						message.check(param);
+						_result = message.check(param);
 					else if(tablename.equals("room"))
-						room.check(param);
+						_result = room.check(param);
 					else if(tablename.equals("users"))
-						users.check(param);
+						_result = users.check(param);
 				} catch(Exception e){
 					_result = false;
 				}

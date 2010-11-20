@@ -30,26 +30,8 @@ public class CompilerTest {
 		assertEquals("test", app.appName);
 	}
 	
-	
-	
-	public void testSetup() throws Exception{
-		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
-		Compiler.setup(Config.workDir + "/" + app.appName);
-		File appDirectory = new File(Config.workDir + FileUtils.fs +  app.appName);
-//		File jslib = new File(Config.workDir + FileUtils.fs + appName + FileUtils.fs + "jslib");
-		File web_inf = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF");
-		File classes = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF" + FileUtils.fs + "classes");
-		File src = new File(Config.workDir + FileUtils. fs + app.appName + FileUtils.fs + "WEB-INF" + FileUtils.fs + "src");
-		File lib = new File(Config.workDir + FileUtils.fs + app.appName + FileUtils.fs + "WEB-INF"+ FileUtils.fs +FileUtils.fs +"lib");
-		
-		assertTrue(appDirectory.isDirectory());
-	//	assertTrue(jslib.isDirectory());
-		assertTrue(web_inf.isDirectory());
-		assertTrue(classes.isDirectory());
-		assertTrue(src.isDirectory());
-		assertTrue(lib.isDirectory());
 
-	}
+	
 	@Test
 	public void testGenerateWar() throws Exception{
 		

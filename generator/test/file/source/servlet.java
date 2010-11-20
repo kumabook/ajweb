@@ -102,9 +102,9 @@ public class AjWebServlet extends AbstractServlet {
 					else ;
 					;
 					
-					out.print("{ result : true");
+					out.print("{ result : true}");
 				} catch (Exception e){
-					out.print("{ result : false");
+					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
@@ -117,9 +117,9 @@ public class AjWebServlet extends AbstractServlet {
 					else ;
 					;
 					
-					out.print("{ result : true");
+					out.print("{ result : true}");
 				} catch (Exception e){
-					out.print("{ result : false");
+					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
@@ -137,6 +137,29 @@ public class AjWebServlet extends AbstractServlet {
 					out.print("{ result : false }");
 					e.printStackTrace();
 				}
+			}
+			else if(action.equals("check")){
+				boolean _result = false;
+				try {
+					if(tablename.equals("message"))
+						_result = message.check(param);
+					else if(tablename.equals("room"))
+						_result = room.check(param);
+					else ;			
+					;
+				} catch(Exception e){
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
+			}
+			else if(action.equals("login")){
+				boolean _result = false;
+				try {
+					_result = users.login((String) param.get("userid"), (String) param.get("password"));
+				} catch (Exception e) {
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
 			}
 		}
 	}

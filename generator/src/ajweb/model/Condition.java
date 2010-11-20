@@ -64,12 +64,21 @@ public class Condition extends AbstractCondition{
 
 	@Override
 	public boolean isContainCallback() {
-		return false;
+		if(left!=null)
+			return this.left.isContainCallback() || this.right.isContainCallback();
+		else 
+			return false;
 	}
 
 	@Override
 	public String toJavaSource() {
 		// 現時点ではサーバ側では使わない
+		return null;
+	}
+
+	@Override
+	public String toJavaSource(String string) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

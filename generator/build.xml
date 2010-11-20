@@ -5,13 +5,21 @@
 	<property name="web-app.name" value="default-app" />
 	<property name="web-app.home" value="${temp}/${web-app.name}" />
 	<property name="basedir" value="./" />
-
+	<target name="clean">
+			<delete dir="doc"/>
+			<delete dir="classes"/>
+			<delete dir="test/classes"/>
+			<delete dir="test/temp"/>
+	</target>
 	<target name="compile">
 			<mkdir dir="classes"/>
 			<javac destdir="classes/" includeAntRuntime="no">
 					<src path="src"/>
 					<classpath>
-							<fileset dir="lib/">
+							<fileset dir="lib/servlet/">
+									<include name="*.jar"/>
+							</fileset>
+							<fileset dir="lib/compiler/">
 									<include name="*.jar"/>
 							</fileset>
 					</classpath>
@@ -22,12 +30,29 @@
 	<target name="jar" depends="compile">
 			<delete file="${basedir}/dist/ajweb.jar"/> 
 			<jar destfile="${basedir}/dist/ajweb.jar" 
-			update="true"
-			basedir="${basedir}/classes" />
+					update="true">
+					<fileset dir="classes/">
+							<include name="**/*.class"/>
+					</fileset>
+					<fileset dir="./">
+							<include name="lib/**/*.jar"/>
+					</fileset>
+					<fileset dir="./">
+							<include name="resources/**/*.template"/>
+					</fileset>
+					<manifest>
+							<attribute name="Main-Class" value="ajweb.LauncherServer"/>
+					</manifest>
+			</jar>
 	</target>
 
 
 	<target name="doc">
+			<mkdir dir="doc"/>
+			<javadoc windowtitle="ajweb api javadoc" destdir="./doc">
+					<sourcepath path="./src"/>
+					<package name="ajweb.*"/>
+			</javadoc>
 	</target>
 	<target name="unittest" depends="compile,compile_unittest">
 			<echo message="${basedir}"/>
@@ -62,9 +87,27 @@
 					</classpath>
 			</javac>
 	</target>
-	<target name="app_test" depends="test_app_chat_compile">
-			<copy file="${basedir}/dist/ajweb.jar"  todir="${basedir}/test/app/chat/WEB-INF/lib/" overwrite="true"/>
-			<java classname="ajweb.server.AppTestServer" dir="${basedir}">
+
+	<target name="run"> 
+			<java classname="ajweb.server.Main" dir="${basedir}">
+					<classpath>
+							<fileset dir="${basedir}/lib/compiler/">
+									<include name="*.jar"/>
+							</fileset>
+							<fileset dir="${basedir}/lib/servlet/">
+									<include name="*.jar"/>
+							</fileset>
+							<pathelement location="${basedir}/classes/"/>
+							<!--<pathelement location="./dist/ajweb.jar"/>--> 
+					</classpath>
+			</java>
+	</target>
+
+
+	
+	
+	<target name="app_test" depends="">
+			<java classname="ajweb.server.Main" dir="${basedir}">
 			<classpath>
 					<fileset dir="${basedir}/lib/compiler/">
 							<include name="*.jar"/>

@@ -26,5 +26,10 @@ public class CallBackItems implements Parameterable{
 		// 現時点ではサーバ側では使わない
 		return null;
 	}
+	@Override
+	public String toJavaSource(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

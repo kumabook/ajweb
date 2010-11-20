@@ -50,6 +50,7 @@ public class DatabaseTest {
 		assertEquals(databases.get(0).tablename, "room");
 		
 		File servlet = new File("test/file/source/servlet.java");
+		
 		assertEquals(FileUtils.read(servlet).trim(), databases.toServletSource(app.appName));
 	}
 		

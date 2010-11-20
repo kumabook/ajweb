@@ -85,6 +85,7 @@ public class Condition extends AbstractCondition {
 		
 		if(propertyType.equals("int")){
 			value = Long.parseLong(this.value);
+			System.out.println(this.property);
 			item_value = Long.parseLong((item.get(this.property)));
 			
 			long_flag = true;

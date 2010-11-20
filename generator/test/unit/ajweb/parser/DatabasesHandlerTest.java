@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import ajweb.model.Application;
 import ajweb.model.Database;
+import ajweb.model.Items;
 import ajweb.model.Param;
 import ajweb.generator.Compiler;
 import ajweb.utils.FileUtils;
@@ -54,7 +55,7 @@ public class DatabasesHandlerTest {
 			
 			
 			//ArrayList<HashMap<String, Parameterable>> items = room.initItem;
-			ArrayList<ArrayList<Param>> items = room.initItems;
+			Items items = room.initItems;
 			
 			assertEquals(Param.paramToJavaSource(items.get(0)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ÉãÅ[ÉÄÇP\\\\\\\\\"}");
 			assertEquals(Param.paramToJavaSource(items.get(1)), "{\\\\\\\\\"name\\\\\\\\\": \\\\\\\\\"ÉãÅ[ÉÄÇQ\\\\\\\\\"}");

@@ -66,12 +66,12 @@ public class Call implements Expression, Flowable{
 		if(isCallback) {//データベースのメソッドだったらコールバックに  rest  を追加する
 			Template call_template = new Template("js/select");
 			if(func.equals("login"))
-				call_template.apply("DATABASE", "users");
+				call_template.apply("DATABASE", "ajweb.data");//ajweb.data.loginを使う
 			else 
 				call_template.apply("DATABASE", element);
 			call_template.apply("SELECT", func);
 			call_template.apply("PARAMS", paramToJsSource(function, key, rest));
-			call_template.apply("COUNT", "result");
+			call_template.apply("COUNT", "item");
 			call_template.apply("FUNC", "");
 			call_template.apply("REST", rest.toJsSource(null, null, null));
 			return call_template.source;
@@ -111,5 +111,10 @@ public class Call implements Expression, Flowable{
 	public String toString() {
 	
 		return element + "." + func + "(" + params + ")";
+	}
+	@Override
+	public boolean isCallback() {
+		
+		return isCallback;
 	}
 }

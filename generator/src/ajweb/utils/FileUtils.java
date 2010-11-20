@@ -1,11 +1,9 @@
 package ajweb.utils;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
@@ -33,13 +32,45 @@ public class FileUtils {
 		  File work = new File(dir);
 		  if(!work.exists())
 			  delete(work);
-		  boolean b =  work.mkdir();
+		  boolean b =  work.mkdirs();
 		  if(b){
 //			  System.out.println("create   " + dir + "");
 			  Log.finest("create   " + dir + "");
 		  }
 		  return b;
 	}
+	
+	public static void copyJar(URL url, String file) throws UnsupportedEncodingException, IOException{
+//		URL url = jar.getClass().getClassLoader().getResource(jar);
+		InputStream in = url.openStream();
+		FileOutputStream os = new FileOutputStream(file);
+		int bufferSize = 100;
+		int len = -1;
+	    byte[] b = new byte[bufferSize * 1024];
+	    try {
+	        while ((len = in.read(b, 0, b.length)) != -1) {
+	            os.write(b, 0, len);
+	        }
+	        os.flush();
+	    } finally {
+	        if (in != null) {
+	            try {
+	                in.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        if (os != null) {
+	            try {
+	                os.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		
+	}
+	
 	public static void copyFile(String srcPath, String destPath) 
     throws IOException {
 	//org.apache.commons.io.FileUtils.copyFile(new File(srcPath), new File(destPath));
@@ -65,6 +96,8 @@ public class FileUtils {
     
 	}
 	
+	
+	
 	public static boolean copyDir(String fromPath, String toPath, String type) throws IOException{
 		File from = new File(fromPath);
 		if(!from.exists() || !from.isDirectory()) 
@@ -88,9 +121,7 @@ public class FileUtils {
 	}
 	
 	
-	public static void copyDirectory(String srcDir, String destDir, String[] typeList) throws IOException{
-		org.apache.commons.io.FileUtils.copyDirectory(new File(srcDir), new File(destDir), (FileFilter) new dojoFileFilter(typeList));
-	}
+	
 	public static boolean delete(File f){
 //		System.out.println("delete " + f.getAbsolutePath());
 		  if( f.exists()==false ){
@@ -176,12 +207,31 @@ public class FileUtils {
 			}
 		}
 	}
-	
-	
+
+
 	public static String read(File file) throws IOException{
+		InputStream is = null;
+		try {
+			is = new FileInputStream(file);
+		//	is = new FileInputStream(Config.templateFolder + templateName + ".template");
+		} catch (FileNotFoundException e) {
+			System.out.println(file.getPath());
+			URL url = file.getClass().getClassLoader().getResource(file.getPath());
+			System.out.println(url);
+			is = url.openStream();
+		}
 		
-		InputStreamReader is = new InputStreamReader(new FileInputStream(file), "UTF-8");
-		BufferedReader br = new BufferedReader(is);
+		BufferedReader reader = 
+			new BufferedReader(new InputStreamReader(is, "UTF-8"/* 文字コード指定 */));
+		StringBuffer buf = new StringBuffer();
+		String str = reader.readLine();
+		buf.append(str);
+		while ((str = reader.readLine()) != null) {
+			buf.append("\n");
+			buf.append(str);
+		}
+//		InputStreamReader is = new InputStreamReader(new FileInputStream(file), "UTF-8");
+		/*BufferedReader br = new BufferedReader(is);
 
 		String result = br.readLine();
 		String line;
@@ -189,9 +239,9 @@ public class FileUtils {
 				result += "\n" + line;
 		}	
         br.close();
-        is.close();
+        is.close();*/
 		
-		return result;
+		return buf.toString();
 		
 		
 	}

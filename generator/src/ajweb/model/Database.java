@@ -24,7 +24,7 @@ public class Database implements Expression{
 	public HashMap<String, String> properties = new HashMap<String, String>();
 	public ArrayList<String> idProperties = new ArrayList<String>();
 	public ArrayList<HashMap<String, String>> ref;
-	public ArrayList<ArrayList<Param>> initItems;
+	public Items initItems;
 	
 
 	public Database(String id, String tablename, String dbDriver,String dbName, String type, String persistence, ArrayList<HashMap<String, String>> ref){
@@ -36,6 +36,8 @@ public class Database implements Expression{
 		this.persistence = persistence;
 		this.ref = ref;
 	}
+	
+
 	
 	/**
 	 * AJMLのdatabase要素からデータベース用のjavaコードを生成
@@ -49,6 +51,13 @@ public class Database implements Expression{
 			Entry<String, String> property = ite.next();
 			if(!property.getValue().equals("ref"))//多対多に対応するなら変更するかも
 				properties_set += "\t\tproperties.put(\"" + property.getKey() + "\", \"" + property.getValue() + "\");\n";
+			else {
+				for(int i = 0; i < ref.size(); i++){
+					if(ref.get(i).get("table").equals(property.getKey()));
+						if(ref.get(i).get("multiplicity").equals("1"))
+							properties_set += "\t\tproperties.put(\"" + property.getKey() + "\", \"" + "int" + "\");\n";		
+				}
+			}
 		}
 		
 		
@@ -56,8 +65,12 @@ public class Database implements Expression{
 		for(int i = 0; i < idProperties.size(); i++){
 			id_properties_set += "\t\tidProperties.add(\"" + idProperties.get(i) + "\");\n";
 		}
-				
 		Template databaseTemplate = new Template("java/database");
+		if(!tablename.equals("users"))
+			databaseTemplate = new Template("java/database");
+		else
+			databaseTemplate = new Template("java/users");
+		
 		databaseTemplate.apply("TABLENAME", tablename);
 //				dbName = Application.appName;
 		databaseTemplate.apply("DBNAME", dbName);

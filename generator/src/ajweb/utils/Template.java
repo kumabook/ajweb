@@ -1,7 +1,11 @@
 package ajweb.utils;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,9 +18,29 @@ public class Template {
 	public String source = "";
 	
 	
-	public Template(String templateName) throws IOException{
-		File template = new File(Config.templateFolder + templateName + ".template");
-		source = FileUtils.read(template);
+	public Template(String templateName) throws IOException {
+		
+		InputStream is = null;
+		try {
+			is = new FileInputStream(Config.templateFolder + templateName + ".template");
+		} catch (FileNotFoundException e) {
+				is = getClass().getClassLoader().getResourceAsStream("resources/template/" + templateName + ".template");
+		}
+		
+		BufferedReader reader = 
+			new BufferedReader(new InputStreamReader(is, "UTF-8"/* 文字コード指定 */));
+		StringBuffer buf = new StringBuffer();
+		String str = reader.readLine();
+		buf.append(str);
+		while ((str = reader.readLine()) != null) {
+			buf.append("\n");
+			buf.append(str);
+		}
+		source =  buf.toString();
+		//if(Config.isJar)
+			//URL =*/ 
+//		File template = new File(Config.templateFolder + templateName + ".template");
+//		source = FileUtils.read("resources/template/" + templateName + ".template");
 		setParam();
 	}
 	

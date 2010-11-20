@@ -5,7 +5,7 @@ import java.io.File;
 import java.net.URI;
 
 /**
- * デバック用、
+ * ajwebに組み込みのサーバを立ち上げる
  * @author hiroki
  *
  */
@@ -13,15 +13,16 @@ public class Main extends Thread{
 	static String ajwebHome = ".";
 	
 	public static void main(String[] args) throws Exception {
-		String[]  testArgs = {"chat.war"};
-		args = testArgs;
+		//String[]  testArgs = {"chat.war"};
+		//args = testArgs;
 		int port = 8080;
 		String appName = null;
 		String target = null; //
 		boolean isWar = true; //war か　ソースディレクトリか
 		Boolean isClean = false; // データベースを削除するかどうか
 		if(args.length == 0){
-			System.out.println("ajweb: please input war file!");
+			//System.out.println("ajweb: please input war file!");
+			Server.run();
 			return;
 		}
 		else {
@@ -29,13 +30,13 @@ public class Main extends Thread{
 //			appName = new File(target).getName().replaceAll("\\..*", ""); //ajml中にapplicaitonの名前がない場合
 		}
 		//オプションを取得
-		for (int i = 1; i < args.length; ++i) {
+		for (int i = 0; i < args.length; ++i) {
             if ("-appname".equals(args[i])) {
                 appName = args[++i];
             } 
             else if ("-source".equals(args[i])) {
                 isWar = false;
-                File targetFile = new File(args[i]);
+                File targetFile = new File(args[++i]);
                 if(appName==null)
                 	appName = targetFile.getName();
                 target = targetFile.getPath();
@@ -43,13 +44,13 @@ public class Main extends Thread{
             } 
             else if ("-war".equals(args[i])) {
                 isWar = true;
-                File targetFile = new File(args[i]);
+                File targetFile = new File(args[++i]);
                 appName = targetFile.getName();
                 target = targetFile.getPath();
                 
             } 
             else if ("-port".equals(args[i])) {//作成されたアプリを立ち上げる  
-                port = Integer.parseInt(args[i+1]);
+                port = Integer.parseInt(args[++i]);
             } 
             else if ("-clean".equals(args[i])) {//データベース初期化するか
                 isClean = true;
@@ -79,7 +80,7 @@ public class Main extends Thread{
 		System.out.println("ajweb launch application: " + target +" appName " +  appName + ":" + port);
 		
 		if(isWar)
-			ajweb.server.Server.run(target, appName, port);
+			ajweb.server.Server.runWar(target, appName, port);
 		else
 			ajweb.server.Server.runSource(target, appName, port);
 	

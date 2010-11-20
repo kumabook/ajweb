@@ -10,9 +10,9 @@ public class Databases extends ArrayList<Database> implements Expression{
 
 	public String toServletSource(String appname) throws IOException{
 		Template servlet_template = new Template("java/servlet");
-		String SELECT, INSERT, UPDATE, DELETE, GETPROPERITIES;
+		String SELECT, INSERT, UPDATE, DELETE, CHECK, GETPROPERITIES;
 		SELECT = "";
-		INSERT = UPDATE = DELETE = GETPROPERITIES = ";";
+		INSERT = UPDATE = DELETE = CHECK = GETPROPERITIES = ";";
 		
 		
 		for(int i = 0; i < size(); i++){
@@ -39,6 +39,11 @@ public class Databases extends ArrayList<Database> implements Expression{
 			DELETE_TEMP.apply("NEXT", DELETE);
 			DELETE = DELETE_TEMP.source;
 			
+			Template CHECK_TEMP = new Template("java/check");
+			CHECK_TEMP.apply("TABLENAME", get(i).tablename);
+			CHECK_TEMP.apply("NEXT", CHECK);
+			CHECK = CHECK_TEMP.source;
+			
 			Template GETPROPERITIES_TEMP = new Template("java/getproperties");
 			GETPROPERITIES_TEMP.apply("TABLENAME", get(i).tablename);
 			GETPROPERITIES_TEMP.apply("NEXT", GETPROPERITIES);
@@ -49,6 +54,7 @@ public class Databases extends ArrayList<Database> implements Expression{
 		servlet_template.apply("INSERT", "\t\t\t\t\t" + INSERT);
 		servlet_template.apply("UPDATE", "\t\t\t\t\t" + UPDATE);
 		servlet_template.apply("DELETE", "\t\t\t\t\t" + DELETE);
+		servlet_template.apply("CHECK", "\t\t\t\t\t" + CHECK);
 		servlet_template.apply("GETPROPERTIES", "\t\t" + GETPROPERITIES);
 		
 		servlet_template.apply("APPNAME", appname);
@@ -66,7 +72,8 @@ public class Databases extends ArrayList<Database> implements Expression{
 			create_template.apply("TABLENAME", database.tablename);
 			String INITIALIZE = "";
 			for(int j = 0; j < database.initItems.size(); j++){
-				String json = Param.paramToJavaSource(database.initItems.get(j));
+//				String json = Param.paramToJavaSource(database.initItems.get(j));
+				String json = database.initItems.get(j).toJsonJavaSource(database.properties);
 				INITIALIZE += "\t\t" + database.tablename + ".insert((HashMap<String, String>) JSON.parse(\"" + json + "\"));\n";	
 			}
 			

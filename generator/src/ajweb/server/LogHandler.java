@@ -18,7 +18,7 @@ public class LogHandler extends AbstractHandler {
 			HttpServletResponse arg3) throws IOException, ServletException {
 			String contextPath = arg1.getRequestURI();
 			
-			System.out.println("request context path :" + contextPath);
+//			System.out.println("request context path :" + contextPath);
 			Log.serverLogger.info("request context path :" + contextPath);
 	}	
 }

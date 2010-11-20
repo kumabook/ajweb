@@ -18,11 +18,11 @@ public class AjWebListener implements ServletContextListener{
 try {
 		room.create();
 		System.out.println("room create");
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ルーム１\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ルーム２\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ルーム３\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ルーム４\"}"));
-		room.insert((HashMap<String, String>) JSON.parse("{\"name\": \"ルーム５\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{ \"name\": \"ルーム１\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{ \"name\": \"ルーム２\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{ \"name\": \"ルーム３\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{ \"name\": \"ルーム４\"}"));
+		room.insert((HashMap<String, String>) JSON.parse("{ \"name\": \"ルーム５\"}"));
 
 	} catch (Exception e) {
 		System.out.println("room is already exists");

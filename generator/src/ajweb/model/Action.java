@@ -22,7 +22,10 @@ public class Action extends ArrayList<Flowable> implements Expression{
 		while(clone != null && !clone.isEmpty()){
 			Flowable action = clone.remove(0);
 //			System.out.println(action);
+			
 			jsSource += action.toJsSource(func, key, clone) + "\n\t\t\t";
+			if(action.isCallback())
+				break;
 		}
 		
 		return jsSource;

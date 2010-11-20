@@ -3,7 +3,6 @@ package ajweb.generator;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -16,6 +15,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import ajweb.Config;
+import ajweb.JarClassLoader;
 import ajweb.model.Application;
 import ajweb.parser.AjmlHandler;
 import ajweb.utils.FileUtils;
@@ -85,7 +85,7 @@ public class Compiler {
 		Application app = parse(ajml);
 		String outDir = Config.workDir + app.appName;
 //		app.outDir = Config.workDir + app.appName;
-		setup(outDir);
+		app.setup(outDir);
 		app.generate(outDir);
 		boolean result = javaCompile(outDir);
 		
@@ -115,7 +115,7 @@ public class Compiler {
 	 */
 	public static void generateSource(File ajml, String outDir) throws Exception{
 		Application app = parse(ajml);
-		setup(outDir);
+		app.setup(outDir);
 		app.generate(outDir);
 		boolean result = javaCompile(outDir);
 		if(result){
@@ -123,29 +123,7 @@ public class Compiler {
 				System.out.println("generate app complete: " + outDir);
 			}
 	}
-	/**
-	 * 作業ディレクトリの作成、フレームワークコードのコピー
-	 * @param temp  作業用ディレクトリの名前
-	 * @param appName　アプリケーションの名前
-	 * @throws Exception
-	 */
-	public static void setup(String outDir) throws Exception{
-		//System.out.println(new File(".ajweb/test.txt").createNewFile());
-		FileUtils.mkdir(outDir);
-		//FileUtils.mkdir(temp + fs + appName + "/jslib");
-		FileUtils.mkdir(outDir + "/WEB-INF");
-		FileUtils.mkdir(outDir + "/WEB-INF/classes");
-		FileUtils.mkdir(outDir + "/WEB-INF/src");
-		FileUtils.mkdir(outDir + "/WEB-INF/lib");
-		  
-		//FileUtils.copyFile(".." + fs + "js" + fs + "dist" + fs + "AjWeb.js", temp + fs + appName + "/AjWeb.js");
-		//System.out.println(temp + fs + appName + fs + "WEB-INF/lib/test.txt");
-		
-		FileUtils.copyDir("lib/servlet",  outDir + "/WEB-INF/lib/","jar");
-		//外部のjavaScriptライブラリは、http経由で読み込み
-				
-				
-	}
+	
 	/**
 	 * javaソースコードのコンパイル
 	 * @param workDir
@@ -167,15 +145,15 @@ public class Compiler {
 			args.add("-d");
 			args.add(web_infDir +fs+ "classes");
 			args.add("-classpath");
-		
-			String classpath = "." + fs +   ps +  "."+ fs + "classes" + ps;
-			/*File[] libfiles = new File("lib/").listFiles();
-		
-			for(int i = 0; i < libfiles.length; i++){
-				if(libfiles[i].getPath().endsWith(".jar"))
-					classpath += libfiles[i].getPath() + ps;
-			}*/
-		
+			
+			String classpath = "." + fs +   ps ;//+  "."+ fs + "classes" + ps;
+			JarClassLoader jcl = new JarClassLoader();
+			if(jcl.isLaunchedFromJar())
+				classpath += "." + fs + "ajweb.jar" + ps;
+			else
+				classpath += "." + fs + "classes" + ps;
+			
+
 			File[] libfiles_web_inf = new File(web_infDir+fs+"lib").listFiles();
 			for(int i = 0; i < libfiles_web_inf.length; i++){
 				if(libfiles_web_inf[i].getPath().endsWith(".jar"))
@@ -195,11 +173,15 @@ public class Compiler {
 				}
 			}
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			int result = compiler.run(null, null, /*null*/new ByteArrayOutputStream(), args.toArray(new String[0]));
+			int result = compiler.run(null, null, /*null,*/new ByteArrayOutputStream(), args.toArray(new String[0]));
 			
 			//int result = com.sun.tools.javac.Main.compile(args.toArray(new String[0]));
-			if(Config.isStandardOutput)
+			if(Config.isStandardOutput){
+				if(result==0)
 				System.out.println("compile complete. generate class files.");
+				else 
+					System.out.println("sorry compile incomplete.");
+			}
 			return (result==0);
 		}
 		return false;

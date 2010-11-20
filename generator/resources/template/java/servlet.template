@@ -94,9 +94,9 @@ ${SELECT}
 ${INSERT}
 					;
 					
-					out.print("{ result : true");
+					out.print("{ result : true}");
 				} catch (Exception e){
-					out.print("{ result : false");
+					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
@@ -105,9 +105,9 @@ ${INSERT}
 ${UPDATE}
 					;
 					
-					out.print("{ result : true");
+					out.print("{ result : true}");
 				} catch (Exception e){
-					out.print("{ result : false");
+					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
@@ -121,6 +121,25 @@ ${DELETE}
 					out.print("{ result : false }");
 					e.printStackTrace();
 				}
+			}
+			else if(action.equals("check")){
+				boolean _result = false;
+				try {
+${CHECK}			
+					;
+				} catch(Exception e){
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
+			}
+			else if(action.equals("login")){
+				boolean _result = false;
+				try {
+					_result = users.login((String) param.get("userid"), (String) param.get("password"));
+				} catch (Exception e) {
+					_result = false;
+				}
+				out.print("{ result: " + _result + "}");
 			}
 		}
 	}

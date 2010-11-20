@@ -32,7 +32,8 @@ ${INTERFACES}
 /*events model */
 ${EVENTS}
 /*-----------------------------------generated source-------------------------------*/   
-        rootFrame.startup();
+	ajweb_container.appendChild(rootFrame.element);
+        rootFrame.display();
     	ajweb.polling("dbservlet");
 	dojo.connect(window, "offline", null, function(){
 			     ajweb.polling("dbservlet");

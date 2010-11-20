@@ -75,6 +75,7 @@ dojo.addOnLoad(
     loginPanel.addChildWidget(loginButton);
 
     rootFrame.addChildWidget(loginPanel);
+
 //ログインメッセージダイアログ
     var loginFailDialog = new ajweb.widget.Dialog({id: "loginFailDialog", title: "login failed", width: "300px", height:"100px", content: "ログインに失敗しました"});
 
@@ -99,15 +100,17 @@ dojo.addOnLoad(
     var contentsFrame = new ajweb.widget.Frame({"id": "contentsFrame", "height": "120px", "width": "600px", top: "50px"});
     var entrancePanel = new ajweb.widget.Panel({"id": "enterPanel", "height": "100px", "width": "600px"});
     var messagePanel = new ajweb.widget.Panel({"id": "messagePanel", "height": "100px", "width": "600px"});
+
     contentsFrame.addChildWidget(entrancePanel);
     contentsFrame.addChildWidget(messagePanel);
-    contentsFrame.selectPanel({child:entrancePanel});
+    contentsFrame.selectPanel({panel:entrancePanel});
 // ユーザ名入力欄
     chatRoomPanel.addChildWidget(contentsFrame);
     var userNameLabel = new ajweb.widget.Label({"content":"名前","id":"userNameLabel","left":"40px","top":"6px"});
     entrancePanel.addChildWidget(userNameLabel);
     var userNameTextbox = new ajweb.widget.Textbox({"id":"userNameTextbox","content":"user_name","left":"100px","top":"10px", "value": ""});
     entrancePanel.addChildWidget(userNameTextbox);
+
 // メッセージ名入力欄
     var messageLabel = new ajweb.widget.Label({"content":"メッセージ","id":"messageLabel","left":"20px","top":"10px"});
     messagePanel.addChildWidget(messageLabel);
@@ -144,9 +147,10 @@ dojo.addOnLoad(
 
 /*eventsの記述 */
     //初期画面の設定
-    ajweb.addEvent(rootFrame, "startup", true, function(){
+    ajweb.addEvent(rootFrame, "onDisplay", true, function(){
+//		     alert("handler");
 //	rootFrame.selectPanel({child:roomSelectPanel});
-	rootFrame.selectPanel({child:loginPanel});
+	rootFrame.selectPanel({panel:loginPanel});
     });
 
     //ログイン処理
@@ -156,7 +160,7 @@ dojo.addOnLoad(
 	{ userid: userIdTextbox.getValue(), password: passwordTextbox.getValue()},
 	function(item){
 	  if(item.result){
-	    rootFrame.selectPanel({child:roomSelectPanel});
+	    rootFrame.selectPanel({panel:roomSelectPanel});
 	  }
 	  else {
 	    loginFailDialog.show();
@@ -166,7 +170,7 @@ dojo.addOnLoad(
     });
 
     //入室画面の初期化
-    ajweb.addEvent(roomSelectPanel, "startup", true, function(){
+    ajweb.addEvent(roomSelectPanel, "onDisplay", true, function(){
       //チャットルームの一覧の取得
 		   room_database.select(function(items){
 		   roomSelectbox.load(items);
@@ -176,8 +180,8 @@ dojo.addOnLoad(
 
 
     //チャットルーム画面の初期化
-    ajweb.addEvent(selectButton.widget, "onClick", true, function(){
-		   rootFrame.selectPanel({child: chatRoomPanel});
+    ajweb.addEvent(selectButton, "onClick", true, function(){
+		   rootFrame.selectPanel({panel: chatRoomPanel});
 		   nowRoomLabel.setContent(roomSelectbox.getSelectItem().name);
 		   //メッセージリストの取得
 		   message_database.selectByCondition(
@@ -186,20 +190,20 @@ dojo.addOnLoad(
 						left: function(){ return new ajweb.data.Item({property:"room"});},
 						right: function(){ return roomSelectbox.getSelectItem();}}),
 		     function(items){
-		       messageTable.load(items);
+		       messageTable.load({datum:items});
 		     }
 		   );
 
 		   ajweb.repoll("dbservlet");
 		 });
     //入室処理
-    ajweb.addEvent(enterButton.widget, "onClick", true, function(){
-		     message_database.insert({message : userNameTextbox.widget.value + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.date.now({})});
-		   contentsFrame.selectPanel({child: messagePanel});
+    ajweb.addEvent(enterButton, "onClick", true, function(){
+		     message_database.insert({message : userNameTextbox.getValue() + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : new ajweb.date({})});
+		   contentsFrame.selectPanel({panel: messagePanel});
 		 });
     //メッセージの送信
     ajweb.addEvent(messageSubmitButton.widget, "onClick", true, function(){
-		   message_database.insert({message : messageTextbox.widget.value,user_name : userNameTextbox.widget.value,room : roomSelectbox.getSelectItem({property: "id"}),posted : ajweb.date.now({})});
+		   message_database.insert({message : messageTextbox.getValue() ,user_name : userNameTextbox.getValue() ,room : roomSelectbox.getSelectItem({property: "id"}), posted : new ajweb.date({})});
 		 });
     //メッセージの変更を反映
     var insert_condition = new ajweb.data.Condition(
@@ -237,19 +241,19 @@ dojo.addOnLoad(
     );
 
     //退出処理
-    ajweb.addEvent(exitButton.widget, "onClick", true, function(){
-		   message_database.insert({message : userNameTextbox.widget.value + "が退室しました",user_name : "システム",room : roomSelectbox.getSelectItem().id,posted : ajweb.date.now({})});
-		   contentsFrame.selectPanel({child: entrancePanel});
+    ajweb.addEvent(exitButton, "onClick", true, function(){
+		   message_database.insert({message : userNameTextbox.getValue() + "が退室しました",user_name : "システム",room : roomSelectbox.getSelectItem().id, posted : new ajweb.date({})});
+		   contentsFrame.selectPanel({panel: entrancePanel});
     });
     //ルーム選択画面に戻る
-    ajweb.addEvent(backButton.widget, "onClick", true, function(){
-		   rootFrame.selectPanel({child: roomSelectPanel});
+    ajweb.addEvent(backButton, "onClick", true, function(){
+		   rootFrame.selectPanel({panel: roomSelectPanel});
     });
     //ここまで自動生成
-
     /*初期化処理 アプリケーション共通*/
     ajweb_container.appendChild(rootFrame.element);
-    rootFrame.startup();
+
+    rootFrame.display();
 
     ajweb.polling("dbservlet");
     dojo.connect(window, "offline", null, function(){
@@ -257,6 +261,8 @@ dojo.addOnLoad(
 	});
     }
     );
+
+
 
 });
 

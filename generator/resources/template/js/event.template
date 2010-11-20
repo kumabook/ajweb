@@ -1,2 +1,5 @@
 ajweb.addEvent(${TARGET}, "${TYPE}", ${CONDITION}, function(receivedItem, database){
-			${ACTION}});
+			${ACTION}
+			ajweb.repoll("dbservlet");
+			}			
+			);

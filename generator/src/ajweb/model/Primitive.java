@@ -1,12 +1,13 @@
 package ajweb.model;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import ajweb.data.Sql;
 
-
-public class Primitive implements Parameterable, Expression , ToJSONAble{
+public class Primitive implements Parameterable, Expression{
 	public static Set<String> elements;
 	/**
 	 * 値となる要素の定義　
@@ -24,12 +25,14 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 		elements.add("img");
 		elements.add("video");
 		
+		//他の要素(変数)アクセス用
+		elements.add("element");
+		
 	}
 	public String type;//要素名, 型
 	public String value;//literal
 	public HashMap<String, String> properties;
-	
-	public HashMap<String, String> attributes;
+
 	
 	public Primitive(String type, String value) {
 		this.type = type;
@@ -50,7 +53,7 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 			return  value; 
 		}
 		else if(type.equals("datetime")){
-			String json ="ajweb.util.Date({";
+			String json ="new ajweb.date({";
 			Iterator<String>  it = properties.keySet().iterator();
 			while(it.hasNext()){
 				String _key = it.next();
@@ -67,6 +70,9 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 		else if(type.equals("time")){
 			return "datetime:";
 		}
+		else if(type.equals("element")){
+			return value;
+		}
 		else
 			try {
 				throw new Exception("unknown value");
@@ -77,11 +83,6 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 		return type;
 	}
 
-	@Override
-	public String toJSON() {
-		
-		return null;
-	}
 	@Override
 	public String toString(){
 		return value;
@@ -110,6 +111,50 @@ public class Primitive implements Parameterable, Expression , ToJSONAble{
 	else if(type.equals("time")){
 		return "datetime:";
 	}
+	else if(type.equals("password")){
+		try {
+			return Sql.encryption(value);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	else
+		try {
+			throw new Exception("unknown value");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	return type;
+	}
+	
+	
+	public String toJavaSource(String type) {
+
+	if(type.equals(("string")) || (type.equals(("text")))){
+		return "\\\\\\\\\"" + value + "\\\\\\\\\""; 
+	}
+	else if(type.equals(("int")) || type.equals(("boolean"))){
+		return  "\"" + value + "\""; 
+	}
+	else if(type.equals("datetime")){
+	
+	}
+	else if(type.equals("date")){
+		return "datetime:";
+	}
+	else if(type.equals("time")){
+		return "datetime:";
+	}
+	else if(type.equals("password")){
+		try {
+			return "\\\\\\\\\"" + Sql.encryption(value) + "\\\\\\\\\"";
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	else
 		try {
 			throw new Exception("unknown value");
