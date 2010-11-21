@@ -41,7 +41,7 @@
 							<include name="resources/**/*.template"/>
 					</fileset>
 					<manifest>
-							<attribute name="Main-Class" value="ajweb.LauncherServer"/>
+							<attribute name="Main-Class" value="ajweb.Launcher"/>
 					</manifest>
 			</jar>
 	</target>
@@ -103,22 +103,6 @@
 			</java>
 	</target>
 
-
-	
-	
-	<target name="app_test" depends="">
-			<java classname="ajweb.server.Main" dir="${basedir}">
-			<classpath>
-					<fileset dir="${basedir}/lib/compiler/">
-							<include name="*.jar"/>
-					</fileset>
-					<fileset dir="${basedir}/lib/servlet/">
-							<include name="*.jar"/>
-					</fileset>
-					<pathelement location="${basedir}/classes/"/>
-			</classpath>
-		</java>
-	</target>
 
 	<target name="test_app_chat_compile" depends="jar">
 			<mkdir dir="./test/app/chat/WEB-INF/classes"/>

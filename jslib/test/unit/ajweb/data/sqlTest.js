@@ -18,26 +18,27 @@ function tearDown(){
 
 }
 
+
 function testCreate(){
   ajweb.sql.drop("test_sql");
   ajweb.sql.create("test_sql", properties);
-  var result1 = ajweb.data.sql.select("test_sql");
-  assertEquals(0, result1.length);
+  ajweb.data.sql.select("test_sql",
+			function(results){
+			  assertEquals(0, results.length);
+			});
 }
 
-function testDrop(){
-
-}
 
 function testInsert(){
   ajweb.sql.insert("test_sql", properties, {name: "kumabook", message : "kumakuma"});
-  var result1 = ajweb.data.sql.select("test_sql");
-  assertEquals(3, result1.length);
+  ajweb.data.sql.select("test_sql", 
+				     function(results){
+				       assertEquals(3, results.length);
+				       
+				       assertEquals("kumabook", results[2].name);
+				       assertEquals("kumakuma", results[2].message);
 
-//  assertEquals(3, result1[0].id);
-  assertEquals("kumabook", result1[2].name);
-  assertEquals("kumakuma", result1[2].message);
-
+				     });
 }
 
 function testRemove(){
@@ -45,35 +46,39 @@ function testRemove(){
 }
 
 function testUpdate(){
-
-  var result1 = ajweb.data.sql.select("test_sql");
-
-//  assertEquals(1, result1[0].id);
-  assertEquals("hiroki", result1[0].name);
-  assertEquals("hello", result1[0].message);
-  ajweb.sql.update("test_sql", properties, {id : result1[0].id, name :"熊本浩紀", message: "こんにちは!"});
-  var result4 = ajweb.data.sql.select("test_sql");
-//  assertEquals(2, result4[1].id);
-  assertEquals("熊本浩紀", result4[0].name);
-  assertEquals("こんにちは!", result4[0].message);
-
+  ajweb.data.sql.select("test_sql", 
+			function(results){
+			  assertEquals("hiroki", results[0].name);
+			  assertEquals("hello", results[0].message);					
+			  
+			  ajweb.sql.update("test_sql", properties, {id : results[0].id, name :"熊本浩紀", message: "こんにちは!"});
+			  
+			  ajweb.data.sql.select("test_sql", function(results){
+						  assertEquals("熊本浩紀", results[0].name);
+						  assertEquals("こんにちは!", results[0].message);
+						});
+			});
+  
 }
 
 function testSelect(){
-  var result1 = ajweb.data.sql.select("test_sql");
+  ajweb.data.sql.select("test_sql", 
+			function(results){
+			  assertEquals(2, results.length);
+			  
+			  assertEquals("hiroki", results[0].name);
+			  assertEquals("hello", results[0].message);
+			  
+			  assertEquals("kumamoto", results[1].name);
+			  assertEquals("こんにちは", results[1].message);
+			});
 
-  assertEquals(2, result1.length);
+}
 
-// assertEquals(1, result1[0].id);
-  assertEquals("hiroki", result1[0].name);
-  assertEquals("hello", result1[0].message);
-
-
-  var result2 = ajweb.data.sql.select("test_sql");
-//  assertEquals(2, result2[1].id);
-  assertEquals("kumamoto", result2[1].name);
-  assertEquals("こんにちは", result2[1].message);
-
-  var result3 = ajweb.data.sql.select("test_sql");
-  assertEquals(2, result3.length);
+function testDrop(){
+  ajweb.sql.drop("test_sql");
+  ajweb.data.sql.select("test_sql",
+			function(results){
+			  assertEquals(0, results.length);
+			});
 }

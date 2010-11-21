@@ -3,7 +3,9 @@ package ajweb.generator;
 import static org.junit.Assert.*;
 import java.io.File;
 
+
 import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import ajweb.Config;
@@ -13,9 +15,13 @@ public class MainTest {
 	
 	@BeforeClass
 	static public void beforeClass(){
-		Config.isStandardOutput = false;
+		Config.isStandardOutput = true;
 	}
 	
+	@Before
+	public void setUp() throws InterruptedException{
+	
+	}
 	@Test
 	public void testNoOption() throws Exception{
 		String[] args  = {"test/ajml/chat.ajml"};

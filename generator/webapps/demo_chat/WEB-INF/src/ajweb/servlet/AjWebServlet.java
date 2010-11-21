@@ -28,7 +28,7 @@ public class AjWebServlet extends AbstractServlet {
 		Log.serverLogger.fine("chat app doGet");
      }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		HttpSession session = req.getSession(false);

@@ -171,7 +171,7 @@ public class Sql {
 		st.execute(sql);
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		Log.finer("new table '" + tableName + "' created.");
 
 	}
@@ -209,7 +209,7 @@ public class Sql {
 		st.execute(sql);
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		Log.finer("new table '" + tableName + "' created.");
 
 	}
@@ -232,7 +232,7 @@ public class Sql {
 		st.execute(sql);
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		Log.finer("drop " + tableName);
 		
 	}
@@ -295,7 +295,7 @@ public class Sql {
 		st.execute();
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		
 		
 		@SuppressWarnings("unchecked")
@@ -347,7 +347,7 @@ public class Sql {
 		st.execute();
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		
 		Log.finer("update " );
 		return param;
@@ -367,7 +367,7 @@ public class Sql {
 		
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		Log.finest("delete " + tableName + " " + where.toPreparedSQL());
 		return param;
 	}		
@@ -388,7 +388,7 @@ public class Sql {
 		
 		st.close();
 		conn.commit();
-		close();
+		conn.close();
 		Log.finest("delete " + tableName + " " + where.toPreparedSQL());
 		return rs;
 	}
@@ -435,7 +435,7 @@ public class Sql {
 			
 			st.close();
 			conn.commit();
-			close();
+			conn.close();
 			
 			return result;
 		}

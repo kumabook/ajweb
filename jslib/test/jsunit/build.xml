@@ -113,8 +113,10 @@
     </path>
 
 	<target name="start_server" description="Starts a JsUnit Server">
+			<echo message="${jslib_basedir}"/>
 		<java fork="true" classname="net.jsunit.JsUnitServer" dir="${basedir}">
             <classpath refid="classpath"/>
+			<sysproperty key="ajweb.jslib.basedir" value="${jslib_basedir}"/>
             <sysproperty key="java.util.logging.config.file" value="${loggingPropertiesFile}"/>
             <sysproperty key="browserFileNames" value="${browserFileNames}"/>
             <sysproperty key="closeBrowsersAfterTestRuns" value="${closeBrowsersAfterTestRuns}"/>

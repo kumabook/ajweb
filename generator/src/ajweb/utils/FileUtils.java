@@ -137,16 +137,11 @@ public class FileUtils {
 //		        System.out.println(files.length);
 		        for(int i=0; i < files.length; i++){
 		        	Log.finest("delete"+ files[i].getAbsolutePath());	
-		            boolean result = false;
-		            while(!result){
-		            	 result = delete(files[i]);
-//		            	 System.out.println("sleep" + files[i].getName());
-		            	 //try {
-//							Thread.sleep(100);
-//						} catch (InterruptedException e) {
-//							e.printStackTrace();
-//						}
-		            }
+//		            boolean result = false;
+//		            while(!result){
+//		            	 result = 
+		            		 delete(files[i]);
+//		            }
 		            //System.out.println("delete  "+ files[i].getAbsolutePath() + result);
 		        }
 		        boolean result = f.delete();

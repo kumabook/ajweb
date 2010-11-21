@@ -42,7 +42,7 @@ public class InterfacesHandler extends AbstractHandler {
 
 		
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 		Log.fine("\t\tInterfaces Handler endElement: " + qName);
 		

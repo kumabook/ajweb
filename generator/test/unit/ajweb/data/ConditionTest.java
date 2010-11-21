@@ -38,9 +38,10 @@ public class ConditionTest {
 	}
 	
 	@Before
-	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, InterruptedException{
 		try {
 			da.drop("test");
+			Thread.sleep(200);
 		} catch (SQLException e){
 			
 		}

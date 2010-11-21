@@ -1,8 +1,8 @@
 dojo.require("ajweb.widget.Button");
-
+dojo.require("ajweb.editor.ModelEditor");
 dojo.addOnLoad(
   function(){
-//    alert(ajweb.editor);
+
     ajweb.xml = {};
     ajweb.xml.serialize = function(node){
       if(typeof XMLSerializer != "undefined")

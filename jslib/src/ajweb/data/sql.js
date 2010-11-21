@@ -4,7 +4,7 @@
  * @author Hiroki Kumamoto
  * @version 1.0.0
  */
-dojo.require("dojox.sql");
+//dojo.require("dojox.sql");
 dojo.require("ajweb.base");
 
 dojo.provide("ajweb.data.sql");
@@ -24,13 +24,15 @@ ajweb.data.sql.create = function(tablename, properties){
   scheme += ")";
   var SQL = "CREATE TABLE IF NOT EXISTS " + tablename + scheme;
   ajweb.log.trace(SQL);
-  dojox.sql(SQL);
+  //dojox.sql(SQL);
+  ajweb.data.sql.exec(SQL);
 };
 /** @methodOf ajweb.data.sql */
 ajweb.data.sql.drop = function(tablename){
   var SQL = "DROP TABLE IF EXISTS " + tablename;
   ajweb.log.trace(SQL);
-  dojox.sql(SQL);
+//  dojox.sql(SQL);
+  ajweb.data.sql.exec(SQL);
 };
 
 /** @methodOf ajweb.data.sql */
@@ -55,8 +57,8 @@ ajweb.data.sql.insert = function(tablename, properties, params){
   values_sql += ")";
   var SQL = "INSERT INTO " + tablename + " " + properties_sql + " VALUES " + values_sql;
   ajweb.log.trace(SQL);
-  dojox.sql(SQL);
-
+//  dojox.sql(SQL);
+  ajweb.data.sql.exec(SQL);
   return params;
 };
 
@@ -67,7 +69,8 @@ ajweb.data.sql.remove = function(tablename, params){
     id = params.id;
   var SQL = "DELETE  FROM " + tablename + " WHERE id='" + id + "'";
   ajweb.log.trace(SQL);
-  dojox.sql(SQL);
+//  dojox.sql(SQL);
+  ajweb.data.sql.exec(SQL);
 };
 /** @methodOf ajweb.data.sql */
 ajweb.data.sql.update = function(tablename, properties, params){
@@ -81,15 +84,45 @@ ajweb.data.sql.update = function(tablename, properties, params){
   values_sql += "";
   var SQL = "UPDATE " + tablename + " SET " + values_sql + " WHERE id = '" + params["id"] + "'";
   ajweb.log.trace(SQL);
-  dojox.sql(SQL);
+//  dojox.sql(SQL);
+  ajweb.data.sql.exec(SQL);
 };
 /** @methodOf ajweb.data.sql */
-ajweb.data.sql.select = function(tablename, properties, where){
+ajweb.data.sql.select = function(tablename, properties, where, next){
   //conditionをもとに実装
   var SQL = "SELECT * FROM " + tablename; // " WHERE " + properties_sql + " VALUES " + values_sql;
   ajweb.log.trace(SQL);
-  var rs = dojox.sql(SQL);
-  return rs;
+//  var rs = dojox.sql(SQL);
+
+//  return rs;
+  ajweb.data.sql.exec(SQL, next);
 };
 
 ajweb.sql = ajweb.data.sql;
+
+
+ajweb.data.sql.exec = function(SQL, next){
+  var db = openDatabase("ajweb_database", "1.0", "ajweb_database_testdb", 1024);
+  db.transaction(
+    function(tx){
+      tx.excuteSql(
+      SQL,
+	[],
+	function onSuccess(tx, resultSet){
+	  var results = [];
+	  if(next instanceof Function){
+	    for(var i = 0; i < resultSet.rows.length; i++){
+	      results.push(resultSet.rows.item(i));
+	    }
+	  }
+	  next(results);
+	},
+	function onError(tx, error){
+	}
+      );
+    },
+    function onError(error){
+    }
+  );
+};
+  

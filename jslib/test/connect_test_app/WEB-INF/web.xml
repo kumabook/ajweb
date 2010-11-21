@@ -5,20 +5,15 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
   <listener>
-  	<listener-class>ajweb.servlet.AjWebListener</listener-class>
+  	<listener-class>ajweb.jsunit.TestListener</listener-class>
   </listener>
   <servlet>
-    <servlet-name>dbservlet</servlet-name>
-    <servlet-class>ajweb.servlet.AjWebApp</servlet-class>
+    <servlet-name>TestServlet</servlet-name>
+	<servlet-class>ajweb.jsunit.TestServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>dbservlet</servlet-name>
-    <url-pattern>/dbservlet</url-pattern>
+    <servlet-name>TestServlet</servlet-name>
+    <url-pattern>/servlet</url-pattern>
   </servlet-mapping>
-  
-  
-  
-<!--  ${SERVLET} -->
-  
 </web-app>
