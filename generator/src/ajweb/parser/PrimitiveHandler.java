@@ -42,7 +42,7 @@ public class PrimitiveHandler extends AbstractHandler {
 			primitive = new Primitive(elementName, character);
 		}
 		
-		setExpression(primitive);
+		setModel(primitive);
 		Log.fine("setExpression  " + primitive);
 		super.endElement(uri, localName, qName);
 	}

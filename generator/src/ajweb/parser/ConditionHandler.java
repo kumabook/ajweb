@@ -3,7 +3,7 @@ package ajweb.parser;
 import org.xml.sax.SAXException;
 
 import ajweb.model.AbstractCondition;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.utils.Log;
 
 public class ConditionHandler extends AbstractHandler {
@@ -12,23 +12,22 @@ public class ConditionHandler extends AbstractHandler {
 	
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof AbstractCondition){
-			con = (AbstractCondition) exp;
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof AbstractCondition){
+			con = (AbstractCondition) model;
 		}
 		else 
-			super.addExpression(exp);
+			super.addModel(model);
 	}
 	public void endElement(
 			String uri, String localName, String qName) throws SAXException{
 		Log.fine("conditions handler end "  +   qName + "  "  + this);
-		setExpression(con);
+		setModel(con);
 		super.endElement(uri, localName, qName);
 	}
 	
 	@Override
 	public String toString() {
-
 		return "ConditionHandler";
 	}
 

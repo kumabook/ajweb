@@ -41,7 +41,6 @@ public class FileUtils {
 	}
 	
 	public static void copyJar(URL url, String file) throws UnsupportedEncodingException, IOException{
-//		URL url = jar.getClass().getClassLoader().getResource(jar);
 		InputStream in = url.openStream();
 		FileOutputStream os = new FileOutputStream(file);
 		int bufferSize = 100;
@@ -85,11 +84,9 @@ public class FileUtils {
         srcChannel.transferTo(0, srcChannel.size(), destChannel);
     }finally {
         srcChannel.close();
-//        System.out.println(destChannel.size());
         destChannel.close();
     }
     
-//    System.out.println("copy " + srcPath + " \t " + destPath);
     if(Config.isStandardOutput)
     	System.out.println("generate " + srcPath + " to " +  destPath);
     Log.finest("copy " + srcPath + " to " + destPath);
@@ -104,15 +101,10 @@ public class FileUtils {
 			return false;
 		
 		File[] files = from.listFiles();
-//		System.out.println(files.length);
 		for(int i = 0; i < files.length; i++){
-			//System.out.println(files[i].getName()  + type);
-			//System.out.println(files[i].getName().matches(".*\\." + type));
 			boolean check = files[i].getName().matches(".*\\." + type);
 			if(check){
-				//System.out.println("copy "+ files[i].getAbsolutePath() + "to " + toPath + files[i].getName());
 				Log.finest("copy "+ files[i].getAbsolutePath() + "to " + toPath + files[i].getName());
-//				copyFile(files[i].getAbsolutePath(), toPath + "/" +files[i].getName());
 				copyFile(files[i].getPath(), toPath  + files[i].getName());
 			}
 		}
@@ -123,7 +115,6 @@ public class FileUtils {
 	
 	
 	public static boolean delete(File f){
-//		System.out.println("delete " + f.getAbsolutePath());
 		  if( f.exists()==false ){
 		        return true;
 		    }
@@ -134,7 +125,6 @@ public class FileUtils {
 		    
 		    if(f.isDirectory()){
 		        File[] files=f.listFiles();
-//		        System.out.println(files.length);
 		        for(int i=0; i < files.length; i++){
 		        	Log.finest("delete"+ files[i].getAbsolutePath());	
 //		            boolean result = false;
@@ -160,15 +150,11 @@ public class FileUtils {
 	 */
 	public static void compression(File baseDir,File zipFile) throws Exception{
 		
-		//File baseDir = new File(basePath);
-		//File warFile = new File(appName);
-		//File[] files = { new File(basePath)};
 		File[] files = { baseDir };
 		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
 		encode(zos, files, baseDir);
 		
 		zos.close();
-//		System.out.println("make " + appName + "!");
 	}
 
 	private static byte[] buf = new byte[1024];
@@ -187,10 +173,7 @@ public class FileUtils {
 				encode(zos, f.listFiles(),baseDir);
 			} 
 			else if (!check){
-				
 				ZipEntry ze = new ZipEntry(f.getPath().replace(baseDir.getPath(), "").replace('\\', '/'));
-				
-//				System.out.println(ze.getName());
 				zos.putNextEntry(ze);
 				InputStream is = new BufferedInputStream(new FileInputStream(f));
 				while(true) {
@@ -208,7 +191,6 @@ public class FileUtils {
 		InputStream is = null;
 		try {
 			is = new FileInputStream(file);
-		//	is = new FileInputStream(Config.templateFolder + templateName + ".template");
 		} catch (FileNotFoundException e) {
 			System.out.println(file.getPath());
 			URL url = file.getClass().getClassLoader().getResource(file.getPath());
@@ -225,16 +207,6 @@ public class FileUtils {
 			buf.append("\n");
 			buf.append(str);
 		}
-//		InputStreamReader is = new InputStreamReader(new FileInputStream(file), "UTF-8");
-		/*BufferedReader br = new BufferedReader(is);
-
-		String result = br.readLine();
-		String line;
-		while ((line = br.readLine()) != null) {
-				result += "\n" + line;
-		}	
-        br.close();
-        is.close();*/
 		
 		return buf.toString();
 		
@@ -273,11 +245,8 @@ public class FileUtils {
 				}
 				else {
 					boolean check = files[i].getName().matches(".*\\." + type);
-//					System.out.println(files[i].getAbsolutePath());
 					Log.finest(files[i].getAbsolutePath());
-//					System.out.println(check);
 					if(check){
-//						System.out.println("add "+ files[i].getAbsolutePath());
 						Log.finest("add "+ files[i].getAbsolutePath());
 						result.add(files[i]);
 					}
@@ -292,16 +261,5 @@ public class FileUtils {
 		File dir = new File(string);
 		return 	findFiles(dir, type).toArray(new File[0]);
 	}
-	
-	
-	
-	public static void main(String[] args) throws IOException {
-//		File file = new File("./resources/template/dbtable.template");
-//		System.out.println(read(file));
-	
-//		System.out.println(findFiles("./out/chat/WEB-INF/src/", "java").length);
-		System.out.println(System.getProperty("path.separator"));
-	}
-	
-	
+
 }

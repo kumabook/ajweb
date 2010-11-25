@@ -5,8 +5,12 @@ import java.io.IOException;
 import ajweb.utils.Template;
 
 
-
-public class Branch implements Expression, Flowable{
+/**
+ * •ªŠò‚ð•\‚·ƒNƒ‰ƒX
+ * @author hiroki
+ *
+ */
+public class Branch implements AbstractModel, Flowable{
 	public AbstractCondition condition;
 	public Action truePath;
 	public Action falsePath;
@@ -27,14 +31,14 @@ public class Branch implements Expression, Flowable{
 	}
 
 
-	public boolean isCallback() {
+	public boolean containCallback() {
 		boolean flag = false;
 		flag = condition.isContainCallback();
 		for(int i = 0; i < truePath.size(); i++){
-			flag = flag || truePath.get(i).isCallback();
+			flag = flag || truePath.get(i).containCallback();
 		}
 		for(int i = 0; i < falsePath.size(); i++){
-			flag = flag || falsePath.get(i).isCallback();
+			flag = flag || falsePath.get(i).containCallback();
 		}
 		return flag;
 	}

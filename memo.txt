@@ -4,3 +4,7 @@ ajweb project memo
 
 
 jsunit を最新版に変更、および通信もテスト可能なようにAbstractJsUnitServerを修正 2010/11/14 17:11
+
+
+javaScriptのオブジェクトの参照渡しでつまづく。COMLISTをクローンしてからmodelにpropertiesを渡すことで解決。ajweb.editor.element.ModelElement.js 116行目   11/25 15:58
+dojo widgetの表示されるたびにリサイズされるのを防ぐためには、コンストラクタにdoLayout: trueを渡す. 11/26 2:57

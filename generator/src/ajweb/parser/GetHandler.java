@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
 
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.model.Get;
 import ajweb.model.Param;
 import ajweb.model.Parameterable;
@@ -12,19 +12,19 @@ import ajweb.model.ReceivedItem;
 import ajweb.model.TargetItem;
 
 public class GetHandler extends AbstractHandler{
-	Expression get;
+	AbstractModel get;
 	ArrayList<Param> params = new ArrayList<Param>();
 	Parameterable param;
 	
 	
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof Param){
-			params.add((Param) exp); 
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Param){
+			params.add((Param) model); 
 		}
-		else if(exp instanceof Parameterable){
-			param = (Parameterable) exp;
+		else if(model instanceof Parameterable){
+			param = (Parameterable) model;
 		}
 	}
 	@Override
@@ -47,13 +47,11 @@ public class GetHandler extends AbstractHandler{
 			get = new Get(attributes.get("database"), "selectByCondition", property, param);
 		}
 		else if(qName.equals("targetItem")){
-			//String property = attributes.get("property");
 			if(property == null)
 				property = "";
 			get = new TargetItem(property);
 		}
 		else if(qName.equals("receivedItem")){
-			//String property = attributes.get("property");
 			get = new ReceivedItem(property);
 		}
 		else if(qName.equals("math")){
@@ -62,7 +60,7 @@ public class GetHandler extends AbstractHandler{
 		else if(qName.equals("concat")){
 			get = new Get("ajweb.data.String", "concat", property, params);
 		}
-		setExpression(get);
+		setModel(get);
 		super.endElement(uri, localName, qName);
 	}
 }

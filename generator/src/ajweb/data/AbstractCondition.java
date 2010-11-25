@@ -4,11 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 
 
 
-public abstract class AbstractCondition implements Expression{
+public abstract class AbstractCondition implements AbstractModel{
 
 	abstract public String toString();
 	abstract protected String toPreparedSQL();

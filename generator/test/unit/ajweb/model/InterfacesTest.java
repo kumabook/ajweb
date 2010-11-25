@@ -23,7 +23,7 @@ public class InterfacesTest {
 		String INTERFACES = "";
 		Widget interfaces = app.widgets.get(0);
 		
-		interfaces.children.get(0).id = "rootFrame"; 
+		interfaces.children.get(0).name = "rootFrame"; 
 		HashMap<String, Object> rootProperties = new HashMap<String, Object>();
 		rootProperties.put("id", "rootFrame");
 		rootProperties.put("width", "100%");

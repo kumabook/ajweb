@@ -1,17 +1,8 @@
-dojo.require("ajweb.widget.Button");
 dojo.require("ajweb.editor.ModelEditor");
 dojo.addOnLoad(
   function(){
 
-    ajweb.xml = {};
-    ajweb.xml.serialize = function(node){
-      if(typeof XMLSerializer != "undefined")
-	return (new XMLSerializer()).serializeToString(node);
-      else if (node.xml) return node.xml;
-      else throw "XML.serialize is not supported or can't serialize " + node;
-    };
-   ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ui", "ajmlEditor", "menu");
-
+   ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ajmlEditor", "menu");
 
   });
 

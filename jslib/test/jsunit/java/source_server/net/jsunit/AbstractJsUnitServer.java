@@ -99,11 +99,6 @@ public abstract class AbstractJsUnitServer {
 
 /** ajweb  test用のweb applicaitonコンテキストを追加**/
         
-        
-        
-        
-//      File appDir = new File("../../../generator/test/app");
-//		File[] apps = appDir.listFiles();
 		String basedir = System.getProperty("ajweb.jslib.basedir");
         File webAppDir = new File(basedir + "/test/connect_test_app");
 		WebApplicationContext webapp = new WebApplicationContext();
@@ -113,40 +108,38 @@ public abstract class AbstractJsUnitServer {
 		webapp.setDefaultsDescriptor(webAppDir.getAbsolutePath() + "/WEB-INF/web.xml");
 		webapp.setResourceBase(webAppDir.getAbsolutePath() + "/");
 		webapp.addClassPath(webAppDir.getAbsolutePath() + "/WEB-INF/classes");
-		webapp.addClassPath(basedir + "/../generator/dist/ajweb.jar");
+		webapp.addClassPath(basedir + "/../generator/classes/");
 		webapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
 		webapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
-		
+	
         ResourceHandler resource_handler = new ResourceHandler();
         resourceHandler.setDirAllowed(false);
         resourceHandler.setRedirectWelcome(true);
 
         webapp.addHandler(resource_handler);
 		//webapp.setParentLoaderPriority(true);
-
 		httpServer.addContext(webapp);
-		/*for(int i = 0; i < apps.length; i++){
-				if(apps[i].isDirectory() && !apps[i].getName().matches("\\..*|log")){
-						WebApplicationContext webapp = new WebApplicationContext();
-						System.out.println("app " + apps[i].getName() + "  deploy on test server");
-						webapp.setContextPath("/" + apps[i].getName());
-						//webapp.setWar(appName+".war");
-						webapp.setDefaultsDescriptor(apps[i].getAbsolutePath() + "/WEB-INF/web.xml");
-						webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
-						webapp.addClassPath(apps[i].getAbsolutePath() + "/WEB-INF/classes");
-						webapp.addClassPath(apps[i].getAbsolutePath() + "/WEB-INF/lib/ajweb.jar");
-						webapp.addClassPath("../../../generator/lib/jetty-all-7.0.2.v20100331.jar");
-						
-				        ResourceHandler resource_handler = new ResourceHandler();
-				        resourceHandler.setDirAllowed(false);
-				        resourceHandler.setRedirectWelcome(true);
-				        
-				        webapp.addHandler(resource_handler);
-						//webapp.setParentLoaderPriority(true);
+		
+		
+        File editorWebAppDir = new File(basedir + "/../generator/webapps/editor");
+		WebApplicationContext editorWebapp = new WebApplicationContext();
 
-						httpServer.addContext(webapp);
-				}
-		}*/
+		ResourceHandler editorResourceHandler = new ResourceHandler();
+        editorResourceHandler.setDirAllowed(true);
+        editorWebapp.addHandler(editorResourceHandler);
+
+		System.out.println("app " + editorWebAppDir.getName() + "  deploy on test server");
+		System.out.println("app " + editorWebAppDir.getAbsolutePath() + "  deploy on test server");
+		
+		editorWebapp.setContextPath("/editor");
+		editorWebapp.setDefaultsDescriptor(editorWebAppDir.getAbsolutePath() + "/WEB-INF/web.xml");
+		editorWebapp.setResourceBase(editorWebAppDir.getAbsolutePath() + "/");
+		editorWebapp.addClassPath(editorWebAppDir.getAbsolutePath() + "/WEB-INF/classes");
+		editorWebapp.addClassPath(basedir + "/../generator/classes/");
+		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
+		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
+
+		httpServer.addContext(editorWebapp);
 
 
 	}

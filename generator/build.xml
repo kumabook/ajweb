@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="generator" default="setup" basedir=".">
-	<property name="war.home" value="out" />
-	<property name="temp" value="out" />
-	<property name="web-app.name" value="default-app" />
-	<property name="web-app.home" value="${temp}/${web-app.name}" />
-	<property name="basedir" value="./" />
+<project name="generator" default="dist" basedir=".">
 	<target name="clean">
 			<delete dir="doc"/>
 			<delete dir="classes"/>
@@ -27,7 +22,7 @@
 	</target>
 
 
-	<target name="jar" depends="compile">
+	<target name="dist" depends="compile">
 			<delete file="${basedir}/dist/ajweb.jar"/> 
 			<jar destfile="${basedir}/dist/ajweb.jar" 
 					update="true">
@@ -88,8 +83,8 @@
 			</javac>
 	</target>
 
-	<target name="run"> 
-			<java classname="ajweb.server.Main" dir="${basedir}">
+	<target name="run">
+			<java classname="ajweb.server.Main" dir="${basedir}" fork="true">
 					<classpath>
 							<fileset dir="${basedir}/lib/compiler/">
 									<include name="*.jar"/>
@@ -102,20 +97,4 @@
 					</classpath>
 			</java>
 	</target>
-
-
-	<target name="test_app_chat_compile" depends="jar">
-			<mkdir dir="./test/app/chat/WEB-INF/classes"/>
-			<javac destdir="./test/app/chat/WEB-INF/classes/" includeAntRuntime="no">
-					<src path="./test/app/chat/WEB-INF/src"/>
-					<classpath>
-							<fileset dir="./lib">
-									<include name="*.jar"/>
-							</fileset>
-							<pathelement location="./dist/ajweb.jar"/>
-					</classpath>
-			</javac>
-	</target>
-
-
 </project>

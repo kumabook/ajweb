@@ -2,7 +2,6 @@ package ajweb.utils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ajweb.Config;
+import ajweb.JarClassLoader;
 
 public class Template {
 	
@@ -20,12 +20,14 @@ public class Template {
 	
 	public Template(String templateName) throws IOException {
 		
+		
 		InputStream is = null;
-		try {
+		JarClassLoader jcl = new JarClassLoader();
+		if(jcl.isLaunchedFromJar())
+			is = getClass().getClassLoader().getResourceAsStream("resources/template/" + templateName + ".template");
+		else
 			is = new FileInputStream(Config.templateFolder + templateName + ".template");
-		} catch (FileNotFoundException e) {
-				is = getClass().getClassLoader().getResourceAsStream("resources/template/" + templateName + ".template");
-		}
+		
 		
 		BufferedReader reader = 
 			new BufferedReader(new InputStreamReader(is, "UTF-8"/* 文字コード指定 */));
@@ -37,10 +39,7 @@ public class Template {
 			buf.append(str);
 		}
 		source =  buf.toString();
-		//if(Config.isJar)
-			//URL =*/ 
-//		File template = new File(Config.templateFolder + templateName + ".template");
-//		source = FileUtils.read("resources/template/" + templateName + ".template");
+
 		setParam();
 	}
 	

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AjWeb System javaScript Framework" default="dist" basedir=".">
+
 	<condition property="os" value="win">
 		<os family="windows"/>
 	</condition>
@@ -7,8 +8,6 @@
 		<os family="mac"/>
 	</condition>
 
-	<property name="jssrc" value="src" />		
-	<property name="basedir" value="./" />		
 	<target name="doc"
 		description="make jsDoc">
 		<property name="jsdoc" value="lib/jsdoc-toolkit" />
@@ -64,24 +63,9 @@
 	</target>
 
 
-	<target name="compile_connect_test_app">
-			<mkdir dir="./test/connect_test_app/WEB-INF/classes"/>
-			<javac destdir="./test/connect_test_app/WEB-INF/classes/" includeAntRuntime="no">
-					<src path="./test/connect_test_app/WEB-INF/src"/>
-					<classpath>
-						<fileset dir="../generator/lib/servlet/">
-							<include name="*.jar"/>
-						</fileset>
-						<fileset dir="../generator/lib/compiler/">
-							<include name="*.jar"/>
-						</fileset>
-						<pathelement location="../generator/dist/ajweb.jar"/>
-					</classpath>
-			</javac>
-	</target>
 
 	<!--C:¥Program Files¥Internet Explorer¥iexplore.exe;;, -->
-	<target name="unittest" >
+	<target name="unittest">
 			<echo message="${basedir}" />
 			<condition 
 				property="browserFileNames"
@@ -102,6 +86,7 @@
 					<os family="mac"/>
 			</condition>
 			<subant>
+					<property name="jslib_basedir" value="${basedir}"/>
 					<property name="basedir" value="${basedir}"/>
 					<property name="browserFileNames" value="${browserFileNames}"/>
 					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns"
@@ -154,11 +139,18 @@
 					</filelist>
 			</subant>
 	</target>
-
 	<target name="open_jsunit_runner">
+			<antcall target="open_jsunit_runner_${os}"/>	
+	</target>
+	<target name="open_jsunit_runner_win">
 		<exec executable="cygstart">
 			<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
 		</exec>
+	</target>
+	<target name="open_jsunit_runner_mac">
+			<exec executable="open">
+					<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
+			</exec>
 	</target>
 	<target name="stop_jsunit_server">
 		<antcall target="stop_jsunit_server_${os}"/>

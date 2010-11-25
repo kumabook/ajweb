@@ -36,8 +36,8 @@ public class Condition extends AbstractCondition {
 	/**
 	 * コンストラクタ
 	 * @param operator
-	 * @param property
-	 * @param param
+	 * @param property 対象となるデータベースのカラム名
+	 * @param param 比較する相手
 	 */
 	public Condition(String operator, String property, String param){
 		this.operator = operator;
@@ -46,24 +46,10 @@ public class Condition extends AbstractCondition {
 	
 	}
 	
-	
-	public String toString(){
-		if(this.operator == null)
-			return "{}";
-		if(operator.equals("eq") || operator.equals("=") || operator.equals(">") || operator.equals("<") ||
-				operator.equals(">=") || operator.equals("<=") ||
-				operator.equals("!=") || operator.equals("<>"))
-		{
-			return property + operatorToSQL(operator) + value;
-		}
-		
-		return "unknown operator";
-		
-	}
 	/**
-	 * 条件判定
-	 * @param item
-	 * @return
+	 * 1レコードの内容を引数にとり条件判定を行う
+	 * @param item レコードの内容
+	 * @return 条件式が成立するか
 	 * @throws Exception
 	 */
 	
@@ -134,7 +120,9 @@ public class Condition extends AbstractCondition {
 		return property  + " "+ operatorToSQL(operator) + " " + "?";
 		}
 
-	
+	/**
+	 * 変換したPreparedSQLに値を代入する。
+	 */
 	@Override
 	protected void setPreparedSQL(PreparedStatement st) throws SQLException {
 		int index = 1;
@@ -147,7 +135,11 @@ public class Condition extends AbstractCondition {
 		index = index + 1;
 		return index;
 	}
-	
+	/**
+	 * operatorをSQL用の文字列に変換
+	 * @param operator
+	 * @return
+	 */
 	static String operatorToSQL(String operator){
 		if(operator.equals("eq"))
 			return "=";
@@ -166,7 +158,12 @@ public class Condition extends AbstractCondition {
 		
 		return "{ op: \""+ operator +  "\", property: \""+ property +"\", value: " + value + " }";
 	}
-
+	
+/**
+ * json形式の文字列からアクションとconditionの配列のハッシュオブジェクトを生成
+ * @param json
+ * @return
+ */
 	@SuppressWarnings("unchecked")
 	static public HashMap<String, ArrayList<AbstractCondition>> parse(String json){
 		//HashMap<String, ArrayList<?>> tableConditions = (HashMap<String, ArrayList<?>>) org.eclipse.jetty.util.ajax.JSON.parse(json);
@@ -177,7 +174,7 @@ public class Condition extends AbstractCondition {
 	}
 	
 	
-	static public HashMap<String, ArrayList<AbstractCondition>>  parse(HashMap<String, Object[]> _tableConditions){
+	static protected HashMap<String, ArrayList<AbstractCondition>>  parse(HashMap<String, Object[]> _tableConditions){
 		HashMap<String, ArrayList<AbstractCondition>> tableConditions  = new HashMap<String, ArrayList<AbstractCondition>>();
 		Iterator<String> ite = _tableConditions.keySet().iterator();
 		while(ite.hasNext()){
@@ -189,8 +186,8 @@ public class Condition extends AbstractCondition {
 		}
 		return tableConditions;
 	}
-	
-	static public ArrayList<AbstractCondition> parse(Object[] _conditions){
+
+	static protected ArrayList<AbstractCondition> parse(Object[] _conditions){
 		ArrayList<AbstractCondition> conditions = new ArrayList<AbstractCondition>();
 		for(int i = 0; i < _conditions.length; i++){
 			conditions.add(_parse((HashMap<?, ?>) _conditions[i]));
@@ -198,12 +195,12 @@ public class Condition extends AbstractCondition {
 		return conditions;
 	}
 
-	static public AbstractCondition _parse(String json){
+	static protected AbstractCondition _parse(String json){
 		HashMap<?, ?> obj = (HashMap<?, ?>) org.eclipse.jetty.util.ajax.JSON.parse(json);
 		return _parse(obj);
 	}
-	
-	static public AbstractCondition _parse(HashMap<?, ?> obj){
+
+	static protected AbstractCondition _parse(HashMap<?, ?> obj){
 		String op = (String) obj.get("op");
 		if(op.equals("and") || op.equals("or")){
 			Conditions cons = new Conditions(op);
@@ -223,5 +220,19 @@ public class Condition extends AbstractCondition {
 			
 			return new Condition(op, (String) obj.get("property").toString(), (String) obj.get("value").toString());
 		}
+	}
+
+	public String toString(){
+		if(this.operator == null)
+			return "{}";
+		if(operator.equals("eq") || operator.equals("=") || operator.equals(">") || operator.equals("<") ||
+				operator.equals(">=") || operator.equals("<=") ||
+				operator.equals("!=") || operator.equals("<>"))
+		{
+			return property + operatorToSQL(operator) + value;
+		}
+		
+		return "unknown operator";
+		
 	}
 }

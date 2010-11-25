@@ -9,33 +9,32 @@ dojo.provide("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Widget", null,
   /** @lends ajweb.widget.Widget.prototype */
   {
-	/**
-	 * Constructor
-	 * @class widgetの抽象クラス
-	 * @constructs
+    /**
+     * Constructor
+     * @class widgetの抽象クラス
+     * @constructs
 
-	 * @param {Object} opt 設定オプション
-	 * @param {String} opt.id ウィジェットID
-	 * @param {ajweb.widget.Widget} opt.parent 親パネルへの参照
-	 * @param {Array<ajweb.widget.Widget>} opt.children 子ウィジェットへの参照
-	 */
-
-	constructor: function(opt){
-	  dojo.mixin(this, opt);
-	 /** {int} ウィジェットID
-	 * @field */
-	  this.id = opt.id;
-	/** DOM要素への参照
-	 * @field */
-	  this.element = undefined;
-	/** 親ウィジェット
-	 * @field */
-	  this.parent = null;
-	/** 子ウィジェット
-	 * @field */
-	  this.children =[];
-	  this.createWidget();
-	  ajweb.addElement(this);
+     * @param {Object} opt 設定オプション
+     * @param {String} opt.id ウィジェットID
+     * @param {ajweb.widget.Widget} opt.parent 親パネルへの参照
+     * @param {Array<ajweb.widget.Widget>} opt.children 子ウィジェットへの参照
+     */
+    constructor: function(opt){
+      dojo.mixin(this, opt);
+      /** {int} ウィジェットID
+       * @field */
+      this.id = opt.id;
+    /** DOM要素への参照
+     * @field */
+      this.element = undefined;
+     /** 親ウィジェット
+      * @field */
+      this.parent = null;
+     /** 子ウィジェット
+      * @field */
+      this.children =[];
+      this.createWidget();
+      ajweb.addElement(this);
   },
     /**
      * このメソッドをオーバーライドし、オブジェクトを作成、frameやpanelの子要素となる場合は,

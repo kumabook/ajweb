@@ -5,7 +5,7 @@ import org.xml.sax.SAXException;
 import ajweb.model.AbstractCondition;
 import ajweb.model.Action;
 import ajweb.model.Branch;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 
 public class BranchHandler extends AbstractHandler{
 	Branch branch;
@@ -13,7 +13,7 @@ public class BranchHandler extends AbstractHandler{
 	Action truePath = new Action();
 	Action falsePath = new Action();
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
+	protected void addModel(AbstractModel exp) throws SAXException {
 		if(exp instanceof AbstractCondition){
 			condition = (AbstractCondition) exp;
 		}
@@ -27,13 +27,13 @@ public class BranchHandler extends AbstractHandler{
 			}
 		}
 		else 
-			super.addExpression(exp);
+			super.addModel(exp);
 	}
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		branch = new Branch(condition, truePath, falsePath);
-		setExpression(branch);
+		setModel(branch);
 		super.endElement(uri, localName, qName);
 	}
 }

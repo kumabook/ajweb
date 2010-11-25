@@ -2,7 +2,7 @@ package ajweb.parser;
 
 import org.xml.sax.SAXException;
 
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.model.Param;
 import ajweb.model.Parameterable;
 import ajweb.model.Primitive;
@@ -12,10 +12,12 @@ public class ParamHandler extends AbstractHandler{
 	public Parameterable value;
 
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof Parameterable){
-			value  = (Parameterable) exp;
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Parameterable){
+			value  = (Parameterable) model;
 		}
+		else 
+			super.addModel(model);
 				
 	}
 	
@@ -28,7 +30,7 @@ public class ParamHandler extends AbstractHandler{
 		if(param.value == null)
 			param.value = new Primitive("string", attributes.get("value"));
 		
-		setExpression(param);
+		setModel(param);
 		super.endElement(uri, localName, qName);
 		
 	}

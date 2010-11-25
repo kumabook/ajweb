@@ -1,6 +1,6 @@
 package ajweb.model;
 
-public class ReceivedItem implements Parameterable, Expression {
+public class ReceivedItem implements Parameterable, AbstractModel {
 	public String property;
 	
 	public ReceivedItem(String property){

@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import ajweb.utils.Template;
 
 @SuppressWarnings("serial")
-public class Databases extends ArrayList<Database> implements Expression{
-	//public ArrayList<DBData> datum;
+public class Databases extends ArrayList<Database> implements AbstractModel{
 
 	public String toServletSource(String appname) throws IOException{
 		Template servlet_template = new Template("java/servlet");

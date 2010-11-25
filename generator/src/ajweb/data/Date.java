@@ -20,7 +20,6 @@ public class Date {
 	
 	@Override
 	public String toString() {
-		//2011-06-25 10:10:10
 		return df.format(date);
 	}
 }

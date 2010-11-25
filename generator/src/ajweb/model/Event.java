@@ -3,38 +3,19 @@ package ajweb.model;
 import java.io.IOException;
 import ajweb.utils.Template;
 
-
-
-public class Event implements Expression{
-	String id;
+public class Event implements AbstractModel{
 	public String type;
-	//public String element;
 	public String target;
 	public AbstractCondition condition;
 	public Action action;
 	
-	public Event(){
-		
+	public Event(String target, String type, AbstractCondition condition,Action action){
+		this.target = target;
+		this.type = type;
+		this.condition = condition;
+		this.action = action;
 	}
-	public void generate() {
-
 		
-	}
-	@Override
-	public String toString() {
-	
-		return "e[" + target + ":" + type + "," + action;
-	}
-	public String jsCode() {
-		
-		String js = "\tdojo.connect(" + target + ".widget, \"" + type + "\", null, function(){\n";
-		
-		//for(Action action : actions){
-//			js += action.jsCode();
-		//}
-		return js + "\t});\n";
-		
-	}
 	public String toJsSource(Databases databases) throws IOException {
 		String ACTION = action.toJsSource(null, null, null);
 		
@@ -66,4 +47,11 @@ public class Event implements Expression{
 		CallBackItems._count = 0;
 		return event_tempate.source + polling_condiitons; 
 	}
+	
+	@Override
+	public String toString() {
+	
+		return "e[" + target + ":" + type + "," + action;
+	}
+	
 }

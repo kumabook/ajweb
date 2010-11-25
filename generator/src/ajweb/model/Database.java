@@ -14,7 +14,7 @@ import ajweb.utils.Template;
  * @author hiroki
  *
  */
-public class Database implements Expression{
+public class Database implements AbstractModel{
 	public String id;
 	public String tablename;
 	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";

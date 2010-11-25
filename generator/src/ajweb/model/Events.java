@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class Events extends ArrayList<Event> implements Expression{
+public class Events extends ArrayList<Event> implements AbstractModel{
 	
 	public String toJsSource(Databases databases) throws IOException{
 		String jsSource = "";

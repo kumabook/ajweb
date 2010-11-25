@@ -1,25 +1,23 @@
 package ajweb.parser;
 
 import org.xml.sax.SAXException;
-
 import ajweb.model.Event;
 import ajweb.model.Events;
-import ajweb.model.Expression;
-import ajweb.utils.Log;
+import ajweb.model.AbstractModel;
 
 public class EventsHandler extends AbstractHandler {
 	Events events = new Events();
 		
 		@Override
-		protected void addExpression(Expression exp) throws SAXException {
-			Log.fine("addExpression  action to event " + exp);
-			//event.actions.add((Action) exp);
-			events.add((Event) exp);
+		protected void addModel(AbstractModel model) throws SAXException {
+			if(model instanceof Event)
+				events.add((Event) model);
+			else 
+				super.addModel(model);
 		}
 		public void endElement(
 				String uri, String localName, String qName) throws SAXException{
-				Log.fine("\tevent handler end");
-				setExpression(events);
+				setModel(events);
 				super.endElement(uri, localName, qName);
 		}
 				

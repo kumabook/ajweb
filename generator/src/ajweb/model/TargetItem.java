@@ -1,6 +1,6 @@
 package ajweb.model;
 
-public class TargetItem implements Parameterable, Expression{
+public class TargetItem implements Parameterable, AbstractModel{
 	public String property;
 
 	public TargetItem(String property){

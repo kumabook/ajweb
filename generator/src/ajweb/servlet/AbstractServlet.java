@@ -60,14 +60,11 @@ public abstract class AbstractServlet extends HttpServlet{
 	synchronized void poll(HttpServletRequest req, HttpServletResponse resp, 
 			String sessionid, HashMap<String, ArrayList<AbstractCondition>> relatedDBDatum) throws IOException {
 		
-		//relatedDBDatum = new HashMap<String, Condition>();
 		Log.servletLogger.fine("poll  sessionid:" + sessionid + " related:"  + relatedDBDatum);
-		//System.out.println("poll  sessionid:" + sessionid + " related:"  + relatedDBDatum);
 
 		Member member = members.get(sessionid);
 		if(member == null){
 			Log.servletLogger.fine("sessionid : " +  sessionid + " have not join");
-			//System.out.println("sessionid : " +  sessionid + " have not join");
 					
 			resp.sendError(503);
 			return;
@@ -112,7 +109,7 @@ public abstract class AbstractServlet extends HttpServlet{
 	 */
 	protected synchronized void change(HttpServletRequest req, HttpServletResponse resp,
 			String sessionid, String tablename, String action, HashMap<String, String> item) throws Exception {
-		Log.servletLogger.fine(  "sessionid:"+ sessionid +"  が変更を加えたよ"  + " " + action);
+		Log.servletLogger.fine(  "sessionid:"+ sessionid +"  change action:"  + " " + action);
 		
 		//サーバーのデータをクライアントに伝搬させる
 		Log.servletLogger.fine("send modification to clients  clients.size:" + members.size());
@@ -137,8 +134,6 @@ public abstract class AbstractServlet extends HttpServlet{
 				}
 			}
 		}
-//PrintWriter out = resp.getWriter();
-	//	out.print("{action:\""+ action +"\", ");  
 	}
 	/**
 	 * 複数のmodificationを受け取り、クライアントのキューに入れる (オフライン→オンライン時のクライアントの変更履歴の反映用)
@@ -182,8 +177,6 @@ public abstract class AbstractServlet extends HttpServlet{
 				}
 			}	
 		}
-//		PrintWriter out = resp.getWriter();
-		//out.print("{action: \""+ "change \"}");
 	}
 	
 	protected synchronized void repoll(){

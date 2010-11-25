@@ -7,8 +7,7 @@ import org.xml.sax.SAXException;
 
 import ajweb.Config;
 import ajweb.model.Database;
-import ajweb.model.Expression;
-import ajweb.model.Item;
+import ajweb.model.AbstractModel;
 import ajweb.model.Items;
 import ajweb.model.Parameterable;
 import ajweb.model.Primitive;
@@ -25,10 +24,8 @@ public class DatabaseHandler extends AbstractHandler{
 	
 	HashMap<String, String> property_attributes;
 	
-	Items initItems = new Items();;
-	Item tempItem;
+	Items initItems = new Items();
 	Parameterable property;
-	Boolean initFlag = false;
 	String property_name;
 			
 	HashMap<String, String> properties = new HashMap<String, String>();
@@ -49,12 +46,12 @@ public class DatabaseHandler extends AbstractHandler{
 		
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof Items){
-			initItems = (Items) exp;
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Items){
+			initItems = (Items) model;
 		}
 		else
-			super.addExpression(exp);
+			super.addModel(model);
 	}
 	@SuppressWarnings("unchecked")
 	public void endElement(
@@ -79,7 +76,7 @@ public class DatabaseHandler extends AbstractHandler{
 			database.idProperties = idProperties;
 			database.initItems = initItems;
 
-			setExpression(database);
+			setModel(database);
 			super.endElement(uri, localName, qName);
 		}
 		else if(qName == "property"){

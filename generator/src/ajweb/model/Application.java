@@ -7,34 +7,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import ajweb.Config;
 import ajweb.JarClassLoader;
-import ajweb.data.Condition;
 import ajweb.utils.FileUtils;
 import ajweb.utils.Log;
 import ajweb.utils.Template;
 
-public class Application implements Expression{
+public class Application implements AbstractModel{
 	public String rootElement = "root";//application rootid 属性を参照
 	public String appName = "default";
-	//public String outDir;
-	//String workDir = Config.workDir;
-		//public ArrayList<Widget> widgets
 	
 	public ArrayList<Widget> widgets = new ArrayList<Widget>();
-	//public ArrayList<Database> dbDatum = new ArrayList<Database>();
 	public Databases databases = new Databases();
-
-	public ArrayList<Action> dbActions = new ArrayList<Action>();
 	public Events events;
 	
-	static public ArrayList<String> selecttable = new ArrayList<String>(); 
-	
-	static public HashMap<String, Condition> pollingList = new HashMap<String, Condition>(); 
-	
-	static public Boolean isPolling = false;
-	
-	
-	public Application(String appName){
+	public Application(String appName, Widget widget, Databases databases,Events events){
 		this.appName = appName;
+		this.widgets.add(widget);
+		this.databases = databases;
+		this.events = events;
 	}
 	public void generate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Log.logger.fine("----------------------------Applicaiton generate()---------------------------");
@@ -44,18 +33,16 @@ public class Application implements Expression{
 		databaseGenerate(outDir);
 		servletGenerate(outDir);
 	}
+	 
 	/**
-	 * 作業ディレクトリの作成、フレームワークコードのコピー
-	 * @param temp  作業用ディレクトリの名前
-	 * @param appName　アプリケーションの名前
-	 * @throws IOException 
-	 * @throws UnsupportedEncodingException 
-	 * @throws Exception
+	 * 作業ディレクトリの作成、ライブラリのコピー 
+	 * @param outDir
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
 	 */
 	public void setup(String outDir) throws UnsupportedEncodingException, IOException {
 		//System.out.println(new File(".ajweb/test.txt").createNewFile());
 		FileUtils.mkdir(outDir);
-		//FileUtils.mkdir(temp + fs + appName + "/jslib");
 		FileUtils.mkdir(outDir + "/WEB-INF");
 		FileUtils.mkdir(outDir + "/WEB-INF/classes");
 		FileUtils.mkdir(outDir + "/WEB-INF/src");
@@ -73,9 +60,10 @@ public class Application implements Expression{
 		}
 		else
 			FileUtils.copyDir("lib/servlet",  outDir + "/WEB-INF/lib/","jar");
-		//外部のjavaScriptライブラリは、http経由で読み込み
+
 				
 	}
+
 	public void htmlGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template html_template;
 		html_template = new Template("resources/html");
@@ -108,7 +96,7 @@ public class Application implements Expression{
 		
 		//interfaces generate
 		Widget interfaces = widgets.get(0);
-		interfaces.id = "rootFrame";
+		interfaces.name = "rootFrame";
 		HashMap<String ,String> rootProperties = new HashMap<String, String>();
 		rootProperties.put("id", "rootFrame");
 		rootProperties.put("width", "100%");
@@ -147,15 +135,15 @@ public class Application implements Expression{
 	}
 	
 	public void servletGenerate(String outDir) throws IOException{
-		//--------------servlet generate---------------------------------
+
 		FileUtils.writeFile(outDir +"/WEB-INF/src/ajweb/servlet/AjWebServlet.java", databases.toServletSource(appName), Config.isOverWrite);
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
-		//--------------listener generate---------------------------------
+
 		FileUtils.writeFile(outDir + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", databases.toListenerSource(), Config.isOverWrite);
 		if(Config.isStandardOutput)
 			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
-		/*web_xml generate*/
+		
 		Template web_xml_template = new Template("resources/web.xml");
 		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source, Config.isOverWrite);
 		if(Config.isStandardOutput)
@@ -163,7 +151,7 @@ public class Application implements Expression{
 	}
 	
 	public String toString(){
-		return "Application: " + appName +  "\nwindow: " + widgets + "\ndbDatum: " + databases + 
-		"\ndbActions:" + dbActions + "\nevents" + events;
+		return "[Application: " + appName +  " : " + widgets + " : " + databases + 
+		 " : " + events + "]";
 	}
 }

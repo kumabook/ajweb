@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Param  implements Expression{
+public class Param  implements AbstractModel{
 	public String key;
 	public Parameterable value;
 	
@@ -25,11 +25,6 @@ public class Param  implements Expression{
 		return key;
 	}
 	
-	@Override
-	public String toString() {
-		return key + ":" + value;
-	}
-	
 	static public String paramToJavaSource(ArrayList<Param> params) throws IOException{
 		String json = "{";
 			for(int i = 0; i < params.size(); i++){
@@ -47,4 +42,10 @@ public class Param  implements Expression{
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return key + ":" + value;
+	}
+	
 }

@@ -1,35 +1,30 @@
 package ajweb.parser;
 
 import java.util.ArrayList;
-
 import org.xml.sax.SAXException;
-
 import ajweb.model.Call;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.model.Param;
 import ajweb.model.Parameterable;
-import ajweb.utils.Log;
 
 public class CallHandler extends AbstractHandler{
-	Call call;
 	ArrayList<Param> params = new ArrayList<Param>();
 	Parameterable param;
-		
-	protected void addExpression(Expression exp) throws SAXException {
-		Log.fine("addExpression  action "  + exp  + "  " + this);
-		
-		if(exp instanceof Param){
-			params.add((Param) exp);
+	
+	@Override	
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Param){
+			params.add((Param) model);
 		}
-		else if(exp instanceof Parameterable){
-			param = (Parameterable) exp;
+		else if(model instanceof Parameterable){
+			param = (Parameterable) model;
 		}
 			
 	}
 	
 	public void endElement(
 			String uri, String localName, String qName) throws SAXException{
-		Log.fine("\taction handler end " + qName );
+		Call call;
 		
 		if(qName.equals("call")){
 			if(params.size() != 0)
@@ -44,7 +39,7 @@ public class CallHandler extends AbstractHandler{
 			call.isCallback = true;
 		}
 		
-		setExpression(call);
+		setModel(call);
 		super.endElement(uri, localName, qName);
 	}
 	

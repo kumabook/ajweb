@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AjWeb" default="compile" basedir=".">
+
 		<target name="dist">
-				<subant target="jar" buildpath="generator">
-						<!--						<property name="basedir" value="./generator/"/> -->
-				</subant>
+				<antcall target="dist_generator"/>
+				<antcall target="dist_jslib"/>
+		</target>
+
+		<target name="dist_generator">
+				<subant target="dist" buildpath="generator"/>
+		</target>
+		<target name="dist_jslib">
 				<subant target="dist" buildpath="jslib"/>
 		</target>
 
-		<target name="unittest">
-				<subant target="unittest" buildpath="jslib"> 
-						<!--	<property name="basedir" value="jslib"/> -->
-				</subant>
-				<subant target="unittest" buildpath="generator">
-						<!--		<property name="basedir" value="generator"/> -->
-				</subant>
+		<target name="unittest" >
+				<antcall target="unittest_generator"/>
+				<antcall target="unittest_jslib"/>
 		</target>
-	
-		
+		<target name="unittest_generator">
+				<subant target="unittest" buildpath="generator"/>
+		</target>
+		<target name="unittest_jslib" depends="dist_generator">
+				<subant target="unittest" buildpath="jslib"/>
+		</target>
+
 		<target name="doc">
 				<subant target="doc" buildpath="generator"/>
 				<subant target="doc" buildpath="jslib"/>
 		</target>
 
-
-		<target name="editor" depends="dist">
-				<copy todir="./js/dist/editor" overwrite="true">
-						<fileset dir="./editor"/>
-				</copy>
-		</target>
-
-		<target name="app_test">
-				<!--	  <delete dir=".ajweb"/> --> 
-				<echo message="subant generator/build.xml"/>
-				<subant target="app_test">
-						<property name="basedir" value="./generator/"/>
-						<fileset dir="." includes="generator/build.xml"/>
-				</subant> 
+		<target name="run">
+				<subant target="run" buildpath="generator"/>
 		</target>
 
 </project>

@@ -5,7 +5,7 @@ import org.xml.sax.SAXException;
 import ajweb.model.AbstractCondition;
 import ajweb.model.Action;
 import ajweb.model.Event;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.utils.Log;
 
 public class EventHandler extends AbstractHandler {
@@ -14,13 +14,13 @@ public class EventHandler extends AbstractHandler {
 	AbstractCondition condition;
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof Action){
-			action = (Action)  exp;
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Action){
+			action = (Action)  model;
 			//System.out.println(action);
 		}
-		else if(exp instanceof AbstractCondition){
-			condition = (AbstractCondition) exp;
+		else if(model instanceof AbstractCondition){
+			condition = (AbstractCondition) model;
 		}
 	}
 	
@@ -28,14 +28,8 @@ public class EventHandler extends AbstractHandler {
 		Log.fine("\t\tEvent Handler endElement: " + qName);
 			
 		if(qName.equals("event")){
-			//System.out.println("test  " + widget.children.get(0));
-			event = new Event();
-			event.target = attributes.get("target");
-			event.type = attributes.get("type");
-			event.action = action;
-			event.condition = condition;
-			
-			this.setExpression(event);
+			event = new Event(attributes.get("target"), attributes.get("type"), condition, action);
+			this.setModel(event);
 			super.endElement(uri, localName, qName);
 			
 		}

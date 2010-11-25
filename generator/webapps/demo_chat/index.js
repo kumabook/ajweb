@@ -13,9 +13,9 @@ dojo.require("ajweb.widget.Selectbox");
 dojo.require("ajweb.widget.Passwordbox");
 
 dojo.addOnLoad(
-  function(){
-    ajweb.join("dbservlet");
-    ajweb.log.level = "info";
+    function(){
+      ajweb.join("dbservlet");
+    ajweb.log.level = "all";
 
     //ここから自動生成
     ajweb.addOnLoad(
@@ -53,12 +53,14 @@ dojo.addOnLoad(
 
 
 /*interfacesの記述 */
+
+
+    var rootPanel = new ajweb.widget.Panel({id: "rootPanel", top:"0px", left: "0px",height: "100%", width: "100%"});
+
     var titleLabel = new ajweb.widget.Label({id: "titleLabel", content: "チャットアプリケーション", "left":"30px","top":"30px"});
-    ajweb_container.appendChild(titleLabel.element);
-
-
-
-    var rootFrame = new ajweb.widget.Frame({id: "rootFrame", top:"100px", left: "100px",height: "100%", width: "100%"});
+    rootPanel.addChildWidget(titleLabel);
+    var rootFrame = new ajweb.widget.Frame({id: "rootFrame", top:"100px", left: "100px",height: "90%", width: "90%"});
+    rootPanel.addChildWidget(rootFrame);
 //ログイン画面
     var loginPanel = new ajweb.widget.Panel({id: "loginPanel", height: "100%", width: "100%"});
     var userIdLabel = new ajweb.widget.Label({id: "userIdLabel", content: "ユーザID", left: "30px", top: "30px"});
@@ -80,7 +82,7 @@ dojo.addOnLoad(
     var loginFailDialog = new ajweb.widget.Dialog({id: "loginFailDialog", title: "login failed", width: "300px", height:"100px", content: "ログインに失敗しました"});
 
 //チャットルーム選択画面
-    var roomSelectPanel = new ajweb.widget.Panel({id: "rootPanel", height: "100%", width: "100%"});
+    var roomSelectPanel = new ajweb.widget.Panel({id: "roomSelectPanel", height: "100%", width: "100%"});
     rootFrame.addChildWidget(roomSelectPanel);
 
 
@@ -148,9 +150,10 @@ dojo.addOnLoad(
 /*eventsの記述 */
     //初期画面の設定
     ajweb.addEvent(rootFrame, "onDisplay", true, function(){
-//		     alert("handler");
+		     alert("handler");
 //	rootFrame.selectPanel({child:roomSelectPanel});
 	rootFrame.selectPanel({panel:loginPanel});
+	rootFrame.widget.startup();
     });
 
     //ログイン処理
@@ -251,18 +254,16 @@ dojo.addOnLoad(
     });
     //ここまで自動生成
     /*初期化処理 アプリケーション共通*/
-    ajweb_container.appendChild(rootFrame.element);
+    ajweb_container.appendChild(rootPanel.element);
 
-    rootFrame.display();
+    rootPanel.display();
 
     ajweb.polling("dbservlet");
     dojo.connect(window, "offline", null, function(){
       ajweb.polling("dbservlet");
 	});
-    }
+      }
     );
-
-
 
 });
 

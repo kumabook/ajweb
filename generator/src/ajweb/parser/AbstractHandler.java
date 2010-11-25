@@ -10,13 +10,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.utils.Log;
 
 
 
 public abstract class AbstractHandler extends DefaultHandler {
-		public Expression expression;
+		public AbstractModel model;
 
 		public static String rootElementName = "ajml";
 
@@ -26,7 +26,6 @@ public abstract class AbstractHandler extends DefaultHandler {
         AbstractHandler parent;
         protected Logger mylogger;
 		protected String elementName;
-		public Attributes attrs;
 
 		protected HashMap</*tablename*/String ,HashMap</*servletname*/String,/*actionname*/HashMap<String,/*param*/HashMap<String,String>>>> servletInfo = 
 			new HashMap<String, HashMap<String, HashMap<String,HashMap<String,String>>>>();
@@ -109,7 +108,6 @@ public abstract class AbstractHandler extends DefaultHandler {
         		Attributes attrs,String elementName) throws SAXException {
         	
         	reader = newReader;
-        	this.attrs = attrs;
         	this.attributes = attrsToHash(attrs);
         	
         	this.elementName = elementName;
@@ -129,46 +127,50 @@ public abstract class AbstractHandler extends DefaultHandler {
             AbstractHandler h;
             HandlerFactory fac = (HandlerFactory)handlers.get(HandlerFactory.handleType(qName));
             if (fac == null) {
-                //if (Primitive.isElement(qName)) {
-                    //h = new PrimitiveHandler(qName);
-                //} else {
-                	throw new SAXException("unknown element:" + qName);
-                //}
+            	throw new SAXException("unknown element:" + qName);
             } else {
                 h = fac.create();
             }
             
             h.initialize(reader, this, attrs, qName);
             reader.setContentHandler(h);
-            
-
         }
         
         public void endElement(String uri, String localName, String qName)
             throws SAXException {
-        	if(expression != null){
-        		parent.addExpression(expression);
+        	if(model != null){
+        		parent.addModel(model);
         	}
         	Log.finest("super " + " aName  endElement  " + this + "  parent is " +  parent);
             reader.setContentHandler(parent);
         }
         
-        protected void setExpression(Expression newExpression) {
-            expression = newExpression;
+        /**
+         * expressionこのタグの要素
+         * @param newExpression
+         */
+        protected void setModel(AbstractModel model) {
+            this.model = model;
         }
-        protected void addExpression(Expression exp) throws SAXException {
-        	
-        	
-            throw new SAXException("no enclosing elements: " + exp);
+        /**
+         * サブクラスでオーバライドする。オーバライドされない場合は、不正なエレメントが子要素にきているので例外をスロー
+         * @param exp
+         * @throws SAXException
+         */
+        protected void addModel(AbstractModel model) throws SAXException {
+            throw new SAXException("no enclosing elements: " + model);
         }
-
-                
         
         
         public String toString(){
         	return "AbstractHandler";
         }
-
+        
+        /**
+         * attrsはすべてのhandlerで共有されているので、それぞれのhandlerのインスタンスごとにHashMapをもたせるための変換メソッド
+         * 	@param attrs
+         * @return
+         */
         public static HashMap<String, String> attrsToHash(Attributes attrs){
         	HashMap<String, String> attributes = new HashMap<String, String>();
         	for(int i = 0; i < attrs.getLength(); i++) {

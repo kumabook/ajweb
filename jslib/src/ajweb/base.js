@@ -26,25 +26,52 @@ if(!ajweb){
 		}
 	      )(),
   /** ajweb.widgetパッケージ*/
-  widget: {}
+    widget: {},
+  /** ajweb.editorパッケージ*/
+    editor: {}
   };
+  /** @namespace */
+  ajweb.editor.element = {};
+/** @namespace */
+  ajweb.editor.model = {};
 }
 
 ajweb.databases = [];
 
 ajweb.server_databases = [];
 ajweb.elements = [];
+ajweb.models = [];
 ajweb.addElement = function(element){
   for(var i = 0; i < ajweb.elements; i++){
-    if(ajweb.elements[i] == element.id)
+    if(ajweb.elements[i] == element.id){
+
       throw new Error("this element id is already registerd!");
+    }
+
   }
   ajweb.elements.push(element);
+};
+ajweb.addModel = function(model){
+  for(var i = 0; i < ajweb.models; i++){
+    if(ajweb.models[i] == model.id){
+
+      throw new Error("this model id is already registerd!");
+    }
+
+  }
+  ajweb.models.push(model);
 };
 ajweb.byId = function(id){
   for(var i = 0; i < ajweb.elements.length; i++){
     if(ajweb.elements[i].id == id)
       return ajweb.elements[i];
+    }
+  return null;
+};
+ajweb.getModelById = function(id){
+  for(var i = 0; i < ajweb.models.length; i++){
+    if(ajweb.models[i].id == id)
+      return ajweb.models[i];
     }
   return null;
 };

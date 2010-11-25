@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 import ajweb.data.Sql;
 
-public class Primitive implements Parameterable, Expression{
+public class Primitive implements Parameterable, AbstractModel{
 	public static Set<String> elements;
 	/**
 	 * 値となる要素の定義　

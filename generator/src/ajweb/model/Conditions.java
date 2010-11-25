@@ -2,7 +2,6 @@ package ajweb.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import ajweb.utils.Template;
 
 public class Conditions extends AbstractCondition{
@@ -31,16 +30,6 @@ public class Conditions extends AbstractCondition{
 			conditions_template.apply("OPERATOR", children.get(0).toJsSource(func, key, rest));
 		}
 		return conditions_template.source;
-/*		String jsSource = "ajweb.data.Conditions({op:\"" + operator + "\"";
-		if(operator.equals("and") || operator.equals("or")){
-			jsSource += ", left: " + children.get(0).toJsSource(next) + ", right: " + children.get(1).toJsSource(next);  
-		}
-		else if(operator.equals("not")){
-			jsSource += ", operand: " + children.get(0).toJsSource(next);  
-		}
-		jsSource += "}";
-				
-		return jsSource;*/
 	}
 
 	@Override

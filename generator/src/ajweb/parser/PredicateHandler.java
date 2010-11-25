@@ -7,7 +7,7 @@ import org.xml.sax.SAXException;
 import ajweb.model.AbstractCondition;
 import ajweb.model.Condition;
 import ajweb.model.Conditions;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.model.Parameterable;
 
 public class PredicateHandler extends AbstractHandler {
@@ -15,33 +15,33 @@ public class PredicateHandler extends AbstractHandler {
 	ArrayList<Parameterable> operands = new ArrayList<Parameterable>();
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof AbstractCondition){
-			children.add((AbstractCondition) exp);
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof AbstractCondition){
+			children.add((AbstractCondition) model);
 		}
-		else if(exp instanceof Parameterable){
-			operands.add((Parameterable) exp);
+		else if(model instanceof Parameterable){
+			operands.add((Parameterable) model);
 		}
 		else
-			super.addExpression(exp);
+			super.addModel(model);
 	}
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if(elementName.equals("success")){
 			Condition con = new Condition(elementName, attributes.get("func_id"));
-			setExpression(con);
+			setModel(con);
 		}
 		else if(elementName.equals("and") || elementName.equals("or") || elementName.contains("not")){
 			Conditions con = new Conditions(elementName);
 			for(int i = 0; i < children.size(); i++){
 				con.add(children.get(i));
 			}
-			setExpression(con);
+			setModel(con);
 		}
 		else {
 			Condition con = new Condition(elementName, operands.get(0), operands.get(1));
-			setExpression(con);
+			setModel(con);
 		}
 		super.endElement(uri, localName, qName);
 	}

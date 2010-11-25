@@ -37,7 +37,7 @@ public class Server {
 		
 		File appDir = new File("webapps/");
 		File[] apps = appDir.listFiles();
-		
+
 		for(int i = 0; i < apps.length; i++){//webappディレクトリがあれば、追加
 			if(apps[i].isDirectory() && !apps[i].getName().matches("\\..*|log")){
 				WebAppContext webapp = new WebAppContext();
@@ -49,13 +49,13 @@ public class Server {
 				handlers.addHandler(webapp);
 			}
 			else if(apps[i].getName().matches(".*\\.war")){//warファイルなら追加
-				String appName = apps[i].getName().split(".")[0];
+				String appName = apps[i].getName().split("\\.")[0];
 				WebAppContext webapp = new WebAppContext();
 				System.out.println("app " + appName + "  deploy on test server");
 				webapp.setContextPath("/" + appName);
-//			webapp.setWar(appName+".war");
+			//webapp.setWar(appName+".war");
 				webapp.setWar(apps[i].getPath());
-				webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
+				//webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
 				webapp.setParentLoaderPriority(true);
 				handlers.addHandler(webapp);
 			}

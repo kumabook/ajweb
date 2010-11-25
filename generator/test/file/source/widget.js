@@ -11,11 +11,11 @@
 			var submit = new ajweb.widget.Button({"id":"submit","content":"submit","left":"100px","top":"50px"});
 			chat_room.addChildWidget(submit);
 			var message_list = new ajweb.widget.Table({"id":"message_list","height":"500px","width":"400px","left":"100px","top":"100px"});
-			var th_0 = new ajweb.widget.Th({"field":"user_name","name":"名前"});
+			var th_0 = new ajweb.widget.Th({"field":"user_name","id":"th_0","name":"名前"});
 			message_list.addChildWidget(th_0);
-			var th_1 = new ajweb.widget.Th({"field":"message","name":"メッセージ"});
+			var th_1 = new ajweb.widget.Th({"field":"message","id":"th_1","name":"メッセージ"});
 			message_list.addChildWidget(th_1);
-			var th_2 = new ajweb.widget.Th({"field":"posted","name":"投稿日時"});
+			var th_2 = new ajweb.widget.Th({"field":"posted","id":"th_2","name":"投稿日時"});
 			message_list.addChildWidget(th_2);
 			chat_room.addChildWidget(message_list);
 			rootFrame.addChildWidget(chat_room);

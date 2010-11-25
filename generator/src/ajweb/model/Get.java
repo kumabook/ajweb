@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import ajweb.utils.Template;
 
-public class Get implements Parameterable, Expression{
+public class Get implements Parameterable, AbstractModel{
 
 	public static ArrayList<String> elements = new ArrayList<String>();
 	static {

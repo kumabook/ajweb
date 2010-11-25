@@ -1,7 +1,7 @@
 package ajweb.parser;
 
 import org.xml.sax.SAXException;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 import ajweb.model.Item;
 import ajweb.model.Items;
 
@@ -9,18 +9,18 @@ public class InitHandler extends AbstractHandler{
 	Items initItems = new Items();
 	
 	@Override
-	protected void addExpression(Expression exp) throws SAXException {
-		if(exp instanceof Item){
-			initItems.add((Item) exp);
+	protected void addModel(AbstractModel model) throws SAXException {
+		if(model instanceof Item){
+			initItems.add((Item) model);
 		}
 		else
-			super.addExpression(exp);		
+			super.addModel(model);		
 	}
 	
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		setExpression(initItems);
+		setModel(initItems);
 		super.endElement(uri, localName, qName);
 	}
 }

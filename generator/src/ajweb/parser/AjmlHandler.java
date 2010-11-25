@@ -1,9 +1,11 @@
 package ajweb.parser;
 
+import java.util.HashMap;
+
 import org.xml.sax.SAXException;
 
 import ajweb.model.Application;
-import ajweb.model.Expression;
+import ajweb.model.AbstractModel;
 
 /**
  * ルートハンドラ
@@ -12,15 +14,15 @@ import ajweb.model.Expression;
  */
 public class AjmlHandler extends AbstractHandler{
 	public Application app;
-	protected void addExpression(Expression exp)
+	protected void addModel(AbstractModel model)
 			throws SAXException {
-	 this.app = (Application) exp;
+	 this.app = (Application) model;
 	}
 	
 	
 	public void endElement(String uri, String localName,
 			String qName) throws SAXException {
-	
+		WidgetHandler.widgetList = new HashMap<String, Integer>();
 		return;	
 	}
 }

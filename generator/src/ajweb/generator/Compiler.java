@@ -33,7 +33,13 @@ public class Compiler {
 	static public String ps = Config.ps;
 		
 	
-	
+	/**
+	 * ajmlファイルを読み込んで、Applicationモデルを生成
+	 * @param ajml
+	 * @return
+	 * @throws IOException
+	 * @throws SAXException
+	 */
 	
 	public static Application parse(File ajml) throws IOException, SAXException{
 		
@@ -84,7 +90,6 @@ public class Compiler {
 		
 		Application app = parse(ajml);
 		String outDir = Config.workDir + app.appName;
-//		app.outDir = Config.workDir + app.appName;
 		app.setup(outDir);
 		app.generate(outDir);
 		boolean result = javaCompile(outDir);

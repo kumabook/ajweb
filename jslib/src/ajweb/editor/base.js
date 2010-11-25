@@ -1,54 +1,87 @@
+dojo.require("ajweb.base");
+dojo.require("ajweb.xml");
+dojo.require("dojo.data.ItemFileReadStore");
 dojo.provide("ajweb.editor.base");
 
 ajweb.editor.mousePosition = { left: 0, width: 0 };
-ajweb.editor.editorCpList = [];
 
 var propertyDataStore;
+/**
+ * コンポーネントのリスト
+ */
 ajweb.editor.COMLIST =  [
+  {
+    name:"UI",
+    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'table'},{name:'panel'},{name:'frame'}]
+  },
+  {
+    name: "DB",
+    children: [{name: "server"},{name: "client"},{name: "property"}]
+  },
+  {
+    name: "Function",
+    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "custom"},{name: "local"},{name: "param"}]
+  }
+];
+/**
+ * 各コンポーネントの詳細、
+ * name: コンポーネントの名前、XMLのタグ名。コンポーネントのリストのnameと対応。
+ * modelType: 内部的なモデルオブジェクトのタイプ。ajweb.editor.model.[] に対応。
+ * elementType: 内部的なモデルを表すDOMElementのタイプ。ajweb.editor.element.[]に対応。
+ * propertyList: プロパティエディタに表示する、および、生成するXMLに含めるプロパティのリスト。
+ * defaultProperties: デフォルトのプロパティの値。
+ * eventList: イベントを持つ場合、取り得るイベントのリスト。
+ * acceptComponentType: 子要素に持てるコンポーネントのリスト
+ */
+ajweb.editor._COMLIST =  [
   {
     name:"UI",
     children: [
       {
         name:'label',
-	widget_type: "widget",
 	acceptComponentType: [],
-	propertyList: ["component_type", "id", "content", "top", "left", "height", "width"],
+	defaultProperties: {
+
+	},
+	propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
 	eventList: []
       },
       {
         name:'button',
-	widget_type: "widget",
 	acceptComponentType: [],
-	propertyList: ["component_type", "id", "content", "top", "left", "height", "width"],
+	propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
 	eventList: ["onClick"]
       },
       {
         name:'textbox',
-	widget_type: "widget",
 	acceptComponentType: [],
-	propertyList: ["component_type","id", "content", "top", "left", "height", "width","palceHolder", "candidate_list"],
+	propertyList: ["tagName","id", "content", "top", "left", "height", "width","palceHolder", "candidate_list"],
 	eventList: ["onFocus", "onBlur"]
       },
 
       {
         name:'table',
-	widget_type: "widget",
 	acceptComponentType: [],
-	propertyList: ["component_type", "id", "top", "left", "height", "width", "data"],
+	propertyList: ["tagName", "id", "top", "left", "height", "width", "data"],
 	eventList: ["onClick", "onDbClick", "onCellEdit"]
       },
       {
         name:'panel',
-	widget_type: "container",
+	modelType: "widget",
+	elementType: "panel",
 	acceptComponentType: ["widget"],
-	propertyList: ["component_type","id", "content", "top", "left", "height", "width"],
-	eventList: ["onLoad"]
+	propertyList: ["tagName", "id", "content",  "height", "width"],
+	eventList: ["onLoad"],
+	defaultProperties: {
+	  tagName: "panel",
+	  width: "500px",
+	  height: "500px"
+	  }
       },
       {
         name:'frame',
-	widget_type: "container",
 	acceptComponentType: ["widget"],
-	propertyList: ["component_type", "id", "content", "top", "left", "height", "width"],
+	propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
 	eventList: ["onLoad"]
       }
     ]
@@ -58,22 +91,31 @@ ajweb.editor.COMLIST =  [
     children: [
       {
 	name: "server",
-	widget_type: "database",
-	acceptComponentType: ["dbproperty"],
-	propertyList: ["component_type", "name", "type"],
-	eventList: ["onChange", "onInsert", "onDelete", "onUpdate"]
+	modelType: "database",
+	elementType: "database",
+	acceptComponentType: ["property"],
+	propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver"],
+	eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
+	defaultProperties: {
+	  tagName: "database",
+	  type: "server",
+	  dbName: "jdbc:derby:work/appName",
+	  dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
+	  }
       },
       {
 	name: "client",
-	widget_type: "database",
-	acceptComponentType: ["dbproperty"],
+	acceptComponentType: ["property"],
 	propertyList: ["component_type", "name", "type"],
 	eventList: ["onChange", "onInsert", "onDelete", "onUpdate"]
       },
       {
 	name: "property",
-	widget_type: "dbproperty",
-	acceptComponentType: []
+	modelType: "property",
+	elementType: "property",
+	acceptComponentType: [],
+	propertyList: ["tagName", "name", "type"],
+	defaultProperties: {name:"propertyName", type: "int"}
       }
     ]
   },
@@ -113,7 +155,21 @@ ajweb.editor.COMLIST =  [
     ]
   }
 ];
-ajweb.editor._COMLIST = ajweb.editor.COMLIST;
+
+/**
+ * ajwebでサポートされる型を保持するdojoストア
+ */
+ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
+	{
+	  data:{
+	    identifier: "name",
+	    label: "name",
+	    items: [
+	      { name: "int" }, { name: "string" },{ name: "date" },{name: "datetime"}
+	    ]
+	  }
+	});
+
 //マウスの位置を取得するため
 ajweb.editor.getX = function(container) {
   var x = 0;
@@ -136,31 +192,21 @@ ajweb.editor.currentWidget = null;
 dojo.addOnLoad(
   function(){
     dojo.connect(document, "mouseup", function(e){
-		   var container = dojo.byId("layoutContainer");
-		   ajweb.editor.mousePosition.left = (e.clientX - ajweb.editor.getX(container)) + "px";
-		   ajweb.editor.mousePosition.top = (e.clientY - ajweb.editor.getY(container)) + "px";
-		   ajweb.editor.mousePosition.x = e.clientX;
-		   ajweb.editor.mousePosition.y = e.clientY;
-		 });
+      var container = dojo.byId("centerTc");
+      ajweb.editor.mousePosition.left = (e.clientX - ajweb.editor.getX(container)) + "px";
+      ajweb.editor.mousePosition.top = (e.clientY - ajweb.editor.getY(container)) + "px";
+      ajweb.editor.mousePosition.x = e.clientX;
+      ajweb.editor.mousePosition.y = e.clientY;
+      });
   }
 );
 var ajwebEditor = {};
 
-ajweb.editor.getComponentType = function(widgetName){
-  for(var i = 0; i < ajweb.editor.COMLIST.length; i++){
-    for(var j = 0; j < ajweb.editor.COMLIST[i].children.length; j++){
-      if(widgetName == ajweb.editor.COMLIST[i].children[j].name){
-	return  ajweb.editor.COMLIST[i].children[j].widget_type[0];
-      }
-    }
-  }
-  return null;
-};
+
 ajweb.editor.getComponent = function(widgetName){
   for(var i = 0; i < ajweb.editor.COMLIST.length; i++){
     for(var j = 0; j < ajweb.editor.COMLIST[i].children.length; j++){
       if(widgetName == ajweb.editor.COMLIST[i].children[j].name){
-
 	return  ajweb.editor._COMLIST[i].children[j];
       }
     }
@@ -176,167 +222,86 @@ ajweb.editor.widgetCount = 0;
 ajweb.editor.dbCount = 0;
 ajweb.editor.propCount = 0;
 ajweb.editor.actionCount = 0;
-
-ajweb.editor.createModel = function(component, containerDom, that){
-  var top =  ajweb.editor.mousePosition.y - ajweb.editor.getY(containerDom);
-  var left =  ajweb.editor.mousePosition.x - ajweb.editor.getX(containerDom);
-//  var defaultPropertyList = ["id", "type", "content", "top", "left", "height", "width"];
-
-  if(component.widget_type == "container")
-    return new ajweb.editor.Model(
-      {
-	component_type: component.name,
-	id: "container" + ajweb.editor.containerCount++,
-	content: component.name,
-	width: "100px",
-	height: "100px",
-	top:  top,
-	left : left,
-	tagName: component.name,
-	resizable: true,
-	propertyList: component.propertyList,
-	acceptComponentType: ["widget"],
-	eventList: component.eventList,
-	parentDom: containerDom
-      });
-  else if(component.widget_type == "widget")
-  return new ajweb.editor.Model(
-    {
-      component_type: component.name,
-      id: "widget" + ajweb.editor.widgetCount++,
-      content: component.name,
-      top:  top,
-      left : left,
-      width: 50,
-      height: 20,
-      tagName: component.name,
-      propertyList: component.propertyList,
-      eventList: component.eventList,
-      acceptComponentType: [],
-      parentDom: containerDom
-    });
-  else if(component.widget_type ==  "database")
-  return new ajweb.editor.DBModel(
-    {
-      component_type: "DB("+component.name + ")",
-      id: "model" + ajweb.editor.DBCount++,
-      content: component.widget_type,
-      width: "160px",
-      height: "50px",
-      top: top,
-      left : left,
-      name: "tablename" + ajweb.editor.dbCount++,
-      tagName: component.name,
-      type: component.name,
-      propertyList: component.propertyList,
-      eventList: component.eventList,
-      acceptComponentType: ["dbproperty"],
-      parentDom: containerDom
-    });
-  else if(component.widget_type == "dbproperty"){
-    var parentHeight = (parseInt(that.element.style.height) + 25) + "px";
-    that.element.style.height = parentHeight;
-    that.properties.height = parentHeight;
-    return new ajweb.editor.DBPropertyModel(
-      {
-	component_type: component.name,
-	id: "prop" + ajweb.editor.propCount++,
-	content: component.widget_type,
-	width: containerDom.style.width,
-	height: "30px",
-	top:  (35 + that.children.length * 25) + "px",
-	left : "0px",
-	movable: false,
-	nodisplayProperty: true,
-	tagName: "property",
-	propertyList: component.propertyList,
-	acceptComponentType: [],
-	parentDom: containerDom
-      });
+ajweb.editor.modelCounter = {};
+ajweb.editor.modelCount = function(tagName){
+  if(ajweb.editor.modelCount[tagName] == undefined){
+    ajweb.editor.modelCount[tagName] = 0;
   }
-  else if(component.widget_type == "action"){
-    return new ajweb.editor.ActionModel(
-      {
-	id: "action" + ajweb.editor.actionCount++,
-	width: "200px",
-	height: "60px",
-	top: top,
-	left : left,
-	name: component.name + ajweb.editor.actionCount++,
-	tagName: component.name,
-	type: component.name,
-	propertyList: component.propertyList,
-	nodisplayProperty: true,
-	eventList: component.eventList,
-	acceptComponentType: ["param"],
-	parentDom: containerDom
-      });
-
-  }
-  else if(component.widget_type == "param"){
-    var parentHeight = (parseInt(that.element.style.height) + 25) + "px";
-    that.element.style.height = parentHeight;
-    that.properties.height = parentHeight;
-    return new ajweb.editor.FuncParamModel(
-      {
-	component_type: component.name,
-	id: "prop" + ajweb.editor.propCount++,
-	content: component.widget_type,
-	width: containerDom.style.width,
-	height: "30px",
-	top:  (50 + that.children.length * 25) + "px",
-	left : "0px",
-	movable: false,
-	nodisplayProperty: true,
-	tagName: "property",
-	propertyList: component.propertyList,
-	acceptComponentType: [],
-	parentDom: containerDom
-      });
-  }
-  else
-    return null;
-
+  return ajweb.editor.modelCount[tagName]++;
 };
-
-
 
 ajweb.editor.uicount = 0;
 ajweb.editor.dbcount = 0;
+/**
+ * モデル名からモデルの情報を参照してモデルオブジェクトを作成する。
+ * @param {String} name モデル名
+ * @param {ajweb.editor.model.Model} parent 親ウィジェット
+ * @param {ajweb.editor.element.ModelElement|dijit.layout.TabContainer} 配置するDOM要素を保持するオブジェクト
+ * @param {dojo.data.ItemFileReadStore} 表示するプロパティを保持するdojoストア
+ * @param {dijit.layout.TabContainer} イベントリストを保持するcenterTc
+ */
+ajweb.editor.createModel = function(name, parent, container, propertyDataStore, eventTc){
+  var component = ajweb.editor.getComponent(name);
+  var elementType = component.elementType;
+  var model = component.modelType;
 
-ajweb.editor.createEditorCp = function(type,treeModel,name){
-      var editorCp;
-      if(type == "UIModel"){
-	if(!name)
-	  name = type + ajweb.editor.uicount++;
-	editorCp =  new ajweb.editor.EditorCp(
-	  {
-	    id: name,
-	    title: name,
-	    acceptComponentType: ["widget", "container"],
-	    tagName: "interfaces",
-	    propertyList: [],
-	    properties: {}
-	  }
-	);
-      }
-      else if(type == "DBModel"){
-	if(!name)
-	  name = type + ajweb.editor.dbcount++;
-	editorCp =  new ajweb.editor.EditorCp(
-	  {
-	    id: name,
-	    title: name,
-	    acceptComponentType: ["database"],
-	    tagName: "databases",
-	    propertyList: [],
-	    properties: {}
-	  }
-	);
-      }
-  ajweb.editor.modelEditor.layoutContainer.addChild(editorCp.widget);
-  ajweb.editor.editorCpList.push(editorCp);
-  editorCp.startup();
-  treeModel.newItem({name: editorCp.id, model_type: type});
-  return editorCp;
+  var Model = model.substr(0,1).toLocaleUpperCase() + model.substr(1);
+  var top =  ajweb.editor.mousePosition.y - ajweb.editor.getY(container.domNode);
+  var left =  ajweb.editor.mousePosition.x - ajweb.editor.getX(container.domNode);
+  var id = name + ajweb.editor.modelCount(name);
+  var properties = dojo.clone(component.defaultProperties);
+  properties.top = top;
+  properties.left = left;
+  properties.id = id;
+
+  return new ajweb.editor.model[Model](
+    {
+      id: id,
+      tagName: name,
+      elementType: elementType,
+      properties: properties,
+      propertyList: component.propertyList,
+      propertyDataStore: propertyDataStore,
+      eventList: component.eventList,
+      eventTc: eventTc,
+      acceptComponentType: component.acceptComponentType,
+      parent: parent,
+      container: container
+    }
+  );
 };
+
+ajweb.editor.generate = function(output_type){
+  alert(output_type);
+  var xml_str = '<?xml version="1.0" encoding="UTF-8"?>'
+	      + '<ajml>'
+
+	      + '</ajml>';
+
+  var xml = dojox.xml.parser.parse(xml_str);
+  var rootElement = xml.documentElement;
+  var applicationElement = xml.createElement("application");
+  rootElement.appendChild(applicationElement);
+
+  for(var i = 0; i < ajweb.editor.editorCpList.length; i++){
+    var model = ajweb.editor.editorCpList[i];
+    var element = model.getXMLElement(xml);
+
+    applicationElement.appendChild(element);
+    //alert(ajweb.editor.editorCpList[i].id);
+  }
+
+  var content = ajweb.xml.serialize(xml);
+
+  ajweb.editor.modelEditor.ajmlFilename.setValue("hello");
+  ajweb.editor.modelEditor.ajmlTextArea.setValue(content);
+  ajweb.editor.modelEditor.outputType.setValue(output_type);
+
+
+  ajweb.editor.form.submit();
+//  ajweb.editor.form.execute();
+
+};
+
+
+

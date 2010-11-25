@@ -136,11 +136,11 @@
     </target>
 
 	<target name="standalone_test" description="Runs tests on the local machine">
-			<echo message="${basedir}"/>
+			<echo message="${jslib_basedir}"/>
 			<junit showoutput="true" haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <classpath refid="classpath"/>
-			<sysproperty key="ajweb.jslib.basedir" value="${basedir}"/>
+			<sysproperty key="ajweb.jslib.basedir" value="${jslib_basedir}"/>
             <sysproperty key="java.util.logging.config.file" value="${loggingPropertiesFile}"/>
             <sysproperty key="browserFileNames" value="${browserFileNames}"/>
             <sysproperty key="description" value="${description}"/>

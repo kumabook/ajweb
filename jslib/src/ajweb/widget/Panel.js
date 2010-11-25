@@ -41,8 +41,7 @@ dojo.declare("ajweb.widget.Panel",
 		       width: this.width,
 		       height: this.height,
 		       backgroundColor: this.color
-		     },
-		     onLoad :function(){ ajweb.log.trace("panel " + this.id + "  onload");}
+		     }
      });
      this.element = this.widget.domNode;
    },

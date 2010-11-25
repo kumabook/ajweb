@@ -2,10 +2,9 @@ package ajweb.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import ajweb.utils.Template;
 
-public class Call implements Expression, Flowable{
+public class Call implements AbstractModel, Flowable{
 	public String func;
 	public String element;
 	public ArrayList<Param> params;
@@ -37,18 +36,14 @@ public class Call implements Expression, Flowable{
 		this.element = element;
 		this.func = func;
 	}
-	
-	public String getParamJSON(Flowable func, String key, Action rest) throws IOException{
-		String json = "{";
-		for(int i = 0; i < params.size(); i++){
-			json += params.get(i).key + ":" + "\""+ params.get(i).value.toJsSource(func, key, rest) + "\"";
-			if(i != params.size()-1)
-				json += ",";
-			else
-				json+= "}";
-		}
-		return json;
-	};
+	/**
+	 * ˆø”‚ðjsonŒ`Ž®‚Ì•¶Žš—ñ‚É•ÏŠ·
+	 * @param func
+	 * @param key
+	 * @param rest
+	 * @return
+	 * @throws IOException
+	 */
 	public String paramToJsSource(Flowable func, String key, Action rest) throws IOException{
 		String json = "{";
 		for(int i = 0; i < params.size(); i++){
@@ -60,6 +55,7 @@ public class Call implements Expression, Flowable{
 		return json;
 	};
 	
+	@Override
 	public String toJsSource(Flowable function, String key, Action rest) throws IOException{
 				//ajweb.utils.JSON.toString(params));
 		
@@ -76,8 +72,6 @@ public class Call implements Expression, Flowable{
 			call_template.apply("REST", rest.toJsSource(null, null, null));
 			return call_template.source;
 		}
-		
-		
 		
 		Template call_template = new Template("js/call");						
 		if(params!=null){
@@ -108,13 +102,13 @@ public class Call implements Expression, Flowable{
 	}
 
 	@Override
+	public boolean containCallback() {
+		return isCallback;
+	}
+	
+	@Override
 	public String toString() {
 	
 		return element + "." + func + "(" + params + ")";
-	}
-	@Override
-	public boolean isCallback() {
-		
-		return isCallback;
 	}
 }
