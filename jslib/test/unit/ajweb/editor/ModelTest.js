@@ -1,16 +1,30 @@
+dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("ajweb.editor.base");
 dojo.require("ajweb.editor.model.Model");
 dojo.require("ajweb.editor.model.Eventable");
-dojo.require("ajweb.editor.ModelEditor");
-function testToXMLElement(){
-//  ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ajmlEditor", "menu");
-  ajweb.editor.modelEditor.centerTc = new dijit.layout.TabContainer(
-    {
-      "id" : "centerTc",
-      "region": "center"
-    }, "centerTc"
-  );
+
+  var propertyDataStore = new dojo.data.ItemFileWriteStore(
+	{
+	  identifier: "id",
+	  data: {  items: [] }
+	}
+      );
+
+  var centerTc = new dijit.layout.TabContainer(
+      {
+	id : "centerTc",
+	region: "center"
+      }
+    );
+
+  var eventTc = new dijit.layout.TabContainer(
+      {
+	id: "eventTc",
+	tabPosition: "left-h",
+	title: "event"
+      }
+    );
 
   var application = new ajweb.editor.model.Model(
 		      {
@@ -27,6 +41,7 @@ function testToXMLElement(){
 		   propertyList: [],
 		   parent : application
 		 });
+
   var databases  = new ajweb.editor.model.Eventable(
 	      {
 		id: "databases",
@@ -36,24 +51,34 @@ function testToXMLElement(){
 		    tagName :"databases"
 		  },
 		propertyList: ["tagName"],
+		propertyDataStore: propertyDataStore,
 		eventList: [],
+		eventTc: eventTc,
 		elementType: "databases",
-		container: ajweb.editor.modelEditor.centerTc,
+		container: centerTc,
 		parent: application,
 		acceptComponentType: ["database"]
 	      }
-	    );
+  );
 
-
+function testToXMLElement(){
+  var doc = ajweb.xml.createDocument("ajml");
+  doc.documentElement.appendChild(application.toXMLElement());
+  assertEquals("ajml", doc.documentElement.tagName);
+  assertEquals("application", doc.documentElement.childNodes[0].tagName);
+  assertEquals("demo", doc.documentElement.childNodes[0].getAttribute("appName"));
+  assertEquals("events", doc.documentElement.childNodes[0].childNodes[0].tagName);
+  assertEquals("databases", doc.documentElement.childNodes[0].childNodes[1].tagName);
+  //alert(ajweb.xml.serialize(doc));
 }
 
 
-function testToXML(){
-
+function testToSaveXMLElement(){
+  
 }
 
 
 function testParse(){
-
+  
 }
 

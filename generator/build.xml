@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="generator" default="dist" basedir=".">
+	<target name="all" depends="clean, unittest, dist"/>
 	<target name="clean">
 			<delete dir="doc"/>
 			<delete dir="classes"/>

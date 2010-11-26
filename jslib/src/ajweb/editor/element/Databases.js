@@ -1,7 +1,8 @@
 dojo.require("ajweb.editor.element.Element");
+dojo.require("ajweb.editor.element.DndEnable");
 
 dojo.provide("ajweb.editor.element.Databases");
-dojo.declare("ajweb.editor.element.Databases", ajweb.editor.element.Element,
+dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajweb.editor.element.DndEnable],
   /** @lends ajweb.editor.element.Databases.prototype */
   {
     /**
@@ -28,13 +29,8 @@ dojo.declare("ajweb.editor.element.Databases", ajweb.editor.element.Element,
 	  id : this.id,
 	  title: "データモデル",
 	  closable: true,
+	  doLayout: false,
 	  style:{
-	    position: "absolute",
-	    width: properties.width,
-	    height: properties.height,
-	    top: properties.top,
-	    left: properties.left,
-//	    backgroundColor: "#E1EBFB",
 	    border: "solid 1px #769DC0"
 	  }
 	});
@@ -43,12 +39,11 @@ dojo.declare("ajweb.editor.element.Databases", ajweb.editor.element.Element,
     updateDom: function(properties){
 
     },
+    createDndDomNode: function(){
+      return this.domNode;
+    },
     startup: function(){
-
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updateEventView);
-      this.dndEnable();
-//      this.model.updatePropertiesView();
+      this.inherited("startup",arguments);
     }
   }
 );

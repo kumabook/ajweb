@@ -73,15 +73,14 @@ dojo.declare("ajweb.editor.model.Model", null,
       for(var i = 0; i < this.parent.children.length; i++){
 	if(this.parent.children[i] == this)
 	  this.parent.children.splice(i,1);
-
       }
-
     },
     /**
     * XMLに変換してXMLElementを返す
     * @param {XMLDocument} ウィジェットタイプ
     */
-    toXMLElement: function(xml){
+    toXMLElement: function(){
+      var xml = ajweb.xml._xml;//createDocument("ajml");
       var node =  xml.createElement(this.tagName);
       for(var i = 0; i < this.propertyList.length; i++){
 	node.setAttribute(this.propertyList[i], this.properties[this.propertyList[i]]);

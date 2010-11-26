@@ -40,7 +40,7 @@ public class WidgetHandler extends AbstractHandler {
 
 		}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked"})
 	public void endElement(String uri, String localName, String qName) throws SAXException{
 
 		widget.name = (String) attributes.get("id");

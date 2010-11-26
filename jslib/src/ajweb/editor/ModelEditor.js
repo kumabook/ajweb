@@ -337,6 +337,7 @@ dojo.declare(
 	  data: {  items: []}
 	}
       );
+      var propertyDataStore = this.propertyDataStore;
       this.propertyDataGrid = new dojox.grid.DataGrid(
 	{
 	  store: this.propertyDataStore,
@@ -348,16 +349,15 @@ dojo.declare(
 	      for(var i = 0; i < this.structure.cells.length; i++){
 		item[this.structure.cells[i].field] = _item[this.structure.cells[i].field][0];
 	      }
-	      ajweb.editor.currentModel.properties[item.property] = item.value;
+	      propertyDataStore.currentModel.properties[item.property] = item.value;
 
 	      console.log("inValue:" + inValue + "   inRowIndex" + inRowIndex +
 			  "   inFiledIndex :" + inFieldIndex);
-	      ajweb.editor.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
+	       propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
 	    }
 	}, dojo.doc.createElement('div'));
 
       this.propertyDataGrid.placeAt(this.propertyCp.domNode);
-      //dojo.byId('gridContainer4').appendChild(myDataGrid.domNode);
       this.propertyDataGrid.startup();
 
       /**
@@ -474,6 +474,7 @@ dojo.declare(
       this.ajmlTextArea.placeAt(this.generateForm.domNode);
       this.outerBc.domNode.appendChild(this.generateForm.domNode);
       this.generateForm.domNode.style.visibility = "hidden";
+
       ajweb.editor.form = this.generateForm;
       ajweb.editor.modelEditor = this;
       ajweb.editor.application = new ajweb.editor.model.Model(
@@ -499,6 +500,7 @@ dojo.declare(
 				propertyList: [],
 				parent : ajweb.editor.application
 			      });
+
       ajweb.editor.databases = new ajweb.editor.model.Eventable(
 	      {
 		id: "databases",
@@ -517,6 +519,8 @@ dojo.declare(
 		acceptComponentType: ["database"]
 	      }
 	    );
+      ajweb.editor.databases.startup();
+
       var rootPanel = ajweb.editor.createModel("panel", ajweb.editor.interfaces, this.centerTc, this.propertyDataStore, this.eventTc);
       ajweb.editor.modelEditor.projectStore.newItem({name: "データモデル", modelType: "databases", modelId: ajweb.editor.databases.id});
       var UIModel = ajweb.editor.modelEditor.projectStore.newItem({name: "UIモデル", modelType: "interfaces", modelId: ajweb.editor.interfaces.id});
@@ -524,6 +528,7 @@ dojo.declare(
 //      ajweb.editor.modelEditor.projectStore.newItem({name: "test"});
 
     }
+
   }
 );
 

@@ -1,18 +1,27 @@
-dojo.require("dijit.Dialog");
-dojo.require("dijit.form.Form");
-dojo.require("dijit.form.TextBox");
-
 dojo.require("ajweb.editor.element.Element");
+dojo.require("ajweb.editor.element.DndEnable");
+dojo.require("ajweb.editor.element.Movable");
+dojo.require("ajweb.editor.element.Removable");
+
 
 dojo.provide("ajweb.editor.element.Database");
-dojo.declare("ajweb.editor.element.Database", ajweb.editor.element.Element,
+dojo.declare("ajweb.editor.element.Database", 
+	     [ajweb.editor.element.Element, 
+	      ajweb.editor.element.DndEnable,
+	      ajweb.editor.element.Movable, 
+	      ajweb.editor.element.Removable],
   /** @lends ajweb.editor.element.Database.prototype */
   {
     /**
      * Constructor
      * @class モデルを表すDOMノードを管理するオブジェクト
      * @constructs
-
+     * @borrows ajweb.editor.element.Element#id this.id
+     * @borrows ajweb.editor.element.Element#model this.model
+     * @borrows ajweb.editor.element.Element#title this.title
+     * @borrows ajweb.editor.element.Element#acceptComponentType this.acceptComponentType
+     * @borrows ajweb.editor.element.Element#container this.container
+     * @borrows ajweb.editor.element.Element#domNode this.domNode
      * @param {String} opt.id ウィジェットID
      * @param {String} opt.tagName XMLのタグ名
      * @param {boolean} opt.resizable サイズが変更可能か
@@ -26,13 +35,14 @@ dojo.declare("ajweb.editor.element.Database", ajweb.editor.element.Element,
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
+
       properties.tablename = this.id;
       this.widget = new dijit.layout.ContentPane(
 	{
 	  id : this.id,
 	  style:{
 	    position: "absolute",
-	    width: "170px",
+	    width: "220px",
 	    height: "40px",
 	    top: properties.top,
 	    left: properties.left,
@@ -44,9 +54,7 @@ dojo.declare("ajweb.editor.element.Database", ajweb.editor.element.Element,
       this.tablename.className = "dijitDialogTitleBar";
       this.tablename.innerHTML  = properties.tablename;
       this.widget.domNode.appendChild(this.tablename);
-      this.deleteArea = document.createElement("div");
-      this.deleteArea.className = "dijitDialogCloseIcon";
-      this.widget.domNode.appendChild(this.deleteArea);
+
       return this.widget.domNode;
     },
     updateDom: function(properties){
@@ -58,13 +66,19 @@ dojo.declare("ajweb.editor.element.Database", ajweb.editor.element.Element,
 	});
       this.tablename.innerHTML  = properties.tablename;
     },
+    removeDom: function(){
+      this.widget.destroy();
+    },
+    createMoveTriggerDomNode: function(){
+      return this.tablename;
+    },
+    createDndDomNode: function(){
+      return this.domNode;
+    },
     startup: function(){
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updateEventView);
-      dojo.connect(this.deleteArea, "onclick", this.model, this.model.remove());
-      this.dndEnable();
-      this.enableDragMove();
+      this.inherited(arguments);
       this.widget.startup();
+
     }
   }
 );

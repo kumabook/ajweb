@@ -1,7 +1,14 @@
 dojo.require("ajweb.editor.element.Element");
+dojo.require("ajweb.editor.element.DndEnable");
+dojo.require("ajweb.editor.element.Resizable");
+dojo.require("ajweb.editor.element.Movable");
 
 dojo.provide("ajweb.editor.element.Panel");
-dojo.declare("ajweb.editor.element.Panel", ajweb.editor.element.Element,
+dojo.declare("ajweb.editor.element.Panel", 
+	     [ajweb.editor.element.Element, 
+	      ajweb.editor.element.DndEnable, 
+	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Resizable],
   /** @lends ajweb.editor.element.Panel.prototype */
   {
     /**
@@ -39,8 +46,8 @@ dojo.declare("ajweb.editor.element.Panel", ajweb.editor.element.Element,
 	    position: "absolute",
 	    width: properties.width,
 	    height: properties.height,
-	    top: "100px",
-	    left: "100px",
+	    top: "50px",
+	    left: "50px",
 	    backgroundColor: "#E1EBFB",
 	    border: "solid 1px #769DC0"
 	  }
@@ -50,16 +57,20 @@ dojo.declare("ajweb.editor.element.Panel", ajweb.editor.element.Element,
     },
     updateDom: function(properties){
       this.domNode.style.width = this.model.properties.width;
-      this.domNode.style.height = this.model.properties.width;
+      this.domNode.style.height = this.model.properties.height;
+    },
+    createDndDomNode: function(){
+      return this.domNode;
+    },
+    createMoveContainerDomNode: function(){
+      return this.widget.domNode;
     },
     startup: function(){
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updateEventView);
-      this.dndEnable();
-      this.container = this.widget;
-      this.enableDragMove();
-      this.enableDragResize();
+//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
+//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updateEventView);
+      this.inherited(arguments);
       this.widget.startup();
+      this.panel.startup();
       this.updateDom();
     }
   }

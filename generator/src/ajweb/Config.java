@@ -5,8 +5,8 @@ import ajweb.utils.FileUtils;
 public class Config {
 	public static String fs = FileUtils.fs;
 	public static String ps = System.getProperty("path.separator");
-	public static String workDir = "temp/";
-	public static String derbyDir = "temp/derby";
+	public static String workDir = "work/";
+	public static String derbyDir = "work/derby";
 	public static String libDir = "lib" + fs;
 	public static String templateFolder = "resources" + fs + "template" + fs;
 	public static String logDir = "logs" + fs;

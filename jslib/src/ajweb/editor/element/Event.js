@@ -1,7 +1,10 @@
 dojo.require("ajweb.editor.element.Element");
+dojo.require("ajweb.editor.element.DndEnable");
 
 dojo.provide("ajweb.editor.element.Event");
-dojo.declare("ajweb.editor.element.Event", ajweb.editor.element.Element,
+dojo.declare("ajweb.editor.element.Event", [
+	       ajweb.editor.element.Element,
+	       ajweb.editor.element.DndEnable],
   /** @lends ajweb.editor.element.Event.prototype */
   {
     /**
@@ -23,7 +26,6 @@ dojo.declare("ajweb.editor.element.Event", ajweb.editor.element.Element,
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
     createDom: function(properties){
-
        this.widget =   new dijit.layout.ContentPane(
 	{
 	  id : this.id,
@@ -36,21 +38,13 @@ dojo.declare("ajweb.editor.element.Event", ajweb.editor.element.Element,
 	    left: "0px"
 	  }
 	});
-/*
-      this.deleteArea = document.createElement("div");
-      this.deleteArea.className = "dijitDialogCloseIcon";
-      this.widget.domNode.appendChild(this.deleteArea);*/
       return this.widget.domNode;
     },
     updateDom: function(properties){
 
     },
     startup: function(){
-//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.eventViewUpdate);
-      this.dndEnable();
-      this.updateDom();
-//      this.model.updatePropertiesView();
+      this.inherited(arguments);
     }
   }
 );

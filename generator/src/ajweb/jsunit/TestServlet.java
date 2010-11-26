@@ -41,7 +41,6 @@ public class TestServlet extends AbstractServlet {
 		String tablename = req.getParameter("table");
 		String param_json = req.getParameter("param");
 
-		@SuppressWarnings("rawtypes")
 		HashMap param = (HashMap) JSON.parse(param_json);
 		ArrayList<HashMap<String, String>> result;		
 		PrintWriter out = resp.getWriter();

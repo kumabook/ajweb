@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AjWeb System javaScript Framework" default="dist" basedir=".">
-
+	<!--	<property name="unitTestSuiteURL" value="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/> -->
+	<property name="testLogDir" value="test/logs"/>
+	<property name="unitTestPort" value="8080"/>
+	<property name="jsUnitPort" value="8000"/>
+	<property name="unitTestSuiteURL" value="http://localhost:${unitTestPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${unitTestPort}/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/>
+	<property name="jsUnitURL" value="http://localhost:${jsUnitPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${jsUnitPort}/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/>
 	<condition property="os" value="win">
 		<os family="windows"/>
 	</condition>
@@ -89,39 +94,17 @@
 					<property name="jslib_basedir" value="${basedir}"/>
 					<property name="basedir" value="${basedir}"/>
 					<property name="browserFileNames" value="${browserFileNames}"/>
-					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns"
-							value="true"
-							/>
-					<property id="description" name="description"
-							value="ajweb javaScript framework test"
-							/>
-					<property id="ignoreUnresponsiveRemoteMachines"	name="ignoreUnresponsiveRemoteMachines"
-							value=""
-							/>
-					<property id="logsDirectory" name="logsDirectory"
-							value=""
-							/>
-					<property id="port" name="port"
-							value="8080"
-							/>
-					<property id="remoteMachineURLs" name="remoteMachineURLs"
-							value="http://localhost:8080"
-							/>
-					<property id="resourceBase" name="resourceBase"
-							value="${basedir}"
-							/>
-
+					<property id="closeBrowsersAfterTestRuns" name="closeBrowsersAfterTestRuns" value="false"/>
+					<property id="description" name="description" value="ajweb javaScript framework test"/>
+					<property id="logsDirectory" name="logsDirectory" value="${testLogDir}"/>
+					<property id="port" name="port" value="${unitTestPort}"/>
+					<property id="resourceBase" name="resourceBase" value="${basedir}"/>
 					<property id="timeoutSeconds" name="timeoutSeconds" value=""/>
-					<property id="url" name="url"
-							value="http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html"
-							description="ajweb test suite"
-							/>
+					<property id="url" name="url" value="${unitTestSuiteURL}"/>
 					<property name="bin" location="test/jsunit/java/bin"/>
 					<property name="lib" location="test/jsunit/java/lib"/>
 					<property name="loggingPropertiesFile" location="logging.properties"/>
-					<filelist dir=".">
-							<file name="test/jsunit/build.xml"/>
-					</filelist>
+					<filelist dir="."><file name="test/jsunit/build.xml"/></filelist>
 			</subant>
 	</target>
 
@@ -129,14 +112,10 @@
 	<target name="start_jsunit_server" >
 			<subant target="start_server">
 					<property name="jslib_basedir" value="${basedir}"/>
-					<property id="description" name="description"
-							value="ajweb javaScript framework test"/>
-					<property id="port" name="port"	value="8000"/>
-					<property id="resourceBase" name="resourceBase"
-							value="../../"/>
-					<filelist dir=".">
-							<file name="test/jsunit/build.xml"/>
-					</filelist>
+					<property id="description" name="description" value="ajweb javaScript framework test"/>
+					<property id="port" name="port"	value="${jsUnitPort}"/>
+					<property id="resourceBase" name="resourceBase" value="../../"/>
+					<filelist dir="."><file name="test/jsunit/build.xml"/></filelist>
 			</subant>
 	</target>
 	<target name="open_jsunit_runner">
@@ -144,12 +123,12 @@
 	</target>
 	<target name="open_jsunit_runner_win">
 		<exec executable="cygstart">
-			<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
+				<arg line="${jsUnitURL}"/>
 		</exec>
 	</target>
 	<target name="open_jsunit_runner_mac">
 			<exec executable="open">
-					<arg line="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/ajwebTestSuite.html&amp;autoRun=true"/>
+				<arg line="${jsUnitURL}"/>
 			</exec>
 	</target>
 	<target name="stop_jsunit_server">

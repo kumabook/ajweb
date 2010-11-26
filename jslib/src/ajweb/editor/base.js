@@ -74,8 +74,8 @@ ajweb.editor._COMLIST =  [
 	eventList: ["onLoad"],
 	defaultProperties: {
 	  tagName: "panel",
-	  width: "500px",
-	  height: "500px"
+	  width: "300px",
+	  height: "300px"
 	  }
       },
       {
@@ -254,7 +254,7 @@ ajweb.editor.createModel = function(name, parent, container, propertyDataStore, 
   properties.left = left;
   properties.id = id;
 
-  return new ajweb.editor.model[Model](
+  var newModel =  new ajweb.editor.model[Model](
     {
       id: id,
       tagName: name,
@@ -269,9 +269,11 @@ ajweb.editor.createModel = function(name, parent, container, propertyDataStore, 
       container: container
     }
   );
+  newModel.startup();
+  return newModel;
 };
 
-ajweb.editor.generate = function(output_type){
+ajweb.editor.generate = function(output_type,model){
   alert(output_type);
   var xml_str = '<?xml version="1.0" encoding="UTF-8"?>'
 	      + '<ajml>'
@@ -280,16 +282,7 @@ ajweb.editor.generate = function(output_type){
 
   var xml = dojox.xml.parser.parse(xml_str);
   var rootElement = xml.documentElement;
-  var applicationElement = xml.createElement("application");
-  rootElement.appendChild(applicationElement);
-
-  for(var i = 0; i < ajweb.editor.editorCpList.length; i++){
-    var model = ajweb.editor.editorCpList[i];
-    var element = model.getXMLElement(xml);
-
-    applicationElement.appendChild(element);
-    //alert(ajweb.editor.editorCpList[i].id);
-  }
+  var applicationElement = model.toXMLElement();
 
   var content = ajweb.xml.serialize(xml);
 

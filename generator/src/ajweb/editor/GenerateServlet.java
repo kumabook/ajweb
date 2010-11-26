@@ -9,26 +9,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-
-
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
-
+//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+//import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import ajweb.Config;
@@ -90,11 +84,12 @@ public class GenerateServlet extends AbstractServlet {
 				String ajml = request.getParameter("content");
 				String filename = request.getParameter("filename");
 				in = new ByteArrayInputStream(ajml.getBytes());
-				
-				DOMParser parser = new DOMParser();
-				
-				parser.parse(new InputSource(in));
-				Document doc = parser.getDocument();
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				//DOM	Parser parser = new DOMParser();
+//				parser.parse(new InputSource(in));
+				Document doc = db.parse(new InputSource(in)); 
+//				Document doc = parser.getDocument();
 				doc.setXmlStandalone(true);
 				
 				TransformerFactory tf = TransformerFactory.newInstance();
@@ -104,7 +99,7 @@ public class GenerateServlet extends AbstractServlet {
 				
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-				transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
+				transformer.setOutputProperty(OutputKeys.INDENT, "2");
 							
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition", "filename=\""+ filename + ".ajml\"");
@@ -134,11 +129,9 @@ public class GenerateServlet extends AbstractServlet {
 //				ajweb.generator.Main.appName = Config.appName;
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes());
-				
-				DOMParser parser = new DOMParser();
-				
-				parser.parse(new InputSource(in));
-				Document doc = parser.getDocument();
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				Document doc = db.parse(new InputSource(in)); 
 				doc.setXmlStandalone(true);
 				
 				TransformerFactory tf = TransformerFactory.newInstance();
@@ -148,7 +141,8 @@ public class GenerateServlet extends AbstractServlet {
 				
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-				transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
+				transformer.setOutputProperty(OutputKeys.INDENT, "2");
+				
 				
 				transformer.transform(new DOMSource(doc), result);
 				Config.templateFolder = "../generator/resources/template";

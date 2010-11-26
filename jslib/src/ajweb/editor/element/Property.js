@@ -54,10 +54,10 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	  searchAttr: "name",
 	  style: {
 	    position : "absolute",
-	    width: "50px",
+	    width: "70px",
 	    //height: this.properties.height,
 	    top: "0px",
-	    right: "0px"
+	    right: "10px"
 	  },
 	  onChange: function(){
 	    that.model.properties.type = this.value;
@@ -69,16 +69,16 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	  id :this.id,
 	  style: {
 	    position : "absolute",
-	    width: this.container.domNode.style.width,
+	    width: parseInt(this.container.domNode.style.width) - 20 + "px",
 	    height: "35px",
 	    top: (this.model.parent.children.length * 30) + "px",
-	    left: "0px"
+	    left: "10px"
 	    //		       borderBottom: "solid 1px black"
 	  }
 	});
       this.widget.domNode.appendChild(propName.domNode);
       this.widget.domNode.appendChild(filteringSelect.domNode);
-      this.container.domNode.style.height = parseInt(this.model.parent.children.length) * 30 + 35 + "px";
+      this.container.domNode.style.height = parseInt(this.model.parent.children.length) * 50 + 35 + "px";
       return this.widget.domNode;
     },
     updateDom: function(properties){

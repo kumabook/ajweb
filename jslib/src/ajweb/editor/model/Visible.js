@@ -4,7 +4,7 @@ dojo.require("ajweb.editor.element.Databases");
 
 dojo.provide("ajweb.editor.model.Visible");
 dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
-  /** @lends ajweb.editor.model.Visiblee.prototype */
+  /** @lends ajweb.editor.model.Visible.prototype */
   {
     /**
      * Constructor
@@ -30,20 +30,18 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
        * このモデルを表すDOMを管理するクラスの名前
        * @type ajweb.editor.element.ModelElement
        */
+
       this.elementType = opt.elementType;
       this.element = this.createDom();
       this.domNode = this.element.domNode;
     },
-        /**
+    /**
      * this.elementTypeに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
     createDom: function(){
       var Element = this.elementType.substr(0,1).toLocaleUpperCase() + this.elementType.substr(1);
       var container = this.container;
-//      if(this.parent instanceof ajweb.editor.model.AbstractModel)
-//	container = this.parent.element;
-//      else
-//	container = this.parent;
+
       return new ajweb.editor.element[Element](
 	{
 	  id: this.id,
@@ -68,6 +66,19 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       for(var i = 0; i < this.children.length; i++){
 	this.children[i].reCreateDom();
       }
+    },
+    removeDom: function(){
+      this.element.removeDom();
+    } ,
+   /**
+     * モデルを削除する。
+     */
+    remove: function(){
+      this.inherited(arguments);
+      this.removeDom();
+    },
+    startup: function(){
+      this.element.startup();
     }
   }
 );
