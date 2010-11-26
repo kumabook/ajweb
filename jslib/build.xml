@@ -4,8 +4,8 @@
 	<property name="testLogDir" value="test/logs"/>
 	<property name="unitTestPort" value="8080"/>
 	<property name="jsUnitPort" value="8000"/>
-	<property name="unitTestSuiteURL" value="http://localhost:${unitTestPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${unitTestPort}/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/>
-	<property name="jsUnitURL" value="http://localhost:${jsUnitPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${jsUnitPort}/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/>
+	<property name="unitTestSuiteURL" value="http://localhost:${unitTestPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${unitTestPort}/jsunit/test/unit/AllTests.html&amp;autoRun=true"/>
+	<property name="jsUnitURL" value="http://localhost:${jsUnitPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${jsUnitPort}/jsunit/test/unit/AllTests.html&amp;autoRun=true"/>
 	<condition property="os" value="win">
 		<os family="windows"/>
 	</condition>
