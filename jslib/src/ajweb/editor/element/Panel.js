@@ -2,6 +2,7 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Resizable");
 dojo.require("ajweb.editor.element.Movable");
+dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Panel");
 dojo.declare("ajweb.editor.element.Panel", 
@@ -18,8 +19,6 @@ dojo.declare("ajweb.editor.element.Panel",
 
      * @param {String} opt.id ウィジェットID
      * @param {String} opt.tagName XMLのタグ名
-     * @param {boolean} opt.resizable サイズが変更可能か
-     * @param {boolean} opt.movable 位置が変更可能か
      * @param {DOM} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
@@ -66,8 +65,6 @@ dojo.declare("ajweb.editor.element.Panel",
       return this.widget.domNode;
     },
     startup: function(){
-//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-//      dojo.connect(this.widget.domNode, "onmousedown", this.model, this.model.updateEventView);
       this.inherited(arguments);
       this.widget.startup();
       this.panel.startup();

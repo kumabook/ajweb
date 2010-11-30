@@ -12,35 +12,31 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      * @constructs
 
      * @param {String} opt.id ウィジェットID
+     * @param {String} opt.elementClass DOM要素用のクラス名
      * @param {Object} opt.properties プロパティのリスト
      * @param {Array} opt.propertyList プロパティ名のリスト
      * @param {String} opt.tagName XMLのタグ名
      * @param {Array} opt.events この要素のイベントモデルのリスト
      * @param {Array} opt.eventList イベント名のリスト
-     * @param {Array} opt.acceptComponentType 子要素に持てる要素
-     * @param {DOM} opt.parent 配置されるDOM要素
+     * @param {Array} opt.acceptModelType 子要素に持てる要素
+     * @param {ajweb.editor.model.Model} opt.parent 親モデル
+     * @param {ajweb.editor.element.Element} opt.container 配置されるDOM要素
      */
     constructor: function(opt)
     {
       /**
-       *
-       */
-      this.container = opt.container;
-      /**
        * このモデルを表すDOMを管理するクラスの名前
        * @type ajweb.editor.element.ModelElement
        */
-
-      this.elementType = opt.elementType;
-      this.element = this.createDom();
-      this.domNode = this.element.domNode;
+      this.elementClass = opt.elementClass;
+      
+      this.element = this.createDom(opt.container);
     },
     /**
-     * this.elementTypeに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
+     * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
-    createDom: function(){
-      var Element = this.elementType.substr(0,1).toLocaleUpperCase() + this.elementType.substr(1);
-      var container = this.container;
+    createDom: function(container){
+      var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
 
       return new ajweb.editor.element[Element](
 	{
@@ -48,7 +44,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
 	  properties: this.properties,
 	  container: container,
 	  model: this,
-	  acceptComponentType: this.acceptComponentType
+	  acceptModelType: this.acceptModelType
 	}
       );
     },
@@ -61,10 +57,10 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     /**
      * タブを閉じたあとに再びDOM要素表示する。modelができた状態でDOMを生成。
      */
-    reCreateDom: function(){
-      this.element = this.createDom();
+    reCreateDom: function(container){
+      this.element = this.createDom(container);
       for(var i = 0; i < this.children.length; i++){
-	this.children[i].reCreateDom();
+	this.children[i].reCreateDom(this.element);
       }
     },
     removeDom: function(){
@@ -79,6 +75,9 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     },
     startup: function(){
       this.element.startup();
+      for(var i = 0; i < this.children.length; i++){
+	this.children[i].startup();
+      }
     }
   }
 );

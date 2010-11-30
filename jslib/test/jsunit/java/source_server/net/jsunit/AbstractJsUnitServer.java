@@ -138,6 +138,8 @@ public abstract class AbstractJsUnitServer {
 		editorWebapp.addClassPath(basedir + "/../generator/classes/");
 		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
 		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
+		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/commons-fileupload-1.2.2.jar");
+		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/commons-io-2.0.jar");
 
 		httpServer.addContext(editorWebapp);
 

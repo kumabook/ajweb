@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import javax.annotation.Untainted;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +20,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-//import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-//import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -29,7 +29,7 @@ import ajweb.Config;
 import ajweb.servlet.AbstractServlet;
 
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"all"})
 public class GenerateServlet extends AbstractServlet {
 
 		
@@ -73,6 +73,7 @@ public class GenerateServlet extends AbstractServlet {
 		 * @throws ServletException
 		 * @throws IOException
 		 */
+		
 		private void download(HttpServletRequest request,
 				HttpServletResponse response) throws ServletException, IOException {
 
@@ -86,10 +87,7 @@ public class GenerateServlet extends AbstractServlet {
 				in = new ByteArrayInputStream(ajml.getBytes());
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
-				//DOM	Parser parser = new DOMParser();
-//				parser.parse(new InputSource(in));
 				Document doc = db.parse(new InputSource(in)); 
-//				Document doc = parser.getDocument();
 				doc.setXmlStandalone(true);
 				
 				TransformerFactory tf = TransformerFactory.newInstance();
@@ -99,7 +97,8 @@ public class GenerateServlet extends AbstractServlet {
 				
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-				transformer.setOutputProperty(OutputKeys.INDENT, "2");
+				
+				transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
 							
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition", "filename=\""+ filename + ".ajml\"");

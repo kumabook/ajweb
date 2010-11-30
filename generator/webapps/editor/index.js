@@ -1,7 +1,7 @@
-dojo.require("ajweb.editor.ModelEditor");
+dojo.require("ajweb.editor.Editor");
 dojo.addOnLoad(
   function(){
-   ajweb.editor.modelEditor = new ajweb.editor.ModelEditor("ajmlEditor", "menu");
+   window.editor = new ajweb.editor.Editor("editor");
 
   });
 

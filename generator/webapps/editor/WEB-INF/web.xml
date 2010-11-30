@@ -7,13 +7,23 @@
          version="2.4">
          
     <servlet>
-    	<servlet-name>base</servlet-name>
+    	<servlet-name>generate</servlet-name>
     	<servlet-class>ajweb.editor.GenerateServlet</servlet-class>
   	</servlet>
   
 	<servlet-mapping>
-    	<servlet-name>base</servlet-name>
-    	<url-pattern>/base</url-pattern>
+    	<servlet-name>generate</servlet-name>
+    	<url-pattern>/generate</url-pattern>
+  	</servlet-mapping>
+  	
+  	<servlet>
+    	<servlet-name>upload</servlet-name>
+    	<servlet-class>ajweb.editor.UploadServlet</servlet-class>
+  	</servlet>
+  
+	<servlet-mapping>
+    	<servlet-name>upload</servlet-name>
+    	<url-pattern>/upload</url-pattern>
   	</servlet-mapping>
   	
 </web-app>

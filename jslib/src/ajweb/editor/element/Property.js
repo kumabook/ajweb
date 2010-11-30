@@ -2,6 +2,7 @@ dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.FilteringSelect");
+dojo.require("dijit.layout.ContentPane");
 
 dojo.require("ajweb.editor.element.Element");
 
@@ -35,7 +36,7 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	  style: {
 	    position : "absolute",
 	    width: "100px",
-	    top: "0px",
+	    top: "5px",
 	    left: "0px"
 	    //		       borderBottom: "solid 1px black"
 	  },
@@ -56,7 +57,7 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	    position : "absolute",
 	    width: "70px",
 	    //height: this.properties.height,
-	    top: "0px",
+	    top: "5px",
 	    right: "10px"
 	  },
 	  onChange: function(){
@@ -78,7 +79,7 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	});
       this.widget.domNode.appendChild(propName.domNode);
       this.widget.domNode.appendChild(filteringSelect.domNode);
-      this.container.domNode.style.height = parseInt(this.model.parent.children.length) * 50 + 35 + "px";
+      this.container.domNode.style.height = parseInt(this.model.parent.children.length) * 30 + 35 + "px";
       return this.widget.domNode;
     },
     updateDom: function(properties){

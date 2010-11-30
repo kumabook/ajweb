@@ -26,8 +26,8 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
     * ドロップ可能かチェックする
     * @param {String} ウィジェットタイプ
     */
-    checkAcceptance: function(widgetType){
-      if(ajweb.contains(this.acceptComponentType, widgetType))
+    checkAcceptance: function(modelType){
+      if(ajweb.contains(this.model.acceptModelType, modelType))
 	return true;
       else
 	return false;
@@ -37,22 +37,27 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
     */
     dndEnable : function(){
       var that = this;
-      var acceptComponentType = this.acceptComponentType;
+      var acceptModelType = this.model.acceptModelType;
       this.dnd = new dojo.dnd.Source(
 	this.dndDomNode,
 	{
 	  accept: ["text", "treeNode"],
 	  checkAcceptance : function(source, nodes){
-	    var component = ajweb.editor.getComponent(nodes[0].childNodes[2].childNodes[2].innerHTML);
-	    return that.checkAcceptance(component.elementType);
+	    var modelInfo = ajweb.editor.getModelInfo(nodes[0].childNodes[2].childNodes[2].innerHTML);
+	    return that.checkAcceptance(modelInfo.modelType);
 	  },
 	  onDrop: function(sources, nodes, copy){
+	    var name = nodes[0].childNodes[2].childNodes[2].innerHTML;
 	    ajweb.editor.createModel(
-	      nodes[0].childNodes[2].childNodes[2].innerHTML,
+	      name,
+	      {
+		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(that.model.element.domNode),
+		left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(that.model.element.domNode)
+	      },
 	      that.model,
 	      that.model.element,
-	      that.model.propertyDataStore,
-	      that.model.eventTc
+	      that.model.editor.propertyDataStore,
+	      that.model.editor.eventTc
 	    );
 	  }
 	}

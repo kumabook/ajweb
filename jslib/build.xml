@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AjWeb System javaScript Framework" default="dist" basedir=".">
 	<!--	<property name="unitTestSuiteURL" value="http://localhost:8000/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8000/jsunit/test/unit/unitTestSuite.html&amp;autoRun=true"/> -->
-	<property name="testLogDir" value="test/logs"/>
+	<property name="testLogDir" value="../../logs"/>
 	<property name="unitTestPort" value="8080"/>
 	<property name="jsUnitPort" value="8000"/>
 	<property name="unitTestSuiteURL" value="http://localhost:${unitTestPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${unitTestPort}/jsunit/test/unit/AllTests.html&amp;autoRun=true"/>

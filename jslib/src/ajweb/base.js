@@ -26,10 +26,11 @@ if(!ajweb){
 		}
 	      )(),
   /** ajweb.widgetパッケージ*/
-    widget: {},
-  /** ajweb.editorパッケージ*/
-    editor: {}
+    widget: {}
   };
+
+  /** @namespace */
+  ajweb.editor = {};
   /** @namespace */
   ajweb.editor.element = {};
 /** @namespace */

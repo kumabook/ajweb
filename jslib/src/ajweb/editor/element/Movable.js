@@ -42,24 +42,36 @@ dojo.declare("ajweb.editor.element.Movable", null,
     createMoveContainerDomNode :function(){
       return this.container.domNode;
     },
-
-     /**
-    * ドラッグで移動可能にする
-    */
+    /**
+     * ドラッグで移動可能にする
+     */
     enableDragMove: function(){//改良の余地あり 
     //		 console.log(this.id + "   enableDragMove");
       this.drag_move_connection
 	= dojo.connect(this.moveTriggerDomNode, "onmousedown", this,
 	function(e){
-	  		//		    console.log(this.id + " regist move");
+	  //console.log(this.id + " regist move");
 	  this.model.updatePropertiesView();
-	  this.model.updateEventView();      
-	  var left = parseInt(this.domNode.style.left) - e.clientX;
-	  var top = parseInt(this.domNode.style.top) - e.clientY;
+	  this.model.updateEventView();
+	  var top, left, width, height;
+	  if(!this.domNode.style.top)  top = 0;
+	  else  top = parseInt(this.domNode.style.top);
+	  if(!this.domNode.style.left) left = 0;
+	  else  left = parseInt(this.domNode.style.left);
+	  top = top - e.clientY;
+	  left = left - e.clientX;
 
-	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(this.domNode.style.width);//ここにスクロールバーも計算にいれるとよい?
-	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(this.domNode.style.height);
-
+	  if(!this.domNode.style.width)  width = 0;
+	  else  width = parseInt(this.domNode.style.width);
+	  if(!this.domNode.style.height) height = 0;
+	  else  height = parseInt(this.domNode.style.height);
+	  
+//	  left = parseInt(this.domNode.style.left) - e.clientX;
+//	  top = parseInt(this.domNode.style.top) - e.clientY;
+//	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(this.domNode.style.width);//ここにスクロールバーも計算にいれるとよい?
+//	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(this.domNode.style.height);
+	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
+	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
 	  var move = function(e){
 	    var _x = e.clientX + left;
 	    var _y = e.clientY + top;
@@ -75,6 +87,8 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	  var remove_connection  = dojo.connect(document, "onmouseup", this, function(e){
 						  dojo.disconnect(move_connection);
 						  dojo.disconnect(remove_connection);
+//						  this.model.properties.top = parseInt(this.domNode.style.top);
+//						  this.model.properties.left = parseInt(this.domNode.style.left);
 						  this.model.updatePropertiesView();
 						  this.model.updateEventView();      
 						  e.preventDefault();

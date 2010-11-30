@@ -31,11 +31,6 @@ dojo.declare("ajweb.editor.element.Element", null,
        */
       this.title = opt.title;
       /**
-       * 子要素になりうる要素名のリスト
-       * @type Array
-       */
-      this.acceptComponentType = this.model.acceptComponentType;
-      /**
        * DOM要素が配置される親要素
        * @type @type ajweb.editor.element.Element|dijit.layout.TabContainer
        */
@@ -45,10 +40,17 @@ dojo.declare("ajweb.editor.element.Element", null,
        * @type HTMLElement
        */
       this.domNode = this.createDom(opt.properties); 
-      if(this.container instanceof ajweb.editor.element.Element)
+
+      if(!this.container)
+	this.container = this.model.editor.centerTc;
+      if(this.container instanceof ajweb.editor.element.Element){
 	this.container.domNode.appendChild(this.domNode);
-      else// centerTcの場合
+      }
+      else　{// centerTcの場合 プロジェクトエクスプローラーに反映
 	this.container.addChild(this.widget);
+
+      }
+
       ajweb.addElement(this);
     },
     /**
@@ -80,8 +82,3 @@ dojo.declare("ajweb.editor.element.Element", null,
     }
   }
 );
-
-
-
-
-

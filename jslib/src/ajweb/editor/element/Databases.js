@@ -1,5 +1,6 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
+dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Databases");
 dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajweb.editor.element.DndEnable],
@@ -32,12 +33,23 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
 	  doLayout: false,
 	  style:{
 	    border: "solid 1px #769DC0"
+	  },
+	  onClose: function(){
+	    that.model.clearPropertiesView();
+	    that.model.clearEventView();
+	    for(var i = 0; i < that.model.children.length; i++){
+	      that.model.children[i].removeDom();
+	    }
+	    return true;
 	  }
 	});
       return this.widget.domNode;
     },
     updateDom: function(properties){
 
+    },
+    removeDom: function(){
+      this.widget.destroyRecursive();
     },
     createDndDomNode: function(){
       return this.domNode;
