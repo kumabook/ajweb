@@ -26,8 +26,6 @@ dojo.declare("ajweb.widget.Th",
 	 * @param {ajweb.widget.Widget} opt.parent 親パネルへの参照
 	 * @param {Array<ajweb.widget.Widget>} opt.children 子ウィジェットへの参照
 	 * @param {String} opt.content ボタンに表示される文字列
-	 * @param {boolean} opt.enable ボタンが使用可能かどうか
-	 * @param {function} opt.onclick クリック時に行われる動作
 	 */
 
 	constructor : function(opt){

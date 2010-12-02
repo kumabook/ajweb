@@ -28,7 +28,7 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
       this.widget =   new dijit.layout.ContentPane(
 	{
 	  id : this.id,
-	  title: "データモデル",
+	  title: this.id,
 	  closable: true,
 	  doLayout: false,
 	  style:{
@@ -46,7 +46,7 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
       return this.widget.domNode;
     },
     updateDom: function(properties){
-
+      this.widget.set({ title: properties.id});
     },
     removeDom: function(){
       this.widget.destroyRecursive();
@@ -59,5 +59,3 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
     }
   }
 );
-
-

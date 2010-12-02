@@ -110,18 +110,17 @@ dojo.declare("ajweb.editor.model.Model", null,
       propertyList.push("top");
       propertyList.push("left");
       for(var i = 0; i < propertyList.length; i++){
+	if(this.properties[propertyList[i]])
 	  node.setAttribute(propertyList[i], this.properties[propertyList[i]]);
       }
-
       for(i = 0; i < this.children.length; i++){
-	var child = this.children[i].toXMLElement(xml);
+	var child = this.children[i].toSaveXMLElement(xml);
 	if(child)
 	  node.appendChild(child);
       }
       return node;
     },
     xmlToModel: function(xml){
-
       var childNode;
       for(var i = 0; i < xml.childNodes.length; i++){
 	childNode = xml.childNodes[i];
@@ -132,11 +131,10 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  }
 	  var child;
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	    child = ajweb.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
 	  }
 	  else {
-	    child = ajweb.editor.createModel(childNode.tagName, attrs, this, this.element);
-	    alert(this.id + "  "  + this.element);
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
 	  }
 	  child.xmlToModel(childNode);
 	}

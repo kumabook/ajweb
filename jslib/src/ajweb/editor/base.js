@@ -12,7 +12,7 @@ var propertyDataStore;
 ajweb.editor.COMLIST =  [
   {
     name:"UI",
-    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'table'},{name:'panel'},{name:'frame'}]
+    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'table'},{name:'th'},{name:'panel'},{name:'frame'}]
   },
   {
     name: "DB",
@@ -57,9 +57,9 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Eventable",
     elementClass: "databases",
     acceptModelType: ["database"],
-    propertyList: [],
+    propertyList: ["tagName", "id"],
     eventList: [],
-    defaultProperties: {}
+    defaultProperties: { tagName: "databases"}
   },
   {
     name:"events",
@@ -82,11 +82,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: [],
     propertyList: ["tagName", "id", "top", "left", "content"],
     eventList: ["onLoad", "onClick"],
-    defaultProperties: {
-      tagName: "label",
-      content: "ラベル"
-
-    }
+    defaultProperties: { tagName: "label", content: "ラベル" }
   },
   {
     name:'button',
@@ -97,12 +93,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: [],
     propertyList: ["tagName", "id", "top", "left", "content"],
     eventList: ["onLoad", "onClick"],
-    defaultProperties: {
-      tagName: "button",
-      width: "100px",
-      height: "50px",
-      content: "ボタン"
-    }
+    defaultProperties: { tagName: "button", width: "100px", height: "50px",content: "ボタン"}
   },
   {
     name:'textbox',
@@ -112,26 +103,28 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: [],
     propertyList: ["tagName", "id", "height", "width", "top", "left", "content", "palceHolder", "candidate_list"],
     eventList: ["onLoad", "onFocus", "onBlur"],
-    defaultProperties: {
-      tagName: "textbox",
-      width: "100px",
-      height: "100px"
-    }
+    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },
   
   {
     name:'table',
     modelType: "widget",
     modelClass: "Widget",
-    elementClass: "Widget",
+    elementClass: "Table",
     acceptModelType: ["th"],
     propertyList: ["tagName", "id", "height", "width", "top", "left"],
     eventList: ["onLoad", "onClick", "onDbClick", "onCellEdit"],
-    defaultProperties: {
-      tagName: "table",
-      width: "100px",
-      height: "50px"
-    }
+    defaultProperties: { tagName: "table", width: "100px", height: "50px"}
+  },
+  {
+    name:'th',
+    modelType: "th",
+    modelClass: "th",
+    elementClass: "th",
+    acceptModelType: [],
+    propertyList: ["tagName", "id", "width"],
+    eventList: ["onLoad", "onClick", "onDbClick", "onCellEdit"],
+    defaultProperties: { tagName: "th", width: "100px", name: "th", label: "th"}
   },
   {
     name:'panel',
@@ -141,11 +134,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["widget"],
     propertyList: ["tagName", "id", "height", "width"],
     eventList: ["onLoad"],
-    defaultProperties: {
-      tagName: "panel",
-      width: "300px",
-      height: "300px"
-    }
+    defaultProperties: { tagName: "panel", width: "300px", height: "300px"}
   },
   {
     name:'frame',
@@ -155,11 +144,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["widget"],
     propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
     eventList: ["onLoad"],
-    defaultProperties: {
-      tagName: "frame",
-      width: "300px",
-      height: "300px"
-    }
+    defaultProperties: { tagName: "frame", width: "300px", height: "300px"}
   },
   //DBモデル
   {
@@ -170,12 +155,10 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["property"],
     propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver"],
     eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
-    defaultProperties: {
-      tagName: "database",
-      type: "server",
-      dbName: "jdbc:derby:work/appName",
-      dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
-    }
+    defaultProperties: { tagName: "database", type: "server",
+			dbName: "jdbc:derby:work/appName",
+			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
+		       }
   },
   {
     name: "property",
@@ -188,34 +171,71 @@ ajweb.editor.MODELLIST =  [
   },
   //Functionモデル
   {
+    name: "event",
+    modelType: "event",
+    modelClass: "Event",
+    elementClass: "Event",
+    acceptModelType: ["action"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
+  },
+  {
     name: "insert",
-    widget_type: "action",
+    modelType: "action",
+    modelClass: "Action",
+    elementClass: "Action",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
     paramList: ["tableName"]
   },
   {
     name: "update",
-    widget_type: "action",
+    modelType: "action",
+    modelClass: "Action",
+    elementClass: "Action",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
     paramList: ["tableName"]
   },
   
   {
     name: "delete",
-    widget_type: "action",
-    paramList: ["tablename"]
+    modelType: "action",
+    modelClass: "Action",
+    elementClass: "Action",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
   },
   {
-    name: "custom",
-    widget_type: "action",
-    paramList: ["funcName"]
-  },
-  {
-    name: "local",
-    widget_type: "action",
-    paramList: ["input"]
+    name: "value",
+    modelType: "action",
+    modelClass: "Action",
+    elementClass: "Action",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
   },
   {
     name: "param",
-    widget_type: "param"
+    modelType: "param",
+    modelClass: "Param",
+    elementClass: "Param",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
   }
 ];
 
@@ -285,88 +305,6 @@ ajweb.editor.modelCount = function(tagName){
     ajweb.editor.modelCounter[tagName] = 0;
   }
   return ajweb.editor.modelCounter[tagName]++;
-};
-
-/**
- * モデル名からモデルの情報を参照してモデルオブジェクトを作成する。
- * @param {String} name モデル名
- * @param {Object} properties プロパティのハッシュ
- * @param {ajweb.editor.model.Model} parent 親ウィジェット
- * @param {ajweb.editor.element.ModelElement|dijit.layout.TabContainer} container 配置するDOM要素を保持するオブジェクト
- * @param {dojo.data.ItemFileReadStore} propertyDataStore 表示するプロパティを保持するdojoストア
- * @param {dijit.layout.TabContainer} eventTc イベントリストを保持するcenterTc
- */
-ajweb.editor.createModel = function(name, properties, parent, container){
-  var modelInfo = ajweb.editor.getModelInfo(name);
-  var elementClass = modelInfo.elementClass;
-  var modelClass = modelInfo.modelClass;
-  var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
-  var propertyList = dojo.clone(modelInfo.propertyList);
-  var defaultProperties = dojo.clone(modelInfo.defaultProperties);
-
-  if(properties){
-    if(!properties.id)
-      properties.id = name + ajweb.editor.modelCount(name);
-    propertyList.push("id");
-    propertyList.push("top");
-    propertyList.push("left");
-      
-    for(var i = 0; i < propertyList.length; i++){
-      if(properties[propertyList[i]])
-	defaultProperties[propertyList[i]] = properties[propertyList[i]];
-    }
-  }
-
-  var newModel =  new ajweb.editor.model[ModelClass](
-    {
-      id: properties.id,
-      tagName: name,
-      acceptModelType: modelInfo.acceptModelType,
-      elementClass: elementClass,
-      properties: defaultProperties,
-      propertyList: modelInfo.propertyList,
-      eventList: modelInfo.eventList,
-      parent: parent,
-      container: container,
-      editor: parent.editor
-    }
-  );
-
-  if(name == "databases" || name == "panel"){
-    parent.editor.projectTreeModel.getRoot(
-      function(item){
-	    parent.editor.projectTreeModel.getChildren(
-	      item,
-	      function(items){
-		for(var i = 0; i < items.length; i++){
-		  if(items[i].name == parent.editor.application.properties.appName){
-		    parent.editor.projectTreeModel.getChildren(
-		      items[i],
-		      function(_items){
-			for(var j = 0; j < _items.length; j++){
-			  if(_items[j].modelType == "databases" && name == "databases")
-			    parent.editor.projectTreeModel.newItem(
-			      {name: properties.id, modelType: name, modelId: properties.id}, _items[j]
-			    );
-			  else if(_items[j].modelType == "interfaces" && name == "panel")
-			    parent.editor.projectTreeModel.newItem(
-			      {name: properties.id, modelType: name, modelId: properties.id}, _items[j]
-			    );
-			}
-		      },
-		      function(error){
-		      }
-		    );
-		  }
-		}
-	      },
-	      function(error){
-	      }
-	    );
-      });
-  }
-  newModel.startup();
-  return newModel;
 };
 
 ajweb.editor.modelToXml = function(model){

@@ -48,7 +48,7 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
 	  },
 	  onDrop: function(sources, nodes, copy){
 	    var name = nodes[0].childNodes[2].childNodes[2].innerHTML;
-	    ajweb.editor.createModel(
+	    that.model.editor.createModel(
 	      name,
 	      {
 		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(that.model.element.domNode),

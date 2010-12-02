@@ -38,32 +38,29 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	    width: "100px",
 	    top: "5px",
 	    left: "0px"
-	    //		       borderBottom: "solid 1px black"
 	  },
 	  onChange: function(){
 	    that.model.properties.name = this.value;
 	  }
 
 	});
-
+      var value = that.model.properties.type ? that.model.properties.type : "int"; 
       var filteringSelect = new dijit.form.FilteringSelect(
 	{
 	  id: this.id + "select",
 	  name: "state",
-	  value: "int",
+	  value: value,
 	  store: ajweb.editor.dataTypeStore,
 	  searchAttr: "name",
 	  style: {
 	    position : "absolute",
 	    width: "70px",
-	    //height: this.properties.height,
 	    top: "5px",
 	    right: "10px"
 	  },
 	  onChange: function(){
 	    that.model.properties.type = this.value;
 	  }
-	  //		       borderBottom: "solid 1px black"
 	});
       this.widget = new dijit.layout.ContentPane(
 	{
@@ -72,18 +69,16 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
 	    position : "absolute",
 	    width: parseInt(this.container.domNode.style.width) - 20 + "px",
 	    height: "35px",
-	    top: (this.model.parent.children.length * 30) + "px",
+	    top: ((this.container.domNode.childNodes.length-1) * 30) + "px",
 	    left: "10px"
-	    //		       borderBottom: "solid 1px black"
 	  }
 	});
       this.widget.domNode.appendChild(propName.domNode);
       this.widget.domNode.appendChild(filteringSelect.domNode);
-      this.container.domNode.style.height = parseInt(this.model.parent.children.length) * 30 + 35 + "px";
+      this.container.domNode.style.height = (this.container.domNode.childNodes.length-1) * 30 + 35 + "px";
       return this.widget.domNode;
     },
     updateDom: function(properties){
-
     },
     startup: function(){
       this.widget.startup();

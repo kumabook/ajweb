@@ -8,7 +8,7 @@ dojo.provide("ajweb.editor.element.Panel");
 dojo.declare("ajweb.editor.element.Panel", 
 	     [ajweb.editor.element.Element, 
 	      ajweb.editor.element.DndEnable, 
-	      ajweb.editor.element.Movable,
+//	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Resizable],
   /** @lends ajweb.editor.element.Panel.prototype */
   {
@@ -33,8 +33,6 @@ dojo.declare("ajweb.editor.element.Panel",
 	{
 	  id : this.id,
 	  title: this.id,
-	  width: properties.width,
-	  height: properties.height,
 	  closable: true,
 	  doLayout: false
 	});
@@ -45,8 +43,8 @@ dojo.declare("ajweb.editor.element.Panel",
 	    position: "absolute",
 	    width: properties.width,
 	    height: properties.height,
-	    top: "50px",
-	    left: "50px",
+	    top: "10%",
+	    left: "20%",
 	    backgroundColor: "#E1EBFB",
 	    border: "solid 1px #769DC0"
 	  }
@@ -54,9 +52,17 @@ dojo.declare("ajweb.editor.element.Panel",
       this.widget.domNode.appendChild(this.panel.domNode);
       return this.panel.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
+      var top =  (parseInt(this.widget.domNode.style.height) -
+		  parseInt(this.model.properties.height)) / 2;
+      var left = (parseInt(this.widget.domNode.style.width) -
+		  parseInt(this.model.properties.width)) / 2;
+      this.model.top = top;
+      this.model.left = left;
       this.domNode.style.width = this.model.properties.width;
       this.domNode.style.height = this.model.properties.height;
+      this.domNode.style.top = top;
+      this.domNode.style.left = left;
     },
     createDndDomNode: function(){
       return this.domNode;
@@ -72,5 +78,3 @@ dojo.declare("ajweb.editor.element.Panel",
     }
   }
 );
-
-

@@ -3,11 +3,9 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Widget");
-dojo.declare("ajweb.editor.element.Widget", 
-	     [ajweb.editor.element.Element, 
-	      ajweb.editor.element.Movable
-	     ],
+dojo.provide("ajweb.editor.element.Th");
+dojo.declare("ajweb.editor.element.Th", 
+	     [ajweb.editor.element.Element],
   /** @lends ajweb.editor.element.Widget.prototype */
   {
     /**
@@ -29,21 +27,8 @@ dojo.declare("ajweb.editor.element.Widget",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      this.widget = new dijit.layout.ContentPane(
-	{
-	  id : this.id,
-	  style:{
-	    position: "absolute",
-	    backgroundColor: "#E1EBFB",
-	    border: "dotted 1px #000000",
-	    top: properties.top,
-	    left: properties.left,
-	    width: properties.width,
-	    height: properties.height
-	  },
-	  content: this.model.tagName
-	});
-      return this.widget.domNode;
+
+//      return this.widget.domNode;
     },
     updateDom: function(properties){
       this.widget.set(
@@ -64,5 +49,3 @@ dojo.declare("ajweb.editor.element.Widget",
     }
   }
 );
-
-

@@ -29,15 +29,14 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
        * @type ajweb.editor.element.ModelElement
        */
       this.elementClass = opt.elementClass;
-      
       this.element = this.createDom(opt.container);
+
     },
     /**
      * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
     createDom: function(container){
       var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
-
       return new ajweb.editor.element[Element](
 	{
 	  id: this.id,
@@ -81,5 +80,3 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     }
   }
 );
-
-
