@@ -26,7 +26,7 @@ public class UploadServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-	    System.out.println("doPost uploadServlet");
+	    System.out.println("UploadServlet: doPost");
 	    resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
 		String editor = "editor";
@@ -58,7 +58,7 @@ public class UploadServlet extends HttpServlet {
 		  			"	</script>now uploading!!" +
 		  			"	</body>" +
 		  			"	</html>";
-	        	  System.out.println(response);
+//	        	  System.out.println(response);
 	        	  out.println(response);
 	          }
 	        }

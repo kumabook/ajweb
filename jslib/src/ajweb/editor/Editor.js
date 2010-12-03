@@ -1,4 +1,3 @@
-dojo.require("ajweb.base");
 dojo.require("dijit.MenuBar");
 dojo.require("dijit.MenuBarItem");
 dojo.require("dijit.PopupMenuBarItem");
@@ -18,7 +17,10 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.tree.dndSource");
 dojo.require("dojox.grid.DataGrid");
+
+dojo.require("ajweb.base");
 dojo.require("ajweb.editor.base");
+dojo.require("ajweb.editor.resources");
 dojo.require("ajweb.editor.model.Model");
 dojo.require("ajweb.editor.model.Application");
 dojo.require("ajweb.editor.model.Widget");
@@ -37,9 +39,7 @@ dojo.require("ajweb.editor.element.Label");
 dojo.require("ajweb.editor.element.Property");
 
 
-
 dojo.provide("ajweb.editor.Editor");
-
 
 dojo.declare(
   "ajweb.editor.Editor", null,
@@ -55,6 +55,7 @@ dojo.declare(
     constructor: function(name){
       this.name = name;
       var that = this;
+
       var container = document.createElement("div");
       var menu = document.createElement("div");
       document.body.appendChild(menu);
@@ -76,25 +77,19 @@ dojo.declare(
        * @type dijit.MenuBar
        */
       this.pMenuBar = new dijit.MenuBar({ style: {top: "0px"}}, menu);
-      this.pSubMenu = new dijit.Menu({});
-      this.pSubMenu.addChild(new dijit.MenuItem({label: "New", onClick: function(){
-						 that.newDialog.show();  
-						 }
-						}));
-      this.pSubMenu.addChild(new dijit.MenuItem({label: "Open File", onClick: function(){
-						   that.openFile();
-						 }}));
-      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: "File",popup: this.pSubMenu}));
-      this.pSubMenu2 = new dijit.Menu({});
-      this.pSubMenu2.addChild(new dijit.MenuItem({label: "Save File",onClick: function(){
-						    //todo 複数ある場合は判定をここでおこなう
-						    that.saveAjml(that.application, "ajml", "demo");						   
-						  }}));
-      this.pSubMenu2.addChild(new dijit.MenuItem({label: "Application Archive File (.war)",onClick: function(){
-						    //todo 複数ある場合は判定をここでおこなう
-						    that.generate(that.application, "war", "demo");
-						  }}));
-      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: "Generate",popup: this.pSubMenu2}));
+      this.fileMenu = new dijit.Menu({});
+
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("new"), 
+						 onClick: function(){that.newDialog.show();}}));
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("open"), 
+						 onClick: function(){ that.openFile();}}));
+      this.saveMenu = new dijit.Menu();
+      this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.getValue("save"),popup: this.saveMenu}));
+      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.getValue("file"),popup: this.fileMenu}));
+      this.generateMenu = new dijit.Menu({});
+      this.generateWarMenu = new dijit.Menu();
+      this.generateMenu.addChild(new dijit.PopupMenuItem({label: ajweb.getValue("war"),popup: this.generateWarMenu}));
+      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.getValue("generate") ,popup: this.generateMenu}));
       var logo = document.createElement("div");
       logo.appendChild(document.createTextNode("Ajml Editor"));
       logo.style.position = "absolute";
@@ -102,17 +97,15 @@ dojo.declare(
       logo.style.top = "4px";
       this.pMenuBar.domNode.appendChild(logo);
       this.pMenuBar.startup();
-      this.mainBc = new dijit.layout.BorderContainer({"design": "sidebar","region": "center"//	"id": "mainBc",
-						     });
+      this.mainBc = new dijit.layout.BorderContainer({"design": "sidebar","region": "center"});
       /**
        * ツールボックス用ペイン
        * @type dijit.TitlePane
        */
       this.toolboxCp = new dijit.TitlePane({
-					     //	"splitter": "true",
 					     region: "right",
 					     style: {width: "200px",height: "95%"},
-					     title: "toolbox",
+					     title: ajweb.getValue("toolbox"),
 					     toggleable: false
 					   }
 					  );
@@ -134,17 +127,17 @@ dojo.declare(
        * プロパティエディター部分のペイン
        * @type dijit.layout.ContentPane
        */
-      this.propertyCp = new dijit.layout.ContentPane({ title: "property"});
+      this.propertyCp = new dijit.layout.ContentPane({ title: ajweb.getValue("property")});
       /**
        * ログ表示部分のペイン
        * @type dijit.layout.ContentPane
        */
-      this.logCp = new dijit.layout.ContentPane({title: "log"});
+      this.logCp = new dijit.layout.ContentPane({title: ajweb.getValue("log")});
       /**
        * イベントモデルエディター部分ののペイン。eventsModelプロパティに現在のアプリケーションのeventsモデルを保持する。
        * @type dijit.layout.TabContainer
        */
-      this.eventTc = new dijit.layout.TabContainer({tabPosition: "left-h", title: "event"});
+      this.eventTc = new dijit.layout.TabContainer({tabPosition: "left-h", title: ajweb.getValue("event")});
       
       this.outerBc.addChild(this.mainBc);
       this.mainBc.addChild(this.rightBc);
@@ -222,11 +215,9 @@ dojo.declare(
 	      for(var i = 0; i < this.structure.cells.length; i++){
 		item[this.structure.cells[i].field] = _item[this.structure.cells[i].field][0];
 	      }
-	      console.log(item.property);
 	      if(item.property != "tagName")//タグ名は変更不可
 		propertyDataStore.currentModel.properties[item.property] = item.value;
-	 //     console.log("inValue:" + inValue + "   inRowIndex" + inRowIndex +
-//			  "   inFiledIndex :" + inFieldIndex);
+	      console.fine("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
 	      propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
 	      propertyDataStore.currentModel.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
@@ -244,7 +235,7 @@ dojo.declare(
 	  style: {width: "200px", height: "95%"},
 	  region: "left",
 	  toggleable: false,
-	  title: "projectExploer"
+	  title: ajweb.getValue("projectExploer")
 	}
       );
       /**
@@ -257,8 +248,7 @@ dojo.declare(
 	  store: this.projectStore,
 	  rootId: "root",
 	  rootLabel: "ajweb",
-	  childrenAttrs: ["children"]
-	  /*query: {"type": "topNode"},*/
+	  childrenAttrs: ["children"]/*query: {"type": "topNode"},*/
 	});
       this.projectTree = new dijit.Tree(
 	{
@@ -300,23 +290,15 @@ dojo.declare(
        */
       this.uploadDialog = new dijit.Dialog(
 	{
-	  title: "ファイルの読み込み",
-	  style: {
-	    height: "200px",
-	    width: "300px",
-	    top: "50%",
-	    left: "50%"
-	  }
-	});
+	  title: ajweb.getValue("loadFile")});
       var uploadForm = new dijit.form.Form(	
 	{
 	  method: "POST",
 	  action: "upload",
 	  target: "result_frame",
 	  encType: "multipart/form-data"
-	  // style: { visibility: "hidden"}      
 	});
-      //uploadForm.placeAt(document.body);
+
       var filenameInput = document.createElement("input");
       filenameInput.setAttribute("type", "file");
       filenameInput.setAttribute("name", "fileId");
@@ -325,75 +307,67 @@ dojo.declare(
       editorInput.setAttribute("type", "text");
       editorInput.setAttribute("name", "editor");
       editorInput.setAttribute("value", that.name);
-
+      editorInput.style.display = "none";
       
       var uploadButton = document.createElement("input");
       uploadButton.setAttribute("type", "submit");
-      uploadButton.setAttribute("value", "送信");
+      uploadButton.setAttribute("value", ajweb.getValue("load"));
       uploadForm.domNode.appendChild(filenameInput);
       uploadForm.domNode.appendChild(editorInput);
       uploadForm.domNode.appendChild(uploadButton);
-      this.uploadDialog.domNode.appendChild(uploadForm.domNode);
+      this.uploadDialog.setContent(uploadForm.domNode);
       /**
        * 新規作成ダイアログ
        */
-      this.newDialog = new dijit.Dialog(
-	{
-	  title: "新規作成",
-	  style: {
-
-	    top: "50%",
-	    left: "50%"
-	  }
-	});
-
-      var appName = new dijit.layout.ContentPane(
-	{ content: "アプリ名"
-	  //style: { position: "absolute", top: "50px", left: "50px" }
-	});
-      this.newDialog.domNode.appendChild(appName.domNode);
-      var appNameTextbox = new dijit.form.TextBox(
-	//{ style: { position: "absolute", top: "100px", left: "100px" }}
-      );
-      this.newDialog.domNode.appendChild(appNameTextbox.domNode);
+      this.newDialog = new dijit.Dialog({ title: ajweb.getValue("newApplication")});
+      var appName = new dijit.layout.ContentPane({ content: "アプリ名"});
+      var appNameTextbox = new dijit.form.TextBox();
+      appName.domNode.appendChild(appNameTextbox.domNode);
       var createButton = new dijit.form.Button(
-	{ label: "create", 
-	  //style: {position: "absolute", top: "80px", left: "150px"},
+	{ label: ajweb.getValue("create"), 
 	  onClick: function(){
 	    that.newApplication(appNameTextbox.value);
 	    that.newDialog.hide();
 	  }
 	});
-      this.newDialog.domNode.appendChild(createButton.domNode);
-
-//右クリックメニュー
-      var pMenu;
-
-      pMenu = new dijit.Menu({ //targetNodeIds: ["prog_menu"]
-			     });
-      pMenu.bindDomNode(document.body);
-      pMenu.addChild(new dijit.MenuItem({label: ""}));
-      pMenu.addChild(new dijit.MenuItem({label: "Disabled menu item",disabled: true }));
-      pMenu.addChild(new dijit.MenuItem({
-            label: "Menu Item With an icon",
-            iconClass: "dijitEditorIcon dijitEditorIconCut",
-					  onClick: function() {
-					  }
-					}));
-      pMenu.addChild(new dijit.CheckedMenuItem({label: "checkable menu item"}));
-      pMenu.addChild(new dijit.MenuSeparator());
-
-      var pSubMenu = new dijit.Menu();
-      pSubMenu.addChild(new dijit.MenuItem({label: "Submenu item"}));
-      pSubMenu.addChild(new dijit.MenuItem({label: "Submenu item"}));
-      pMenu.addChild(new dijit.PopupMenuItem({label: "Submenu",popup: pSubMenu}));
-      pMenu.startup();
+      appName.domNode.appendChild(createButton.domNode);
+      this.newDialog.setContent(appName.domNode);
+      /**
+       * 右クリックメニュー　
+       * todo 使いやすいようにショートカットを
+       * 
+       */
+      this.contextMenu = new dijit.Menu(
+	{
+	  onOpen: function(){
+	    var node =  that.projectTree.lastFocused.domNode.childNodes[0].childNodes[2].childNodes[2].innerHTML;
+	    if(!node) return;
+	    for(var i = 0; i < that.applications.length; i++){//applicationの場合
+	      if(node == that.applications[i].properties.name){
+		var application = that.applications[i];
+		this.appSaveMenu = new dijit.MenuItem(
+		  {label: "save", onClick: function(){that.saveAjml(application);}});      
+		this.addChild(this.appSaveMenu);
+		this.appGenerateMenu = new dijit.MenuItem(
+		  {label: "generateWar", onClick: function(){that.generate(application);}});
+		this.addChild(this.appGenerateMenu);
+	      }
+	    }	   
+	  },
+	  onClose: function(){
+	    this.appSaveMenu.destroy();
+	    this.appGenerateMenu.destroy();
+	  }
+	});
+      this.contextMenu.bindDomNode(this.projectTree.domNode);
+      this.contextMenu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
     },
     /**
      *新しいアプリケーションプロジェクトを作成。 
      * @param {String}  appName アプリケーション名
      */
     newApplication : function(appName){
+      var that = this;
       var application =  new ajweb.editor.model.Application(
 	{
 	  id: "application_" + appName,
@@ -409,7 +383,23 @@ dojo.declare(
       var events = this.createModel("events", {}, application);
       this.eventTc.currentModel = events;
       var rooPanel = this.createModel("panel", {}, interfaces, this.centerTc);
-
+      //メニューに追加
+      var appSaveMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.saveAjml(application);
+	  }
+	});      
+      that.saveMenu.addChild(appSaveMenu);
+      var appGenerateMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.generate(application);
+	  }
+	});
+      that.generateWarMenu.addChild(appGenerateMenu);
       return application;
     },
     /**
@@ -446,20 +436,28 @@ dojo.declare(
       return application;
     },
     /**
-     * プロジェクトの一時保存
+     * アプリケーションをajmlとして一時保存
+     * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
     saveAjml: function(applicationModel){
-      var xml = ajweb.editor.modelToSaveXml(applicationModel);
+      var xml = ajweb.xml.createDocument("ajml");
+      var rootElement = xml.documentElement; 
+      var applicationElement = applicationModel.toSaveXMLElement(xml);
+      rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
       this.sendForm(content, "ajml", applicationModel.properties.name);
     },
     /**
-     * モデルから、ajmlまたは、warファイルを作成 
+     * モデルから、warファイルを作成 
+     * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
-    generate:  function(model, outputType, filename){
-      var xml = ajweb.editor.modelToXml(model);
+    generate:  function(applicationModel){
+      var xml = ajweb.xml.createDocument("ajml");
+      var rootElement = xml.documentElement;
+      var applicationElement = applicationModel.toXMLElement(xml);
+      rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "war", model.properties.name);
+      this.sendForm(content, "war", applicationModel.properties.name);
     },
     /**
      * 文字列ajmlを送信して結果fileme.typeを受け取る
@@ -473,17 +471,11 @@ dojo.declare(
 	  style: { visibility: "hidden"}      
 	});
       generateForm.placeAt(document.body);
-      var filenameTextBox = new dijit.form.TextBox(
-	{id: "filename", name: "filename", value: ""}
-      );
+      var filenameTextBox = new dijit.form.TextBox({id: "filename", name: "filename", value: ""});
       filenameTextBox.placeAt(generateForm.domNode);
-      var outputTypeTextBox = new dijit.form.TextBox(
-	{id: "type", name: "type", value: ""}
-      );
+      var outputTypeTextBox = new dijit.form.TextBox({id: "type", name: "type", value: ""});
       outputTypeTextBox.placeAt(generateForm.domNode);
-      var ajmlTextArea = new dijit.form.Textarea(
-	{id: "ajml", name: "content", value: ""}
-      );
+      var ajmlTextArea = new dijit.form.Textarea({id: "ajml", name: "content", value: ""});
       ajmlTextArea.placeAt(generateForm.domNode);
       filenameTextBox.setValue(filename);
       ajmlTextArea.setValue(ajml);

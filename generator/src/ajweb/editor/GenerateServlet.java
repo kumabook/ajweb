@@ -33,20 +33,14 @@ import ajweb.servlet.AbstractServlet;
 public class GenerateServlet extends AbstractServlet {
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	    {	
-			System.out.println("doGet");
-			//resp.setContentType("text/html");
-			//resp.setCharacterEncoding("UTF-8");
-			//PrintWriter out = resp.getWriter();
-			//ArrayList<HashMap<String, String>> result;
+//			System.out.println("doGet");
 			download(req, resp);
-			//doPost(req, resp);
-			
-	     }
+		}
 
 
 		protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 				throws ServletException, IOException {
-			System.out.println("doPost");
+			System.out.println("GenerateServlet: doPost ");
 			String outputType = req.getParameter("type");
 			if(outputType.equals("ajml")){
 				download(req, resp);
@@ -54,13 +48,6 @@ public class GenerateServlet extends AbstractServlet {
 			else if(outputType.equals("war")){
 				generate(req, resp);
 			}
-/*			resp.setContentType("text/html");
-			resp.setCharacterEncoding("UTF-8");
-			PrintWriter out = resp.getWriter();
-			String action = req.getParameter("action");
-			System.out.println("action " + action);
-			ArrayList<HashMap<String, String>> result;*/
-			
 		}
 		
 		/**
@@ -73,7 +60,6 @@ public class GenerateServlet extends AbstractServlet {
 		
 		private void download(HttpServletRequest request,
 				HttpServletResponse response) throws ServletException, IOException {
-
 			InputStream in = null;
 			
 			PrintWriter writer = response.getWriter();
@@ -102,11 +88,10 @@ public class GenerateServlet extends AbstractServlet {
 				transformer.transform(new DOMSource(doc), result);
 				
 			} catch (Exception e){
-					
 					response.setContentType("text/html");
 					response.setCharacterEncoding("UTF-8");
 					writer.println(e.toString());
-					//e.printStackTrace();
+					e.printStackTrace();
 			}
 		}
 		
@@ -118,8 +103,6 @@ public class GenerateServlet extends AbstractServlet {
 			try {
 				String ajml = request.getParameter("content");
 				String filename = request.getParameter("filename");
-//				Config.appName = filename;
-//				ajweb.generator.Main.appName = Config.appName;
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes());
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -130,8 +113,7 @@ public class GenerateServlet extends AbstractServlet {
 				TransformerFactory tf = TransformerFactory.newInstance();
 								
 				Transformer transformer = tf.newTransformer();
-				//transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-				
+//				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 				transformer.setOutputProperty(OutputKeys.INDENT, "2");
@@ -144,7 +126,7 @@ public class GenerateServlet extends AbstractServlet {
 				}
 				else 
 					Config.templateFolder = "../generator/resources/template";
-//				ajweb.generator.Main.generate(filename + ".ajml");
+
 				ajweb.generator.Compiler.generateWar(new File(filename+".ajml"), new File(filename+".war"));
 				
 				InputStream warIn = new FileInputStream(filename + ".war");
@@ -160,9 +142,6 @@ public class GenerateServlet extends AbstractServlet {
 					response.setContentType("text/html");
 					response.setCharacterEncoding("UTF-8");
 					e.printStackTrace();
-					
-					//PrintWriter res_writer = response.getWriter();
-					//res_writer.print(e.toString());
 			}
 		}
 		protected HashMap<String, String> getDatabaseProperties(String tablename){

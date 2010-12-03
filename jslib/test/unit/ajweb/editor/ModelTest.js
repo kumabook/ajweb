@@ -41,7 +41,8 @@ function testToSaveXMLElement(){
 
 
 function testXmlToModel(){
-var editor = new ajweb.editor.Editor();
+var editor = new ajweb.editor.Editor("test");
+
   var xml_str = 
 '<?xml version="1.0" encoding="UTF-8"?>' +
  '<ajml>' +

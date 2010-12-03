@@ -306,19 +306,3 @@ ajweb.editor.modelCount = function(tagName){
   }
   return ajweb.editor.modelCounter[tagName]++;
 };
-
-ajweb.editor.modelToXml = function(model){
-  var xml = ajweb.xml.createDocument("ajml");
-  var rootElement = xml.documentElement;
-  var applicationElement = model.toXMLElement(xml);
-  rootElement.appendChild(applicationElement);
-  return xml;
-};
-
-ajweb.editor.modelToSaveXml = function(model){
-  var xml = ajweb.xml.createDocument("ajml");
-  var rootElement = xml.documentElement; 
-  var applicationElement = model.toSaveXMLElement(xml);
-  rootElement.appendChild(applicationElement);
-  return xml;
-};
