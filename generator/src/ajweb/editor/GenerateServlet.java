@@ -31,9 +31,6 @@ import ajweb.servlet.AbstractServlet;
 
 @SuppressWarnings({"all"})
 public class GenerateServlet extends AbstractServlet {
-
-		
-
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	    {	
 			System.out.println("doGet");
@@ -50,7 +47,7 @@ public class GenerateServlet extends AbstractServlet {
 		protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 				throws ServletException, IOException {
 			System.out.println("doPost");
-			String outputType = req.getParameter("output_type");
+			String outputType = req.getParameter("type");
 			if(outputType.equals("ajml")){
 				download(req, resp);
 			}
