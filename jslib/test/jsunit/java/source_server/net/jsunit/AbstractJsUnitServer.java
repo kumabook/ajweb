@@ -100,6 +100,7 @@ public abstract class AbstractJsUnitServer {
 /** ajweb  test用のweb applicaitonコンテキストを追加**/
         
 		String basedir = System.getProperty("ajweb.jslib.basedir");
+		System.setProperty("ajweb.basedir", "../../../generator/");
         File webAppDir = new File(basedir + "/test/connect_test_app");
 		WebApplicationContext webapp = new WebApplicationContext();
 		System.out.println("app " + webAppDir.getName() + "  deploy on test server");

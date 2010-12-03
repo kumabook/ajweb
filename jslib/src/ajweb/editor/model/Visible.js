@@ -52,6 +52,9 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     */
     updateDom: function(){
       this.element.updateDom(this.properties);
+      for(var i = 0; i < this.children.length; i++){
+	this.children[i].updateDom();
+      }
     },
     /**
      * タブを閉じたあとに再びDOM要素表示する。modelができた状態でDOMを生成。

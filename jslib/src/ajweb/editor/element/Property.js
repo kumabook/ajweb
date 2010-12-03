@@ -38,8 +38,8 @@ dojo.declare("ajweb.editor.element.Property",
 	  value: properties.name /* no or empty value! */,
 	  style: {
 	    position : "absolute",
-	    width: "100px",
-	    top: "5px",
+	    width: "110px",
+	    top: "2px",
 	    left: "0px"
 	  },
 	  onChange: function(){
@@ -57,9 +57,9 @@ dojo.declare("ajweb.editor.element.Property",
 	  searchAttr: "name",
 	  style: {
 	    position : "absolute",
-	    width: "70px",
-	    top: "5px",
-	    right: "10px"
+	    width: "80px",
+	    top: "2px",
+	    right: "25px"
 	  },
 	  onChange: function(){
 	    that.model.properties.type = this.value;
@@ -70,21 +70,31 @@ dojo.declare("ajweb.editor.element.Property",
 	  id :this.id,
 	  style: {
 	    position : "absolute",
-	    width: parseInt(this.container.domNode.style.width) - 20 + "px",
-	    height: "35px",
-	    top: ((this.container.domNode.childNodes.length-1) * 30) + "px",
+	    width: parseInt(this.container.domNode.style.width) - 10 + "px",
+	    height: "30px",
+	    top: (this.model.parent.children.length * 30) + "px",
 	    left: "10px"
 	  }
 	});
       this.widget.domNode.appendChild(propName.domNode);
       this.widget.domNode.appendChild(filteringSelect.domNode);
-      this.container.domNode.style.height = (this.container.domNode.childNodes.length-1) * 30 + 35 + "px";
+      this.container.domNode.style.height = (this.model.parent.children.length) * 30 + 35 + "px";
       return this.widget.domNode;
     },
+    removeDom: function(){
+      this.widget.destroyRecursive();
+      this.model.parent.updateDom();
+    },
 
-    updateDom: function(properties){
+    updateDom: function(){
+      for(var i = 0; i < this.model.parent.children.length; i++){
+	if(this.model == this.model.parent.children[i]){
+	  this.widget.domNode.style.top = (i+1) * 30 + "px";
+	}
+      }
     },
     startup: function(){
+      this.inherited(arguments);
       this.widget.startup();
     }
   }

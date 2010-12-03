@@ -153,7 +153,7 @@ public class TestServlet extends AbstractServlet {
 				else if(action.equals("login")){
 					boolean _result = false;
 					try {
-						_result = users.login((String) param.get("userid"), (String) param.get("password"));
+						_result = users.login((String) param.get("user_id"), (String) param.get("password"));
 					} catch (Exception e) {
 						_result = false;
 					}

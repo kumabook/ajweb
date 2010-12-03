@@ -23,6 +23,7 @@ public class Template {
 		
 		InputStream is = null;
 		JarClassLoader jcl = new JarClassLoader();
+		//System.out.println(new File(Config.templateFolder + "/" + templateName + ".template").getAbsolutePath());
 		if(jcl.isLaunchedFromJar())
 			is = getClass().getClassLoader().getResourceAsStream("resources/template/" + templateName + ".template");
 		else

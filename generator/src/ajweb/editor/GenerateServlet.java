@@ -138,7 +138,12 @@ public class GenerateServlet extends AbstractServlet {
 				
 				
 				transformer.transform(new DOMSource(doc), result);
-				Config.templateFolder = "../generator/resources/template";
+				String basedir = System.getProperty("ajweb.basedir");
+				if(basedir != null){
+					Config.setBaseDir(basedir);
+				}
+				else 
+					Config.templateFolder = "../generator/resources/template";
 //				ajweb.generator.Main.generate(filename + ".ajml");
 				ajweb.generator.Compiler.generateWar(new File(filename+".ajml"), new File(filename+".war"));
 				

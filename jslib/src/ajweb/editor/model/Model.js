@@ -79,6 +79,13 @@ dojo.declare("ajweb.editor.model.Model", null,
       }
     },
     /**
+     * モデルを表すDOMノードを削除する。モデルを削除するタイミングでよびだされる。
+     * サブクラスでオーバライドする。
+     */
+    removeDom: function(){
+      
+    },
+    /**
      * DOM要素のイベント登録や、スタイルの調整を行う。サブクラスでオーバーライドする。
      */
     startup: function(){

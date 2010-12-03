@@ -160,7 +160,7 @@ dojo.addOnLoad(
 
     ajweb.addEvent(loginButton, "onClick", true, function(){
       ajweb.data.login(
-	{ userid: userIdTextbox.getValue(), password: passwordTextbox.getValue()},
+	{ user_id: userIdTextbox.getValue(), password: passwordTextbox.getValue()},
 	function(item){
 	  if(item.result){
 	    rootFrame.selectPanel({panel:roomSelectPanel});

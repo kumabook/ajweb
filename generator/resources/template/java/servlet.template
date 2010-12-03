@@ -132,15 +132,7 @@ ${CHECK}
 				}
 				out.print("{ result: " + _result + "}");
 			}
-			else if(action.equals("login")){
-				boolean _result = false;
-				try {
-					_result = users.login((String) param.get("userid"), (String) param.get("password"));
-				} catch (Exception e) {
-					_result = false;
-				}
-				out.print("{ result: " + _result + "}");
-			}
+${LOGIN}
 		}
 	}
 

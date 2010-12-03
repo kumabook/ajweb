@@ -152,7 +152,7 @@ public class Compiler {
 			if(jcl.isLaunchedFromJar())
 				classpath += "." + fs + "ajweb.jar" + ps;
 			else
-				classpath += "." + fs + "classes" + ps;
+				classpath += Config.baseDir + fs + "classes" + ps;
 			
 
 			File[] libfiles_web_inf = new File(web_infDir+fs+"lib").listFiles();
@@ -173,7 +173,10 @@ public class Compiler {
 				}
 			}
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			int result = compiler.run(null, null, /*null,*/ new ByteArrayOutputStream(), args.toArray(new String[0]));
+			int result = compiler.run(null, null, 
+//						null, 
+					new ByteArrayOutputStream(),
+					args.toArray(new String[0]));
 			
 			//int result = com.sun.tools.javac.Main.compile(args.toArray(new String[0]));
 			

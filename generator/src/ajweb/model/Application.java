@@ -58,9 +58,9 @@ public class Application implements AbstractModel{
 			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "derby.jar"),   web_inf_libDir + "derby.jar");
 			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "jetty-all-7.0.2.v20100331.jar"),   web_inf_libDir + "jetty-all-7.0.2.v20100331.jar");
 		}
-		else
-			FileUtils.copyDir("lib/servlet",  outDir + "/WEB-INF/lib/","jar");
-
+		else{
+			FileUtils.copyDir(Config.libDir + "/servlet",  outDir + "/WEB-INF/lib/","jar");
+		}
 				
 	}
 

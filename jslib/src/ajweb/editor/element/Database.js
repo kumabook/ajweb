@@ -40,7 +40,7 @@ dojo.declare("ajweb.editor.element.Database",
 	  id : this.id,
 	  style:{
 	    position: "absolute",
-	    width: "220px",
+	    width: "240px",
 	    height: "40px",
 	    top: properties.top,
 	    left: properties.left,
@@ -62,6 +62,8 @@ dojo.declare("ajweb.editor.element.Database",
 	  }
 	});
       this.tablename.innerHTML  = properties.tablename;
+      
+      this.domNode.style.height = (this.model.children.length) * 30 + 35 + "px";
     },
     removeDom: function(){
       this.widget.destroyRecursive();
