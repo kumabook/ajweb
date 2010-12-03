@@ -4,6 +4,8 @@ package ajweb.utils;
 import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+
 import org.junit.Test;
 import ajweb.Config;
 
@@ -13,7 +15,7 @@ public class FileUtilsTest {
 	
 	@Test
 	public void testCopy() throws IOException {
-		Config.isStandardOutput = false;
+		Config.out = new PrintStream("test/temp/test.log");
 		String from = "test/file/from";
 		String to = "test/file/to";
 		String type = "txt";

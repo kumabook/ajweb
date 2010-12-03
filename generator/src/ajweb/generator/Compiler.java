@@ -100,15 +100,12 @@ public class Compiler {
 		
 		if(result){
 			FileUtils.compression(new File(outDir), warFile);
-			if(Config.isStandardOutput)
-				System.out.println("compress "  + outDir +"/* to war file");
+			Config.out.println("compress "  + outDir +"/* to war file");
 			
 			FileUtils.delete(new File(outDir));
-			if(Config.isStandardOutput)
-				System.out.println("cleanup work directory");
+			Config.out.println("cleanup work directory");
 		
-			if(Config.isStandardOutput)
-				System.out.println("generate app complete: " + warFile.getPath());
+			Config.out.println("generate app complete: " + warFile.getPath());
 		}
 		
 	}
@@ -124,9 +121,8 @@ public class Compiler {
 		app.generate(outDir);
 		boolean result = javaCompile(outDir);
 		if(result){
-			if(Config.isStandardOutput)
-				System.out.println("generate app complete: " + outDir);
-			}
+			Config.out.println("generate app complete: " + outDir);
+		}
 	}
 	
 	/**
@@ -138,8 +134,8 @@ public class Compiler {
 	public static boolean javaCompile(String outDir) throws Exception{
 		String fs = System.getProperty("file.separator");
 		String ps = System.getProperty("path.separator");
-		if(Config.isStandardOutput)
-			System.out.println("compile  Java File :");// + web_infDir + "classes/*");
+		
+		Config.out.println("compile  Java File :");// + web_infDir + "classes/*");
 		
 		String web_infDir = outDir +  fs + "WEB-INF";
 		String sourceDir = web_infDir + fs + "src" + fs;
@@ -173,19 +169,18 @@ public class Compiler {
 			for(int i = 0; i < srcFiles.length; i++){
 				if(srcFiles[i].getPath().endsWith(".java")){
 					args.add(srcFiles[i].getPath());
-					if(Config.isStandardOutput)
-						System.out.println("                    " + srcFiles[i].getPath());
+					Config.out.println("                    " + srcFiles[i].getPath());
 				}
 			}
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			int result = compiler.run(null, null, /*null,*/new ByteArrayOutputStream(), args.toArray(new String[0]));
+			int result = compiler.run(null, null, /*null,*/ new ByteArrayOutputStream(), args.toArray(new String[0]));
 			
 			//int result = com.sun.tools.javac.Main.compile(args.toArray(new String[0]));
-			if(Config.isStandardOutput){
-				if(result==0)
-				System.out.println("compile complete. generate class files.");
-				else 
-					System.out.println("sorry compile incomplete.");
+			
+			if(result==0)
+				Config.out.println("compile complete. generate class files.");
+			else {
+				Config.out.println("sorry compile incomplete.");
 			}
 			return (result==0);
 		}

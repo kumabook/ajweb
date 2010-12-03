@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -19,7 +20,7 @@ public class ApplicationTest{
 	static String outDir;
 	@BeforeClass
 	public static void setUp() throws Exception{
-		Config.isStandardOutput = false;
+		Config.out = new PrintStream("test/temp/test.log");
 		Config.workDir = "test/temp/";
 		
 		try {

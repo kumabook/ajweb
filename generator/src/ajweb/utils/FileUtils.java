@@ -87,8 +87,8 @@ public class FileUtils {
         destChannel.close();
     }
     
-    if(Config.isStandardOutput)
-    	System.out.println("generate " + srcPath + " to " +  destPath);
+    	
+    Config.out.println("generate " + srcPath + " to " +  destPath);
     Log.finest("copy " + srcPath + " to " + destPath);
     
 	}

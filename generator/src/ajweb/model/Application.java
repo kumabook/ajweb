@@ -69,8 +69,8 @@ public class Application implements AbstractModel{
 		html_template = new Template("resources/html");
 		FileUtils.writeFile(outDir + "/index.html", html_template.source, Config.isOverWrite);
 		Log.logger.fine("generate " + outDir + "/index.html");
-		if(Config.isStandardOutput)
-			System.out.println("generate " + outDir + "/index.html");
+		
+		Config.out.println("generate " + outDir + "/index.html");
 	}
 	
 	public void cssGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
@@ -78,9 +78,8 @@ public class Application implements AbstractModel{
 		css_template = new Template("resources/css");
 		FileUtils.writeFile(outDir + "/index.css", css_template.source, Config.isOverWrite);
 		Log.logger.fine("generate " + outDir + "/index.css");
-		if(Config.isStandardOutput)
-			//System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.css");
-			System.out.println("generate " + outDir + "/index.css");
+					//System.out.println("generate " + workDir + FileUtils.fs + appName + "/index.css");
+		Config.out.println("generate " + outDir + "/index.css");
 	}
 
 	public void jsGenerate(String outDir) throws IOException{
@@ -119,8 +118,7 @@ public class Application implements AbstractModel{
 //		js_template.apply("ROOTELEMENT", rootElement);
 		FileUtils.writeFile(outDir + "/index.js", js_template.source, Config.isOverWrite);
 		Log.logger.fine("generate " + outDir + "/index.js");
-		if(Config.isStandardOutput)
-			System.out.println("generate " + outDir+ "/index.js");
+		Config.out.println("generate " + outDir+ "/index.js");
 	}
 	
 	public void databaseGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
@@ -128,8 +126,7 @@ public class Application implements AbstractModel{
 		for(int i = 0; i < databases.size(); i++){
 			FileUtils.writeFile(outDir+ "/WEB-INF"+fs+"src"+fs+"ajweb"+fs +"data"+fs+
 					databases.get(i).tablename + ".java", databases.get(i).toJavaSource(), Config.isOverWrite);
-			if(Config.isStandardOutput)
-				System.out.println("generate "+ outDir + fs+	"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "data" + 
+			Config.out.println("generate "+ outDir + fs+	"WEB-INF" + fs + "src" + fs + "ajweb" + fs + "data" + 
 						fs  + databases.get(i).tablename + ".java");			
 		}
 	}
@@ -137,17 +134,15 @@ public class Application implements AbstractModel{
 	public void servletGenerate(String outDir) throws IOException{
 
 		FileUtils.writeFile(outDir +"/WEB-INF/src/ajweb/servlet/AjWebServlet.java", databases.toServletSource(appName), Config.isOverWrite);
-		if(Config.isStandardOutput)
-			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
+		Config.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebApp.java");
 
 		FileUtils.writeFile(outDir + "/WEB-INF/src/ajweb/servlet/AjWebListener.java", databases.toListenerSource(), Config.isOverWrite);
-		if(Config.isStandardOutput)
-			System.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
+		
+		Config.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
 		
 		Template web_xml_template = new Template("resources/web.xml");
 		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source, Config.isOverWrite);
-		if(Config.isStandardOutput)
-			System.out.println("generate " + outDir + "/WEB-INF/web.xml");
+		Config.out.println("generate " + outDir + "/WEB-INF/web.xml");
 	}
 	
 	public String toString(){

@@ -20,9 +20,9 @@ var editor = new ajweb.editor.Editor();
       editor: editor
     });
   editor.application = application;
-  var interfaces = ajweb.editor.createModel("interfaces", {}, application);
-  var databases = ajweb.editor.createModel("databases", {}, application, application.editor.centerTc);
-  var events = ajweb.editor.createModel("events", {}, application);
+  var interfaces = editor.createModel("interfaces", {}, application);
+  var databases = editor.createModel("databases", {}, application, application.editor.centerTc);
+  var events = editor.createModel("events", {}, application);
 
   var doc = ajweb.xml.createDocument("ajml");
   doc.documentElement.appendChild(application.toXMLElement());

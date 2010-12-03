@@ -115,9 +115,6 @@ public class GenerateServlet extends AbstractServlet {
 					
 			OutputStream out = response.getOutputStream();
 			InputStream in = null;
-			
-			
-			
 			try {
 				String ajml = request.getParameter("content");
 				String filename = request.getParameter("filename");
@@ -143,7 +140,7 @@ public class GenerateServlet extends AbstractServlet {
 				transformer.transform(new DOMSource(doc), result);
 				Config.templateFolder = "../generator/resources/template";
 //				ajweb.generator.Main.generate(filename + ".ajml");
-				ajweb.generator.Compiler.generateWar(new File(ajml+".ajml"), new File(filename+".war"));
+				ajweb.generator.Compiler.generateWar(new File(filename+".ajml"), new File(filename+".war"));
 				
 				InputStream warIn = new FileInputStream(filename + ".war");
 				response.setContentType("application/octet-stream");

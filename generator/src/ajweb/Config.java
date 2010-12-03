@@ -1,5 +1,7 @@
 package ajweb;
 
+import java.io.PrintStream;
+
 import ajweb.utils.FileUtils;
 
 public class Config {
@@ -13,7 +15,8 @@ public class Config {
 	public static String serverLogDir = logDir + fs + "";
 	public static String serveletLogDir = logDir + fs + "";
 	public static boolean isOverWrite = true;
-	public static boolean isStandardOutput = true;
+	//public static boolean isStandardOutput = true;
+	public static PrintStream out = System.out;
 	public static long TIMEOUT = 60000;//ポーリングのタイムアウトmillsecond
 	public static int port = 8080;
 	

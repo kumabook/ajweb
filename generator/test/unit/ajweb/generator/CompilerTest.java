@@ -3,6 +3,8 @@ package ajweb.generator;
 import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -16,7 +18,8 @@ public class CompilerTest {
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception{
-		Config.isStandardOutput = false;
+		
+		Config.out = new PrintStream("test/temp/test.log");
 		Config.workDir = "test/temp/";
 		
 		

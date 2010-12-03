@@ -248,7 +248,7 @@ ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
 	    identifier: "name",
 	    label: "name",
 	    items: [
-	      { name: "int" }, { name: "string" },{ name: "date" },{name: "datetime"}
+	      { name: "int" }, { name: "string" }, { name: "password" },{ name: "date" },{name: "datetime"}
 	    ]
 	  }
 	});

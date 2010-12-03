@@ -26,7 +26,7 @@ public class Template {
 		if(jcl.isLaunchedFromJar())
 			is = getClass().getClassLoader().getResourceAsStream("resources/template/" + templateName + ".template");
 		else
-			is = new FileInputStream(Config.templateFolder + templateName + ".template");
+			is = new FileInputStream(Config.templateFolder + "/" + templateName + ".template");
 		
 		
 		BufferedReader reader = 
@@ -57,7 +57,6 @@ public class Template {
 		if(this.param.containsKey(key)){
 
 			this.param.put(key, value);
-			
 			value = value.replaceAll("\\$", "\\\\\\$");// 置き換える文字列の中の$をエスケープ
 			
 			Pattern pattern = Pattern.compile("\\$\\{" + key + "\\}");

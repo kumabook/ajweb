@@ -81,7 +81,7 @@ ajweb.xml.getCRChars = function(){
   if (theAgent.indexOf("Win") >=0){
     return "\r\n";
   } else if(theAgent.indexOf("Mac") >=0){
-    return "\r";
+    return "\n"; //"\r" OSXからは\n?
     
   } else {
     return "\n";

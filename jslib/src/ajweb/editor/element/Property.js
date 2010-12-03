@@ -7,7 +7,10 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.editor.element.Element");
 
 dojo.provide("ajweb.editor.element.Property");
-dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
+dojo.declare("ajweb.editor.element.Property", 
+	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.Removable
+	      ],
   /** @lends ajweb.editor.element.Property.prototype */
   {
     /**
@@ -78,6 +81,7 @@ dojo.declare("ajweb.editor.element.Property", ajweb.editor.element.Element,
       this.container.domNode.style.height = (this.container.domNode.childNodes.length-1) * 30 + 35 + "px";
       return this.widget.domNode;
     },
+
     updateDom: function(properties){
     },
     startup: function(){

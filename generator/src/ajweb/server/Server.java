@@ -41,10 +41,21 @@ public class Server {
 		for(int i = 0; i < apps.length; i++){//webappディレクトリがあれば、追加
 			if(apps[i].isDirectory() && !apps[i].getName().matches("\\..*|log")){
 				WebAppContext webapp = new WebAppContext();
-				System.out.println("app " + apps[i].getName() + "  deploy on test server");
 				webapp.setContextPath("/" + apps[i].getName());
 				webapp.setDescriptor(apps[i].getAbsolutePath() + "/WEB-INF/web.xml");
 				webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
+				File libDir = new File(apps[i].getAbsolutePath() + "/WEB-INF/lib/");
+				webapp.setExtraClasspath("classes");
+				File[] libFiles = libDir.listFiles();
+				for(int j = 0; j < libFiles.length; j++){
+					if(libFiles[j].getName().matches(".*\\.jar")){
+						webapp.setExtraClasspath(libFiles[j].getAbsolutePath());
+						// System.out.println(libFiles[j].getAbsolutePath());
+					}
+				}
+				
+				
+				
 				webapp.setParentLoaderPriority(true);
 				handlers.addHandler(webapp);
 			}

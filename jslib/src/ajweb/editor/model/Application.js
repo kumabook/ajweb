@@ -6,7 +6,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
   { 
     constructor: function(){
       this.app = this.editor.projectStore.newItem(
-	{name: this.properties.appName, modelType: "application", modelId: this.id});
+	{name: this.properties.name, modelType: "application", modelId: this.id});
       this.editor.projectTreeModel.newItem(
 	{name: "データモデル", modelType: "databases", modelId: this.id+"_databases"}, this.app);
       this.editor.projectTreeModel.newItem(

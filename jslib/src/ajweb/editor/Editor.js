@@ -398,8 +398,8 @@ dojo.declare(
 	{
 	  id: "application_" + appName,
 	  tagName: "application",
-	  properties: { appName: appName},
-	  propertyList: ["appName"],
+	  properties: { name: appName},
+	  propertyList: ["name"],
 	  editor: this
 	});
       this.application = application;
@@ -426,7 +426,7 @@ dojo.declare(
 	if(child instanceof Element && child.tagName == "application"){
 	  applicationXml = child;
 	  for(var j = 0; j < applicationXml.attributes.length; j++){
-	    if(applicationXml.attributes[j].name == "appName")
+	    if(applicationXml.attributes[j].name == "name")
 	      appName = applicationXml.attributes[j].value;
 	  }
 	}
@@ -435,8 +435,8 @@ dojo.declare(
 	{
 	  id: "application" + appName,
 	  tagName: "application",
-	  properties: { appName: appName},
-	  propertyList: ["appName"],
+	  properties: { name: appName},
+	  propertyList: ["name"],
 	  editor: this
 	});
       this.application = application;
@@ -448,10 +448,10 @@ dojo.declare(
     /**
      * プロジェクトの一時保存
      */
-    saveAjml: function(model){
-      var xml = ajweb.editor.modelToSaveXml(model);
+    saveAjml: function(applicationModel){
+      var xml = ajweb.editor.modelToSaveXml(applicationModel);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "ajml", model.properties.appName);
+      this.sendForm(content, "ajml", applicationModel.properties.name);
     },
     /**
      * モデルから、ajmlまたは、warファイルを作成 
@@ -459,7 +459,7 @@ dojo.declare(
     generate:  function(model, outputType, filename){
       var xml = ajweb.editor.modelToXml(model);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "war", model.properties.appName);
+      this.sendForm(content, "war", model.properties.name);
     },
     /**
      * 文字列ajmlを送信して結果fileme.typeを受け取る
@@ -564,7 +564,7 @@ dojo.declare(
 	      item,
 	      function(items){
 		for(var i = 0; i < items.length; i++){
-		  if(items[i].name == that.application.properties.appName){
+		  if(items[i].name == that.application.properties.name){
 		    that.projectTreeModel.getChildren(
 		      items[i],
 		      function(_items){
