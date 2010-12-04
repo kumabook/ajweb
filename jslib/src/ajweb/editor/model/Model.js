@@ -55,6 +55,10 @@ dojo.declare("ajweb.editor.model.Model", null,
        */
       this.parent = opt.parent;
       /**
+       *　アプリケーションモデルへの参照
+       */
+      this.application = opt.application;
+      /**
        * GUIへの参照
        */
       this.editor = opt.editor;

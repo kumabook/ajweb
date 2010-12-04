@@ -1,10 +1,13 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
+dojo.require("ajweb.editor.element.Drawable");
+//dojo.require("dojox.gfx");
 
 dojo.provide("ajweb.editor.element.Event");
 dojo.declare("ajweb.editor.element.Event", [
 	       ajweb.editor.element.Element,
-	       ajweb.editor.element.DndEnable],
+	       ajweb.editor.element.DndEnable
+	     ],
   /** @lends ajweb.editor.element.Event.prototype */
   {
     /**
@@ -32,6 +35,7 @@ dojo.declare("ajweb.editor.element.Event", [
 	  content: this.id,
 	  title: properties.title,
 	  closable: false,
+	  doLayout: false,
 	  style:{
 	    position: "absolute",
 	    top: "0px",
@@ -41,12 +45,13 @@ dojo.declare("ajweb.editor.element.Event", [
       return this.widget.domNode;
     },
     updateDom: function(properties){
-
+    },
+    removeDom: function(){
+      this.container.removeChild(this.widget);
+      this.widget.destroyRecursive();
     },
     startup: function(){
       this.inherited(arguments);
     }
   }
 );
-
-

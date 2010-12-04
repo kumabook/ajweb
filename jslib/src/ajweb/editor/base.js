@@ -20,7 +20,7 @@ ajweb.editor.COMLIST =  [
   },
   {
     name: "Function",
-    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "custom"},{name: "local"},{name: "param"}]
+    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"},{name: "param"}]
   }
 ];
 /**
@@ -182,10 +182,21 @@ ajweb.editor.MODELLIST =  [
     paramList: ["tableName"]
   },
   {
-    name: "insert",
+    name: "action",
     modelType: "action",
     modelClass: "Action",
     elementClass: "Action",
+    acceptModelType: ["func"],
+    propertyList: ["tagName"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
+  },
+  {
+    name: "insert",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Func",
     acceptModelType: ["param"],
     propertyList: ["tagName", "id"],
     eventList: [],
@@ -194,21 +205,20 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name: "update",
-    modelType: "action",
-    modelClass: "Action",
-    elementClass: "Action",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Func",
     acceptModelType: ["param"],
     propertyList: ["tagName", "id"],
     eventList: [],
     defaultProperties: {},
     paramList: ["tableName"]
   },
-  
   {
     name: "delete",
-    modelType: "action",
-    modelClass: "Action",
-    elementClass: "Action",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Func",
     acceptModelType: ["param"],
     propertyList: ["tagName", "id"],
     eventList: [],
@@ -216,11 +226,22 @@ ajweb.editor.MODELLIST =  [
     paramList: ["tableName"]
   },
   {
-    name: "value",
-    modelType: "action",
-    modelClass: "Action",
-    elementClass: "Action",
+    name: "setValue",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Func",
     acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
+  },
+  {
+    name: "branch",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Func",
+    acceptModelType: ["condition"],
     propertyList: ["tagName", "id"],
     eventList: [],
     defaultProperties: {},
@@ -236,6 +257,76 @@ ajweb.editor.MODELLIST =  [
     eventList: [],
     defaultProperties: {},
     paramList: ["tableName"]
+  },
+{
+    name: "condition",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: ["condition"],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+{
+    name: "and",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: ["condition"],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "or",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: ["condition"],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "not",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: ["condition"],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "eq",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "lt",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "gt",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "Condition",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
   }
 ];
 

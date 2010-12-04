@@ -15,6 +15,7 @@ dojo.declare("ajweb.editor.element.Resizable", null,
        */
       this.resizeDomNode = this.createResizeDomNode();
     },
+    minSize : 10,
     /**
      * リサイズ用のDOMノードを返す。サブクラスでオーバーライド。
      */
@@ -33,7 +34,7 @@ dojo.declare("ajweb.editor.element.Resizable", null,
     * ドラッグでリサイズ可能にする
     */
     enableDragResize: function(){
-
+      var minSize = this.minSize;
       this.drag_resize_connection
 	= dojo.connect(this.resizeDomNode, "onmousedown", this,
 	function(e){
@@ -46,12 +47,14 @@ dojo.declare("ajweb.editor.element.Resizable", null,
 	  var width = parseInt(properties.width);
 	  var height = parseInt(properties.height);
 	  var resize = function(e){
-	    var dx = e.clientX - x;
-	    var dy = e.clientY - y;
-	    domNode.style.width = (width + dx) + "px";
-	    domNode.style.height = (height + dy) + "px";
-	    properties.width = (width + dx) + "px";
-	    properties.height = (height + dy) + "px";
+	    var newWidth = width + e.clientX - x;
+	    var newHeight = height + e.clientY - y;
+	    newWidth = newWidth > minSize ? newWidth : minSize;
+	    newHeight = newHeight > minSize ? newHeight : minSize;
+	    domNode.style.width = newWidth + "px";
+	    domNode.style.height = newHeight + "px";
+	    properties.width = newWidth + "px";
+	    properties.height = newHeight + "px";
 	  };
 
 	  var move_connection = dojo.connect(document, "onmousemove", null, resize);

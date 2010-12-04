@@ -39,7 +39,7 @@ dojo.declare("ajweb.editor.element.Property",
 	  style: {
 	    position : "absolute",
 	    width: "110px",
-	    top: "2px",
+	    top: "5px",
 	    left: "0px"
 	  },
 	  onChange: function(){
@@ -58,7 +58,7 @@ dojo.declare("ajweb.editor.element.Property",
 	  style: {
 	    position : "absolute",
 	    width: "80px",
-	    top: "2px",
+	    top: "5px",
 	    right: "25px"
 	  },
 	  onChange: function(){
@@ -70,7 +70,7 @@ dojo.declare("ajweb.editor.element.Property",
 	  id :this.id,
 	  style: {
 	    position : "absolute",
-	    width: parseInt(this.container.domNode.style.width) - 10 + "px",
+	    width: parseInt(this.container.domNode.style.width) - 15 + "px",
 	    height: "30px",
 	    top: (this.model.parent.children.length * 30) + "px",
 	    left: "10px"

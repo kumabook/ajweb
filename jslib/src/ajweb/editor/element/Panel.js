@@ -34,19 +34,22 @@ dojo.declare("ajweb.editor.element.Panel",
 	  id : this.id,
 	  title: this.id,
 	  closable: true,
-	  doLayout: false
+	  doLayout: false,
+	  onClose: function(){
+	    that.model.clearPropertiesView();
+	    that.model.clearEventView();
+	    for(var i = 0; i < that.model.children.length; i++){
+	      that.model.children[i].removeDom();
+	    }
+	    return true;
+	  }
 	});
       this.panel = new dijit.layout.ContentPane(
 	{
 	  id : this.id+ "_panel",
 	  style:{
 	    position: "absolute",
-	    width: properties.width,
-	    height: properties.height,
-	    top: "10%",
-	    left: "20%",
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
+	    border: "dashed 1px black"
 	  }
 	});
       this.widget.domNode.appendChild(this.panel.domNode);
@@ -57,12 +60,12 @@ dojo.declare("ajweb.editor.element.Panel",
 		  parseInt(this.model.properties.height)) / 2;
       var left = (parseInt(this.widget.domNode.style.width) -
 		  parseInt(this.model.properties.width)) / 2;
-      this.model.top = top;
-      this.model.left = left;
-      this.domNode.style.width = this.model.properties.width;
-      this.domNode.style.height = this.model.properties.height;
-      this.domNode.style.top = top;
-      this.domNode.style.left = left;
+      this.model.top = top > 0 ?  top : 2;
+      this.model.left = left > 0 ? left : 2;
+      this.panel.domNode.style.width = parseInt(this.model.properties.width) + "px";
+      this.panel.domNode.style.height = parseInt(this.model.properties.height) + "px";
+      this.panel.domNode.style.top = parseInt(this.model.top) + "px";
+      this.panel.domNode.style.left = parseInt(this.model.left) + "px";
     },
     createDndDomNode: function(){
       return this.domNode;

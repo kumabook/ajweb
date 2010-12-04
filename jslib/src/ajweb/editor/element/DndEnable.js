@@ -46,22 +46,27 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
 	    var modelInfo = ajweb.editor.getModelInfo(nodes[0].childNodes[2].childNodes[2].innerHTML);
 	    return that.checkAcceptance(modelInfo.modelType);
 	  },
-	  onDrop: function(sources, nodes, copy){
+	  onDrop: function(sources, nodes, copy){ 
 	    var name = nodes[0].childNodes[2].childNodes[2].innerHTML;
-	    that.model.editor.createModel(
-	      name,
-	      {
-		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(that.model.element.domNode),
-		left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(that.model.element.domNode)
-	      },
-	      that.model,
-	      that.model.element,
-	      that.model.editor.propertyDataStore,
-	      that.model.editor.eventTc
-	    );
+	    that.onDrop(name); 
 	  }
 	}
       );
+    },
+    /**
+     * ドロップ時に呼び出されるメソッド。
+     * @param {String} name ドラッグ&ドロップされツリー上の要素の文字列
+     */
+    onDrop: function(name){
+	    this.model.editor.createModel(
+	      name,
+	      {
+		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(this.model.element.domNode),
+		left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(this.model.element.domNode)
+	      },
+	      this.model,
+	      this.model.element
+	    );
     },
     /**
     * ドラッグアンドドロップ不可能にする
@@ -75,8 +80,3 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
     }
   }
 );
-
-
-
-
-

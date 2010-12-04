@@ -41,16 +41,13 @@ dojo.declare("ajweb.editor.element.Element", null,
        */
       this.domNode = this.createDom(opt.properties); 
 
-      if(!this.container)
-	this.container = this.model.editor.centerTc;
       if(this.container instanceof ajweb.editor.element.Element){
 	this.container.domNode.appendChild(this.domNode);
       }
       else　{// centerTcの場合 プロジェクトエクスプローラーに反映
 	this.container.addChild(this.widget);
-
+	this.container.selectChild(this.widget);
       }
-
       ajweb.addElement(this);
     },
     /**

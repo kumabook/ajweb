@@ -80,6 +80,12 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       for(var i = 0; i < this.children.length; i++){
 	this.children[i].startup();
       }
-    }
+    },
+    /**
+     * ダミー
+     */
+    updatePropertiesView : function(){
+    },
+    updateEventView : function(){}
   }
 );

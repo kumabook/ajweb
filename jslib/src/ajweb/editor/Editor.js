@@ -29,10 +29,13 @@ dojo.require("ajweb.editor.model.Eventable");
 dojo.require("ajweb.editor.model.Database");
 dojo.require("ajweb.editor.model.Property");
 dojo.require("ajweb.editor.model.Event");
+dojo.require("ajweb.editor.model.Action");
+dojo.require("ajweb.editor.model.Func");
 dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
 dojo.require("ajweb.editor.element.Database");
+dojo.require("ajweb.editor.element.Condition");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
@@ -144,9 +147,14 @@ dojo.declare(
       this.mainBc.addChild(this.toolboxCp);
       this.rightBc.addChild(this.bottomTc);
       this.bottomTc.addChild(this.propertyCp);
-      this.bottomTc.addChild(this.eventTc);
+      this.bottomTc.addChild(this.eventTc);      
       this.bottomTc.addChild(this.logCp);
-      
+
+      this.bottomTc.selectChild(this.logCp);
+      this.bottomTc.selectChild(this.propertyCp);
+      this.bottomTc.selectChild(this.eventTc);
+
+
       this.outerBc.startup();
       this.mainBc.startup();
       this.rightBc.startup();
@@ -217,7 +225,7 @@ dojo.declare(
 	      }
 	      if(item.property != "tagName")//タグ名は変更不可
 		propertyDataStore.currentModel.properties[item.property] = item.value;
-	      console.fine("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
+//	      console.log("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
 	      propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
 	      propertyDataStore.currentModel.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
@@ -269,7 +277,7 @@ dojo.declare(
 	      if(!isContain){
 		var model = ajweb.getModelById(id);
 		if(model){
-		  model.reCreateDom();
+		  model.reCreateDom(that.centerTc);
 		  model.startup();
 		  that.centerTc.selectChild(id);
 		}
@@ -361,6 +369,10 @@ dojo.declare(
 	});
       this.contextMenu.bindDomNode(this.projectTree.domNode);
       this.contextMenu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
+
+      this.newApplication("chat");
+
+
     },
     /**
      *新しいアプリケーションプロジェクトを作成。 
@@ -511,19 +523,19 @@ dojo.declare(
       var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
       var propertyList = dojo.clone(modelInfo.propertyList);
       var defaultProperties = dojo.clone(modelInfo.defaultProperties);
-      
+
       if(properties){
 	if(!properties.id)
 	  properties.id = name + ajweb.editor.modelCount(name);
 	propertyList.push("id");
 	propertyList.push("top");
 	propertyList.push("left");
-	
 	for(var i = 0; i < propertyList.length; i++){
 	  if(properties[propertyList[i]])
 	    defaultProperties[propertyList[i]] = properties[propertyList[i]];
 	}
       }
+
       var newModel =  new ajweb.editor.model[ModelClass](
 	{
 	  id: properties.id,
@@ -534,10 +546,15 @@ dojo.declare(
 	  propertyList: modelInfo.propertyList,
 	  eventList: modelInfo.eventList,
 	  parent: parent,
+	  application: parent.application,
 	  container: container,
 	  editor: this
 	}
       );
+      if(name == "events")      
+	parent.application.events = newModel;
+
+
       this.addProjectTree(newModel);
       newModel.startup();
       return newModel;

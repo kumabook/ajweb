@@ -23,6 +23,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
        * @type HTMLElement
        */
       this.moveContainerDomNode = this.createMoveContainerDomNode();
+      this.count = 0;
      },
     /**
      * 移動用のDOM要素を返す。サブクラスでオーバーライド
@@ -47,6 +48,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
      */
     enableDragMove: function(){//改良の余地あり 
     //		 console.log(this.id + "   enableDragMove");
+
       this.drag_move_connection
 	= dojo.connect(this.moveTriggerDomNode, "onmousedown", this,
 	function(e){
@@ -66,10 +68,6 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	  if(!this.domNode.style.height) height = 0;
 	  else  height = parseInt(this.domNode.style.height);
 	  
-//	  left = parseInt(this.domNode.style.left) - e.clientX;
-//	  top = parseInt(this.domNode.style.top) - e.clientY;
-//	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(this.domNode.style.width);//ここにスクロールバーも計算にいれるとよい?
-//	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(this.domNode.style.height);
 	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
 	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
 	  var move = function(e){
@@ -82,15 +80,36 @@ dojo.declare("ajweb.editor.element.Movable", null,
 					this.domNode.style.top = _y + "px";
 	    }
 	    //				      console.log("drag move " + _x + "  " + _y);
+	    //lineがあれば更新
+//	    this.count++;
+	    if(this.container.draw!=undefined){// && this.count > 1){
+	      for(var i = 0; i < this.container.lines.length; i++){
+		if(this.container.lines[i].start == this.domNode 
+		   || this.container.lines[i].end == this.domNode){
+		  var newLine = this.container.draw(this.container.lines[i].start, this.container.lines[i].end);
+		  this.container.domNode.replaceChild(
+		    newLine.domNode,
+		    this.container.lines[i].domNode);
+		  this.container.lines[i] = newLine;
+	//	  this.count = 0;
+		}
+	      }
+	    }
 	  };
 	  var move_connection = dojo.connect(document, "onmousemove", this, move);
 	  var remove_connection  = dojo.connect(document, "onmouseup", this, function(e){
 						  dojo.disconnect(move_connection);
 						  dojo.disconnect(remove_connection);
-//						  this.model.properties.top = parseInt(this.domNode.style.top);
-//						  this.model.properties.left = parseInt(this.domNode.style.left);
+
+						  var container = this.container.domNode;
+						  var left = ajweb.editor.getX(this.domNode) - ajweb.editor.getX(container) + "px";
+						  var top = ajweb.editor.getY(this.domNode) - ajweb.editor.getY(container) + "px";
+						  this.model.properties.top = top;
+						  this.model.properties.left = left;
+
 						  this.model.updatePropertiesView();
 						  this.model.updateEventView();      
+
 						  e.preventDefault();
 						  e.stopPropagation();
 						});

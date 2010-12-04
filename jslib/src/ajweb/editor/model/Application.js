@@ -12,6 +12,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       this.editor.projectTreeModel.newItem(
 	{name: "UIモデル", modelType: "interfaces", modelId: this.id+"_interfaces"}, this.app);
       this.editor.projectStore.save();
+      this.application = this;
     }
   }
 );

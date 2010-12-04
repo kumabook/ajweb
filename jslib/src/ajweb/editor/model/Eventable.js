@@ -38,29 +38,20 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       this.events = this.createEventModel();
     },
     remove: function(){
-      this.inherited(arguments);
+      this.inherited(arguments);      
       this.removeEventModel();
+      this.editor.eventTc.currentModel = null;
+      this.clearPropertiesView();
+      this.editor.propertyDataStore.currentModel = null;
     },
     /**
      * プロパティエディターの値をこの要素のプロパティに更新する
      */
     updatePropertiesView : function(e){
 
-      var container = this.element.container.domNode;
-      var left = ajweb.editor.getX(this.element.domNode) - ajweb.editor.getX(container) + "px";
-      var top = ajweb.editor.getY(this.element.domNode) - ajweb.editor.getY(container) + "px";
-      this.properties.top = top;
-      this.properties.left = left;
-
       this.editor.propertyDataStore.currentModel = this;
-      var that = this;
-      this.editor.propertyDataStore.fetch({
-	onComplete: function(items, request){
-	  for(var i = 0; i < items.length; i++){
-	    that.editor.propertyDataStore.deleteItem(items[i]);
-	  }
-	}
-      });
+      this.clearPropertiesView();
+
       for(var i = 0; i < this.propertyList.length; i++){
 	var value = this.properties[this.propertyList[i]];
 	if(!value)
@@ -74,6 +65,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	e.preventDefault();
 	e.stopPropagation();
       }
+      this.element.updateDom(this.properties);
     },
     clearPropertiesView: function(){
       var that = this;
@@ -100,13 +92,19 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	    type: this.eventList[i],
 	    propertyList: ["type", "target"],
 	    properties: { title: this.eventList[i], target: this.id, type: this.eventList[i]},
-	    acceptModelType:["action"],
+	    acceptModelType: ["action"],
 	    container: this.editor.eventTc,
-	    parent: this.editor.eventTc.eventsModel,
+	    parent: this.application.events,
 	    elementClass: "event",
 	    editor: this.editor
 	  });
+	events[i].startup();
+
+	this.editor.createModel("condition", {top: "25px", left: "10px"}, events[i], events[i].element);
+	this.editor.createModel("action", {top: "100px", left: "100px"}, events[i], events[i].element);
+
       }
+      
       this.editor.eventTc.currentModel = this;
       return events;
     },
@@ -120,26 +118,33 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       this.clearEventView();
       for(i = 0; i < this.events.length; i++){
 	this.events[i].reCreateDom(this.editor.eventTc);
+	this.events[i].startup();
       }
       this.editor.eventTc.currentModel = this;
     },
+    /**
+     * イベントビューの内容をクリア(モデルは保持)。
+     */
     clearEventView :function(){
+      var i;
       var children = this.editor.eventTc.getChildren();
-      for(var  i = 0; i < children.length; i++){
+
+      for(i = 0; i < children.length; i++){///eventTc にmodelのリスト格納したほうがよいかも
+	if(this.editor.eventTc.resizeConnects)
+	  dojo.disconnect(this.editor.eventTc.resizeConnects[i]);
 	this.editor.eventTc.removeChild(children[i]);
-	children[i].destroy();
+	children[i].destroyRecursive();
       }
+      this.editor.eventTc.resizeConnects = [];
+      this.editor.eventTc.currentModel = null;
     },
+    /**
+     * モデルを削除
+     */
     removeEventModel: function(){
       for(var i = 0; i < this.eventList.length; i++){
 	this.events[i].remove();
       }
-    },
-    parse: function(xml){
-
     }
   }
 );
-
-
-
