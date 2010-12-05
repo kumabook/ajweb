@@ -8,9 +8,9 @@ dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Table");
 dojo.declare("ajweb.editor.element.Table", 
 	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable, 
-	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Resizable
+//	      ajweb.editor.element.DndEnable, 
+	      ajweb.editor.element.Movable
+//	      ajweb.editor.element.Resizable
 	     ],
   /** @lends ajweb.editor.element.Widget.prototype */
   {
@@ -34,20 +34,23 @@ dojo.declare("ajweb.editor.element.Table",
      */
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
-	{
-	    top: properties.top,
-	    left: properties.left,
+	{content: this.id,
+	  style: {
+	    position: "absolute",
+	    top: parseInt(properties.top) + "px", left: parseInt(properties.left) + "px",
 	    width: properties.width,
-	    height: properties.height
-	});
-      return this.widget.element;
+	    height: properties.height,
+	    border: "dashed 1px black"
+	  }});
+      return this.widget.domNode;
     },
     updateDom: function(properties){
       this.widget.set(
 	{
 	  style:{
 	    top: properties.top,
-	    left: properties.left
+	    left: properties.left,
+	    border: "dashed 1px black"
 	  },
 	  label: properties.content
 	});
@@ -57,7 +60,7 @@ dojo.declare("ajweb.editor.element.Table",
     },
     startup: function(){
       this.inherited(arguments);
-      this.widget.display();
+      this.widget.startup();
     }
   }
 );

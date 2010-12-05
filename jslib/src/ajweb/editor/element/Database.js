@@ -34,7 +34,8 @@ dojo.declare("ajweb.editor.element.Database",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      properties.tablename = this.id;
+      if(!properties.tablename)
+	properties.tablename = this.id;
       this.widget = new dijit.layout.ContentPane(
 	{
 	  id : this.id,

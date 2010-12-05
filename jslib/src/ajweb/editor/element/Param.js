@@ -1,87 +1,83 @@
-dojo.provide("ajweb.editor.FuncParamModel");
-dojo.require("ajweb.editor.Model");
+dojo.require("dijit.Dialog");
+dojo.require("dijit.form.Form");
+dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.FilteringSelect");
-dojo.declare("ajweb.editor.FuncParamModel", ajweb.editor.Model,
-	     { 
-	       constructor: function(opt)
-	       {
-	       },
-	       create: function(){
+dojo.require("dijit.layout.ContentPane");
 
-		 var stateStore = new dojo.data.ItemFileReadStore(
-		   {
-		     data:{
-		       identifier: "name",
-		       label: "name",
-		       items: [//データベースのスキーマを所得
-			 { name: "message" }, { name: "user" }, { name: "posted"}
-		       ]
-		     }});
-		 
-		 var filteringSelect = new dijit.form.FilteringSelect(
-		   {
-		     id: this.id + "select",
-		     name: "state",
-		     value: "int",
-		     store: stateStore,
-		     searchAttr: "name",
-		     style: {
-		       position : "absolute",
-		       width: "60px",
-		   //    height: this.properties.height,
-		       top: "0px",
-		       left: this.properties.left
-		     }
-		       //		       borderBottom: "solid 1px black"
-		   });
+dojo.require("ajweb.editor.element.Element");
+dojo.provide("ajweb.editor.element.Param");
+dojo.declare("ajweb.editor.element.Param", 
+	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.Removable
+	      ],
+  /** @lends ajweb.editor.element.Property.prototype */
+  {
+    /**
+     * Constructor
+     * @class モデルを表すDOMノードを管理するオブジェクト
+     * @constructs
 
-		 var propName = new dijit.form.TextBox(
-		   {
-		     name: this.id + "propName",
-		     value: "value" /* no or empty value! */,
-		     
-		     style: {
-		       position : "absolute",
-		       width: "80px",
-//		       height: this.properties.height,
-		       top: "0px",
-		       right: "0px"
+     * @param {String} opt.id ウィジェットID
+     * @param {String} opt.tagName XMLのタグ名
+     * @param {boolean} opt.resizable サイズが変更可能か
+     * @param {boolean} opt.movable 位置が変更可能か
+     * @param {DOM} opt.model
+     * @param {DOM} opt.container コンテナ要素
+     */
+    constructor: function(opt)
+    {},
+    /**
+     * DOM要素を作成し、this.domNodeにDOMノードを設定する。
+     */
+    createDom: function(properties){
+      var that = this;
+      var keyTextbox = new dijit.form.TextBox(
+	{
+	  name: this.id + "paramKeyTextbox",
+	  value: properties.name /* no or empty value! */,
+	  style: {
+	    position : "absolute",
+	    width: "110px",
+	    top: "5px",
+	    left: "0px"
+	  },
+	  onChange: function(){
+	    that.model.properties.name = this.value;
+	  }
 
-		       //		       borderBottom: "solid 1px black"
-		     }
-		   });
+	});
+      var value;
+      this.widget = new dijit.layout.ContentPane(
+	{
+	  id :this.id,
+	  style: {
+	    position : "absolute",
+	    width: parseInt(this.container.domNode.style.width) - 15 + "px",
+	    height: "30px",
+	    top: (this.model.parent.children.length * 30) + "px",
+	    left: "10px"
+	  }
+	});
+      this.widget.domNode.appendChild(keyTextbox.domNode);
 
-		 this.widget = new dijit.layout.ContentPane(
-		   {
-		     id :this.id,
-//		     content: this.properties.content,
-		     content: "",
-		     style: {
-		       position : "absolute",
-		       width: this.parentDom.style.width,
-		       height: this.properties.height,
-		       top: this.properties.top,
-		       left: this.properties.left
-//		       borderBottom: "solid 1px black"
-		     }
-		   });
+      this.container.domNode.style.height = (this.model.parent.children.length) * 30 + 35 + "px";
+      return this.widget.domNode;
+    },
+    removeDom: function(){
+      this.widget.destroyRecursive();
+      this.model.parent.updateDom();
+    },
 
-		 this.element = this.widget.domNode;
-
-		 this.element.appendChild(propName.domNode);
-		 this.element.appendChild(filteringSelect.domNode);
-
-	       },
-	       getXMLElement: function(xml){
-		 var node = xml.createElement(this.tagName);
-		 for(var i = 0; i < this.propertyList.length; i++){
-		   node.setAttribute(this.propertyList[i], this.properties[this.propertyList[i]]);
-		 }
-		 
-		 for(i = 0; i < this.children.length; i++){
-		   node.appendChild(this.children[i].getXMLElement(xml));
-		 }
-		 return node;
-	       }
-	     }
-	    );
+    updateDom: function(){
+      for(var i = 0; i < this.model.parent.children.length; i++){
+	if(this.model == this.model.parent.children[i]){
+	  this.widget.domNode.style.top = (i+1) * 30 + "px";
+	}
+      }
+    },
+    startup: function(){
+      this.inherited(arguments);
+      this.widget.startup();
+    }
+  }
+);

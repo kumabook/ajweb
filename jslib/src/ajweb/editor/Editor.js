@@ -31,6 +31,7 @@ dojo.require("ajweb.editor.model.Property");
 dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Action");
 dojo.require("ajweb.editor.model.Func");
+dojo.require("ajweb.editor.model.Param");
 dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
@@ -39,7 +40,6 @@ dojo.require("ajweb.editor.element.Condition");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
-dojo.require("ajweb.editor.element.Property");
 
 
 dojo.provide("ajweb.editor.Editor");

@@ -86,6 +86,15 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 
                    return objPoint;
                },
+	       reDraw: function(line){
+		 for(var i = 0; i < this.lines.length; i++){
+		   if(this.lines[i] == line){
+		     var newLine = this.draw(this.lines[i].start, this.lines[i].end);
+		     this.domNode.replaceChild(newLine.domNode, this.lines[i].domNode);
+		     this.lines[i] = newLine;
+		   }
+		 }
+	       },
 	       startup: function(){
 		 this.inherited(arguments);
 	       }

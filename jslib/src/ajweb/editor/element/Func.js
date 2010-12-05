@@ -39,13 +39,13 @@ dojo.declare("ajweb.editor.element.Func",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      properties.tablename = this.id;
       this.widget = new dijit.layout.ContentPane(
 	{
 	  id : this.id,
+	  content: this.model.tagName,
 	  style:{
 	    position: "absolute",
-	    width: "220px",
+	    width: "250px",
 	    height: "40px",
 	    top: properties.top,
 	    left: properties.left,
@@ -53,10 +53,6 @@ dojo.declare("ajweb.editor.element.Func",
 	    border: "solid 1px #769DC0"
 	  }
 	});
-      this.tablename = document.createElement("div");
-      this.tablename.className = "dijitDialogTitleBar";
-      this.tablename.innerHTML  = properties.tablename;
-      this.widget.domNode.appendChild(this.tablename);
       return this.widget.domNode;
     },
     updateDom: function(properties){
@@ -68,11 +64,33 @@ dojo.declare("ajweb.editor.element.Func",
 	});
       this.tablename.innerHTML  = properties.tablename;
     },
-    removeDom: function(){
-      this.widget.destroyRecursive();
+    removeDom: function(){     
+      var nodes = this.model.parent.element.nodes;
+      var lines = this.model.parent.element.lines;
+      var i;
+      for(i = 0; i < nodes.length; i++){
+	if(nodes[i] == this.domNode){
+	  nodes.splice(i,1);
+	}
+      }
+      for(i = 0; i < lines.length; i++){
+	if(lines[i].end == this.domNode){
+	  if(i==lines.length-1){
+	    this.container.domNode.removeChild(lines[i].domNode);
+	    lines.splice(i);
+	  }
+	  else {
+	    lines[i].end = lines[i+1].end;
+	    this.container.domNode.removeChild(lines[i+1].domNode);
+	    lines.splice(i+1,1);
+	    this.model.parent.element.reDraw(lines[i]);
+	  }
+	}
+      }
+      this.widget.destroyRecursive();      
     },
     createMoveTriggerDomNode: function(){
-      return this.tablename;
+      return this.domNode;
     },
     createDndDomNode: function(){
       return this.domNode;

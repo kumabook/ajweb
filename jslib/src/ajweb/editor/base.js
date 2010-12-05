@@ -21,6 +21,10 @@ ajweb.editor.COMLIST =  [
   {
     name: "Function",
     children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"},{name: "param"}]
+  },
+  {
+    name: "Value",
+    children: [{name: "int"},{name: "string"},{name: "date"},{name: "datetime"},{name: "getValue"},{name: "select"}]
   }
 ];
 /**
@@ -258,7 +262,71 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {},
     paramList: ["tableName"]
   },
-{
+//Value
+  {
+    name: "int",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "string",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "date",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "datetime",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "getValue",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "select",
+    modelType: "value",
+    modelClass: "value",
+    elementClass: "value",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+
+
+//Condition
+  {
     name: "condition",
     modelType: "condition",
     modelClass: "Visible",
@@ -268,7 +336,7 @@ ajweb.editor.MODELLIST =  [
     eventList: [],
     defaultProperties: {}
   },
-{
+  {
     name: "and",
     modelType: "condition",
     modelClass: "Visible",
