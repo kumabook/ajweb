@@ -17,11 +17,11 @@ function testSerialize(){//ブラウザによって実装が違いすぎるの�
 
  if(ajweb.Browser.WebKit)
     xml_str = '<?xml version="1.0" encoding="UTF-8"?><ajml/>' + cr;
-  else if(ajweb.Browser.IE) 
+  else if(ajweb.Browser.IE)
     xml_str = '<?xml version="1.0"?>' + cr + '<ajml/>' + cr;
   else if(ajweb.Browser.Opera)
     xml_str = '<?xml version="1.0"?><ajml/>';
-  else 
+  else
     xml_str = '<?xml version="1.0" encoding="UTF-8"?>' + cr + '<ajml/>' + cr;
   if(!ajweb.Browser.IE)
     assertTrue(xml instanceof XMLDocument);
@@ -43,6 +43,6 @@ function testParse(){
   if(!ajweb.Browser.IE)
     assertTrue(xml instanceof XMLDocument);
   assertEquals(xml.documentElement.tagName, "ajml");
- 
+
 };
 

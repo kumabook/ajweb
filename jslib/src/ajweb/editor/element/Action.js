@@ -4,8 +4,8 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Action");
-dojo.declare("ajweb.editor.element.Action", 
-	     [ajweb.editor.element.Element, 
+dojo.declare("ajweb.editor.element.Action",
+	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
 	      ajweb.editor.element.Drawable
 	     ],
@@ -45,7 +45,6 @@ dojo.declare("ajweb.editor.element.Action",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  style:{
 	    position: "absolute",
 	    top: "20px",

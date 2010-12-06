@@ -2,7 +2,7 @@ dojo.require("ajweb.base");
 dojo.provide("ajweb.xml");
 /**
  * xmlのユーティリティを定義する名前空間
- * @namespace 
+ * @namespace
  */
 ajweb.xml = {};
 /**
@@ -28,7 +28,7 @@ ajweb.xml.createDocument = function(rootTagName){
       }
 
       prefix = "";
-      
+
       var text = "<" + (prefix ? (prefix + ":") : "") + tagname + "/>";
       doc.loadXML(text);
     }
@@ -60,7 +60,7 @@ ajweb.xml.parse = function(text){
       doc.insertBefore(description, doc.childNodes.item(0));
     }
     return doc;
-      
+
   }
   else if(typeof ActiveXObject != "undefined"){
     var doc = ajweb.xml.createDocument();

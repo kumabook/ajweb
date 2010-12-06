@@ -87,7 +87,7 @@ dojo.declare("ajweb.editor.model.Model", null,
      * サブクラスでオーバライドする。
      */
     removeDom: function(){
-      
+
     },
     /**
      * DOM要素のイベント登録や、スタイルの調整を行う。サブクラスでオーバーライドする。
@@ -118,28 +118,34 @@ dojo.declare("ajweb.editor.model.Model", null,
     toSaveXMLElement: function(xml){
       var node =  xml.createElement(this.tagName);
       var propertyList = dojo.clone(this.propertyList);
+
+      propertyList = propertyList ? propertyList : [];
       propertyList.push("top");
       propertyList.push("left");
+
       for(var i = 0; i < propertyList.length; i++){
 	if(this.properties[propertyList[i]])
 	  node.setAttribute(propertyList[i], this.properties[propertyList[i]]);
       }
+
       for(i = 0; i < this.children.length; i++){
 	var child = this.children[i].toSaveXMLElement(xml);
 	if(child)
 	  node.appendChild(child);
       }
+
       return node;
     },
-    xmlToModel: function(xml){
+    xmlToModel: function(node, doc){
       var childNode;
-      for(var i = 0; i < xml.childNodes.length; i++){
-	childNode = xml.childNodes[i];
+      for(var i = 0; i < node.childNodes.length; i++){
+	childNode = node.childNodes[i];
 	var attrs = {};
 	if(childNode instanceof Element){
-	  for(var j = 0; j < childNode.attributes.length; j++){
-	    attrs[childNode.attributes[j].name] = childNode.attributes[j].value;
-	  }
+	  attrs = ajweb.editor.attributesToHash(childNode.attributes);
+
+	  if(childNode.tagName == "events")
+	    return;
 	  var child;
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
@@ -147,7 +153,34 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  else {
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
 	  }
-	  child.xmlToModel(childNode);
+
+	  if(child instanceof ajweb.editor.model.Eventable){//eventを追加
+	    child.clearEventView();
+	    var events = doc.getElementsByTagName("event");
+	    for(var k = 0; k < events.length; k++){
+	      var eventAttrs = ajweb.editor.attributesToHash(events[k].attributes);
+	      if(eventAttrs.target ==  attrs.id){
+/*		var event = new ajweb.editor.model.Event(
+		  {
+		    id: attrs.id +"_"+ eventAttrs.type,
+		    tagName: "event",
+		    propertyList: ["type", "target"],
+		    properties:  eventAttrs,
+		    acceptModelType: ["action"],
+		    container: this.editor.eventTc,
+		    parent: this.application.events,
+		    elementClass: "event",
+		    editor: this.editor
+		  });
+		event.startup();*/
+		var event = this.editor.createModel("event", eventAttrs,
+		  this.application.events, this.editor.eventTc);
+		child.events.push(event);
+		event.xmlToModel(events[i], doc);
+	      }
+	    }
+	  }
+	  child.xmlToModel(childNode, doc);
 	}
       }
     }

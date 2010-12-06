@@ -39,8 +39,7 @@ dojo.declare("ajweb.editor.element.Element", null,
        * この要素のDOM要素(子要素がこの要素の下に配置される)
        * @type HTMLElement
        */
-      this.domNode = this.createDom(opt.properties); 
-
+      this.domNode = this.createDom(opt.properties);
       if(this.container instanceof ajweb.editor.element.Element){
 	this.container.domNode.appendChild(this.domNode);
       }

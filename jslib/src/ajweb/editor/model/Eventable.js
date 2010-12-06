@@ -18,27 +18,25 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      * @param {Array} opt.eventList イベント名のリスト
      * @param {Array} opt.acceptModelType 子要素に持てる要素
      * @param {DOM} opt.container 配置されるDOM要素
-     * @param {dijit.layout.TabContainer} opt.eventTc イベントリストを保持するタブコンテナ 
+     * @param {dijit.layout.TabContainer} opt.eventTc イベントリストを保持するタブコンテナ
      * @param {DOM} opt.parent 親モデル
-     * 
+     *
      */
     constructor: function(opt)
     {
-
       /**
        * イベント名のリスト
        * @type Array
        */
       this.eventList = opt.eventList;
-
-      this.updatePropertiesView();
       /**
        * イベントモデルのリスト
        */
-      this.events = this.createEventModel();
+      this.events = [];//this.createEventModel();
+      this.updatePropertiesView();
     },
     remove: function(){
-      this.inherited(arguments);      
+      this.inherited(arguments);
       this.removeEventModel();
       this.editor.eventTc.currentModel = null;
       this.clearPropertiesView();
@@ -51,7 +49,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 
       this.editor.propertyDataStore.currentModel = this;
       this.clearPropertiesView();
-
       for(var i = 0; i < this.propertyList.length; i++){
 	var value = this.properties[this.propertyList[i]];
 	if(!value)
@@ -65,7 +62,12 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	e.preventDefault();
 	e.stopPropagation();
       }
+
+      for(var j = 0; j < this.events.length; j++){
+	this.events[j].properties.target = this.properties.id;
+      }
       this.element.updateDom(this.properties);
+
     },
     clearPropertiesView: function(){
       var that = this;
@@ -82,14 +84,12 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      */
     createEventModel: function(){
       this.clearEventView();
-      var events = [];
+
       for(var i = 0; i < this.eventList.length; i++){
-	events[i] = new ajweb.editor.model.Event(
+	/*var event = new ajweb.editor.model.Event(
 	  {
 	    id: this.id +"_"+ this.eventList[i],
 	    tagName: "event",
-	    target: this.id,
-	    type: this.eventList[i],
 	    propertyList: ["type", "target"],
 	    properties: { title: this.eventList[i], target: this.id, type: this.eventList[i]},
 	    acceptModelType: ["action"],
@@ -98,15 +98,15 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	    elementClass: "event",
 	    editor: this.editor
 	  });
-	events[i].startup();
-
-	this.editor.createModel("condition", {top: "25px", left: "10px"}, events[i], events[i].element);
-	this.editor.createModel("action", {top: "100px", left: "100px"}, events[i], events[i].element);
-
+	event.startup();*/
+	var event = this.editor.createModel("event",
+		      { title: this.eventList[i], target: this.properties.id, type: this.eventList[i]},
+		      this.application.events, this.editor.eventTc);
+	this.events.push(event);
+	this.editor.createModel("condition", {top: "25px", left: "10px"}, event, event.element);
+	this.editor.createModel("action", {top: "100px", left: "100px"}, event, event.element);
       }
-      
       this.editor.eventTc.currentModel = this;
-      return events;
     },
     /**
      * イベントモデルエディター上にこの要素のイベントリスト

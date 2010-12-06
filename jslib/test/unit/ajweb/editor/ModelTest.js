@@ -36,14 +36,14 @@ var editor = new ajweb.editor.Editor();
 
 
 function testToSaveXMLElement(){
-  
+
 }
 
 
 function testXmlToModel(){
 var editor = new ajweb.editor.Editor("test");
 
-  var xml_str = 
+  var xml_str =
 '<?xml version="1.0" encoding="UTF-8"?>' +
  '<ajml>' +
   '<application appName="demo">' +
@@ -53,7 +53,7 @@ var editor = new ajweb.editor.Editor("test");
     '</interfaces>' +
     '<databases>' +
       '<server dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="server0" tablename="server0" type="server">' +
-        '<property name="property1" type="int"/>' + 
+        '<property name="property1" type="int"/>' +
         '<property name="property2" type="string"/>' +
      '</server>' +
     '</databases>' +
@@ -61,7 +61,7 @@ var editor = new ajweb.editor.Editor("test");
 '</ajml>';
 
   var xml =  ajweb.xml.parse(xml_str);
-  assertEquals("ajml", xml.documentElement.tagName);  
+  assertEquals("ajml", xml.documentElement.tagName);
   assertEquals("application", xml.documentElement.childNodes[0].tagName);
   var application = new ajweb.editor.model.Application(
 				   {
@@ -73,7 +73,7 @@ var editor = new ajweb.editor.Editor("test");
 				     editor: editor
 				   });
   var attr = xml.documentElement.childNodes[0].attributes[0];
-  
+
 
 }
 

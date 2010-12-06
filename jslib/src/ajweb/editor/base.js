@@ -53,7 +53,8 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Model",
     acceptModelType: ["widget"],
     propertyList: [],
-    defaultProperties: {}
+    defaultProperties: {},
+    label: "UIモデル"
   },
   {
     name:"databases",
@@ -63,7 +64,8 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["database"],
     propertyList: ["tagName", "id"],
     eventList: [],
-    defaultProperties: { tagName: "databases"}
+    defaultProperties: { tagName: "databases"},
+    label: "データモデル"
   },
   {
     name:"events",
@@ -72,7 +74,8 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["event"],
     propertyList: [],
     eventList: [],
-    defaultProperties: {}
+    defaultProperties: {},
+    label: "イベントモデル"
   },
 
 
@@ -109,7 +112,7 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onLoad", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },
-  
+
   {
     name:'table',
     modelType: "widget",
@@ -144,11 +147,11 @@ ajweb.editor.MODELLIST =  [
     name:'frame',
     modelType: "widget",
     modelClass: "Widget",
-    elementClass: "Panel",
+    elementClass: "Frame",
     acceptModelType: ["widget"],
     propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
     eventList: ["onLoad"],
-    defaultProperties: { tagName: "frame", width: "300px", height: "300px"}
+    defaultProperties: { tagName: "frame", width: "100px", height: "100px"}
   },
   //DBモデル
   {
@@ -180,7 +183,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Event",
     elementClass: "Event",
     acceptModelType: ["action"],
-    propertyList: ["tagName", "id"],
+    propertyList: ["tagName", "id", "type", "target"],
     eventList: [],
     defaultProperties: {},
     paramList: ["tableName"]
@@ -464,4 +467,11 @@ ajweb.editor.modelCount = function(tagName){
     ajweb.editor.modelCounter[tagName] = 0;
   }
   return ajweb.editor.modelCounter[tagName]++;
+};
+ajweb.editor.attributesToHash = function(attributes){
+  var attrs = {};
+  for(var i = 0; i < attributes.length; i++){
+    attrs[attributes[i].name] = attributes[i].value;
+  }
+  return attrs;
 };

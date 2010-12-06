@@ -55,6 +55,7 @@ public class WidgetHandler extends AbstractHandler {
 			widgetList.put(elementName, count);
 		}
 		
+		@SuppressWarnings("rawtypes")
 		HashMap<String, Object> props = (HashMap) attributes;
 		widget.properties.putAll(props);
 		setModel(widget);

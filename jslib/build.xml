@@ -12,7 +12,11 @@
 	<condition property="os" value="mac">
 		<os family="mac"/>
 	</condition>
-
+	<target name="all">
+		<antcall target="clean"/>
+		<antcall target="dist"/>
+		<antcall target="unittest"/>
+	</target>
 	<target name="doc"
 		description="make jsDoc">
 		<property name="jsdoc" value="lib/jsdoc-toolkit" />
@@ -27,6 +31,7 @@
 	<target name="clean">
 			<delete dir="./temp"/>
 			<delete dir="./work/ajweb/"/>
+			<delete dir="./dist/dojo/"/>
 			<delete dir="./derby.log"/>
 			<delete dir="./error.log"/>
 			<delete dir="./doc/"/>

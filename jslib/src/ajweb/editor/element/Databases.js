@@ -27,7 +27,6 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
       var that = this;
       this.widget =   new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  title: this.id,
 	  closable: true,
 	  doLayout: false,
@@ -43,6 +42,7 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
 	    return true;
 	  }
 	});
+      this.widget.modelId = this.model.id;
       return this.widget.domNode;
     },
     updateDom: function(properties){

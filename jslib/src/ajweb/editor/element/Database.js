@@ -5,10 +5,10 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Database");
-dojo.declare("ajweb.editor.element.Database", 
-	     [ajweb.editor.element.Element, 
+dojo.declare("ajweb.editor.element.Database",
+	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.Movable, 
+	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable],
   /** @lends ajweb.editor.element.Database.prototype */
   {
@@ -38,7 +38,6 @@ dojo.declare("ajweb.editor.element.Database",
 	properties.tablename = this.id;
       this.widget = new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  style:{
 	    position: "absolute",
 	    width: "240px",
@@ -63,7 +62,7 @@ dojo.declare("ajweb.editor.element.Database",
 	  }
 	});
       this.tablename.innerHTML  = properties.tablename;
-      
+
       this.domNode.style.height = (this.model.children.length) * 30 + 35 + "px";
     },
     removeDom: function(){

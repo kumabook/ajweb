@@ -6,7 +6,7 @@ dojo.require("dijit.layout.ContentPane");
 
 dojo.require("ajweb.editor.element.Element");
 dojo.provide("ajweb.editor.element.Param");
-dojo.declare("ajweb.editor.element.Param", 
+dojo.declare("ajweb.editor.element.Param",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Removable
 	      ],
@@ -49,7 +49,6 @@ dojo.declare("ajweb.editor.element.Param",
       var value;
       this.widget = new dijit.layout.ContentPane(
 	{
-	  id :this.id,
 	  style: {
 	    position : "absolute",
 	    width: parseInt(this.container.domNode.style.width) - 15 + "px",

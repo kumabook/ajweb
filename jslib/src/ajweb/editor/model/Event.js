@@ -43,11 +43,11 @@ dojo.declare("ajweb.editor.model.Event", ajweb.editor.model.Visible,
       }
       else
 	return null;
-    },
+    }
     /**
      * DOMElementの位置なども含めた、xml要素を返す。アクションが設定されていない場合はnullを返す。
      */
-    toSaveXMLElement: function(xml){
+/*    toSaveXMLElement: function(xml){
       var node =  xml.createElement(this.tagName);
       var propertyList = dojo.clone(propertyList);
       propertyList.push("top");
@@ -64,8 +64,8 @@ dojo.declare("ajweb.editor.model.Event", ajweb.editor.model.Visible,
 	}
 	return node;
       }
-      else 
+      else
 	return null;
-    }
+    }*/
   }
 );

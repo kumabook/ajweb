@@ -5,9 +5,9 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Panel");
-dojo.declare("ajweb.editor.element.Panel", 
-	     [ajweb.editor.element.Element, 
-	      ajweb.editor.element.DndEnable, 
+dojo.declare("ajweb.editor.element.Panel",
+	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.DndEnable,
 //	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Resizable],
   /** @lends ajweb.editor.element.Panel.prototype */
@@ -31,7 +31,6 @@ dojo.declare("ajweb.editor.element.Panel",
       var that = this;
       this.widget =   new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  title: this.id,
 	  closable: true,
 	  doLayout: false,
@@ -44,6 +43,7 @@ dojo.declare("ajweb.editor.element.Panel",
 	    return true;
 	  }
 	});
+      this.widget.modelId = this.model.id;
       this.panel = new dijit.layout.ContentPane(
 	{
 	  id : this.id+ "_panel",

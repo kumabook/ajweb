@@ -40,6 +40,7 @@ dojo.require("ajweb.editor.element.Condition");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
+dojo.require("ajweb.editor.element.Frame");
 
 
 dojo.provide("ajweb.editor.Editor");
@@ -82,9 +83,9 @@ dojo.declare(
       this.pMenuBar = new dijit.MenuBar({ style: {top: "0px"}}, menu);
       this.fileMenu = new dijit.Menu({});
 
-      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("new"), 
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("new"),
 						 onClick: function(){that.newDialog.show();}}));
-      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("open"), 
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("open"),
 						 onClick: function(){ that.openFile();}}));
       this.saveMenu = new dijit.Menu();
       this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.getValue("save"),popup: this.saveMenu}));
@@ -116,7 +117,7 @@ dojo.declare(
       this.rightBc = new dijit.layout.BorderContainer({region: "center", splitter: "true"});
       /**
        * 中央のタブコンテナ <br/>
-       * 
+       *
        * @type dijit.layout.TabContainer
        */
       this.centerTc = new dijit.layout.TabContainer({region: "center", style: {height: "95%"}});
@@ -141,13 +142,14 @@ dojo.declare(
        * @type dijit.layout.TabContainer
        */
       this.eventTc = new dijit.layout.TabContainer({tabPosition: "left-h", title: ajweb.getValue("event")});
-      
+      this.eventTc.resizeConnects = [];
+
       this.outerBc.addChild(this.mainBc);
       this.mainBc.addChild(this.rightBc);
       this.mainBc.addChild(this.toolboxCp);
       this.rightBc.addChild(this.bottomTc);
       this.bottomTc.addChild(this.propertyCp);
-      this.bottomTc.addChild(this.eventTc);      
+      this.bottomTc.addChild(this.eventTc);
       this.bottomTc.addChild(this.logCp);
 
       this.bottomTc.selectChild(this.logCp);
@@ -207,7 +209,7 @@ dojo.declare(
       /**
        * プロパティエディター部分に表示されるプロパティのリストを保持するdojoストア<br/>
        * currentModelプロパティに保持しているモデルへの参照をもつ。<br/>
-       * 
+       *
        * @type dojo.data.ItemFileWriteStore
        */
      this.propertyDataStore = new dojo.data.ItemFileWriteStore({identifier: "id",  data: { items: []}});
@@ -263,31 +265,25 @@ dojo.declare(
 	  showRoot: false,
 	  model: this.projectTreeModel,
 	  onDblClick : function(item, node, evt){
-	    if(!this.model.mayHaveChildren(item)){
-	      var children = that.centerTc.getChildren();
-	      var isContain = false;
-	      var id = item.modelId[0];
-	      for(var i = 0; i < children.length ; i++){
-		if(children[i].id == id){
-		  isContain = true;
-		  that.centerTc.selectChild(id);
-		  break;
-		}
-	      }
-	      if(!isContain){
-		var model = ajweb.getModelById(id);
-		if(model){
-		  model.reCreateDom(that.centerTc);
-		  model.startup();
-		  that.centerTc.selectChild(id);
-		}
+	    var children = that.centerTc.getChildren();
+	    var id = item.modelId;
+	    for(var i = 0; i < children.length ; i++){
+	      if(children[i].modelId == id){
+		that.centerTc.selectChild(children[i]);
+		return;
 	      }
 	    }
-	  },
-	  getIconClass: function(item, opened){
-	    return (!item || this.model.mayHaveChildren(item)) ?
-	      (opened ? "dijitFolderOpened" : "dijitFolderClosed") : "dijitLeaf";
-	  }
+	    var model = ajweb.getModelById(id);
+	    if(model.element.container == that.centerTc){
+	      model.reCreateDom(that.centerTc);
+	      model.startup();
+	      that.centerTc.selectChild(model.element.widget);
+	    }
+	},
+	getIconClass: function(item, opened){
+	  return (!item || this.model.mayHaveChildren(item)) ?
+	    (opened ? "dijitFolderOpened" : "dijitFolderClosed") : "dijitLeaf";
+	}
 	}
       );
       this.projectTree.placeAt(this.projectExploerBc.wipeNode);
@@ -299,7 +295,7 @@ dojo.declare(
       this.uploadDialog = new dijit.Dialog(
 	{
 	  title: ajweb.getValue("loadFile")});
-      var uploadForm = new dijit.form.Form(	
+      var uploadForm = new dijit.form.Form(
 	{
 	  method: "POST",
 	  action: "upload",
@@ -310,13 +306,13 @@ dojo.declare(
       var filenameInput = document.createElement("input");
       filenameInput.setAttribute("type", "file");
       filenameInput.setAttribute("name", "fileId");
-      
+
       var editorInput = document.createElement("input");
       editorInput.setAttribute("type", "text");
       editorInput.setAttribute("name", "editor");
       editorInput.setAttribute("value", that.name);
       editorInput.style.display = "none";
-      
+
       var uploadButton = document.createElement("input");
       uploadButton.setAttribute("type", "submit");
       uploadButton.setAttribute("value", ajweb.getValue("load"));
@@ -332,7 +328,7 @@ dojo.declare(
       var appNameTextbox = new dijit.form.TextBox();
       appName.domNode.appendChild(appNameTextbox.domNode);
       var createButton = new dijit.form.Button(
-	{ label: ajweb.getValue("create"), 
+	{ label: ajweb.getValue("create"),
 	  onClick: function(){
 	    that.newApplication(appNameTextbox.value);
 	    that.newDialog.hide();
@@ -343,7 +339,7 @@ dojo.declare(
       /**
        * 右クリックメニュー　
        * todo 使いやすいようにショートカットを
-       * 
+       *
        */
       this.contextMenu = new dijit.Menu(
 	{
@@ -354,17 +350,19 @@ dojo.declare(
 	      if(node == that.applications[i].properties.name){
 		var application = that.applications[i];
 		this.appSaveMenu = new dijit.MenuItem(
-		  {label: "save", onClick: function(){that.saveAjml(application);}});      
+		  {label: "save", onClick: function(){that.saveAjml(application);}});
 		this.addChild(this.appSaveMenu);
 		this.appGenerateMenu = new dijit.MenuItem(
 		  {label: "generateWar", onClick: function(){that.generate(application);}});
 		this.addChild(this.appGenerateMenu);
 	      }
-	    }	   
+	    }
 	  },
 	  onClose: function(){
-	    this.appSaveMenu.destroy();
-	    this.appGenerateMenu.destroy();
+	    if(this.appGenerateMenu){
+	      this.appSaveMenu.destroy();
+	      this.appGenerateMenu.destroy();
+	    }
 	  }
 	});
       this.contextMenu.bindDomNode(this.projectTree.domNode);
@@ -372,10 +370,9 @@ dojo.declare(
 
       this.newApplication("chat");
 
-
     },
     /**
-     *新しいアプリケーションプロジェクトを作成。 
+     *新しいアプリケーションプロジェクトを作成。
      * @param {String}  appName アプリケーション名
      */
     newApplication : function(appName){
@@ -390,11 +387,11 @@ dojo.declare(
 	});
       this.application = application;
       this.applications.push(application);
-      var interfaces = this.createModel("interfaces", {}, application);
-      var databases = this.createModel("databases", {}, application, this.centerTc);
-      var events = this.createModel("events", {}, application);
+      var interfaces = this.newModel("interfaces", {}, application);
+      var databases = this.newModel("databases", {}, application, this.centerTc);
+      var events = this.newModel("events", {}, application);
       this.eventTc.currentModel = events;
-      var rooPanel = this.createModel("panel", {}, interfaces, this.centerTc);
+      var rooPanel = this.newModel("panel", {}, interfaces, this.centerTc);
       //メニューに追加
       var appSaveMenu = new dijit.MenuItem(
 	{
@@ -402,7 +399,7 @@ dojo.declare(
 	  onClick: function(){
 	    that.saveAjml(application);
 	  }
-	});      
+	});
       that.saveMenu.addChild(appSaveMenu);
       var appGenerateMenu = new dijit.MenuItem(
 	{
@@ -422,20 +419,20 @@ dojo.declare(
     openAjml: function(ajml){
       var xml =  ajweb.xml.parse(ajml);
       var rootElement = xml.documentElement;
-      var applicationXml, appName;
+      var applicationNode, appName;
       for(var i = 0; i < rootElement.childNodes.length; i++){
 	var child = rootElement.childNodes[i];
 	if(child instanceof Element && child.tagName == "application"){
-	  applicationXml = child;
-	  for(var j = 0; j < applicationXml.attributes.length; j++){
-	    if(applicationXml.attributes[j].name == "name")
-	      appName = applicationXml.attributes[j].value;
+	  applicationNode = child;
+	  for(var j = 0; j < applicationNode.attributes.length; j++){
+	    if(applicationNode.attributes[j].name == "name")
+	      appName = applicationNode.attributes[j].value;
 	  }
 	}
       }
       var application =  new ajweb.editor.model.Application(
 	{
-	  id: "application" + appName,
+	  id: "application_" + ajweb.editor.modelCount("application"),
 	  tagName: "application",
 	  properties: { name: appName},
 	  propertyList: ["name"],
@@ -443,8 +440,8 @@ dojo.declare(
 	});
       this.application = application;
       this.applications.push(application);
-      application.xmlToModel(applicationXml);
-      
+      var events = this.newModel("events", {}, application);
+      application.xmlToModel(applicationNode, xml);
       return application;
     },
     /**
@@ -453,14 +450,14 @@ dojo.declare(
      */
     saveAjml: function(applicationModel){
       var xml = ajweb.xml.createDocument("ajml");
-      var rootElement = xml.documentElement; 
+      var rootElement = xml.documentElement;
       var applicationElement = applicationModel.toSaveXMLElement(xml);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
       this.sendForm(content, "ajml", applicationModel.properties.name);
     },
     /**
-     * モデルから、warファイルを作成 
+     * モデルから、warファイルを作成
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
     generate:  function(applicationModel){
@@ -480,7 +477,7 @@ dojo.declare(
 	  id: "generate_form",
 	  method: "POST",
 	  action: "generate",
-	  style: { visibility: "hidden"}      
+	  style: { visibility: "hidden"}
 	});
       generateForm.placeAt(document.body);
       var filenameTextBox = new dijit.form.TextBox({id: "filename", name: "filename", value: ""});
@@ -498,7 +495,7 @@ dojo.declare(
     /**
      * 保存してあるファイルからプロジェクトを復元
      */
-    openFile: function(){     
+    openFile: function(){
       var uploadIframe = document.createElement("iframe");
       uploadIframe.setAttribute("id", "result_frame");
       uploadIframe.setAttribute("name", "result_frame");
@@ -523,10 +520,11 @@ dojo.declare(
       var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
       var propertyList = dojo.clone(modelInfo.propertyList);
       var defaultProperties = dojo.clone(modelInfo.defaultProperties);
+      var id = name + ajweb.editor.modelCount(name);
 
       if(properties){
 	if(!properties.id)
-	  properties.id = name + ajweb.editor.modelCount(name);
+	  properties.id = id;
 	propertyList.push("id");
 	propertyList.push("top");
 	propertyList.push("left");
@@ -538,7 +536,7 @@ dojo.declare(
 
       var newModel =  new ajweb.editor.model[ModelClass](
 	{
-	  id: properties.id,
+	  id: id,
 	  tagName: name,
 	  acceptModelType: modelInfo.acceptModelType,
 	  elementClass: elementClass,
@@ -551,54 +549,42 @@ dojo.declare(
 	  editor: this
 	}
       );
-      if(name == "events")      
+      if(name == "events")
 	parent.application.events = newModel;
-
-
+      newModel.label = modelInfo.label ? modelInfo.label : newModel.id;
       this.addProjectTree(newModel);
       newModel.startup();
       return newModel;
+    },
+    newModel: function(name, properties, parent, container){
+      var model = this.createModel(name, properties, parent, container);
+      if(model instanceof ajweb.editor.model.Eventable){
+	model.createEventModel();
+      }
+      return model;
     },
     /**
      * プロジェクトツリーに追加
      */
     addProjectTree: function(model){
       var that = this;
-      var name = model.tagName;
-      var properties = model.properties;
-      if(name == "databases" || name == "panel"){
-	that.projectTreeModel.getRoot(
-	  function(item){
-	    that.projectTreeModel.getChildren(
-	      item,
-	      function(items){
-		for(var i = 0; i < items.length; i++){
-		  if(items[i].name == that.application.properties.name){
-		    that.projectTreeModel.getChildren(
-		      items[i],
-		      function(_items){
-			for(var j = 0; j < _items.length; j++){
-			  if(_items[j].modelType == "databases" && name == "databases")
-			    that.projectTreeModel.newItem(
-			      {name: properties.id, modelType: name, modelId: properties.id}, _items[j]
-			    );
-			  else if(_items[j].modelType == "interfaces" && name == "panel")
-			  that.projectTreeModel.newItem(
-			      {name: properties.id, modelType: name, modelId: properties.id}, _items[j]
-			    );
-			}
-		      },
-		      function(error){
-		      }
-		    );
-		  }
-		}
-	      },
-	      function(error){
-	      }
-	    );
-	  });
-      }
+      var addTreeModel = function(model, item, treeModel){
+      treeModel.getChildren(item,
+	function(items){
+	  for(var i = 0; i < items.length; i++){
+	    if(items[i].modelId == model.parent.id){
+	      treeModel.newItem({name: model.label, modelType: model.tagName, modelId: model.id}, items[i]);
+	      return;
+	    }
+	    addTreeModel(model, items[i], treeModel);
+	  }
+	});
+      };
+      this.projectTreeModel.getRoot(
+	function(item){
+	  addTreeModel(model, item, that.projectTreeModel);
+	}
+      );
     }
   }
 );

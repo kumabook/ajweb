@@ -5,10 +5,10 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Func");
-dojo.declare("ajweb.editor.element.Func", 
-	     [ajweb.editor.element.Element, 
+dojo.declare("ajweb.editor.element.Func",
+	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.Movable, 
+	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable],
   /** @lends ajweb.editor.element.Func.prototype */
   {
@@ -30,7 +30,7 @@ dojo.declare("ajweb.editor.element.Func",
     {
       var actionElement = this.model.parent.element;
       actionElement.nodes.push(this.domNode);
-      var line = actionElement.draw(actionElement.nodes[actionElement.nodes.length-2], 
+      var line = actionElement.draw(actionElement.nodes[actionElement.nodes.length-2],
 				    actionElement.nodes[actionElement.nodes.length-1]);
       actionElement.lines.push(line);
       actionElement.domNode.appendChild(line.domNode);
@@ -41,7 +41,6 @@ dojo.declare("ajweb.editor.element.Func",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  content: this.model.tagName,
 	  style:{
 	    position: "absolute",
@@ -64,7 +63,7 @@ dojo.declare("ajweb.editor.element.Func",
 	});
       this.tablename.innerHTML  = properties.tablename;
     },
-    removeDom: function(){     
+    removeDom: function(){
       var nodes = this.model.parent.element.nodes;
       var lines = this.model.parent.element.lines;
       var i;
@@ -87,7 +86,7 @@ dojo.declare("ajweb.editor.element.Func",
 	  }
 	}
       }
-      this.widget.destroyRecursive();      
+      this.widget.destroyRecursive();
     },
     createMoveTriggerDomNode: function(){
       return this.domNode;

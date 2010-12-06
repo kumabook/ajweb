@@ -20,6 +20,8 @@ public class ApplicationTest{
 	static String outDir;
 	@BeforeClass
 	public static void setUp() throws Exception{
+		new File("test/temp/").mkdirs();
+		new File("test/temp/test.log").createNewFile();
 		Config.out = new PrintStream("test/temp/test.log");
 		Config.workDir = "test/temp/";
 		
@@ -33,7 +35,7 @@ public class ApplicationTest{
 			e.printStackTrace();
 		}
 	}
-
+	@Test
 	public void testSetup() throws Exception{
 		Application app = Compiler.parse(new File("test" + FileUtils.fs + "ajml" + FileUtils.fs + "root.ajml"));
 		app.setup(Config.workDir + "/" + app.appName);

@@ -46,9 +46,9 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
 	    var modelInfo = ajweb.editor.getModelInfo(nodes[0].childNodes[2].childNodes[2].innerHTML);
 	    return that.checkAcceptance(modelInfo.modelType);
 	  },
-	  onDrop: function(sources, nodes, copy){ 
+	  onDrop: function(sources, nodes, copy){
 	    var name = nodes[0].childNodes[2].childNodes[2].innerHTML;
-	    that.onDrop(name); 
+	    that.onDrop(name);
 	  }
 	}
       );
@@ -58,7 +58,7 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
      * @param {String} name ドラッグ&ドロップされツリー上の要素の文字列
      */
     onDrop: function(name){
-	    this.model.editor.createModel(
+	    this.model.editor.newModel(
 	      name,
 	      {
 		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(this.model.element.domNode),

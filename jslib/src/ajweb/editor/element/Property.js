@@ -7,7 +7,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.editor.element.Element");
 
 dojo.provide("ajweb.editor.element.Property");
-dojo.declare("ajweb.editor.element.Property", 
+dojo.declare("ajweb.editor.element.Property",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Removable
 	      ],
@@ -47,10 +47,9 @@ dojo.declare("ajweb.editor.element.Property",
 	  }
 
 	});
-      var value = that.model.properties.type ? that.model.properties.type : "int"; 
+      var value = that.model.properties.type ? that.model.properties.type : "int";
       var filteringSelect = new dijit.form.FilteringSelect(
 	{
-	  id: this.id + "select",
 	  name: "state",
 	  value: value,
 	  store: ajweb.editor.dataTypeStore,
@@ -67,7 +66,6 @@ dojo.declare("ajweb.editor.element.Property",
 	});
       this.widget = new dijit.layout.ContentPane(
 	{
-	  id :this.id,
 	  style: {
 	    position : "absolute",
 	    width: parseInt(this.container.domNode.style.width) - 15 + "px",

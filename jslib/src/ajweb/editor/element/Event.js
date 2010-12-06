@@ -31,9 +31,8 @@ dojo.declare("ajweb.editor.element.Event", [
     createDom: function(properties){
        this.widget =   new dijit.layout.ContentPane(
 	{
-	  id : this.id,
 	  content: this.id,
-	  title: properties.title,
+	  title: properties.type,
 	  closable: false,
 	  doLayout: false,
 	  style:{

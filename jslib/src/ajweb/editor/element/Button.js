@@ -4,10 +4,10 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Button");
-dojo.declare("ajweb.editor.element.Button", 
-	     [ajweb.editor.element.Element, 
+dojo.declare("ajweb.editor.element.Button",
+	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Movable
-	     
+
 	     ],
   /** @lends ajweb.editor.element.Button.prototype */
   {
@@ -32,11 +32,8 @@ dojo.declare("ajweb.editor.element.Button",
     createDom: function(properties){
       this.widget = new dijit.form.Button(
 	{
-	  id : this.id,
 	  style:{
 	    position: "absolute",
-//	    width: properties.width,
-//	    height: properties.height,
 	    top: properties.top,
 	    left: properties.left
 	  },
