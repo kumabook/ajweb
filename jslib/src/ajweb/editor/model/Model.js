@@ -77,6 +77,10 @@ dojo.declare("ajweb.editor.model.Model", null,
      * モデルを削除する。
      */
     remove: function(){
+      while(this.children.length != 0){
+	this.children[0].remove();
+      }
+      
       for(var i = 0; i < this.parent.children.length; i++){
 	if(this.parent.children[i] == this)
 	  this.parent.children.splice(i,1);

@@ -4,11 +4,11 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Condition");
-dojo.declare("ajweb.editor.element.Condition", 
+dojo.provide("ajweb.editor.element.PredicateOperator");
+dojo.declare("ajweb.editor.element.PredicateOperator", 
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable],
-  /** @lends ajweb.editor.element.Condition.prototype */
+  /** @lends ajweb.editor.element.PredicateOperator.prototype */
   {
     /**
      * Constructor
@@ -32,16 +32,15 @@ dojo.declare("ajweb.editor.element.Condition",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-//      this.widget = new dijit.layout.ContentPane(
       this.widget = new dijit.TitlePane(
 	{
 	 title: this.id,
 	  style:{
-	    position: "absolute",
-	    width: "100px",
+//	    position: "absolute",
+//	    width: "240px",
 //	    height: "40px",
-	    top: properties.top,
-	    left: properties.left,
+//	    top: properties.top,
+//	    left: properties.left,
 	    backgroundColor: "#E1EBFB",
 	    border: "solid 1px #769DC0"
 	  }
@@ -58,7 +57,9 @@ dojo.declare("ajweb.editor.element.Condition",
       return this.widget.hideNode;
     },
     checkAcceptance: function(){
-      if(this.model.children.length > 0)
+      if(this.model.tagName == "not" && this.model.children.length > 0)
+	return false;
+      else if(this.model.children.length > 1)
 	return false; 
       else 
 	return this.inherited(arguments);

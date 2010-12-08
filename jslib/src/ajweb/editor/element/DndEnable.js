@@ -23,7 +23,7 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
       return this.domNode;
     },
     /**
-    * ドロップ可能かチェックする
+    * ドロップ可能かチェックする.
     * @param {String} ウィジェットタイプ
     */
     checkAcceptance: function(modelType){

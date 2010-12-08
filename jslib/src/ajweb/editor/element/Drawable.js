@@ -7,23 +7,34 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 	       },
 	       lineWidth: "1px",//線の太さ
 	       
-	       draw: function drawLine(start, end ,color){
+	       draw: function drawLine(start, end, label, color){
 		 var startDom, endDom;
-		 if(!color) color = "black";
+		 label = label ? label : "";
+		 color = color ? color : "black";
+
 		 if(start.style){
-		   startDom = start;
+		   startDom = start;		  
 		   start = {};
 		   start.x = parseInt(startDom.style.left) + parseInt(startDom.style.width);
-		   start.y = parseInt(startDom.style.top) + parseInt(startDom.style.height)/2;
+		   start.y = parseInt(startDom.style.top) +
+		     parseInt(startDom.style.height ? startDom.style.height : "15px")/2;
 		 }
 		 if(end.style){
 		   endDom = end;
 		   end = {};
 		   end.x = parseInt(endDom.style.left);
-		   end.y = parseInt(endDom.style.top) + parseInt(endDom.style.height)/2;
+		   end.y = parseInt(endDom.style.top) +
+		     parseInt(endDom.style.height ? endDom.style.height : "15px")/2;
 		 }
-		 
-		 this.objPalatte = document.createElement("div");
+
+		 var objPalatte = document.createElement("div");
+		 var labelDom = document.createElement("div");
+		 labelDom.style.position = "absolute";
+		 labelDom.style.top = (start.y + end.y) / 2 + "px";
+		 labelDom.style.left = (start.x + end.x) / 2 + "px";
+		 labelDom.innerHTML = label;
+
+		 objPalatte.appendChild(labelDom);
 
 		 if((start.x == end.x) || (start.y == end.y)){
 		   var objLine = document.createElement("div");
@@ -40,7 +51,9 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 		   }
                    objLine.style.top  = Math.min(start.y,end.y) + "px";
                    objLine.style.left = Math.min(start.x,end.x) + "px";
-                   this.objPalatte.appendChild(objLine);
+
+
+                  objPalatte.appendChild(objLine);
                  }
                  else if(Math.abs(start.x - end.x) > Math.abs(start.y - end.y)){
                        
@@ -53,7 +66,7 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                      for(var intX = P1[0]; intX <= P2[0]; intX++){
                        var intY = ((P2[1] - P1[1]) / (P2[0] - P1[0])) * (intX - P1[0]) + P1[1];
 
-                       this.objPalatte.appendChild(this._drawLine(intX,intY,color));
+                       objPalatte.appendChild(this._drawLine(intX,intY,color));
                      }
                    }
                    else {
@@ -67,11 +80,10 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                      for(var intY = P1[1]; intY <= P2[1]; intY++){
                        var intX = ((P2[0] - P1[0]) / (P2[1] - P1[1])) * (intY - P1[1]) + P1[0];
 
-                       this.objPalatte.appendChild(this._drawLine(intX,intY,color));
+                       objPalatte.appendChild(this._drawLine(intX,intY,color));
                      }
                    }
-//		 this.lines.push({domNode: this.objPalatte, start: "", end: ""});
-                 return { domNode: this.objPalatte, start: startDom, end: endDom };
+                 return { domNode: objPalatte, start: startDom, end: endDom, label: label, color: color};
                  },
 
                _drawLine: function(x,y,color){
@@ -87,9 +99,14 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                    return objPoint;
                },
 	       reDraw: function(line){
+
 		 for(var i = 0; i < this.lines.length; i++){
 		   if(this.lines[i] == line){
-		     var newLine = this.draw(this.lines[i].start, this.lines[i].end);
+		     var newLine = this.draw(
+		       this.lines[i].start, 
+		       this.lines[i].end, 
+		       this.lines[i].label, 
+		       this.lines[i].color);
 		     this.domNode.replaceChild(newLine.domNode, this.lines[i].domNode);
 		     this.lines[i] = newLine;
 		   }

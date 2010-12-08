@@ -20,11 +20,15 @@ ajweb.editor.COMLIST =  [
   },
   {
     name: "Function",
-    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"},{name: "param"}]
+    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"},{name: "then"},{name: "else"},{name: "param"}]
   },
   {
     name: "Value",
     children: [{name: "int"},{name: "string"},{name: "date"},{name: "datetime"},{name: "getValue"},{name: "select"}]
+  },
+  {
+    name: "Condition",
+    children: [{name: "condition"},{name: "and"},{name: "or"},{name: "not"},{name: "eq"},{name: "lt"},{name: "gt"}]
   }
 ];
 /**
@@ -247,8 +251,30 @@ ajweb.editor.MODELLIST =  [
     name: "branch",
     modelType: "func",
     modelClass: "Func",
-    elementClass: "Func",
+    elementClass: "Branch",
     acceptModelType: ["condition"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
+  },
+  {
+    name: "then",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Then",
+    acceptModelType: ["func"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {},
+    paramList: ["tableName"]
+  },
+  {
+    name: "else",
+    modelType: "func",
+    modelClass: "Func",
+    elementClass: "Then",
+    acceptModelType: ["func"],
     propertyList: ["tagName", "id"],
     eventList: [],
     defaultProperties: {},
@@ -260,16 +286,16 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Param",
     elementClass: "Param",
     acceptModelType: ["param"],
-    propertyList: ["tagName", "id"],
+    propertyList: ["tagName", "id", "name"],
     eventList: [],
-    defaultProperties: {},
+    defaultProperties: {name: "key"},
     paramList: ["tableName"]
   },
 //Value
   {
     name: "int",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -279,7 +305,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "string",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -289,7 +315,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "date",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -299,7 +325,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "datetime",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -309,7 +335,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "getValue",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -319,7 +345,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "select",
     modelType: "value",
-    modelClass: "value",
+    modelClass: "Visible",
     elementClass: "value",
     acceptModelType: [],
     propertyList: [],
@@ -334,67 +360,67 @@ ajweb.editor.MODELLIST =  [
     modelType: "condition",
     modelClass: "Visible",
     elementClass: "Condition",
-    acceptModelType: ["condition"],
+    acceptModelType: ["predicate"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "and",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
-    acceptModelType: ["condition"],
+    elementClass: "PredicateOperator",
+    acceptModelType: ["predicate"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "or",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
-    acceptModelType: ["condition"],
+    elementClass: "PredicateOperator",
+    acceptModelType: ["predicate"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "not",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
+    elementClass: "PredicateOperator",
     acceptModelType: ["condition"],
-    propertyList: [],
+    propertyList: ["predicate"],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "eq",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
-    acceptModelType: [],
+    elementClass: "Predicate",
+    acceptModelType: ["value"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "lt",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
-    acceptModelType: [],
+    elementClass: "Predicate",
+    acceptModelType: ["value"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
   },
   {
     name: "gt",
-    modelType: "condition",
+    modelType: "predicate",
     modelClass: "Visible",
-    elementClass: "Condition",
-    acceptModelType: [],
+    elementClass: "Predicate",
+    acceptModelType: ["value"],
     propertyList: [],
     eventList: [],
     defaultProperties: {}

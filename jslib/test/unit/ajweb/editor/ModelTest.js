@@ -8,8 +8,6 @@ dojo.require("ajweb.editor.model.Eventable");
 
 function testToXMLElement(){
 var editor = new ajweb.editor.Editor();
-
-//createModelにプロパティを渡せるように拡張しよう。
   var application =  new ajweb.editor.model.Application(
     {
       id: "application",

@@ -6,7 +6,8 @@ dojo.require("ajweb.editor.element.Drawable");
 dojo.provide("ajweb.editor.element.Event");
 dojo.declare("ajweb.editor.element.Event", [
 	       ajweb.editor.element.Element,
-	       ajweb.editor.element.DndEnable
+	       ajweb.editor.element.DndEnable,
+	       ajweb.editor.element.Drawable
 	     ],
   /** @lends ajweb.editor.element.Event.prototype */
   {

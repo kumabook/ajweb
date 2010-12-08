@@ -36,11 +36,16 @@ dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
 dojo.require("ajweb.editor.element.Database");
+dojo.require("ajweb.editor.element.Branch");
+dojo.require("ajweb.editor.element.Then");
 dojo.require("ajweb.editor.element.Condition");
+dojo.require("ajweb.editor.element.Predicate");
+dojo.require("ajweb.editor.element.PredicateOperator");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
 dojo.require("ajweb.editor.element.Frame");
+dojo.require("ajweb.editor.element.Value");
 
 
 dojo.provide("ajweb.editor.Editor");
@@ -108,7 +113,7 @@ dojo.declare(
        */
       this.toolboxCp = new dijit.TitlePane({
 					     region: "right",
-					     style: {width: "200px",height: "95%"},
+					     style: {width: "200px", overflow: "auto"},
 					     title: ajweb.getValue("toolbox"),
 					     toggleable: false
 					   }
@@ -242,7 +247,7 @@ dojo.declare(
        */
       this.projectExploerBc = new dijit.TitlePane(
 	{
-	  style: {width: "200px", height: "95%"},
+	  style: {width: "200px", overflow: "auto"},
 	  region: "left",
 	  toggleable: false,
 	  title: ajweb.getValue("projectExploer")
@@ -367,8 +372,6 @@ dojo.declare(
 	});
       this.contextMenu.bindDomNode(this.projectTree.domNode);
       this.contextMenu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
-
-      this.newApplication("chat");
 
     },
     /**
@@ -508,7 +511,7 @@ dojo.declare(
  * モデル名からモデルの情報を参照してモデルオブジェクトを作成する。
  * @param {String} name モデル名
  * @param {Object} properties プロパティのハッシュ
- * @param {ajweb.editor.model.Model} parent 親ウィジェット
+ * @param {ajweb.editro.model.Model} parent 親ウィジェット
  * @param {ajweb.editor.element.ModelElement|dijit.layout.TabContainer} container 配置するDOM要素を保持するオブジェクト
  * @param {dojo.data.ItemFileReadStore} propertyDataStore 表示するプロパティを保持するdojoストア
  * @param {dijit.layout.TabContainer} eventTc イベントリストを保持するcenterTc

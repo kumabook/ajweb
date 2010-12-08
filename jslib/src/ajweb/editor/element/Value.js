@@ -1,14 +1,14 @@
 dojo.require("ajweb.editor.element.Element");
-dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Condition");
-dojo.declare("ajweb.editor.element.Condition", 
+dojo.provide("ajweb.editor.element.Value");
+dojo.declare("ajweb.editor.element.Value",
 	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable],
-  /** @lends ajweb.editor.element.Condition.prototype */
+	      ajweb.editor.element.Movable
+	     ],
+  /** @lends ajweb.editor.element.Value.prototype */
   {
     /**
      * Constructor
@@ -16,14 +16,11 @@ dojo.declare("ajweb.editor.element.Condition",
      * @constructs
      * @borrows ajweb.editor.element.Element#id this.id
      * @borrows ajweb.editor.element.Element#model this.model
-     * @borrows ajweb.editor.element.Element#title this.title
      * @borrows ajweb.editor.element.Element#container this.container
      * @borrows ajweb.editor.element.Element#domNode this.domNode
      * @param {String} opt.id ウィジェットID
      * @param {String} opt.tagName XMLのタグ名
-     * @param {boolean} opt.resizable サイズが変更可能か
-     * @param {boolean} opt.movable 位置が変更可能か
-     * @param {DOM} opt.model
+     * @param {ajweb.editor.model.Model} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
@@ -32,36 +29,33 @@ dojo.declare("ajweb.editor.element.Condition",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-//      this.widget = new dijit.layout.ContentPane(
-      this.widget = new dijit.TitlePane(
+      this.widget = new dijit.layout.ContentPane(
 	{
-	 title: this.id,
 	  style:{
-	    position: "absolute",
-	    width: "100px",
-//	    height: "40px",
-	    top: properties.top,
-	    left: properties.left,
+//	    position: "absolute",
 	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
-	  }
+	    border: "dotted 1px #000000"
+//	    top: properties.top,
+//	    left: properties.left,
+//	    width: properties.width,
+//	    height: properties.height
+	  },
+	  content: this.model.tagName
 	});
       return this.widget.domNode;
     },
+    updateDom: function(properties){
+      this.widget.set(
+	{
+	  style:{
+	    top: properties.top,
+	    left: properties.left
+	  },
+	  label: properties.content
+	});
+    },
     removeDom: function(){
       this.widget.destroyRecursive();
-    },
-    createMoveTriggerDomNode: function(){
-      return this.tablename;
-    },
-    createDndDomNode: function(){
-      return this.widget.hideNode;
-    },
-    checkAcceptance: function(){
-      if(this.model.children.length > 0)
-	return false; 
-      else 
-	return this.inherited(arguments);
     },
     startup: function(){
       this.inherited(arguments);
@@ -69,3 +63,5 @@ dojo.declare("ajweb.editor.element.Condition",
     }
   }
 );
+
+

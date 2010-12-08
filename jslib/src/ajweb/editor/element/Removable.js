@@ -21,6 +21,7 @@ dojo.declare("ajweb.editor.element.Removable", null,
     createRemoveDomNode: function(){
       var deleteArea = document.createElement("div");
       deleteArea.className = "dijitDialogCloseIcon";
+
       this.domNode.appendChild(deleteArea);
       return deleteArea;
     },   

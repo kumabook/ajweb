@@ -34,19 +34,29 @@ dojo.declare("ajweb.editor.element.Element", null,
        * DOM要素が配置される親要素
        * @type @type ajweb.editor.element.Element|dijit.layout.TabContainer
        */
+
       this.container = opt.container;
+
       /**
-       * この要素のDOM要素(子要素がこの要素の下に配置される)
+       * この要素のDOM要素(この要素がcontainer要素のcontainerDomの下に配置される)
        * @type HTMLElement
        */
       this.domNode = this.createDom(opt.properties);
+      /**
+       * 子要素を配置するDOM要素
+       * @type HTMLElement
+       */
+      this.containerNode = this.createContainerNode();
+
       if(this.container instanceof ajweb.editor.element.Element){
-	this.container.domNode.appendChild(this.domNode);
+	this.container.containerNode.appendChild(this.domNode);
+//	this.container.dndDomNode.appendChild(this.domNode);
       }
       else　{// centerTcの場合 プロジェクトエクスプローラーに反映
 	this.container.addChild(this.widget);
 	this.container.selectChild(this.widget);
       }
+
       ajweb.addElement(this);
     },
     /**
@@ -64,6 +74,12 @@ dojo.declare("ajweb.editor.element.Element", null,
      * DOM要素を削除する。抽象メソッド、サブクラスでオーバライドして使う。主に所属するmodelオブジェクトから呼び出される。
      */
     removeDom: function(properties){
+    },
+    /**
+     * 子要素を配置するDOMを作成する。
+     */
+    createContainerNode: function(){
+      return this.domNode;
     },
     /**
      * 作成したDOM要素を表示する前に呼び出される。D&Dやリサイズなどのイベント登録をここで行う。

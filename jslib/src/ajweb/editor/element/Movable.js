@@ -86,12 +86,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	      for(var i = 0; i < this.container.lines.length; i++){
 		if(this.container.lines[i].start == this.domNode 
 		   || this.container.lines[i].end == this.domNode){
-		  var newLine = this.container.draw(this.container.lines[i].start, this.container.lines[i].end);
-		  this.container.domNode.replaceChild(
-		    newLine.domNode,
-		    this.container.lines[i].domNode);
-		  this.container.lines[i] = newLine;
-	//	  this.count = 0;
+		  this.container.reDraw(this.container.lines[i]);
 		}
 	      }
 	    }

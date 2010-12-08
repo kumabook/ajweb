@@ -2,8 +2,7 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-dojo.require("dijit.layout.ContentPane");
-
+dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.Func");
 dojo.declare("ajweb.editor.element.Func",
 	     [ajweb.editor.element.Element,
@@ -28,24 +27,17 @@ dojo.declare("ajweb.editor.element.Func",
      */
     constructor: function(opt)
     {
-      var actionElement = this.model.parent.element;
-      actionElement.nodes.push(this.domNode);
-      var line = actionElement.draw(actionElement.nodes[actionElement.nodes.length-2],
-				    actionElement.nodes[actionElement.nodes.length-1]);
-      actionElement.lines.push(line);
-      actionElement.domNode.appendChild(line.domNode);
     },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      this.widget = new dijit.layout.ContentPane(
+      this.widget = new dijit.TitlePane(
 	{
-	  content: this.model.tagName,
+	  title: this.model.tagName,
 	  style:{
 	    position: "absolute",
-	    width: "250px",
-	    height: "40px",
+	    width: "200px",
 	    top: properties.top,
 	    left: properties.left,
 	    backgroundColor: "#E1EBFB",
@@ -61,28 +53,24 @@ dojo.declare("ajweb.editor.element.Func",
 	    left: properties.left
 	  }
 	});
-      this.tablename.innerHTML  = properties.tablename;
     },
     removeDom: function(){
-      var nodes = this.model.parent.element.nodes;
-      var lines = this.model.parent.element.lines;
-      var i;
-      for(i = 0; i < nodes.length; i++){
-	if(nodes[i] == this.domNode){
-	  nodes.splice(i,1);
-	}
-      }
-      for(i = 0; i < lines.length; i++){
+      var lines = this.container.lines;
+      for(var i = 0; i < lines.length; i++){
 	if(lines[i].end == this.domNode){
 	  if(i==lines.length-1){
 	    this.container.domNode.removeChild(lines[i].domNode);
 	    lines.splice(i);
 	  }
 	  else {
-	    lines[i].end = lines[i+1].end;
-	    this.container.domNode.removeChild(lines[i+1].domNode);
-	    lines.splice(i+1,1);
-	    this.model.parent.element.reDraw(lines[i]);
+	    for(var j = 0; j < lines.length; j++){
+	      if(lines[j].start == this.domNode){
+		lines[i].end = lines[j].end;
+		this.container.domNode.removeChild(lines[j].domNode);
+		lines.splice(j,1);
+		this.container.reDraw(lines[i]);
+	      }
+	    }
 	  }
 	}
       }
@@ -92,10 +80,26 @@ dojo.declare("ajweb.editor.element.Func",
       return this.domNode;
     },
     createDndDomNode: function(){
-      return this.domNode;
+      return this.widget.hideNode;
+    },
+    onDrop: function(){
+      this.inherited(arguments);
+      this.model.parent.element.dndDisable();
+
     },
     startup: function(){
       this.inherited(arguments);
+      var that = this;
+//todo ここは、新たにクラスを定義するかして最適化
+      dojo.connect(this.widget.titleBarNode, "onclick", this, 
+		   function(){
+		     this.widget.toggle();
+		   });
+      var img = this.widget.domNode.childNodes[1].childNodes[1].childNodes[1];
+      dojo.connect(img, "onclick", this, 
+		   function(){
+		    this.widget.toggle();
+		   });
       this.widget.startup();
     }
   }
