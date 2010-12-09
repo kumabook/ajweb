@@ -6,7 +6,6 @@ dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.Branch");
 dojo.declare("ajweb.editor.element.Branch",
 	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable,
 	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable],
   /** @lends ajweb.editor.element.Branch.prototype */
@@ -31,12 +30,13 @@ dojo.declare("ajweb.editor.element.Branch",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      this.widget = new dijit.TitlePane(
+      this.widget = new dijit.layout.ContentPane(
 	{
-	  title: this.model.tagName,
+	  content: this.model.tagName,
 	  style:{
 	    position: "absolute",
 	    width: "100px",
+	    height: "40px",
 	    top: properties.top,
 	    left: properties.left,
 	    backgroundColor: "#E1EBFB",
@@ -72,28 +72,9 @@ dojo.declare("ajweb.editor.element.Branch",
       this.widget.destroyRecursive();
       this.model.parent.element.widget.domNode.style.display = "inline";
     },
-    createDndDomNode: function(){
-      return this.widget.hideNode;
-    },
-    createContainerNode: function(){
-      return this.widget.hideNode;
-    },
-    onDrop: function(){
-      this.inherited(arguments);
-    },
     startup: function(){
       this.inherited(arguments);
       var that = this;
-// todo ここは、新たにクラスを定義するかして最適化
-      dojo.connect(this.widget.titleBarNode, "onclick", this, 
-		   function(){
-		     this.widget.toggle();
-		   });
-      var img = this.widget.domNode.childNodes[1].childNodes[1].childNodes[1];
-      dojo.connect(img, "onclick", this, 
-		   function(){
-		    this.widget.toggle();
-		   });
       this.widget.startup();
     }
   }

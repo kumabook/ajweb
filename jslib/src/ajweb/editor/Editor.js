@@ -293,6 +293,9 @@ dojo.declare(
       );
       this.projectTree.placeAt(this.projectExploerBc.wipeNode);
       this.outerBc.addChild(this.projectExploerBc);
+      /**
+       * 
+       */
 
       /**
        * アップロード用ダイアログ

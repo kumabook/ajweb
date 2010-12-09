@@ -441,6 +441,14 @@ ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
 	  }
 	});
 
+ajweb.editor.databaseModelStore = new dojo.data.ItemFileReadStore(
+	{
+	  data:{
+	    identifier: "name",
+	    label: "name",
+	    items: []
+	  }
+	});
 //マウスの位置を取得するため
 ajweb.editor.getX = function(container) {
   var x = 0;

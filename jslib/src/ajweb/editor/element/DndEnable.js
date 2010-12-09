@@ -72,7 +72,7 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
     * ドラッグアンドドロップ不可能にする
     */
     dndDisable: function(){
-      this.dnd.destory();
+      this.dnd.destroy();
     },
     startup: function(){
       this.dndEnable();

@@ -32,18 +32,24 @@ dojo.declare("ajweb.editor.element.Condition",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-//      this.widget = new dijit.layout.ContentPane(
       this.widget = new dijit.TitlePane(
 	{
-	 title: this.id,
+	  title: this.model.tagName, toggleable: false, open: false,//this.id,
+	//  content: this.model.tagName,
 	  style:{
 	    position: "absolute",
-	    width: "100px",
-//	    height: "40px",
+	    width: "80px",
 	    top: properties.top,
 	    left: properties.left,
 	    backgroundColor: "#E1EBFB",
 	    border: "solid 1px #769DC0"
+	  },
+	  onDblClick: function(){
+	    var dialog = new dijit.Dialog({
+					    title: "イベント発生条件",
+					    style: {height: "50%", width: "50%"}
+					  });
+	    dialog.show();
 	  }
 	});
       return this.widget.domNode;
@@ -54,9 +60,12 @@ dojo.declare("ajweb.editor.element.Condition",
     createMoveTriggerDomNode: function(){
       return this.tablename;
     },
-    createDndDomNode: function(){
+/*    createDndDomNode: function(){
       return this.widget.hideNode;
     },
+    createContainerNode: function(){
+      return this.widget.hideNode;
+    },*/
     checkAcceptance: function(){
       if(this.model.children.length > 0)
 	return false; 
@@ -65,7 +74,7 @@ dojo.declare("ajweb.editor.element.Condition",
     },
     startup: function(){
       this.inherited(arguments);
-      this.widget.startup();
+      this.widget.startup();     
     }
   }
 );

@@ -102,7 +102,7 @@ dojo.declare("ajweb.editor.element.Action",
       if(name == "branch"){
 	var conditionModel = model.editor.createModel(
 	  "condition",
-	  {top: "30px", left: "0px"},
+	  {top: "15px", left: "0px"},
 	  model,
 	  model.element
 	);

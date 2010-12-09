@@ -2,15 +2,15 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-//dojo.require("ajweb.editor.element.TitlePane");
+dojo.require("ajweb.editor.element.TitlePane");
 dojo.require("dijit.TitlePane");
-dojo.provide("ajweb.editor.element.Func");
-dojo.declare("ajweb.editor.element.Func",
+dojo.provide("ajweb.editor.element.DBFunc");
+dojo.declare("ajweb.editor.element.DBFunc",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
 	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable],
-  /** @lends ajweb.editor.element.Func.prototype */
+  /** @lends ajweb.editor.element.DBFunc.prototype */
   {
     /**
      * Constructor
@@ -48,17 +48,11 @@ dojo.declare("ajweb.editor.element.Func",
 	    border: "solid 1px #769DC0"
 	  },
 	  onDblClick: function(){
-
-//	    dialog.containerNode.style.position = "absolute";
-//	    dialog.containerNode.style.top = "10px";
-//	    dialog.containerNode.style.left = "10px";
-//	    dialog.containerNode.style.width = "90%";
-//	    dialog.containerNode.style.height = "90%";
 	    that.dialog.show();
-//	    that.dialog.containerNode.parentNode.style.top = "10px";
 	  }
 	});
       this.widget.element = this;
+//      this.widget.domNode.className = "dijitTitlePaneTitle";
       return this.widget.domNode;
     },
     createContainerNode: function(){
@@ -67,13 +61,12 @@ dojo.declare("ajweb.editor.element.Func",
 					    toggleable: false,
 					    style: {position: "absolute",
 						    height: "60%", width: "50%"
-//						    top: "10%", left: "25%"
 						   }
 					  });
 
 
 	    var tablename = new dijit.layout.ContentPane({
-							   content: "element name",
+							   content: "tablename",
 							   style: { 
 							     position: "absolute",
 							     top: "50px",
@@ -119,8 +112,6 @@ dojo.declare("ajweb.editor.element.Func",
 	    this.dialog.containerNode.appendChild(tablename.domNode);
 	    this.dialog.containerNode.appendChild(button.domNode);
 	    this.dialog.containerNode.appendChild(this.paramContainer.domNode);
-
-
 
       return this.paramContainer.domNode;
     },

@@ -35,7 +35,7 @@ dojo.declare("ajweb.editor.element.Param",
 	  style: { width: "30px", styleFloat: "left"}
 	});
       var value =  new dijit.layout.ContentPane(
-	{ style: { width: "200px", border: "dashed 1px", height: "20px"}
+	{ content: "value", style: { width: "120px", border: "dashed 1px", height: "20px"}
 	});
       this.widget = new dijit.layout.ContentPane(
 	{style: {
