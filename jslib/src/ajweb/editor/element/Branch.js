@@ -43,6 +43,9 @@ dojo.declare("ajweb.editor.element.Branch",
 	    border: "solid 1px #769DC0"
 	  }
 	});
+      //ドロップ要素を隠す
+      this.model.parent.element.domNode.style.display = "none";
+
       return this.widget.domNode;
     },
     updateDom: function(properties){
@@ -76,6 +79,7 @@ dojo.declare("ajweb.editor.element.Branch",
       this.inherited(arguments);
       var that = this;
       this.widget.startup();
+      this.model.parent.element.addNewNode(this.domNode, true);      
     }
   }
 );

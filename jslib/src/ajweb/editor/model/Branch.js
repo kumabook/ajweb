@@ -1,8 +1,7 @@
 dojo.require("ajweb.editor.model.Visible");
-dojo.require("ajweb.editor.element.Action");
 
-dojo.provide("ajweb.editor.model.Action");
-dojo.declare("ajweb.editor.model.Action", ajweb.editor.model.Visible,
+dojo.provide("ajweb.editor.model.Branch");
+dojo.declare("ajweb.editor.model.Branch", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Action.prototype */
  {
    /**
@@ -11,7 +10,10 @@ dojo.declare("ajweb.editor.model.Action", ajweb.editor.model.Visible,
    reCreateDom: function(container){
      this.element = this.createDom(container);
      for(var i = 0; i < this.children.length; i++){
-       this.children[i].reCreateDom(container);
+       if(this.children[i].tagName == "condition")
+	 this.children[i].reCreateDom(this.element);
+       else 
+	 this.children[i].reCreateDom(container);
      }
    }
  }

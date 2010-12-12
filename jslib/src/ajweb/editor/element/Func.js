@@ -35,93 +35,91 @@ dojo.declare("ajweb.editor.element.Func",
     createDom: function(properties){
       var that = this;
        this.widget = new dijit.TitlePane(
-	{
-	  title: this.model.tagName,
-	  open: false,
-	  toggleable: false,
-	  style:{
-	    position: "absolute",
-	    width: "80px",
-	    top: properties.top,
-	    left: properties.left,
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
-	  },
+	{ title: this.model.tagName, open: false, toggleable: false,
+	  style:{position: "absolute", width: "80px",top: properties.top, left: properties.left,
+		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" },
 	  onDblClick: function(){
-
-//	    dialog.containerNode.style.position = "absolute";
-//	    dialog.containerNode.style.top = "10px";
-//	    dialog.containerNode.style.left = "10px";
-//	    dialog.containerNode.style.width = "90%";
-//	    dialog.containerNode.style.height = "90%";
+	    that.store = that.model.application.getDatabaseStore();    
+	    var elemName = new dijit.layout.ContentPane(
+	      { content: "要素名: ",
+		style: {position: "absolute",top: "50px",left: "10px"}});
+	    var elemSelect = new dijit.form.FilteringSelect(
+	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+		store: that.store, searchAttr: "name",
+		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	      });
+	    var funcName = new dijit.layout.ContentPane(
+	      {content: "関数名: ",
+		style: { position: "absolute", top: "75px", left: "10px"}});
+	    var funcSelect = new dijit.form.FilteringSelect(
+	      {	name: "modelId", value: that.model.properties.func ? that.model.properties.func : "",
+		store: that.store, searchAttr: "name",
+		style: {position : "absolute",width: "150px",top: "70px",left: "100px"}
+	      });
+	    var elemButton = new dijit.form.Button(
+	      { label: "決定",
+		style: {position : "absolute",width: "80px", top: "45px",left: "280px"},
+		onClick: function(){
+		  that.model.properties.element = elemSelect.value;
+		  funcSelect.set({store: that.model.application.WidgetStore});
+		}});
+	    var funcButton = new dijit.form.Button(
+	      { label: "決定",
+		style: {position : "absolute",width: "80px", top: "70px",left: "280px"},
+		onClick: function(){
+		  that.model.properties.func = funcSelect.value;
+		  that.model.createParam(that.model.properties.element, that.model.properties.func);
+		}});
+	    if(that.model.properties.element && that.model.properties.func)
+	      that.model.reCreateParamDom();
+	    
+	    that.dialog.containerNode.appendChild(elemSelect.domNode);
+	    that.dialog.containerNode.appendChild(funcSelect.domNode);
+	    that.dialog.containerNode.appendChild(elemName.domNode);
+	    that.dialog.containerNode.appendChild(funcName.domNode);
+	    that.dialog.containerNode.appendChild(elemButton.domNode);
+	    that.dialog.containerNode.appendChild(funcButton.domNode);
+	    
 	    that.dialog.show();
-//	    that.dialog.containerNode.parentNode.style.top = "10px";
+	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
 	  }
 	});
       this.widget.element = this;
+      //ドロップ要素を更新
+
+      this.model.parent.element.widget.set(
+	  { style: {
+	      top: this.model.parent.properties.top,
+	      left: parseInt(this.model.parent.properties.left) + 250 + "px" 
+	    }
+	  });
+
       return this.widget.domNode;
     },
     createContainerNode: function(){
-	    this.dialog = new dijit.Dialog({
-					    title: "アクション",
-					    toggleable: false,
-					    style: {position: "absolute",
-						    height: "60%", width: "50%"
-//						    top: "10%", left: "25%"
-						   }
-					  });
-
-
-	    var tablename = new dijit.layout.ContentPane({
-							   content: "element name",
-							   style: { 
-							     position: "absolute",
-							     top: "50px",
-							     left: "10px"
-							 }
-						      });
-
-	    var tablenameSelect = new dijit.form.FilteringSelect({
-							     value: "",
-							     store: ajweb.editor.databaseModelStore,
-							     searchAttr: "name",
-							     style: {
-							       position : "absolute",
-							       width: "150px",
-							       top: "50px",
-							       left: "100px"
-							     },
-							     onChange: function(){
-							       that.model.properties.type = this.value;
-							     }
-							   });
-
-	    var button = new dijit.form.Button({
-						 label: "決定",
-						 style: {
-						   position : "absolute",
-						   width: "80px",
-						   top: "45px",
-						   left: "280px"
-						 }
-					       });
-
-	    this.paramContainer = new dijit.layout.ContentPane({
+      var that = this;
+      this.dialog = new dijit.Dialog({
+				       title: that.model.tagName,
+				       toggleable: false,
+				       style: {position: "absolute",
+						    height: "400px", width: "500px"
+					      },
+				       onHide: function(){
+					 delete that.store;
+					 that.model.removeParamDom();
+				       }
+				     });
+      this.paramContainer = new dijit.layout.ContentPane({
 							   content: "params",
 							   style: { 
 							     position: "absolute",
 							     top: "100px", left: "10px",
 							     border: "dotted 1px",
 							     width: "95%", height: "70%"
-							 }
-						      });
-	    this.dialog.containerNode.appendChild(tablenameSelect.domNode);
-	    this.dialog.containerNode.appendChild(tablename.domNode);
-	    this.dialog.containerNode.appendChild(button.domNode);
-	    this.dialog.containerNode.appendChild(this.paramContainer.domNode);
+							   }
+							 });
 
-
-
+      this.dialog.containerNode.appendChild(this.paramContainer.domNode);
       return this.paramContainer.domNode;
     },
     updateDom: function(properties){
@@ -157,12 +155,7 @@ dojo.declare("ajweb.editor.element.Func",
     createMoveTriggerDomNode: function(){
       return this.domNode;
     },
-/*    createDndDomNode: function(){
-      return this.widget.hideNode;
-    },*/
-/*    createContainerNode:function(){
-      return this.widget.hideNode;
-    },*/
+
     onDrop: function(){
       this.inherited(arguments);
     },
@@ -170,6 +163,7 @@ dojo.declare("ajweb.editor.element.Func",
       this.inherited(arguments);
       var that = this;
       this.widget.startup();
+      this.model.parent.element.addNewNode(this.domNode);
     }
   }
 );

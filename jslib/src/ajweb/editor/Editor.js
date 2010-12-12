@@ -30,6 +30,7 @@ dojo.require("ajweb.editor.model.Database");
 dojo.require("ajweb.editor.model.Property");
 dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Action");
+dojo.require("ajweb.editor.model.Branch");
 dojo.require("ajweb.editor.model.Func");
 dojo.require("ajweb.editor.model.Param");
 dojo.require("ajweb.editor.element.Widget");
@@ -448,6 +449,28 @@ dojo.declare(
       this.applications.push(application);
       var events = this.newModel("events", {}, application);
       application.xmlToModel(applicationNode, xml);
+
+      var that = this;
+
+      //メニューに追加
+      var appSaveMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.saveAjml(application);
+	  }
+	});
+      that.saveMenu.addChild(appSaveMenu);
+      var appGenerateMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.generate(application);
+	  }
+	});
+      that.generateWarMenu.addChild(appGenerateMenu);
+
+
       return application;
     },
     /**
@@ -525,7 +548,7 @@ dojo.declare(
       var modelClass = modelInfo.modelClass;
       var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
       var propertyList = dojo.clone(modelInfo.propertyList);
-      var defaultProperties = dojo.clone(modelInfo.defaultProperties);
+      var defaultProperties = dojo.clone(modelInfo.defaultProperties ? modelInfo.defaultProperties : {});
       var id = name + ajweb.editor.modelCount(name);
 
       if(properties){
@@ -555,9 +578,15 @@ dojo.declare(
 	  editor: this
 	}
       );
+      
+      if(ModelClass == "Widget" || ModelClass == "Database"){
+	parent.application[ModelClass + "Store"].newItem({modelId: id, name: defaultProperties.id});
+      }
+      
+      
       if(name == "events")
 	parent.application.events = newModel;
-      newModel.label = modelInfo.label ? modelInfo.label : newModel.id;
+      newModel.label = modelInfo.label ? modelInfo.label : newModel.properties.id;
       this.addProjectTree(newModel);
       newModel.startup();
       return newModel;

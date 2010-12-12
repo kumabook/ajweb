@@ -149,7 +149,7 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  attrs = ajweb.editor.attributesToHash(childNode.attributes);
 
 	  if(childNode.tagName == "events")
-	    return;
+	    continue;
 	  var child;
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
@@ -164,19 +164,6 @@ dojo.declare("ajweb.editor.model.Model", null,
 	    for(var k = 0; k < events.length; k++){
 	      var eventAttrs = ajweb.editor.attributesToHash(events[k].attributes);
 	      if(eventAttrs.target ==  attrs.id){
-/*		var event = new ajweb.editor.model.Event(
-		  {
-		    id: attrs.id +"_"+ eventAttrs.type,
-		    tagName: "event",
-		    propertyList: ["type", "target"],
-		    properties:  eventAttrs,
-		    acceptModelType: ["action"],
-		    container: this.editor.eventTc,
-		    parent: this.application.events,
-		    elementClass: "event",
-		    editor: this.editor
-		  });
-		event.startup();*/
 		var event = this.editor.createModel("event", eventAttrs,
 		  this.application.events, this.editor.eventTc);
 		child.events.push(event);

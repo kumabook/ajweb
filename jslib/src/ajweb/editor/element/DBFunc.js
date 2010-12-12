@@ -2,15 +2,12 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-dojo.require("ajweb.editor.element.TitlePane");
+//dojo.require("ajweb.editor.element.TitlePane");
 dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.DBFunc");
 dojo.declare("ajweb.editor.element.DBFunc",
-	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Removable],
-  /** @lends ajweb.editor.element.DBFunc.prototype */
+	     ajweb.editor.element.Func,
+  /** @lends ajweb.editor.element.Func.prototype */
   {
     /**
      * Constructor
@@ -27,8 +24,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
-    {
-    },
+    {},
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
@@ -39,128 +35,53 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	  title: this.model.tagName,
 	  open: false,
 	  toggleable: false,
-	  style:{
-	    position: "absolute",
-	    width: "80px",
-	    top: properties.top,
-	    left: properties.left,
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
+	  style:{ position: "absolute", width: "80px",
+		  top: properties.top,left: properties.left,
+		  backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"
 	  },
 	  onDblClick: function(){
+	    that.store = that.model.application.getDatabaseStore();
+	    var tablename = new dijit.layout.ContentPane(
+	      {content: "データベース名",
+	       style: { position: "absolute", top: "50px", left: "10px"}
+	      });
+	    var tablenameSelect = new dijit.form.FilteringSelect(
+	      {name: "modelId",value: that.model.properties.database,
+	       store: that.store, searchAttr: "name",
+	       style: {position : "absolute", width: "150px",top: "50px",left: "100px"}});
+	    var button = new dijit.form.Button(
+	      { label: "決定",
+		style: {position : "absolute",width: "80px",top: "45px",left: "280px"},
+		onClick: function(){
+		  if(that.model.children.length > 0){
+		    that.model.removeParam();
+		  }
+		  that.model.properties.database = tablenameSelect.value;
+		  that.model.createParam(tablenameSelect.value);
+		}
+	      });
+	    that.dialog.containerNode.appendChild(tablenameSelect.domNode);
+	    that.dialog.containerNode.appendChild(tablename.domNode);
+	    that.dialog.containerNode.appendChild(button.domNode);
+
+	    if(that.model.properties.database){
+	      that.model.reCreateParamDom();
+	    }
+	    
 	    that.dialog.show();
+	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
 	  }
 	});
       this.widget.element = this;
-//      this.widget.domNode.className = "dijitTitlePaneTitle";
-      return this.widget.domNode;
-    },
-    createContainerNode: function(){
-	    this.dialog = new dijit.Dialog({
-					    title: "アクション",
-					    toggleable: false,
-					    style: {position: "absolute",
-						    height: "60%", width: "50%"
-						   }
-					  });
-
-
-	    var tablename = new dijit.layout.ContentPane({
-							   content: "tablename",
-							   style: { 
-							     position: "absolute",
-							     top: "50px",
-							     left: "10px"
-							 }
-						      });
-
-	    var tablenameSelect = new dijit.form.FilteringSelect({
-							     value: "",
-							     store: ajweb.editor.databaseModelStore,
-							     searchAttr: "name",
-							     style: {
-							       position : "absolute",
-							       width: "150px",
-							       top: "50px",
-							       left: "100px"
-							     },
-							     onChange: function(){
-							       that.model.properties.type = this.value;
-							     }
-							   });
-
-	    var button = new dijit.form.Button({
-						 label: "決定",
-						 style: {
-						   position : "absolute",
-						   width: "80px",
-						   top: "45px",
-						   left: "280px"
-						 }
-					       });
-
-	    this.paramContainer = new dijit.layout.ContentPane({
-							   content: "params",
-							   style: { 
-							     position: "absolute",
-							     top: "100px", left: "10px",
-							     border: "dotted 1px",
-							     width: "95%", height: "70%"
-							 }
-						      });
-	    this.dialog.containerNode.appendChild(tablenameSelect.domNode);
-	    this.dialog.containerNode.appendChild(tablename.domNode);
-	    this.dialog.containerNode.appendChild(button.domNode);
-	    this.dialog.containerNode.appendChild(this.paramContainer.domNode);
-
-      return this.paramContainer.domNode;
-    },
-    updateDom: function(properties){
-      this.widget.set({
-	style:{
-	    top: properties.top,
-	    left: properties.left
-	  }
-	});
-    },
-    removeDom: function(){
-      var lines = this.container.lines;
-      for(var i = 0; i < lines.length; i++){
-	if(lines[i].end == this.domNode){
-	  if(i==lines.length-1){
-	    this.container.domNode.removeChild(lines[i].domNode);
-	    lines.splice(i);
-	  }
-	  else {
-	    for(var j = 0; j < lines.length; j++){
-	      if(lines[j].start == this.domNode){
-		lines[i].end = lines[j].end;
-		this.container.domNode.removeChild(lines[j].domNode);
-		lines.splice(j,1);
-		this.container.reDraw(lines[i]);
-	      }
+      //ドロップ要素を更新
+      this.model.parent.element.widget.set(
+	  { style: {
+	      top: this.model.parent.properties.top,
+	      left: parseInt(this.model.parent.properties.left) + 250 + "px" 
 	    }
-	  }
-	}
-      }
-      this.widget.destroyRecursive();
-    },
-    createMoveTriggerDomNode: function(){
-      return this.domNode;
-    },
-/*    createDndDomNode: function(){
-      return this.widget.hideNode;
-    },*/
-/*    createContainerNode:function(){
-      return this.widget.hideNode;
-    },*/
-    onDrop: function(){
-      this.inherited(arguments);
-    },
-    startup: function(){
-      this.inherited(arguments);
-      var that = this;
-      this.widget.startup();
+	  });
+
+      return this.widget.domNode;
     }
   }
 );

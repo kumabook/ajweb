@@ -61,13 +61,13 @@ public class GenerateServlet extends AbstractServlet {
 		private void download(HttpServletRequest request,
 				HttpServletResponse response) throws ServletException, IOException {
 			InputStream in = null;
-			
 			PrintWriter writer = response.getWriter();
 			StreamResult result = new StreamResult(writer);
 			try {
 				String ajml = request.getParameter("content");
+				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
 				String filename = request.getParameter("filename");
-				in = new ByteArrayInputStream(ajml.getBytes());
+				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(new InputSource(in)); 
@@ -88,8 +88,6 @@ public class GenerateServlet extends AbstractServlet {
 				transformer.transform(new DOMSource(doc), result);
 				
 			} catch (Exception e){
-					response.setContentType("text/html");
-					response.setCharacterEncoding("UTF-8");
 					writer.println(e.toString());
 					e.printStackTrace();
 			}
@@ -102,9 +100,11 @@ public class GenerateServlet extends AbstractServlet {
 			InputStream in = null;
 			try {
 				String ajml = request.getParameter("content");
+				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+				System.out.println(ajml);
 				String filename = request.getParameter("filename");
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
-				in = new ByteArrayInputStream(ajml.getBytes());
+				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(new InputSource(in)); 

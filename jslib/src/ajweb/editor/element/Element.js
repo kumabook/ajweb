@@ -49,8 +49,8 @@ dojo.declare("ajweb.editor.element.Element", null,
       this.containerNode = this.createContainerNode();
 
       if(this.container instanceof ajweb.editor.element.Element){
-	this.container.containerNode.appendChild(this.domNode);
-//	this.container.dndDomNode.appendChild(this.domNode);
+	if(this.container.containerNode)
+	  this.container.containerNode.appendChild(this.domNode);
       }
       else　{// centerTcの場合 プロジェクトエクスプローラーに反映
 	this.container.addChild(this.widget);

@@ -6,8 +6,7 @@ dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.PredicateOperator");
 dojo.declare("ajweb.editor.element.PredicateOperator", 
-	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable],
+	     [ajweb.editor.element.Element],
   /** @lends ajweb.editor.element.PredicateOperator.prototype */
   {
     /**
@@ -32,19 +31,90 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      this.widget = new dijit.TitlePane(
-	{
-	 title: this.id,
-	  style:{
-//	    position: "absolute",
-//	    width: "240px",
-//	    height: "40px",
-//	    top: properties.top,
-//	    left: properties.left,
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
-	  }
-	});
+      var that = this;
+      this.widget = new dijit.layout.ContentPane(
+	{ style: { position: "absolute", width: "300px", height: "25px",
+		   top: "100px", left: "50px" }});
+      var operator = new dijit.layout.ContentPane(
+	{ content: "and",
+	  style: { position: "absolute", height: "20px",
+		   top: "5px", left: "100px" }});
+      var leftButton = new dijit.form.Button(
+	{ label: "condition",
+	  style: {position : "absolute",top: "0px",left: "0px"},
+	  onClick: function(){
+	    var dialog = new dijit.Dialog({
+					    title: "left",
+					    style: {position: "absolute",
+					       height: "150px", width: "350px"
+					      },
+					    onHide: function(){
+					    }
+					  });
+	    var predictName = new dijit.layout.ContentPane(
+	      { content: "条件種類: ",
+		style: {position: "absolute",top: "50px",left: "10px"}});
+	    var predictSelect = new dijit.form.FilteringSelect(
+	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	      });
+	    var button = new dijit.form.Button(
+	      { label: "選択",
+		style: {position : "absolute", top: "45px",left: "280px"},
+		onClick: function(){		  
+		  that.containerNode = dialog.containerNode;
+		  that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		}
+	      });
+	    dialog.containerNode.appendChild(predictName.domNode);
+	    dialog.containerNode.appendChild(predictSelect.domNode);
+	    dialog.containerNode.appendChild(button.domNode);;
+	    dialog.show();
+	    var parentDialog = that.model.parent.element.dialog;
+	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 400 + "px",
+			       top: parseInt(parentDialog.domNode.style.top) - 100 + "px"}});
+	  }});
+      var rightButton = new dijit.form.Button(
+	{ label: "condition",
+	  style: {position : "absolute", top: "0px",left: "150px"},
+	  onClick: function(){
+	    var dialog = new dijit.Dialog({
+					    title: "left",
+					    style: {position: "absolute",
+					       height: "150px", width: "350px"
+					      },
+					    onHide: function(){
+					    }
+					  });
+	    var predictName = new dijit.layout.ContentPane(
+	      { content: "条件: ",
+		style: {position: "absolute",top: "50px",left: "10px"}});
+	    var predictSelect = new dijit.form.FilteringSelect(
+	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	      });
+	    var button = new dijit.form.Button(
+	      { label: "選択",
+		style: {position : "absolute", top: "45px",left: "280px"},
+		onClick: function(){
+		  that.containerNode = dialog.containerNode;
+		  that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		}
+	      });
+	    dialog.containerNode.appendChild(predictName.domNode);
+	    dialog.containerNode.appendChild(predictSelect.domNode);
+	    dialog.containerNode.appendChild(button.domNode);;
+	    dialog.show();
+	    var parentDialog = that.model.parent.element.dialog;
+	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 400 + "px",
+			       top: parseInt(parentDialog.domNode.style.top) + 100 + "px"}});
+	  }});
+
+      this.widget.domNode.appendChild(operator.domNode);
+      this.widget.domNode.appendChild(leftButton.domNode);
+      this.widget.domNode.appendChild(rightButton.domNode);
       return this.widget.domNode;
     },
     removeDom: function(){
@@ -52,9 +122,6 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
     },
     createMoveTriggerDomNode: function(){
       return this.tablename;
-    },
-    createDndDomNode: function(){
-      return this.widget.hideNode;
     },
     checkAcceptance: function(){
       if(this.model.tagName == "not" && this.model.children.length > 0)

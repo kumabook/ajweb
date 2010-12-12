@@ -32,24 +32,34 @@ dojo.declare("ajweb.editor.element.Condition",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
+      var that = this;
       this.widget = new dijit.TitlePane(
 	{
-	  title: this.model.tagName, toggleable: false, open: false,//this.id,
-	//  content: this.model.tagName,
-	  style:{
-	    position: "absolute",
-	    width: "80px",
-	    top: properties.top,
-	    left: properties.left,
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
-	  },
+	  title: this.model.tagName, toggleable: false, open: false,
+	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
+	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"},
 	  onDblClick: function(){
-	    var dialog = new dijit.Dialog({
-					    title: "イベント発生条件",
-					    style: {height: "50%", width: "50%"}
-					  });
-	    dialog.show();
+	    var predictName = new dijit.layout.ContentPane(
+	      { content: "条件: ",
+		style: {position: "absolute",top: "50px",left: "10px"}});
+	    var predictSelect = new dijit.form.FilteringSelect(
+	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	      });
+	    var button = new dijit.form.Button(
+	      { label: "追加",
+		style: {position : "absolute",top: "45px",left: "280px"},
+		onClick: function(){
+		  if(that.model.children.length == 0)
+		    that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		}
+	      });
+	    that.dialog.containerNode.appendChild(predictName.domNode);
+	    that.dialog.containerNode.appendChild(predictSelect.domNode);
+	    that.dialog.containerNode.appendChild(button.domNode);
+	    that.dialog.show();
+	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
 	  }
 	});
       return this.widget.domNode;
@@ -60,12 +70,15 @@ dojo.declare("ajweb.editor.element.Condition",
     createMoveTriggerDomNode: function(){
       return this.tablename;
     },
-/*    createDndDomNode: function(){
-      return this.widget.hideNode;
-    },
+
     createContainerNode: function(){
-      return this.widget.hideNode;
-    },*/
+      var that = this;
+      this.dialog = new dijit.Dialog({ title: that.model.tagName,
+				       style: {position: "absolute", height: "150px", width: "350px"},
+				       onHide: function(){}
+				     });
+      return this.dialog.containerNode;
+    },
     checkAcceptance: function(){
       if(this.model.children.length > 0)
 	return false; 

@@ -41,7 +41,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
      * 移動範囲の境界となるのDOM要素を返す。サブクラスでオーバーライド
      */
     createMoveContainerDomNode :function(){
-      return this.container.domNode;
+      return this.container.containerNode;
     },
     /**
      * ドラッグで移動可能にする

@@ -10,6 +10,52 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	  {name: this.properties.name, modelType: "application", modelId: this.id});
       this.editor.projectStore.save();
       this.application = this;
+
+      this.DatabaseStore = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "modelId",
+	    label : "name",
+	    items: []
+	  }
+	}
+      );
+      this.WidgetStore = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "modelId",
+	    label : "name",
+	    items: []
+	  }
+	}
+      );
+    },
+    getDatabasesModel: function(){
+      var databases;
+      for(var i = 0; i < this.children.length; i++){
+	if(this.children[i].tagName == "databases")
+	databases = this.children[i];
+      }
+      return databases;
+    },
+    getDatabaseStore: function(){
+      var items = [];
+      var databases = this.getDatabasesModel();
+      for(var i = 0; i < databases.children.length; i++){
+	items.push({name: databases.children[i].properties.id, modelId: databases.children[i].id});
+      }
+      var store = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "modelId",
+	    label : "name",
+	    items: items
+	  }
+	}
+      );
+      return store;
+    },
+    getWidgetStore: function(){
     }
   }
 );

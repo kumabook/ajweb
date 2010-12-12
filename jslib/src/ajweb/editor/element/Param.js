@@ -29,35 +29,35 @@ dojo.declare("ajweb.editor.element.Param",
      */
     createDom: function(properties){
       var that = this;
-      var keyTextbox = new dijit.layout.ContentPane(
+      var keyName = new dijit.layout.ContentPane(
 	{
 	  content: properties.name + ":",
-	  style: { width: "30px", styleFloat: "left"}
+	  style: { position: "absolute", top: "0px", left: "10px"}
 	});
-      var value =  new dijit.layout.ContentPane(
-	{ content: "value", style: { width: "120px", border: "dashed 1px", height: "20px"}
-	});
+
       this.widget = new dijit.layout.ContentPane(
-	{style: {
-	   width: parseInt(this.container.domNode.style.width) - 15 + "px",
-	   height: "30px",
-	   padding: "0px 0px 10px 10px"
+	{ 
+	  style: {
+	   position: "absolute",
+	   top: (this.container.containerNode.childNodes.length * 30) + "px", left: "10px",
+	   width: "350px", height: "30px"
 	 }});
-      this.widget.domNode.appendChild(keyTextbox.domNode);
-      this.widget.domNode.appendChild(value.domNode);
+      this.widget.domNode.appendChild(keyName.domNode);
       return this.widget.domNode;
     },
-  
+    createContainerNode: function(){
+      var value = new dijit.layout.ContentPane(
+	{style: {
+	   position: "absolute",
+	   top: "0px", left: "200px",
+	   width: "120px", height: "20px",
+	   border: "dotted 1px"
+	 }});
+      this.domNode.appendChild(value.domNode);
+      return value.domNode;
+    },
     removeDom: function(){
       this.widget.destroyRecursive();
-      this.model.parent.updateDom();
-    },
-    updateDom: function(){
-      for(var i = 0; i < this.model.parent.children.length; i++){
-	if(this.model == this.model.parent.children[i]){
-	  this.widget.domNode.style.top = (i+1) * 30 + "px";
-	}
-      }
     },
     startup: function(){
       this.inherited(arguments);

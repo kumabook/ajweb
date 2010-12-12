@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AjWeb" default="compile" basedir=".">
 
+		<target name="all">
+				<subant target="all" buildpath="generator"/>
+				<subant target="all" buildpath="jslib"/>
+		</target>
 		<target name="dist">
 				<antcall target="dist_generator"/>
 				<antcall target="dist_jslib"/>
