@@ -110,8 +110,15 @@ public abstract class AbstractJsUnitServer {
 		webapp.setResourceBase(webAppDir.getAbsolutePath() + "/");
 		webapp.addClassPath(webAppDir.getAbsolutePath() + "/WEB-INF/classes");
 		webapp.addClassPath(basedir + "/../generator/classes/");
-		webapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
-		webapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
+
+		File libDir = new File(basedir + "/../generator/lib/servlet/");
+		File[] servletLibs = libDir.listFiles();
+
+		for(int i = 0; i < servletLibs.length; i++){
+				System.out.println(servletLibs[i].getAbsolutePath());
+				webapp.addClassPath(servletLibs[i].getAbsolutePath());	
+		}
+
 	
         ResourceHandler resource_handler = new ResourceHandler();
         resourceHandler.setDirAllowed(false);
@@ -137,11 +144,10 @@ public abstract class AbstractJsUnitServer {
 		editorWebapp.setResourceBase(editorWebAppDir.getAbsolutePath() + "/");
 		editorWebapp.addClassPath(editorWebAppDir.getAbsolutePath() + "/WEB-INF/classes");
 		editorWebapp.addClassPath(basedir + "/../generator/classes/");
-		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/jetty-all-7.0.2.v20100331.jar");
-		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/derby.jar");
-		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/commons-fileupload-1.2.2.jar");
-		editorWebapp.addClassPath(basedir + "/../generator/lib/servlet/commons-io-2.0.jar");
-
+		for(int i = 0; i < servletLibs.length; i++){
+				System.out.println(servletLibs[i].getAbsolutePath());
+				editorWebapp.addClassPath(servletLibs[i].getAbsolutePath());	
+		}
 		httpServer.addContext(editorWebapp);
 
 

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Untainted;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +67,9 @@ public class GenerateServlet extends AbstractServlet {
 			StreamResult result = new StreamResult(writer);
 			try {
 				String ajml = request.getParameter("content");
-				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+				
 				String filename = request.getParameter("filename");
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -100,11 +104,13 @@ public class GenerateServlet extends AbstractServlet {
 			InputStream in = null;
 			try {
 				String ajml = request.getParameter("content");
-				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
-				System.out.println(ajml);
+				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+
 				String filename = request.getParameter("filename");
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
+
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(new InputSource(in)); 
