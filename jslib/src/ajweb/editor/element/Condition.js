@@ -7,6 +7,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Condition");
 dojo.declare("ajweb.editor.element.Condition", 
 	     [ajweb.editor.element.Element,
+//	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.DndEnable],
   /** @lends ajweb.editor.element.Condition.prototype */
   {
@@ -42,24 +43,38 @@ dojo.declare("ajweb.editor.element.Condition",
 	    var predictName = new dijit.layout.ContentPane(
 	      { content: "条件: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.FilteringSelect(
+	    var predictSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
 	    var button = new dijit.form.Button(
 	      { label: "追加",
 		style: {position : "absolute",top: "45px",left: "280px"},
-		onClick: function(){
-		  if(that.model.children.length == 0)
-		    that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		onClick: function(){		  
+		  if(that.model.children.length == 0){
+		    var tagName = predictSelect.value;
+		    that.model.properties.element = predictSelect.value;
+		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+		    newModel.properties.name = tagName;
+		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		    }
+		  }
 		}
 	      });
 	    that.dialog.containerNode.appendChild(predictName.domNode);
 	    that.dialog.containerNode.appendChild(predictSelect.domNode);
 	    that.dialog.containerNode.appendChild(button.domNode);
+	    predictName.startup();
+	    predictSelect.startup();
+	    button.startup();
 	    that.dialog.show();
-	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
+	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 50 + "px"}});
+
+	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }
 	});
       return this.widget.domNode;
@@ -67,10 +82,7 @@ dojo.declare("ajweb.editor.element.Condition",
     removeDom: function(){
       this.widget.destroyRecursive();
     },
-    createMoveTriggerDomNode: function(){
-      return this.tablename;
-    },
-
+    
     createContainerNode: function(){
       var that = this;
       this.dialog = new dijit.Dialog({ title: that.model.tagName,

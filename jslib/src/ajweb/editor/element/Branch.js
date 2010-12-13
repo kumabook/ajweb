@@ -33,21 +33,16 @@ dojo.declare("ajweb.editor.element.Branch",
       this.widget = new dijit.layout.ContentPane(
 	{
 	  content: this.model.tagName,
-	  style:{
-	    position: "absolute",
-	    width: "100px",
-	    height: "40px",
-	    top: properties.top,
-	    left: properties.left,
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
+	  style:{ position: "absolute", width: "100px", height: "50px",
+	    top: properties.top, left: properties.left, backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"
 	  }
 	});
-      //ドロップ要素を隠す
+
       this.model.parent.element.domNode.style.display = "none";
 
       return this.widget.domNode;
     },
+
     updateDom: function(properties){
       this.widget.set({
 	style:{

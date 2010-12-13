@@ -1,7 +1,7 @@
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.TextBox");
-dojo.require("dijit.form.FilteringSelect");
+dojo.require("dijit.form.Select");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.require("ajweb.editor.element.Element");
@@ -32,14 +32,14 @@ dojo.declare("ajweb.editor.element.Property",
      */
     createDom: function(properties){
       var that = this;
-      var propName = new dijit.form.TextBox(
+      this.propName = new dijit.form.TextBox(
 	{
 	  name: this.id + "propName",
 	  value: properties.name /* no or empty value! */,
 	  style: {
 	    position : "absolute",
 	    width: "110px",
-	    top: "5px",
+	    top: "4px",
 	    left: "0px"
 	  },
 	  onChange: function(){
@@ -47,19 +47,11 @@ dojo.declare("ajweb.editor.element.Property",
 	  }
 
 	});
-      var value = that.model.properties.type ? that.model.properties.type : "int";
-      var filteringSelect = new dijit.form.FilteringSelect(
+      this.select = new dijit.form.Select(
 	{
-	  name: "state",
-	  value: value,
-	  store: ajweb.editor.dataTypeStore,
-	  searchAttr: "name",
-	  style: {
-	    position : "absolute",
-	    width: "80px",
-	    top: "5px",
-	    right: "25px"
-	  },
+	  name: "state", value: that.model.properties.type ? that.model.properties.type : "int",
+	  store: ajweb.editor.dataTypeStore, sortByLabel: false,
+	  style: {position : "absolute",width: "80px",top: "0px",right: "25px"},
 	  onChange: function(){
 	    that.model.properties.type = this.value;
 	  }
@@ -74,8 +66,8 @@ dojo.declare("ajweb.editor.element.Property",
 	    left: "10px"
 	  }
 	});
-      this.widget.domNode.appendChild(propName.domNode);
-      this.widget.domNode.appendChild(filteringSelect.domNode);
+      this.widget.domNode.appendChild(this.propName.domNode);
+      this.widget.domNode.appendChild(this.select.domNode);
       this.container.domNode.style.height = (this.model.parent.children.length) * 30 + 35 + "px";
       return this.widget.domNode;
     },
@@ -94,6 +86,8 @@ dojo.declare("ajweb.editor.element.Property",
     startup: function(){
       this.inherited(arguments);
       this.widget.startup();
+      this.select.startup();
+      this.propName.startup();
     }
   }
 );

@@ -2,7 +2,7 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-//dojo.require("ajweb.editor.element.TitlePane");
+dojo.require("dojox.widget.Dialog");
 dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.Func");
 dojo.declare("ajweb.editor.element.Func",
@@ -43,17 +43,17 @@ dojo.declare("ajweb.editor.element.Func",
 	    var elemName = new dijit.layout.ContentPane(
 	      { content: "要素名: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var elemSelect = new dijit.form.FilteringSelect(
+	    var elemSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: that.store, searchAttr: "name",
+		store: that.store, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
 	    var funcName = new dijit.layout.ContentPane(
 	      {content: "関数名: ",
 		style: { position: "absolute", top: "75px", left: "10px"}});
-	    var funcSelect = new dijit.form.FilteringSelect(
+	    var funcSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.func ? that.model.properties.func : "",
-		store: that.store, searchAttr: "name",
+		store: that.store, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "70px",left: "100px"}
 	      });
 	    var elemButton = new dijit.form.Button(
@@ -62,6 +62,7 @@ dojo.declare("ajweb.editor.element.Func",
 		onClick: function(){
 		  that.model.properties.element = elemSelect.value;
 		  funcSelect.set({store: that.model.application.WidgetStore});
+
 		}});
 	    var funcButton = new dijit.form.Button(
 	      { label: "決定",
@@ -80,8 +81,15 @@ dojo.declare("ajweb.editor.element.Func",
 	    that.dialog.containerNode.appendChild(elemButton.domNode);
 	    that.dialog.containerNode.appendChild(funcButton.domNode);
 	    
+	    elemSelect.startup();
+	    funcSelect.startup();
+	    elemenName.startup();
+	    funcName.startup();
+	    elemButton.startup();
+	    funcButton.startup();
+
 	    that.dialog.show();
-	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
+	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 50 + "px"}});
 	  }
 	});
       this.widget.element = this;
@@ -99,6 +107,7 @@ dojo.declare("ajweb.editor.element.Func",
     createContainerNode: function(){
       var that = this;
       this.dialog = new dijit.Dialog({
+//      this.dialog = new dojox.widget.Dialog({
 				       title: that.model.tagName,
 				       toggleable: false,
 				       style: {position: "absolute",

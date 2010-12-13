@@ -22,8 +22,8 @@ ajweb.editor.COMLIST =  [
   },
   {
     name: "Function",
-    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"},{name: "then"},{name: "else"},{name: "param"}]
-  },
+    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
+  }/*,
   {
     name: "Value",
     children: [{name: "int"},{name: "string"},{name: "date"},{name: "datetime"},{name: "getValue"},{name: "select"}]
@@ -31,7 +31,7 @@ ajweb.editor.COMLIST =  [
   {
     name: "Condition",
     children: [{name: "condition"},{name: "and"},{name: "or"},{name: "not"},{name: "eq"},{name: "lt"},{name: "gt"}]
-  }
+  }*/
 ];
 
 /**
@@ -48,6 +48,43 @@ ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
 	  }
 	});
 /**
+ * valueタイプを保持するdojoストア
+ */
+ajweb.editor.valueTypeStore = new dojo.data.ItemFileWriteStore(
+	{
+	  data:{
+	    identifier: "id",
+	    label: "name",
+	    items: [
+	      {id: "int", name: "int"},
+	      {id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"},
+	      {id: "separator1"},
+	      {id: "element", name: '<span class="ajwebValueMenuSeparate">element</span>', selected: false}, 
+	      {id: "separator2"},
+	      {id: "database",name: '<span class="ajwebValueMenuSeparate">database</span>', selected: false}
+	    ]
+	  }
+	});
+/**
+ * 条件式の演算子をアルファベットから記号表記に変換
+ */
+ajweb.editor.conditionToOperator = function(name){
+  if(name == "eq")
+    return "=";
+  else if(name == "gt")
+  return ">";
+  else if(name == "lt")
+  return "<";
+  else if(name == "and")
+  return "AND";
+  else if(name == "or")
+  return "OR";
+  else if(name == "not")
+  return "NOT";
+
+  return "";
+};
+/**
  * 条件式のdojoストア
  */
 
@@ -57,6 +94,7 @@ ajweb.editor.conditionOperatorStore = new dojo.data.ItemFileReadStore(
 	    identifier: "name",
 	    label: "name",
 	    items: [
+	      {name: "true"},
 	      { name: "and" }, { name: "or" }, { name: "not" },
 	      { name: "eq" },{name: "gt"} ,{name: "lt"}
 	    ]

@@ -5,11 +5,9 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Action");
 dojo.declare("ajweb.editor.element.Action",
-	     [
-	       ajweb.editor.element.Element,
+	     [ ajweb.editor.element.Element,
 	       ajweb.editor.element.DndEnable,
-	       ajweb.editor.element.Movable
-	     ],
+	       ajweb.editor.element.Movable],
   /** @lends ajweb.editor.element.Action.prototype */
   {
     /**
@@ -28,8 +26,7 @@ dojo.declare("ajweb.editor.element.Action",
      */
     constructor: function(opt)
     {
-      this.lines = [];
-      this.lines.push(this.createInitLine());
+      this.createInitLine();
     },
     createInitLine: function(){
       this.line = this.container.draw(this.model.parent.children[0].element.domNode, this.domNode);

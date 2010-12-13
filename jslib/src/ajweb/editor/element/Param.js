@@ -1,7 +1,6 @@
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.TextBox");
-dojo.require("dijit.form.FilteringSelect");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.require("ajweb.editor.element.Element");
@@ -22,8 +21,7 @@ dojo.declare("ajweb.editor.element.Param",
      * @param {DOM} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
-    constructor: function(opt)
-    {},
+    constructor: function(opt){},
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */

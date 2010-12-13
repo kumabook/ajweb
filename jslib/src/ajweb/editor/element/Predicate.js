@@ -6,8 +6,7 @@ dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Predicate");
 dojo.declare("ajweb.editor.element.Predicate", 
-	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable],
+	     [ajweb.editor.element.Element],
   /** @lends ajweb.editor.element.Predicate.prototype */
   {
     /**
@@ -26,69 +25,25 @@ dojo.declare("ajweb.editor.element.Predicate",
      * @param {DOM} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
-    constructor: function(opt)
-    {},
+    constructor: function(opt){},
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-//      this.widget = new dijit.layout.ContentPane(
-      this.widget = new dijit.TitlePane(
-	{
-//	  content: this.model.tagName,
-	  title: this.model.tagName,
-	  style:{
-	    backgroundColor: "#E1EBFB",
-	    border: "solid 1px #769DC0"
-	  }
-	});
-      this.paramLeftAccept =  new dijit.layout.ContentPane(
-	{
-	  content: "left",
-	  style:{
-	    backgroundColor: "white",
-	    border: "dashed 1px #769DC0",
-	    left: "20px"
-	  }
-	});
-      this.paramRightAccept =  new dijit.layout.ContentPane(
-	{
-	  content: "right",
-	  style:{
-	    backgroundColor: "white",
-	    border: "dashed 1px #769DC0",
-	    left: "20px"
-	  }
-	});
-      this.widget.hideNode.appendChild(this.paramLeftAccept.domNode);
-      this.widget.hideNode.appendChild(this.paramRightAccept.domNode);
+      var that = this;
+      this.widget = new dijit.layout.ContentPane(
+	{ style: { position: "absolute", width: "300px", height: "25px",
+		   top: "100px", left: "80px"}});
+      var operator = new dijit.layout.ContentPane(
+	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
+	  style: { position: "absolute", height: "30px", fontSize: "20px",
+		   top: "0px", left: "75px" }});
+      this.widget.domNode.appendChild(operator.domNode);
 
       return this.widget.domNode;
     },
     removeDom: function(){
       this.widget.destroyRecursive();
-    },
-    createMoveTriggerDomNode: function(){
-      return this.tablename;
-    },
-    createDndDomNode: function(){
-//      return this.widget.domNode;
-      return this.widget.hideNode;
-    },
-    checkAcceptance: function(){
-      if(this.model.tagName == "not" && this.model.children.length > 0)
-	return false;
-      else if(this.model.children.length > 1)
-	return false; 
-      else 
-	return this.inherited(arguments);
-    },
-    onDrop: function(){
-      this.inherited(arguments);
-      if(this.paramLeftAccept.domNode)
-	this.paramLeftAccept.destroy();
-      else 
-      	this.paramRightAccept.destroy();
     },
     startup: function(){
       this.inherited(arguments);

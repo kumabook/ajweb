@@ -36,9 +36,9 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	{ style: { position: "absolute", width: "300px", height: "25px",
 		   top: "100px", left: "50px" }});
       var operator = new dijit.layout.ContentPane(
-	{ content: "and",
-	  style: { position: "absolute", height: "20px",
-		   top: "5px", left: "100px" }});
+	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
+	  style: { position: "absolute", height: "30px", fontSize: "15px",
+		   top: "5px", left: "95px" }});
       var leftButton = new dijit.form.Button(
 	{ label: "condition",
 	  style: {position : "absolute",top: "0px",left: "0px"},
@@ -51,12 +51,13 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 					    onHide: function(){
 					    }
 					  });
+	    that.dialog = dialog;
 	    var predictName = new dijit.layout.ContentPane(
 	      { content: "条件種類: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.FilteringSelect(
+	    var predictSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
 	    var button = new dijit.form.Button(
@@ -64,16 +65,32 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 		style: {position : "absolute", top: "45px",left: "280px"},
 		onClick: function(){		  
 		  that.containerNode = dialog.containerNode;
-		  that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		  if(that.model.children.length == 0){
+		    var tagName = predictSelect.value;
+		    that.model.properties.element = predictSelect.value;
+		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+		    newModel.properties.name = tagName;
+		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		    }
+		  }
 		}
+
 	      });
 	    dialog.containerNode.appendChild(predictName.domNode);
 	    dialog.containerNode.appendChild(predictSelect.domNode);
 	    dialog.containerNode.appendChild(button.domNode);;
+	    predictName.startup();
+	    predictSelect.startup();
+	    button.startup();
 	    dialog.show();
 	    var parentDialog = that.model.parent.element.dialog;
 	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 400 + "px",
-			       top: parseInt(parentDialog.domNode.style.top) - 100 + "px"}});
+			       top: parseInt(parentDialog.domNode.style.top) - 50 + "px"}});
+
+	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }});
       var rightButton = new dijit.form.Button(
 	{ label: "condition",
@@ -87,12 +104,13 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 					    onHide: function(){
 					    }
 					  });
+	    that.dialog = dialog;
 	    var predictName = new dijit.layout.ContentPane(
 	      { content: "条件: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.FilteringSelect(
+	    var predictSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: ajweb.editor.conditionOperatorStore, searchAttr: "name",
+		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
 	    var button = new dijit.form.Button(
@@ -100,16 +118,32 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 		style: {position : "absolute", top: "45px",left: "280px"},
 		onClick: function(){
 		  that.containerNode = dialog.containerNode;
-		  that.model.editor.createModel(predictSelect.value, {}, that.model, that);
+		  if(that.model.children.length == 0){
+		    var tagName = predictSelect.value;
+		    that.model.properties.element = predictSelect.value;
+		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+		    newModel.properties.name = tagName;
+		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		      that.model.editor.createModel("value", {}, newModel, newModel.element);
+		    }
+		  }
 		}
+
 	      });
 	    dialog.containerNode.appendChild(predictName.domNode);
 	    dialog.containerNode.appendChild(predictSelect.domNode);
 	    dialog.containerNode.appendChild(button.domNode);;
+	    predictName.startup();
+	    predictSelect.startup();
+	    button.startup();
 	    dialog.show();
 	    var parentDialog = that.model.parent.element.dialog;
 	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 400 + "px",
-			       top: parseInt(parentDialog.domNode.style.top) + 100 + "px"}});
+			       top: parseInt(parentDialog.domNode.style.top) + 50 + "px"}});
+
+	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }});
 
       this.widget.domNode.appendChild(operator.domNode);
@@ -119,17 +153,6 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
     },
     removeDom: function(){
       this.widget.destroyRecursive();
-    },
-    createMoveTriggerDomNode: function(){
-      return this.tablename;
-    },
-    checkAcceptance: function(){
-      if(this.model.tagName == "not" && this.model.children.length > 0)
-	return false;
-      else if(this.model.children.length > 1)
-	return false; 
-      else 
-	return this.inherited(arguments);
     },
     startup: function(){
       this.inherited(arguments);

@@ -99,7 +99,6 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                    return objPoint;
                },
 	       reDraw: function(line){
-
 		 for(var i = 0; i < this.lines.length; i++){
 		   if(this.lines[i] == line){
 		     var newLine = this.draw(
@@ -108,6 +107,8 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 		       this.lines[i].label, 
 		       this.lines[i].color);
 		     this.domNode.replaceChild(newLine.domNode, this.lines[i].domNode);
+//		     this.domNode.removeChild(this.lines[i].domNode);
+//		     this.domNode.appendChild(newLine.domNode);
 		     this.lines[i] = newLine;
 		   }
 		 }

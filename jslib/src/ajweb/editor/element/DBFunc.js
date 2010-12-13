@@ -2,8 +2,8 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-//dojo.require("ajweb.editor.element.TitlePane");
 dojo.require("dijit.TitlePane");
+dojo.require("dijit.form.Select");
 dojo.provide("ajweb.editor.element.DBFunc");
 dojo.declare("ajweb.editor.element.DBFunc",
 	     ajweb.editor.element.Func,
@@ -45,9 +45,9 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	      {content: "データベース名",
 	       style: { position: "absolute", top: "50px", left: "10px"}
 	      });
-	    var tablenameSelect = new dijit.form.FilteringSelect(
-	      {name: "modelId",value: that.model.properties.database,
-	       store: that.store, searchAttr: "name",
+	    var tablenameSelect = new dijit.form.Select(
+	      {name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
+	       store: that.store, sortByLabel: false,
 	       style: {position : "absolute", width: "150px",top: "50px",left: "100px"}});
 	    var button = new dijit.form.Button(
 	      { label: "決定",
@@ -63,6 +63,9 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	    that.dialog.containerNode.appendChild(tablenameSelect.domNode);
 	    that.dialog.containerNode.appendChild(tablename.domNode);
 	    that.dialog.containerNode.appendChild(button.domNode);
+	    tablenameSelect.startup();
+	    tablename.startup();
+	    button.startup();
 
 	    if(that.model.properties.database){
 	      that.model.reCreateParamDom();
