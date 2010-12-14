@@ -66,7 +66,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       for(var j = 0; j < this.events.length; j++){
 	this.events[j].properties.target = this.properties.id;
       }
-      this.element.updateDom(this.properties);
+//      this.element.updateDom(this.properties);
 
     },
     clearPropertiesView: function(){
@@ -86,19 +86,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       this.clearEventView();
 
       for(var i = 0; i < this.eventList.length; i++){
-	/*var event = new ajweb.editor.model.Event(
-	  {
-	    id: this.id +"_"+ this.eventList[i],
-	    tagName: "event",
-	    propertyList: ["type", "target"],
-	    properties: { title: this.eventList[i], target: this.id, type: this.eventList[i]},
-	    acceptModelType: ["action"],
-	    container: this.editor.eventTc,
-	    parent: this.application.events,
-	    elementClass: "event",
-	    editor: this.editor
-	  });
-	event.startup();*/
 	var event = this.editor.createModel("event",
 		      { title: this.eventList[i], target: this.properties.id, type: this.eventList[i]},
 		      this.application.events, this.editor.eventTc);
@@ -130,10 +117,9 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       var children = this.editor.eventTc.getChildren();
 
       for(i = 0; i < children.length; i++){///eventTc にmodelのリスト格納したほうがよいかも
-	if(this.editor.eventTc.resizeConnects)
-	  dojo.disconnect(this.editor.eventTc.resizeConnects[i]);
 	this.editor.eventTc.removeChild(children[i]);
-	children[i].destroyRecursive();
+	//children[i].destroyRecursive();
+	children[i].element.model.removeDomRecursive();
       }
       this.editor.eventTc.resizeConnects = [];
       this.editor.eventTc.currentModel = null;

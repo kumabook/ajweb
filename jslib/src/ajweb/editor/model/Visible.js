@@ -22,20 +22,24 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      * @param {ajweb.editor.model.Model} opt.parent 親モデル
      * @param {ajweb.editor.element.Element} opt.container 配置されるDOM要素
      */
-    constructor: function(opt)
+    constructor: function(opt, display)
     {
       /**
        * このモデルを表すDOMを管理するクラスの名前
        * @type ajweb.editor.element.ModelElement
        */
       this.elementClass = opt.elementClass;
-      this.element = this.createDom(opt.container);
+      this.element = this.createDom(opt.container, display);
 
     },
     /**
      * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
-    createDom: function(container){
+    createDom: function(container, display){
+      if(display) 
+	return null;
+
+      this.isDisplay = true;
       var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
       return new ajweb.editor.element[Element](
 	{
@@ -52,9 +56,9 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     */
     updateDom: function(){
       this.element.updateDom(this.properties);
-      for(var i = 0; i < this.children.length; i++){
-	this.children[i].updateDom();
-      }
+//      for(var i = 0; i < this.children.length; i++){
+	//this.children[i].updateDom();
+//      }
     },
     /**
      * タブを閉じたあとに再びDOM要素表示する。modelができた状態でDOMを生成。
@@ -66,17 +70,29 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       }
     },
     removeDom: function(){
-      this.element.removeDom();
-    } ,
+      if(this.isDisplay)
+	this.element.removeDom();
+      delete this.element;
+      this.isDisplay = false;	
+    },
+    removeDomRecursive: function(){
+      for(var i = 0; i < this.children.length; i++){
+	this.children[i].removeDomRecursive(this.element);
+      }
+      this.removeDom();
+    },
    /**
      * モデルを削除する。
      */
     remove: function(){
       this.inherited(arguments);
+
       this.removeDom();
+      this.editor.removeProjectTree(this);
     },
     startup: function(){
-      this.element.startup();
+      if(this.element)
+	this.element.startup();
       for(var i = 0; i < this.children.length; i++){
 	this.children[i].startup();
       }

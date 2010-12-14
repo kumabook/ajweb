@@ -95,10 +95,10 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	  var remove_connection  = dojo.connect(document, "onmouseup", this, function(e){
 						  dojo.disconnect(move_connection);
 						  dojo.disconnect(remove_connection);
-
-						  var container = this.container.domNode;
-						  var left = ajweb.editor.getX(this.domNode) - ajweb.editor.getX(container) + "px";
-						  var top = ajweb.editor.getY(this.domNode) - ajweb.editor.getY(container) + "px";
+						  
+						  var container = this.container.containerNode;//domNode
+						  var left = ajweb.editor.getX(this.domNode) - ajweb.editor.getX(container) + 1 + "px";
+						  var top = ajweb.editor.getY(this.domNode) - ajweb.editor.getY(container) + 1 + "px";
 						  this.model.properties.top = top;
 						  this.model.properties.left = left;
 

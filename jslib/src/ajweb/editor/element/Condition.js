@@ -28,7 +28,9 @@ dojo.declare("ajweb.editor.element.Condition",
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
-    {},
+    {
+      this.isDisplay = false;
+    },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
@@ -77,6 +79,7 @@ dojo.declare("ajweb.editor.element.Condition",
 	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }
 	});
+      this.isDisplay = true;
       return this.widget.domNode;
     },
     removeDom: function(){

@@ -3,14 +3,14 @@ dojo.addOnLoad(
   function(){
    window.editor = new ajweb.editor.Editor("editor");
     
-/*    dojo.xhrGet({
+    dojo.xhrGet({
 		  url: "chat.ajml",
 		  handleAs: "xml",
 		  load: function(data){
 		   var ajml =  ajweb.xml.serialize(data);
 		    editor.openAjml(ajml);
 		  }
-		});*/
-   editor.newApplication("chat");
+		});
+//   editor.newApplication("chat");
     
   });

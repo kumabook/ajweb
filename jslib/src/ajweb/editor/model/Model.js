@@ -80,7 +80,6 @@ dojo.declare("ajweb.editor.model.Model", null,
       while(this.children.length != 0){
 	this.children[0].remove();
       }
-      
       for(var i = 0; i < this.parent.children.length; i++){
 	if(this.parent.children[i] == this)
 	  this.parent.children.splice(i,1);
@@ -154,10 +153,12 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
 	  }
-	  else {
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
+	  else if(childNode.tagName == "action" || childNode.tagName == "condition"
+		  || childNode.tagName == "branch"){
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, true);
 	  }
-
+	  else
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
 	  if(child instanceof ajweb.editor.model.Eventable){//eventを追加
 	    child.clearEventView();
 	    var events = doc.getElementsByTagName("event");
@@ -165,7 +166,7 @@ dojo.declare("ajweb.editor.model.Model", null,
 	      var eventAttrs = ajweb.editor.attributesToHash(events[k].attributes);
 	      if(eventAttrs.target ==  attrs.id){
 		var event = this.editor.createModel("event", eventAttrs,
-		  this.application.events, this.editor.eventTc);
+		  this.application.events, this.editor.eventTc, true);
 		child.events.push(event);
 		event.xmlToModel(events[i], doc);
 	      }

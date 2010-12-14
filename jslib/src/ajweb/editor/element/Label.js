@@ -1,12 +1,14 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
+dojo.require("ajweb.editor.element.Menuable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Label");
 dojo.declare("ajweb.editor.element.Label",
 	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.Movable
+	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Menuable
 
 	     ],
   /** @lends ajweb.editor.element.Button.prototype */
@@ -38,8 +40,6 @@ dojo.declare("ajweb.editor.element.Label",
 	    border: "dotted 1px #000000",
 	    top: properties.top,
 	    left: properties.left
-//	    width: properties.width,
-//	    height: properties.height,
 	  },
 	  content: properties.content
 	});
@@ -47,11 +47,7 @@ dojo.declare("ajweb.editor.element.Label",
     },
     updateDom: function(properties){
       this.widget.set(
-	{
-	  style:{
-	    top: properties.top,
-	    left: properties.left
-	  },
+	{style:{top: properties.top,left: properties.left},
 	  content: properties.content
 	});
     },

@@ -1,14 +1,14 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Resizable");
-dojo.require("ajweb.editor.element.Movable");
+dojo.require("ajweb.editor.element.Menuable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Panel");
 dojo.declare("ajweb.editor.element.Panel",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
-//	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Menuable,
 	      ajweb.editor.element.Resizable],
   /** @lends ajweb.editor.element.Panel.prototype */
   {
@@ -46,7 +46,6 @@ dojo.declare("ajweb.editor.element.Panel",
       this.widget.modelId = this.model.id;
       this.panel = new dijit.layout.ContentPane(
 	{
-	  id : this.id+ "_panel",
 	  style:{
 	    position: "absolute",
 	    border: "dashed 1px black"
@@ -55,17 +54,36 @@ dojo.declare("ajweb.editor.element.Panel",
       this.widget.domNode.appendChild(this.panel.domNode);
       return this.panel.domNode;
     },
+    removeDom: function(){     
+      this.model.editor.centerTc.removeChild(this.widget);
+      this.widget.destroyRecursive();
+    },
+    createMenu: function(){
+      var that = this;
+      var menu = new dijit.Menu();
+      menu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
+      menu.addChild(new dijit.MenuItem({label: "削除", 
+					disabled: this.model.properties.id == "rootPanel" ? true: false,
+					onClick: function(){
+					  that.model.remove();
+					}}));
+      return menu;
+    },
     updateDom: function(){
+
       var top =  (parseInt(this.widget.domNode.style.height) -
 		  parseInt(this.model.properties.height)) / 2;
       var left = (parseInt(this.widget.domNode.style.width) -
 		  parseInt(this.model.properties.width)) / 2;
-      this.model.top = top > 0 ?  top : 2;
-      this.model.left = left > 0 ? left : 2;
+      this.model.properties.top = top > 0 ?  top : 2;
+      this.model.properties.left = left > 0 ? left : 2;
       this.panel.domNode.style.width = parseInt(this.model.properties.width) + "px";
       this.panel.domNode.style.height = parseInt(this.model.properties.height) + "px";
-      this.panel.domNode.style.top = parseInt(this.model.top) + "px";
-      this.panel.domNode.style.left = parseInt(this.model.left) + "px";
+      this.panel.domNode.style.top = parseInt(this.model.properties.top) + "px";
+      this.panel.domNode.style.left = parseInt(this.model.properties.left) + "px";
+      this.widget.set({title: this.model.properties.id});
+      
+      this.model.editor.updateProjectTree(this.model);
     },
     createDndDomNode: function(){
       return this.domNode;

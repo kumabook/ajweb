@@ -47,15 +47,19 @@ dojo.declare("ajweb.editor.element.Element", null,
        * @type HTMLElement
        */
       this.containerNode = this.createContainerNode();
-
       if(this.container instanceof ajweb.editor.element.Element){
 	if(this.container.containerNode)
 	  this.container.containerNode.appendChild(this.domNode);
+
       }
-      else　{// centerTcの場合 プロジェクトエクスプローラーに反映
+      else　{// centerTcの場合 
 	this.container.addChild(this.widget);
 	this.container.selectChild(this.widget);
       }
+      /**
+       * 表示されているどうか
+       */
+      this.isDisplay = true;
 
       ajweb.addElement(this);
     },

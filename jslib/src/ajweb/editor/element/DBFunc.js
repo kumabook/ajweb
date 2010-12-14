@@ -48,7 +48,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	    var tablenameSelect = new dijit.form.Select(
 	      {name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
 	       store: that.store, sortByLabel: false,
-	       style: {position : "absolute", width: "150px",top: "50px",left: "100px"}});
+	       style: {position : "absolute", width: "150px",top: "45px",left: "100px"}});
 	    var button = new dijit.form.Button(
 	      { label: "決定",
 		style: {position : "absolute",width: "80px",top: "45px",left: "280px"},

@@ -62,7 +62,7 @@ dojo.declare("ajweb.editor.element.Resizable", null,
 	  dojo.disconnect(move_connection);
 	  dojo.disconnect(remove_connection);
 	  this.model.updatePropertiesView();
-
+	  this.model.updateDom();				 
 	  e.preventDefault();
 	  e.stopPropagation();
 

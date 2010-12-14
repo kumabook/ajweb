@@ -27,17 +27,20 @@ dojo.declare("ajweb.editor.element.Th",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-
-//      return this.widget.domNode;
+      this.widget = new dijit.layout.ContentPane(
+	{
+	  style:{
+	    backgroundColor: "#E1EBFB",border: "dotted 1px #000000",
+	    width: properties.width, height: "20px",cssFloat: "left"
+	  },
+	  content: this.model.properties.label
+	});
+      return this.widget.domNode;
     },
     updateDom: function(properties){
       this.widget.set(
-	{
-	  style:{
-	    top: properties.top,
-	    left: properties.left
-	  },
-	  label: properties.content
+	{ style:{width: this.model.properties.width },
+	  content: this.model.properties.label
 	});
     },
     removeDom: function(){

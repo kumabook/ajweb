@@ -71,5 +71,9 @@ ajweb.editor.resources.texts = {
   log: {
     ja: "ログ",
     en: "log"
+  },
+  databases: {
+    ja: "データモデル",
+    en: "databases"
   }
 };

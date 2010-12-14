@@ -25,6 +25,7 @@ dojo.declare("ajweb.editor.element.Event", [
      */
     constructor: function(opt)
     {
+      this.isDisplay = false;
     },
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
@@ -42,6 +43,8 @@ dojo.declare("ajweb.editor.element.Event", [
 	    left: "0px"
 	  }
 	});
+      this.isDisplay = true;
+      this.widget.element = this;
       return this.widget.domNode;
     },
     updateDom: function(properties){
@@ -49,6 +52,8 @@ dojo.declare("ajweb.editor.element.Event", [
     removeDom: function(){
       this.container.removeChild(this.widget);
       this.widget.destroyRecursive();
+
+      this.isDisplay = false;
     },
     startup: function(){
       this.inherited(arguments);

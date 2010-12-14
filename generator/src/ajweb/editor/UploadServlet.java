@@ -28,6 +28,7 @@ public class UploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 	    System.out.println("UploadServlet: doPost");
 	    resp.setContentType("text/html");
+	    resp.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
 		String editor = "editor";
 	    DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -50,6 +51,9 @@ public class UploadServlet extends HttpServlet {
 	          String fileName = fItem.getName();
 	          if((fileName != null) && (!fileName.equals(""))){
 	        	  String ajml = fItem.getString();
+	        	  if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+	        		  ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+
 	        	  ajml = ajml.replaceAll("\n|\r\n|\r", "'\n + '");
 	        	  String response = "<html><body><script type=\"text/javascript\">\n" +
 		  			"     window.parent." + editor + ".uploadDialog.hide();\n" + 

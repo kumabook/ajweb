@@ -8,9 +8,9 @@ dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Table");
 dojo.declare("ajweb.editor.element.Table", 
 	     [ajweb.editor.element.Element,
-//	      ajweb.editor.element.DndEnable, 
-	      ajweb.editor.element.Movable
-//	      ajweb.editor.element.Resizable
+	      ajweb.editor.element.DndEnable, 
+	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Resizable
 	     ],
   /** @lends ajweb.editor.element.Widget.prototype */
   {
@@ -34,25 +34,25 @@ dojo.declare("ajweb.editor.element.Table",
      */
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
-	{content: this.id,
-	  style: {
-	    position: "absolute",
+	{content: this.model.tagName,
+	  style: { position: "absolute",
 	    top: parseInt(properties.top) + "px", left: parseInt(properties.left) + "px",
-	    width: properties.width,
-	    height: properties.height,
-	    border: "dashed 1px black"
+	    width: properties.width, height: properties.height, border: "dashed 1px black"
 	  }});
       return this.widget.domNode;
     },
+    createContainerNode: function(){
+      this.containerWidget = new dijit.layout.ContentPane(
+	{ style: {position: "absolute", top: "20px"}});
+      this.widget.domNode.appendChild(this.containerWidget.domNode);
+      return this.containerWidget.domNode;
+    },
     updateDom: function(properties){
       this.widget.set(
-	{
-	  style:{
-	    top: properties.top,
-	    left: properties.left,
-	    border: "dashed 1px black"
-	  },
-	  label: properties.content
+	{style:{ top: properties.top, left: properties.left, 
+		 cssFloat: "left", styleFloat: "left",
+		 width: properties.width, height: properties.height, border: "dashed 1px black"}
+	// content: this.model.tagName
 	});
     },
     removeDom: function(){

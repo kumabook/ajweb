@@ -27,6 +27,7 @@ dojo.declare("ajweb.editor.element.Action",
     constructor: function(opt)
     {
       this.createInitLine();
+      this.isDisplay = false;
     },
     createInitLine: function(){
       this.line = this.container.draw(this.model.parent.children[0].element.domNode, this.domNode);
@@ -52,6 +53,7 @@ dojo.declare("ajweb.editor.element.Action",
       if(this.model.children.length > 0){
 	this.widget.style.display = "none";
       }
+      this.isDisplay = true;
       return this.widget.domNode;
     },
     createContainerNode: function(){
@@ -69,11 +71,13 @@ dojo.declare("ajweb.editor.element.Action",
       var lines = this.container.lines;
       for(var i = 0; i < lines.length; i++){
 	if(lines[i].end == this.domNode){
-	    this.container.domNode.removeChild(lines[i].domNode);
-	    lines.splice(i, 1);
+	  this.container.domNode.removeChild(lines[i].domNode);
+	  lines.splice(i, 1);
 	}
       }
       this.widget.destroyRecursive();
+
+      this.isDisplay = false;
     },
     createMoveTriggerDomNode: function(){
       return this.domNode;

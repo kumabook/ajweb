@@ -63,13 +63,15 @@ public class GenerateServlet extends AbstractServlet {
 		private void download(HttpServletRequest request,
 				HttpServletResponse response) throws ServletException, IOException {
 			InputStream in = null;
+			response.setCharacterEncoding("UTF-8");
 			PrintWriter writer = response.getWriter();
+			
 			StreamResult result = new StreamResult(writer);
 			try {
 				String ajml = request.getParameter("content");
-				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS){
 					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
-				
+				}
 				String filename = request.getParameter("filename");
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

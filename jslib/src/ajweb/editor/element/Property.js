@@ -62,13 +62,14 @@ dojo.declare("ajweb.editor.element.Property",
 	    position : "absolute",
 	    width: parseInt(this.container.domNode.style.width) - 15 + "px",
 	    height: "30px",
-	    top: (this.model.parent.children.length * 30) + "px",
+	    top: ((this.container.domNode.childNodes.length-1) * 30) + "px",
 	    left: "10px"
 	  }
 	});
       this.widget.domNode.appendChild(this.propName.domNode);
       this.widget.domNode.appendChild(this.select.domNode);
       this.container.domNode.style.height = (this.model.parent.children.length) * 30 + 35 + "px";
+
       return this.widget.domNode;
     },
     removeDom: function(){

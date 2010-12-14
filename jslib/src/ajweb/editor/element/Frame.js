@@ -8,7 +8,10 @@ dojo.provide("ajweb.editor.element.Frame");
 dojo.declare("ajweb.editor.element.Frame",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Resizable],
+	      ajweb.editor.element.DndEnable,
+	      ajweb.editor.element.Resizable,
+	      ajweb.editor.element.Menuable
+	     ],
   /** @lends ajweb.editor.element.Panel.prototype */
   {
     /**
@@ -41,6 +44,9 @@ dojo.declare("ajweb.editor.element.Frame",
 	});
       return this.widget.domNode;
     },
+    removeDom: function(){
+      this.widget.destroy();
+    },
     updateDom: function(properties){
       this.widget.set({ style: {
 			    width: parseInt(properties.width) + "px",
@@ -48,9 +54,19 @@ dojo.declare("ajweb.editor.element.Frame",
 			    top:  parseInt(properties.top) + "px",
 			    left: parseInt(properties.left) + "px"
 			    }});
-      console.log(ajweb.toJSON(properties));
     },
-
+    onDrop: function(name){
+      this.model.editor.newModel(
+	name,
+	{
+	  top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(this.model.element.domNode),
+	  left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(this.model.element.domNode)
+	},
+	this.model,
+	this.model.editor.centerTc
+      );
+      
+    },
     startup: function(){
       this.inherited(arguments);
       this.widget.startup();

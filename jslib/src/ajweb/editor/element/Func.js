@@ -109,9 +109,8 @@ dojo.declare("ajweb.editor.element.Func",
       this.dialog = new dijit.Dialog({
 //      this.dialog = new dojox.widget.Dialog({
 				       title: that.model.tagName,
-				       toggleable: false,
 				       style: {position: "absolute",
-						    height: "400px", width: "500px"
+						    height: "300px", width: "400px"
 					      },
 				       onHide: function(){
 					 delete that.store;
@@ -122,7 +121,7 @@ dojo.declare("ajweb.editor.element.Func",
 							   content: "params",
 							   style: { 
 							     position: "absolute",
-							     top: "100px", left: "10px",
+							     top: "70px", left: "10px",
 							     border: "dotted 1px",
 							     width: "95%", height: "70%"
 							   }

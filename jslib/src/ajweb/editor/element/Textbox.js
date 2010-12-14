@@ -1,15 +1,15 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-dojo.require("dijit.layout.ContentPane");
 dojo.require("ajweb.editor.element.Menuable");
-dojo.provide("ajweb.editor.element.Button");
-dojo.declare("ajweb.editor.element.Button",
+dojo.require("dijit.layout.ContentPane");
+
+dojo.provide("ajweb.editor.element.Textbox");
+dojo.declare("ajweb.editor.element.Textbox",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Menuable
-	     ],
-  /** @lends ajweb.editor.element.Button.prototype */
+	      ajweb.editor.element.Menuable],
+  /** @lends ajweb.editor.element.Textbox.prototype */
   {
     /**
      * Constructor
@@ -30,20 +30,20 @@ dojo.declare("ajweb.editor.element.Button",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
-      var that = this;
-      this.widget = new dijit.form.Button(
-	{style:{position: "absolute",
-		top: parseInt(properties.top)-3 + "px",left: parseInt(properties.left)-3+ "px"},
-	 label: properties.content});
+      this.widget = new dijit.layout.ContentPane(
+	{
+	  content: properties.content,
+	  style:{position: "absolute",width: properties.width, height: "20px",
+		 top: properties.top, left: properties.left, border: "solid 1px"
+	  }
+	});
       return this.widget.domNode;
-    },
-    createMenuTriggerDomNode: function(){
-      return this.widget.containerNode;
     },
     updateDom: function(properties){
       this.widget.set(
-	{style:{top: parseInt(properties.top)-3 + "px",left: parseInt(properties.left)-3+ "px"},
-	  label: properties.content});
+	{style:{top: properties.top,left: properties.left, width: properties.width},
+	  content: properties.content
+	});
     },
     removeDom: function(){
       this.widget.destroyRecursive();
@@ -51,6 +51,7 @@ dojo.declare("ajweb.editor.element.Button",
     startup: function(){
       this.inherited(arguments);
       this.widget.startup();
+
     }
   }
 );

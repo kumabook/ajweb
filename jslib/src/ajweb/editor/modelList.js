@@ -78,13 +78,12 @@ ajweb.editor.MODELLIST =  [
     name:'textbox',
     modelType: "widget",
     modelClass: "Widget",
-    elementClass: "Button",
+    elementClass: "Textbox",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "height", "width", "top", "left", "content", "palceHolder", "candidate_list"],
+    propertyList: ["tagName", "id", "width", "top", "left", "content", "palceHolder", "candidate_list"],
     eventList: ["onLoad", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },
-
   {
     name:'table',
     modelType: "widget",
@@ -101,13 +100,23 @@ ajweb.editor.MODELLIST =  [
     modelClass: "widget",
     elementClass: "th",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "width"],
-    eventList: ["onLoad", "onClick", "onDbClick", "onCellEdit"],
-    defaultProperties: { tagName: "th", width: "100px", name: "th", label: "th"}
+    propertyList: ["tagName", "id", "width", "label", "field"],
+    eventList: ["onLoad"],
+    defaultProperties: { tagName: "th", width: "50px", name: "th", label: "th"}
+  },
+  {
+    name:'selectbox',
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "widget",
+    acceptModelType: [],
+    propertyList: ["tagName", "id", "top", "left"],
+    eventList: ["onLoad", "onChange"],
+    defaultProperties: { tagName: "selectbox"}
   },
   {
     name:'panel',
-    modelType: "widget",
+    modelType: "panel",
     modelClass: "Widget",
     elementClass: "Panel",
     acceptModelType: ["widget"],
@@ -120,7 +129,7 @@ ajweb.editor.MODELLIST =  [
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Frame",
-    acceptModelType: ["widget"],
+    acceptModelType: ["panel"],
     propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
     eventList: ["onLoad"],
     defaultProperties: { tagName: "frame", width: "100px", height: "100px"}

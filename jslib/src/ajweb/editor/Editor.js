@@ -45,6 +45,8 @@ dojo.require("ajweb.editor.element.PredicateOperator");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
+dojo.require("ajweb.editor.element.Th");
+dojo.require("ajweb.editor.element.Textbox");
 dojo.require("ajweb.editor.element.Frame");
 dojo.require("ajweb.editor.element.Value");
 
@@ -218,7 +220,7 @@ dojo.declare(
        *
        * @type dojo.data.ItemFileWriteStore
        */
-     this.propertyDataStore = new dojo.data.ItemFileWriteStore({identifier: "id",  data: { items: []}});
+     this.propertyDataStore = new dojo.data.ItemFileWriteStore({identifier: "properties",  data: { items: []}});
       var propertyDataStore = this.propertyDataStore;
       this.propertyDataGrid = new dojox.grid.DataGrid(
 	{
@@ -280,11 +282,12 @@ dojo.declare(
 	      }
 	    }
 	    var model = ajweb.getModelById(id);
-	    if(model.element.container == that.centerTc){
-	      model.reCreateDom(that.centerTc);
-	      model.startup();
-	      that.centerTc.selectChild(model.element.widget);
-	    }
+	    if(model.element)
+	      if(model.element.container == that.centerTc){
+		model.reCreateDom(that.centerTc);
+		model.startup();
+		that.centerTc.selectChild(model.element.widget);
+	      }
 	},
 	getIconClass: function(item, opened){
 	  return (!item || this.model.mayHaveChildren(item)) ?
@@ -398,7 +401,7 @@ dojo.declare(
       var databases = this.newModel("databases", {}, application, this.centerTc);
       var events = this.newModel("events", {}, application);
       this.eventTc.currentModel = events;
-      var rooPanel = this.newModel("panel", {}, interfaces, this.centerTc);
+      var rootPanel = this.newModel("panel", {id: "rootPanel"}, interfaces, this.centerTc);
       //メニューに追加
       var appSaveMenu = new dijit.MenuItem(
 	{
@@ -424,6 +427,7 @@ dojo.declare(
      * @param {String}  ajml 保存したajmlの文字列
      */
     openAjml: function(ajml){
+
       var xml =  ajweb.xml.parse(ajml);
       var rootElement = xml.documentElement;
       var applicationNode, appName;
@@ -542,7 +546,7 @@ dojo.declare(
  * @param {dojo.data.ItemFileReadStore} propertyDataStore 表示するプロパティを保持するdojoストア
  * @param {dijit.layout.TabContainer} eventTc イベントリストを保持するcenterTc
  */
-    createModel : function(name, properties, parent, container){
+    createModel : function(name, properties, parent, container, display){
       var modelInfo = ajweb.editor.getModelInfo(name);
       var elementClass = modelInfo.elementClass;
       var modelClass = modelInfo.modelClass;
@@ -576,7 +580,7 @@ dojo.declare(
 	  application: parent.application,
 	  container: container,
 	  editor: this
-	}
+	}, display
       );
       
       if(ModelClass == "Widget" || ModelClass == "Database"){
@@ -620,6 +624,19 @@ dojo.declare(
 	  addTreeModel(model, item, that.projectTreeModel);
 	}
       );
+    },
+    updateProjectTree: function(model){
+           var store = this.projectStore;
+      this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
+					       store.setValue(item, "name", model.label);
+					     }});
+    },
+    removeProjectTree: function(model){
+      var store = this.projectStore;
+      this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
+//					       console.log(item);
+					       store.deleteItem(item);
+					     }});
     }
   }
 );
