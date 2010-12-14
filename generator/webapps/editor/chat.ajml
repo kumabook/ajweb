@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml>
+  <application name="chat">
+    <events>
+      <event id="event14" target="label0" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event15" target="label0" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event16" target="rootFrame" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event17" target="loginPanel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event18" target="label1" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event19" target="label1" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event20" target="userIdTextbox" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event21" target="userIdTextbox" type="onFocus">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event22" target="userIdTextbox" type="onBlur">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event23" target="label2" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event24" target="label2" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event25" target="textbox1" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event26" target="textbox1" type="onFocus">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event27" target="textbox1" type="onBlur">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event28" target="button1" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event29" target="button1" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event30" target="roomSelectPanel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event31" target="label3" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event32" target="label3" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event33" target="selectButton" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event34" target="selectButton" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event33" target="roomSelect" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event34" target="roomSelect" type="onChange">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event36" target="chatRoomPanel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event37" target="label4" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event38" target="label4" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event39" target="contentsFrame" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event44" target="entrancePanel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event45" target="userNameTextbox" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event46" target="userNameTextbox" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event47" target="textbox2" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event48" target="textbox2" type="onFocus">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event49" target="textbox2" type="onBlur">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event50" target="enterButton" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event51" target="enterButton" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event52" target="backButton" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event53" target="backButton" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event54" target="messagePanel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event55" target="messageLabel" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event56" target="messageLabel" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event57" target="textbox3" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event58" target="textbox3" type="onFocus">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event59" target="textbox3" type="onBlur">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event60" target="button4" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event61" target="button4" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event62" target="button5" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event63" target="button5" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event40" target="table0" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event41" target="table0" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event42" target="table0" type="onDbClick">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event43" target="table0" type="onCellEdit">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event63" target="th0" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event64" target="th1" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event65" target="th2" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event66" target="th3" type="onLoad">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event1" target="users" type="onChange">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event2" target="users" type="onInsert">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event3" target="users" type="onDelete">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event4" target="users" type="onUpdate">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event5" target="message" type="onChange">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event6" target="message" type="onInsert">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event7" target="message" type="onDelete">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event8" target="message" type="onUpdate">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event9" target="room" type="onChange">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event10" target="room" type="onInsert">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event11" target="room" type="onDelete">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+      <event id="event12" target="room" type="onUpdate">
+        <condition left="10px" top="25px"/>
+        <action left="150px" top="100px"/>
+      </event>
+    </events>
+    <interfaces>
+      <panel height="500px" id="rootPanel" left="392" tagName="panel" top="2" width="700px">
+        <label content="チャットアプリケーション" id="label0" left="27px" tagName="label" top="22px"/>
+        <frame height="450px" id="rootFrame" left="25px" tagName="frame" top="45px" width="650px">
+          <panel height="450px" id="loginPanel" left="417" tagName="panel" top="6" width="650px">
+            <label content="ユーザID" id="label1" left="29px" tagName="label" top="29px"/>
+            <textbox content="user_name" id="userIdTextbox" left="132px" tagName="textbox" top="29px" width="100px"/>
+            <label content="パスワード" id="label2" left="29px" tagName="label" top="59px"/>
+            <textbox content="password" id="textbox1" left="130px" tagName="textbox" top="59px" width="100px"/>
+            <button content="ログイン" id="button1" left="32px" tagName="button" top="92px"/>
+          </panel>
+          <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="6" width="650px">
+            <label content="ルーム選択" id="label3" left="0px" tagName="label" top="0px"/>
+            <button content="選択" id="selectButton" left="370px" tagName="button" top="50px"/>
+            <selectbox id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
+          </panel>
+          <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="6" width="650px">
+            <label content="ラベル" id="label4" left="60px" tagName="label" top="0px"/>
+            <frame height="100px" id="contentsFrame" left="-1px" tagName="frame" top="79px" width="450px">
+              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="181" width="450px">
+                <label content="名前" id="userNameTextbox" left="40px" tagName="label" top="6px"/>
+                <textbox id="textbox2" left="100px" tagName="textbox" top="10px" width="100px"/>
+                <button content="入室" id="enterButton" left="100px" tagName="button" top="50px"/>
+                <button content="ルーム選択画面に戻る" id="backButton" left="300px" tagName="button" top="50px"/>
+              </panel>
+              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="181" width="450px">
+                <label content="メッセージ" id="messageLabel" left="20px" tagName="label" top="10px"/>
+                <textbox id="textbox3" left="150px" tagName="textbox" top="10" width="100px"/>
+                <button content="送信" id="button4" left="100px" tagName="button" top="50px"/>
+                <button content="ボタン" id="button5" left="350px" tagName="button" top="50px"/>
+              </panel>
+            </frame>
+            <table height="225px" id="table0" left="25px" tagName="table" top="200px" width="600px">
+              <th field="user_name" id="th0" label="user_name" left="203" tagName="th" top="13" width="100px"/>
+              <th field="message" id="th1" label="message" left="343" tagName="th" top="30" width="100px"/>
+              <th field="posted" id="th2" label="posted" left="354" tagName="th" top="25" width="350px"/>
+              <th field="room" id="th3" label="room" left="350" tagName="th" top="37" width="30px"/>
+            </table>
+          </panel>
+        </frame>
+      </panel>
+    </interfaces>
+    <databases id="databases0" tagName="databases">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="265px" tablename="users" tagName="database" top="122px" type="server">
+        <property left="164" name="user_id" top="27" type="string"/>
+        <property left="217" name="password" top="61" type="password"/>
+        <property left="195" name="role" top="96" type="string"/>
+      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="673px" tablename="message" tagName="database" top="314px" type="server">
+        <property left="212" name="message" top="33" type="string"/>
+        <property left="224" name="posted" top="63" type="datetime"/>
+        <property left="234" name="room_id" top="88" type="int"/>
+        <property left="228" name="user" top="120" type="string"/>
+      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="755px" tablename="room" tagName="database" top="72px" type="server">
+        <property left="157" name="name" top="23" type="string"/>
+      </database>
+    </databases>
+  </application>
+</ajml>
