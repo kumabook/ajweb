@@ -22,7 +22,7 @@ ajweb.editor.COMLIST =  [
   },
   {
     name: "Function",
-    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "setValue"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
+    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "call"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
   }/*,
   {
     name: "Value",
@@ -101,14 +101,6 @@ ajweb.editor.conditionOperatorStore = new dojo.data.ItemFileReadStore(
 	  }
 	});
 
-ajweb.editor.databaseModelStore = new dojo.data.ItemFileReadStore(
-	{
-	  data:{
-	    identifier: "name",
-	    label: "name",
-	    items: []
-	  }
-	});
 //マウスの位置を取得するため
 ajweb.editor.getX = function(container) {
   var x = 0;
@@ -149,6 +141,54 @@ ajweb.editor.getModelInfo = function(name){
       }
   }
   return null;
+};
+
+ajweb.editor.getFuncStore = function(modelName){
+  var list =  ajweb.editor.FUNCLIST;
+  var items = [];
+  for(var i = 0; i < list.length; i++){
+    if(list[i].name == modelName){
+      items = list[i].setters;
+    }
+  }
+  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: items}});
+  return store;
+};
+
+
+ajweb.editor.updateFuncStore = function(modelName, store){
+  var list =  ajweb.editor.FUNCLIST;
+  var items;
+  store.fetch({
+	      onItem: function(item){
+		console.log("item  " + item);
+		store.deleteItem(item);
+	      }});
+  for(var i = 0; i < list.length; i++){
+    if(list[i].name == modelName){
+      for(var j = 0; j < list[i].setters.length; j++){
+      store.newItem(list[i].setters[j]);
+      }
+    }
+  }
+};
+
+
+ajweb.editor.updateGetterStore = function(modelName, store){
+  var list =  ajweb.editor.FUNCLIST;
+  var items;
+  store.fetch({
+	      onItem: function(item){
+		console.log("item  " + item);
+		store.deleteItem(item);
+	      }});
+  for(var i = 0; i < list.length; i++){
+    if(list[i].name == modelName){
+      for(var j = 0; j < list[i].getters.length; j++){
+      store.newItem(list[i].getters[j]);
+      }
+    }
+  }
 };
 
 ajweb.editor.modelCounter = {};

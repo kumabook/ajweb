@@ -60,7 +60,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Label",
     acceptModelType: [],
     propertyList: ["tagName", "id", "top", "left", "content"],
-    eventList: ["onLoad", "onClick"],
+    eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "label", content: "ラベル" }
   },
   {
@@ -71,7 +71,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Button",
     acceptModelType: [],
     propertyList: ["tagName", "id", "top", "left", "content"],
-    eventList: ["onLoad", "onClick"],
+    eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "button", width: "100px", height: "50px",content: "ボタン"}
   },
   {
@@ -81,7 +81,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     propertyList: ["tagName", "id", "width", "top", "left", "content", "palceHolder", "candidate_list"],
-    eventList: ["onLoad", "onFocus", "onBlur"],
+    eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },
   {
@@ -91,7 +91,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Table",
     acceptModelType: ["th"],
     propertyList: ["tagName", "id", "height", "width", "top", "left"],
-    eventList: ["onLoad", "onClick", "onDbClick", "onCellEdit"],
+    eventList: ["onDisplay", "onClick", "onDbClick", "onCellEdit"],
     defaultProperties: { tagName: "table", width: "100px", height: "50px"}
   },
   {
@@ -101,7 +101,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "th",
     acceptModelType: [],
     propertyList: ["tagName", "id", "width", "label", "field"],
-    eventList: ["onLoad"],
+    eventList: ["onDisplay"],
     defaultProperties: { tagName: "th", width: "50px", name: "th", label: "th"}
   },
   {
@@ -111,7 +111,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "widget",
     acceptModelType: [],
     propertyList: ["tagName", "id", "top", "left"],
-    eventList: ["onLoad", "onChange"],
+    eventList: ["onDisplay", "onChange"],
     defaultProperties: { tagName: "selectbox"}
   },
   {
@@ -121,7 +121,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Panel",
     acceptModelType: ["widget"],
     propertyList: ["tagName", "id", "height", "width"],
-    eventList: ["onLoad"],
+    eventList: ["onDisplay"],
     defaultProperties: { tagName: "panel", width: "300px", height: "300px"}
   },
   {
@@ -131,7 +131,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Frame",
     acceptModelType: ["panel"],
     propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
-    eventList: ["onLoad"],
+    eventList: ["onDisplay"],
     defaultProperties: { tagName: "frame", width: "100px", height: "100px"}
   },
   //DBモデル
@@ -209,7 +209,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "setValue",//call
+    name: "call",//call
     modelType: "func",
     modelClass: "Func",
     elementClass: "Func",
@@ -312,7 +312,7 @@ ajweb.editor.MODELLIST =  [
   {
     name: "value",
     modelType: "value",
-    modelClass: "Visible",
+    modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
     propertyList: ["element", "property"],

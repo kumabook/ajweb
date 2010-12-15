@@ -43,15 +43,15 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	    that.store = that.model.application.getDatabaseStore();
 	    var tablename = new dijit.layout.ContentPane(
 	      {content: "データベース名",
-	       style: { position: "absolute", top: "50px", left: "10px"}
+	       style: { position: "absolute", top: "30px", left: "10px"}
 	      });
 	    var tablenameSelect = new dijit.form.Select(
 	      {name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
 	       store: that.store, sortByLabel: false,
-	       style: {position : "absolute", width: "150px",top: "45px",left: "100px"}});
+	       style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
 	    var button = new dijit.form.Button(
 	      { label: "決定",
-		style: {position : "absolute",width: "80px",top: "45px",left: "280px"},
+		style: {position : "absolute",width: "80px",top: "25px",left: "280px"},
 		onClick: function(){
 		  if(that.model.children.length > 0){
 		    that.model.removeParam();
@@ -73,6 +73,9 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	    
 	    that.dialog.show();
 	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
+
+	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }
 	});
       this.widget.element = this;

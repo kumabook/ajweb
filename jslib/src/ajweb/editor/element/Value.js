@@ -32,14 +32,13 @@ dojo.declare("ajweb.editor.element.Value",
       this.widget =  new dijit.form.Button(
 	{ label: "value", 
 	  onClick: function(){
-	    that.store = that.model.application.getDatabaseStore();//getterリストを取得
-
 	    var typeName = new dijit.layout.ContentPane(
 	      { content: "値の種類: ",
 		style: {position: "absolute",top: "30px",left: "10px"}});
 	    var typeSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: ajweb.editor.valueTypeStore, sortByLabel: false,
+//		store: ajweb.editor.valueTypeStore, sortByLabel: false,
+		store: that.model.application.getValueStore(), sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "30px",left: "100px"}
 	      });
 
@@ -48,7 +47,9 @@ dojo.declare("ajweb.editor.element.Value",
 		style: {position : "absolute",width: "80px", top: "30px",left: "280px"},
 		onClick: function(){
 		  that.model.properties.element = typeSelect.value;
-		  funcSelect.set({store: that.model.application.WidgetStore});
+//		  funcSelect.set({store: that.model.application.WidgetStore});
+		  var model = ajweb.getModelById(typeSelect.value);
+		  ajweb.editor.updateGetterStore(model.properties.tagName, funcSelect.store);
 		  funcButton.set({ disabled: false});
 		  this.set({label: "変更"});
 		}});
@@ -58,7 +59,8 @@ dojo.declare("ajweb.editor.element.Value",
 		style: { position: "absolute", top: "80px", left: "10px"}});
 	    var funcSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.func ? that.model.properties.func : "",
-		store: that.store, searchAttr: "name",
+//		store: that.store, searchAttr: "name",
+		store: new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}}), searchAttr: "name",
 		style: {position : "absolute",width: "150px",top: "80px",left: "100px"}
 	      });
 

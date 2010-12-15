@@ -25,6 +25,30 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
        }
      }
      else {//funcInfoListから情報を取得して、paramModelを追加
+       console.log("elemName: " + elemName + "  funcName: " + funcName);
+       var name = model.properties.tagName;
+       var element, func;
+       var i = 0;
+       for(i = 0; i < ajweb.editor.FUNCLIST.length; i++){
+	 if(name == ajweb.editor.FUNCLIST[i].name)
+	   element = ajweb.editor.FUNCLIST[i];
+       }
+       for(i = 0; i < element.setters.length; i++){
+	 if(funcName == element.setters[i].name)
+	   func  = element.setters[i];
+       }
+       for(i = 0; i < func.params.length; i++){
+	 var param = this.editor.createModel("param", 
+					     {name: func.params[i].key,
+					      type: func.params[i].type},
+					     this,
+					     this.element);
+	 var value = this.editor.createModel("value",
+					     {},
+					     param,
+					     param.element
+					    );	
+       }
      }
    },
    reCreateParamDom: function(){

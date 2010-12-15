@@ -24,7 +24,6 @@ dojo.require("ajweb.editor.resources");
 dojo.require("ajweb.editor.model.Model");
 dojo.require("ajweb.editor.model.Application");
 dojo.require("ajweb.editor.model.Widget");
-dojo.require("ajweb.editor.model.Th");
 dojo.require("ajweb.editor.model.Eventable");
 dojo.require("ajweb.editor.model.Database");
 dojo.require("ajweb.editor.model.Property");
@@ -32,6 +31,7 @@ dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Action");
 dojo.require("ajweb.editor.model.Branch");
 dojo.require("ajweb.editor.model.Func");
+dojo.require("ajweb.editor.model.Value");
 dojo.require("ajweb.editor.model.Param");
 dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
@@ -583,9 +583,9 @@ dojo.declare(
 	}, display
       );
       
-      if(ModelClass == "Widget" || ModelClass == "Database"){
+/*      if(ModelClass == "Widget" || ModelClass == "Database"){
 	parent.application[ModelClass + "Store"].newItem({modelId: id, name: defaultProperties.id});
-      }
+      }*/
       
       
       if(name == "events")

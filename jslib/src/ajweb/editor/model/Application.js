@@ -10,25 +10,6 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	  {name: this.properties.name, modelType: "application", modelId: this.id});
       this.editor.projectStore.save();
       this.application = this;
-
-      this.DatabaseStore = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "modelId",
-	    label : "name",
-	    items: []
-	  }
-	}
-      );
-      this.WidgetStore = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "modelId",
-	    label : "name",
-	    items: []
-	  }
-	}
-      );
     },
     getDatabasesModel: function(){
       var databases;
@@ -55,7 +36,61 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       );
       return store;
     },
+    getWidgetModels: function(){
+      var interfaces;
+      for(var i = 0; i < this.children.length; i++){
+	if(this.children[i].tagName == "interfaces")
+	interfaces = this.children[i];
+      }
+      var models = [];
+      return this._getWidgetModels(interfaces, models);
+    },
+    _getWidgetModels: function(model, models){
+      if(model instanceof ajweb.editor.model.Widget)
+	models.push(model);
+      for(var i = 0; i < model.children.length; i++){
+	if(model.children[i] instanceof ajweb.editor.model.Widget)
+	 models =  this._getWidgetModels(model.children[i], models);
+      }
+      return models;
+    },
     getWidgetStore: function(){
+      var models = this.getWidgetModels();
+      var items = [];
+      for(var i = 0; i < models.length; i++){
+	items.push({name: models[i].properties.id, modelId: models[i].id});
+      }
+      
+      var store = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "modelId",
+	    label : "name",
+	    items: items
+	  }
+	}
+      );
+      return store;
+    },
+    getValueStore: function(){
+      var models = this.getWidgetModels();
+      var items = [];
+      for(var i = 0; i < models.length; i++){
+	items.push({name: models[i].properties.id, modelId: models[i].id});
+      }
+      
+      var store = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "modelId",
+	    label : "name",
+	    items: items
+	  }
+	}
+      );
+      return store;
+    },
+    getElementStore: function(){
     }
   }
 );
