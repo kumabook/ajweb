@@ -21,8 +21,9 @@ public class Event implements AbstractModel{
 		String polling_condiitons = "";
 		Template event_tempate = new Template("js/event");
 		event_tempate.apply("TARGET", target);
-		String onType = "on" + type.substring(0, 1).toUpperCase() + type.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É‚µ‚Äon‚ð‚Â‚¯‚é
-		event_tempate.apply("TYPE", onType);
+		//String onType = "on" + type.substring(0, 1).toUpperCase() + type.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É‚µ‚Äon‚ð‚Â‚¯‚é
+		
+		event_tempate.apply("TYPE", type);
 		event_tempate.apply("ACTION", ACTION);
 		if(condition != null){
 			event_tempate.apply("CONDITION", condition.toJsSource(null, null, null));

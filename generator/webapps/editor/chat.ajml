@@ -2,7 +2,7 @@
 <ajml>
   <application name="chat">
     <events>
-      <event id="event14" target="label0" type="onLoad">
+      <event id="event14" target="label0" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -10,15 +10,15 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event16" target="rootFrame" type="onLoad">
+      <event id="event16" target="rootFrame" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event17" target="loginPanel" type="onLoad">
+      <event id="event17" target="loginPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event18" target="label1" type="onLoad">
+      <event id="event18" target="label1" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -26,7 +26,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event20" target="userIdTextbox" type="onLoad">
+      <event id="event20" target="userIdTextbox" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -38,7 +38,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event23" target="label2" type="onLoad">
+      <event id="event23" target="label2" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -46,7 +46,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event25" target="textbox1" type="onLoad">
+      <event id="event25" target="textbox1" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -58,7 +58,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event28" target="button1" type="onLoad">
+      <event id="event28" target="button1" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -66,11 +66,11 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event30" target="roomSelectPanel" type="onLoad">
+      <event id="event30" target="roomSelectPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event31" target="label3" type="onLoad">
+      <event id="event31" target="label3" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -78,7 +78,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event33" target="selectButton" type="onLoad">
+      <event id="event33" target="selectButton" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -86,7 +86,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event33" target="roomSelect" type="onLoad">
+      <event id="event33" target="roomSelect" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -94,11 +94,11 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event36" target="chatRoomPanel" type="onLoad">
+      <event id="event36" target="chatRoomPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event37" target="label4" type="onLoad">
+      <event id="event37" target="label4" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -106,15 +106,15 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event39" target="contentsFrame" type="onLoad">
+      <event id="event39" target="contentsFrame" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event44" target="entrancePanel" type="onLoad">
+      <event id="event44" target="entrancePanel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event45" target="userNameTextbox" type="onLoad">
+      <event id="event45" target="userNameTextbox" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -122,7 +122,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event47" target="textbox2" type="onLoad">
+      <event id="event47" target="textbox2" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -134,7 +134,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event50" target="enterButton" type="onLoad">
+      <event id="event50" target="enterButton" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -142,7 +142,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event52" target="backButton" type="onLoad">
+      <event id="event52" target="backButton" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -150,11 +150,11 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event54" target="messagePanel" type="onLoad">
+      <event id="event54" target="messagePanel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event55" target="messageLabel" type="onLoad">
+      <event id="event55" target="messageLabel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -162,7 +162,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event57" target="textbox3" type="onLoad">
+      <event id="event57" target="textbox3" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -174,7 +174,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event60" target="button4" type="onLoad">
+      <event id="event60" target="button4" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -182,7 +182,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event62" target="button5" type="onLoad">
+      <event id="event62" target="button5" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -190,7 +190,7 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event40" target="table0" type="onLoad">
+      <event id="event40" target="table0" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -206,19 +206,19 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event63" target="th0" type="onLoad">
+      <event id="event63" target="th0" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event64" target="th1" type="onLoad">
+      <event id="event64" target="th1" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event65" target="th2" type="onLoad">
+      <event id="event65" target="th2" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event66" target="th3" type="onLoad">
+      <event id="event66" target="th3" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>

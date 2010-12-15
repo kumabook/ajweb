@@ -196,21 +196,7 @@
 		  </eq>
 		</condition>
 	      </selectByCondition>
-<!--	      <selectRefItem database="room" ref="message">
-		<get element="roomSelectbox" property="value"/>
-	      </selectRefItem>-->
-<!---
-	      <selectByCondition database="message">
-		<eq>
-		  <targetItem property="room_id"/>
-		  <get element="roomSelectbox" property="value">
-		    <param name="property">
-		      <strin>id</string>
-		    </param>
-		  </get>
-		</eq>
-	      </selectByCondition>
--->
+
 	    </param>
 	  </call>
 	</action>
