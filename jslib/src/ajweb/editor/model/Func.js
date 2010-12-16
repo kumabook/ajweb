@@ -51,6 +51,10 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
        }
      }
    },
+   clearParam: function(){
+     while(this.children.length > 0)
+       this.children[0].remove();
+   },
    reCreateParamDom: function(){
      for(var i = 0; i < this.children.length; i++){
        this.children[i].reCreateDom(this.element);

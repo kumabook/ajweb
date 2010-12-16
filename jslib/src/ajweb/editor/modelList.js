@@ -214,7 +214,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Func",
     elementClass: "Func",
     acceptModelType: ["param"],
-    propertyList: ["tagName", "id", "element", "fuc"],
+    propertyList: ["tagName", "id", "element", "func"],
     eventList: [],
     defaultProperties: {}
   },

@@ -116,8 +116,9 @@ dojo.declare(
        */
       this.toolboxCp = new dijit.TitlePane({
 					     region: "right",
-					     style: {width: "200px", overflow: "auto"},
+					     style: {width: "200px", overflowY: "auto"},
 					     title: ajweb.getValue("toolbox"),
+					     splitter: "true",
 					     toggleable: false
 					   }
 					  );
@@ -250,9 +251,10 @@ dojo.declare(
        */
       this.projectExploerBc = new dijit.TitlePane(
 	{
-	  style: {width: "200px", overflow: "auto"},
+	  style: {width: "200px", overflowY: "auto"/*, overflow: "auto"*/},
 	  region: "left",
 	  toggleable: false,
+	  splitter: "true",
 	  title: ajweb.getValue("projectExploer")
 	}
       );

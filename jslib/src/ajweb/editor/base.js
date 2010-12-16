@@ -144,14 +144,16 @@ ajweb.editor.getModelInfo = function(name){
 };
 
 ajweb.editor.getFuncStore = function(modelName){
+  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
   var list =  ajweb.editor.FUNCLIST;
   var items = [];
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
-      items = list[i].setters;
+      for(var j = 0; j < list[i].setters.length; j++){
+	store.newItem(list[i].setters[j]);
+      }
     }
   }
-  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: items}});
   return store;
 };
 
@@ -161,17 +163,31 @@ ajweb.editor.updateFuncStore = function(modelName, store){
   var items;
   store.fetch({
 	      onItem: function(item){
-		console.log("item  " + item);
 		store.deleteItem(item);
 	      }});
+  store.save();
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].setters.length; j++){
-      store.newItem(list[i].setters[j]);
+	store.newItem(list[i].setters[j]);
       }
     }
   }
 };
+ajweb.editor.getGetterStore = function(modelName){
+  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+  var list =  ajweb.editor.FUNCLIST;
+  var items = [];
+  for(var i = 0; i < list.length; i++){
+    if(list[i].name == modelName){
+      for(var j = 0; j < list[i].getters.length; j++){
+	store.newItem(list[i].getters[j]);
+      }
+    }
+  }
+  return store;
+};
+
 
 
 ajweb.editor.updateGetterStore = function(modelName, store){
@@ -179,7 +195,6 @@ ajweb.editor.updateGetterStore = function(modelName, store){
   var items;
   store.fetch({
 	      onItem: function(item){
-		console.log("item  " + item);
 		store.deleteItem(item);
 	      }});
   for(var i = 0; i < list.length; i++){

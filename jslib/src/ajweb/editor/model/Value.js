@@ -11,11 +11,16 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      if(model instanceof ajweb.editor.model.Database){//データベースのスキーマからparamModelを追加
        for(var i = 0; i < model.children.length; i++){
 	 if(model.children[i].tagName == "property"){
-	   this.editor.createModel("param", 
+	   var param = this.editor.createModel("param", 
 				   {name: model.children[i].properties.name, 
 				    type: model.children[i].properties.type},
 				   this,
 				   this.element);
+	   var value = this.editor.createModel("value",
+				   {},
+				   param,
+				   param.element
+				  );
 	 }
        }
      }

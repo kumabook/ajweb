@@ -86,7 +86,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	    button.startup();
 	    dialog.show();
 	    var parentDialog = that.model.parent.element.dialog;
-	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 400 + "px",
+	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 300 + "px",
 			       top: parseInt(parentDialog.domNode.style.top) - 50 + "px"}});
 
 	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;

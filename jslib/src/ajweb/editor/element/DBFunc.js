@@ -40,6 +40,21 @@ dojo.declare("ajweb.editor.element.DBFunc",
 		  backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"
 	  },
 	  onDblClick: function(){
+	    var dialog = new dijit.Dialog(
+	      {title: that.model.tagName,
+	       style: {position: "absolute",height: "300px", width: "400px"},
+	       onHide: function(){
+		 delete that.store;
+		 this.destroyRecursive();
+	       }
+	      });
+	    var paramContainer = new dijit.layout.ContentPane(
+	      {content: "params",
+	       style: {position: "absolute",top: "70px", left: "10px",width: "95%", height: "70%"}});
+	    dialog.containerNode.appendChild(paramContainer.domNode);
+	    that.containerNode = paramContainer.domNode;
+	    that.dialog = dialog;
+
 	    that.store = that.model.application.getDatabaseStore();
 	    var tablename = new dijit.layout.ContentPane(
 	      {content: "データベース名",
@@ -60,9 +75,9 @@ dojo.declare("ajweb.editor.element.DBFunc",
 		  that.model.createParam(tablenameSelect.value);
 		}
 	      });
-	    that.dialog.containerNode.appendChild(tablenameSelect.domNode);
-	    that.dialog.containerNode.appendChild(tablename.domNode);
-	    that.dialog.containerNode.appendChild(button.domNode);
+	    dialog.containerNode.appendChild(tablenameSelect.domNode);
+	    dialog.containerNode.appendChild(tablename.domNode);
+	    dialog.containerNode.appendChild(button.domNode);
 	    tablenameSelect.startup();
 	    tablename.startup();
 	    button.startup();
@@ -71,11 +86,11 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	      that.model.reCreateParamDom();
 	    }
 	    
-	    that.dialog.show();
-	    that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 100 + "px"}});
+	    dialog.show();
+	    dialog.set({style: {left: "200px", top: parseInt(dialog.domNode.style.top) - 100 + "px"}});
 
-	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
+	    dialog.containerNode.style.width = dialog.domNode.style.width;
+	    dialog.containerNode.style.height = dialog.domNode.style.height;
 	  }
 	});
       this.widget.element = this;

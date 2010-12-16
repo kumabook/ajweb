@@ -32,42 +32,53 @@ dojo.declare("ajweb.editor.element.Value",
       this.widget =  new dijit.form.Button(
 	{ label: "value", 
 	  onClick: function(){
+	    var dialog = new dijit.Dialog(
+	      {
+		title: that.model.parent.properties.name,
+		style: { position: "absolute",
+			 height: "300px", width: "400px"
+		
+       },
+		onHide: function(){
+		  this.destroyRecursive();
+		}
+	      });
+	    that.containerNode = dialog.containerNode;
+	    that.dialog = dialog;
+	    
 	    var typeName = new dijit.layout.ContentPane(
 	      { content: "値の種類: ",
 		style: {position: "absolute",top: "30px",left: "10px"}});
 	    var typeSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-//		store: ajweb.editor.valueTypeStore, sortByLabel: false,
 		store: that.model.application.getValueStore(), sortByLabel: false,
-		style: {position : "absolute",width: "150px",top: "30px",left: "100px"}
+		style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
 	      });
-
 	    var typeButton = new dijit.form.Button(
-	      { label: "決定", 
-		style: {position : "absolute",width: "80px", top: "30px",left: "280px"},
+	      { label: that.model.properties.element ? "変更" : "決定",
+		style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
 		onClick: function(){
 		  that.model.properties.element = typeSelect.value;
-//		  funcSelect.set({store: that.model.application.WidgetStore});
 		  var model = ajweb.getModelById(typeSelect.value);
 		  ajweb.editor.updateGetterStore(model.properties.tagName, funcSelect.store);
+		  funcSelect.set({ disabled: false});
 		  funcButton.set({ disabled: false});
 		  this.set({label: "変更"});
 		}});
-
 	    var funcName = new dijit.layout.ContentPane(
 	      {content: "関数名: ",
-		style: { position: "absolute", top: "80px", left: "10px"}});
+		style: { position: "absolute", top: "55px", left: "10px"}});
+	    var model = ajweb.getModelById(that.model.properties.element);
+	    var selectedElemTag = model ? model.properties.tagName : "";
 	    var funcSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.func ? that.model.properties.func : "",
-//		store: that.store, searchAttr: "name",
-		store: new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}}), searchAttr: "name",
-		style: {position : "absolute",width: "150px",top: "80px",left: "100px"}
+		store: ajweb.editor.getGetterStore(selectedElemTag),
+		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
-
 	    var funcButton = new dijit.form.Button(
-	      { label: "決定", disabled: true,
-		style: {position : "absolute",width: "80px", top: "80px",left: "280px"},
-
+	      { label: that.model.properties.func ? "変更" : "決定",
+		disabled: that.model.properties.element ? false : true,
+		style: {position : "absolute",width: "80px", top: "47px",left: "280px"},
 		onClick: function(){
 		  that.model.properties.func = funcSelect.value;
 		  that.model.createParam(that.model.properties.element, that.model.properties.func);
@@ -109,18 +120,6 @@ dojo.declare("ajweb.editor.element.Value",
 				 left: (this.container.containerNode.childNodes.length-1) * 120 + "px"}});
       
       return this.widget.domNode;
-    },
-    createContainerNode: function(){
-      var that = this;
-      this.dialog = new dijit.Dialog({
-				       title: that.model.parent.properties.name,
-				       style: { position: "absolute",
-						height: "300px", width: "400px"
-					      },
-				       onHide: function(){
-				       }
-				     });
-      return this.dialog.containerNode;
     },
     removeDom: function(){
       this.widget.destroyRecursive();
