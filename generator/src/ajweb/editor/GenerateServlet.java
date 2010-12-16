@@ -69,10 +69,12 @@ public class GenerateServlet extends AbstractServlet {
 			StreamResult result = new StreamResult(writer);
 			try {
 				String ajml = request.getParameter("content");
-				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS){
-					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
-				}
+//				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS){
+				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+	//			}
+				
 				String filename = request.getParameter("filename");
+//				System.out.println(ajml);
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
@@ -106,9 +108,9 @@ public class GenerateServlet extends AbstractServlet {
 			InputStream in = null;
 			try {
 				String ajml = request.getParameter("content");
-				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+				//if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
 					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
-
+				
 				String filename = request.getParameter("filename");
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));

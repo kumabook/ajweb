@@ -51,8 +51,8 @@ public class UploadServlet extends HttpServlet {
 	          String fileName = fItem.getName();
 	          if((fileName != null) && (!fileName.equals(""))){
 	        	  String ajml = fItem.getString();
-	        	  if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
-	        		  ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+//	        	  if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
+	        	  ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
 
 	        	  ajml = ajml.replaceAll("\n|\r\n|\r", "'\n + '");
 	        	  String response = "<html><body><script type=\"text/javascript\">\n" +
@@ -62,7 +62,7 @@ public class UploadServlet extends HttpServlet {
 		  			"	</script>now uploading!!" +
 		  			"	</body>" +
 		  			"	</html>";
-//	        	  System.out.println(response);
+	        	  //System.out.println(response);
 	        	  out.println(response);
 	          }
 	        }
