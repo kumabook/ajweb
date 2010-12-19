@@ -63,15 +63,16 @@ dojo.declare("ajweb.editor.element.Condition",
 		style: {position : "absolute",top: "45px",left: "280px"},
 		onClick: function(){
 		  button.set({label: "変更"});
-		  if(that.model.children.length == 0){
-		    var tagName = predictSelect.value;
-		    that.model.properties.element = predictSelect.value;
-		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
-		    newModel.properties.name = tagName;
-		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		    }
+		  for(var i = 0; i < that.model.children.length; i++)
+		    that.model.children[i].remove();
+		  
+		  var tagName = predictSelect.value;
+		  that.model.properties.element = predictSelect.value;
+		  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+		  newModel.properties.name = tagName;
+		  if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+		    that.model.editor.createModel("value", {}, newModel, newModel.element);
+		    that.model.editor.createModel("value", {}, newModel, newModel.element);
 		  }
 		}
 	      });

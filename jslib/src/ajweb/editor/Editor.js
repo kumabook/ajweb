@@ -31,6 +31,7 @@ dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Action");
 dojo.require("ajweb.editor.model.Branch");
 dojo.require("ajweb.editor.model.Func");
+dojo.require("ajweb.editor.model.Login");
 dojo.require("ajweb.editor.model.Value");
 dojo.require("ajweb.editor.model.Param");
 dojo.require("ajweb.editor.element.Widget");
@@ -556,6 +557,8 @@ dojo.declare(
       var propertyList = dojo.clone(modelInfo.propertyList);
       var defaultProperties = dojo.clone(modelInfo.defaultProperties ? modelInfo.defaultProperties : {});
       var id = name + ajweb.editor.modelCount(name);
+
+      propertyList.push("_character");
 
       if(properties){
 	if(!properties.id)

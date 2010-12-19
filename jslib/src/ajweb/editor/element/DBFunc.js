@@ -71,7 +71,8 @@ dojo.declare("ajweb.editor.element.DBFunc",
 		  if(that.model.children.length > 0){
 		    that.model.removeParam();
 		  }
-		  that.model.properties.database = tablenameSelect.value;
+		  var model = ajweb.getModelById(tableSelect.value);
+		  that.model.properties.database = model.properties.id;
 		  that.model.createParam(tablenameSelect.value);
 		}
 	      });

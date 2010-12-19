@@ -43,11 +43,12 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
 					      type: func.params[i].type},
 					     this,
 					     this.element);
-	 var value = this.editor.createModel("value",
-					     {},
-					     param,
-					     param.element
-					    );	
+	 
+	 var value= this.editor.createModel("value",
+					{},
+					param,
+					param.element
+				       );	
        }
      }
    },

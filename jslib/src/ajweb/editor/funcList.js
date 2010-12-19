@@ -3,14 +3,14 @@ ajweb.editor.FUNCLIST = [
   {
     name: "int",
     getters: [
-      {name: "direct", params:[{key: "value", type: "int"}]}
+      {name: "direct", params:[{key: "value", type: "int", input: "textbox"}]}
     ],
     setters: []
   },
   {
     name: "string",
     getters: [
-      {name: "direct", params:[{key: "value", type: "string"}]},
+      {name: "direct", params:[{key: "value", type: "string", input: "textbox"}]},
       {name: "concat",	params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
@@ -18,7 +18,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "date",
     getters: [
-      {name: "direct", params:[{key: "base", type: "date"}]},
+      {name: "direct", params:[{key: "base", type: "date", input: "textbox"}]},
       {name: "now", params:[]}
     ],
     setters: []
@@ -26,7 +26,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "datetime",
     getters: [
-      {name: "direct", params:[{key: "base", type: "datetime"}]},
+      {name: "direct", params:[{key: "base", type: "datetime", input: "textbox"}]},
       {name: "now", params:[]}
     ],
     setters: []
@@ -89,7 +89,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "panel",
     getters: [
-      { name: "label",params: [ {key: "value", type: "string"}]}
+      { name: "self", params: [], returnType: "element"}
     ],
     setters: []
   },

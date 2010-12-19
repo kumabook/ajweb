@@ -22,7 +22,7 @@ ajweb.editor.COMLIST =  [
   },
   {
     name: "Function",
-    children: [{name: "insert"},{name: "update"},{name: "delete"},{name: "call"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
+    children: [{name: "login"},{name: "insert"},{name: "update"},{name: "delete"},{name: "call"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
   }/*,
   {
     name: "Value",
@@ -96,7 +96,7 @@ ajweb.editor.conditionOperatorStore = new dojo.data.ItemFileReadStore(
 	    items: [
 	      {name: "true"},
 	      { name: "and" }, { name: "or" }, { name: "not" },
-	      { name: "eq" },{name: "gt"} ,{name: "lt"}
+	      { name: "eq" },{name: "gt"} ,{name: "lt"}, {name: "success"}
 	    ]
 	  }
 	});
@@ -197,6 +197,7 @@ ajweb.editor.updateGetterStore = function(modelName, store){
 	      onItem: function(item){
 		store.deleteItem(item);
 	      }});
+  store.save();
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].getters.length; j++){

@@ -49,6 +49,11 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 					       height: "150px", width: "350px"
 					      },
 					    onHide: function(){
+					      this.destroyRecursive();
+					      var parentDialog = that.model.parent.element.dialog;
+					      if(parentDialog){
+						parentDialog._fadeIn.play();
+					      }
 					    }
 					  });
 	    that.dialog = dialog;

@@ -4,13 +4,13 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dojox.widget.Dialog");
 dojo.require("dijit.TitlePane");
-dojo.provide("ajweb.editor.element.Func");
-dojo.declare("ajweb.editor.element.Func",
+dojo.provide("ajweb.editor.element.Login");
+dojo.declare("ajweb.editor.element.Login",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
 	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable],
-  /** @lends ajweb.editor.element.Func.prototype */
+  /** @lends ajweb.editor.element.Login.prototype */
   {
     /**
      * Constructor
@@ -41,7 +41,7 @@ dojo.declare("ajweb.editor.element.Func",
 	  onDblClick: function(){
 	    var dialog = new dijit.Dialog(
 	      {title: that.model.tagName,
-	       style: {position: "absolute",height: "300px", width: "400px"},
+	       style: {position: "absolute",height: "150px", width: "400px"},
 	       onHide: function(){
 		 delete that.store;
 		 this.destroyRecursive();
@@ -49,68 +49,17 @@ dojo.declare("ajweb.editor.element.Func",
 	      });
 	    var paramContainer = new dijit.layout.ContentPane(
 	      { content: "引数",
-		style: {position: "absolute",top: "80px", left: "10px",width: "95%", height: "70%"}});
+		style: {position: "absolute",top: "25px", left: "10px",width: "95%", height: "70%"}});
 	    dialog.containerNode.appendChild(paramContainer.domNode);
 	    that.containerNode = paramContainer.domNode;
 	    that.dialog = dialog;
 
-	    var elemName = new dijit.layout.ContentPane(
-	      { content: "要素名: ",
-		style: {position: "absolute",top: "30px",left: "10px"}});
-	    var elemSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
-		store: that.model.application.getWidgetStore(), sortByLabel: false,
-		style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
-	      });
-	    var elemButton = new dijit.form.Button(
-	      { label: that.model.properties.element ? "変更" : "決定",
-		style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
-		onClick: function(){
-		  that.model.properties.element = elemSelect.value;
-		  var model = ajweb.getModelById(elemSelect.value);
-		  ajweb.editor.updateFuncStore(model.properties.tagName, funcSelect.store);
-		  funcSelect.set({disabled: false});
-		  funcButton.set({disabled: false});
-		  this.set({label: "変更"});
-		}});
-	    var funcName = new dijit.layout.ContentPane(
-	      {content: "関数名: ",
-	       style: { position: "absolute", top: "55px", left: "10px"}});
-	    var model = ajweb.getModelById(that.model.properties.element);
-	    var selectedElemTag = model ? model.properties.tagName : "";
-	    var funcSelect = new dijit.form.Select(
-	      {	name: "name", value: that.model.properties.func ? that.model.properties.func : "",
-		store: ajweb.editor.getFuncStore(selectedElemTag),
-		sortByLabel: false, disabled: that.model.properties.element ? false : true,
-		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
-	      });
-	    var funcButton = new dijit.form.Button(
-	      { label: that.model.properties.func ? "変更" : "決定", 
-		disabled: that.model.properties.element ? false : true,
-		style: {position : "absolute",width: "80px", top: "47px",left: "280px"},		
-		onClick: function(){
-		  that.model.clearParam();
-		  that.model.properties.func = funcSelect.value;
-		  that.model.createParam(that.model.properties.element, that.model.properties.func);
-		  this.set({label: "変更"});
-		}});
+	
 	    if(that.model.properties.element && that.model.properties.func)
 	      that.model.reCreateParamDom();
-	    
-	    dialog.containerNode.appendChild(elemSelect.domNode);
-	    dialog.containerNode.appendChild(funcSelect.domNode);
-	    dialog.containerNode.appendChild(elemName.domNode);
-	    dialog.containerNode.appendChild(funcName.domNode);
-	    dialog.containerNode.appendChild(elemButton.domNode);
-	    dialog.containerNode.appendChild(funcButton.domNode);
-	    
-	    elemSelect.startup();
-	    funcSelect.startup();
-	    elemName.startup();
-	    funcName.startup();
-	    elemButton.startup();
-	    funcButton.startup();
-
+	    else
+	      that.model.createParam();
+	
 	    dialog.show();
 	    dialog.set({style: {left: "200px", top: parseInt(dialog.domNode.style.top) - 50 + "px"}});
 

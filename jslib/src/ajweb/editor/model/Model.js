@@ -113,6 +113,8 @@ dojo.declare("ajweb.editor.model.Model", null,
 	if(child)
 	  node.appendChild(child);
       }
+      if(this.properties._character)
+	node.appendChild(document.createTextNode(this.properties._character));
       return node;
     },
     /**
@@ -137,28 +139,45 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  node.appendChild(child);
       }
 
+      if(this.properties._character)
+	node.appendChild(document.createTextNode(this.properties._character));
+
       return node;
     },
-    xmlToModel: function(node, doc){
+    xmlToModel: function(node, doc, isDisplay){
       var childNode;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
 	var attrs = {};
 	if(childNode instanceof Element){
 	  attrs = ajweb.editor.attributesToHash(childNode.attributes);
-
+	  
 	  if(childNode.tagName == "events")
 	    continue;
 	  var child;
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
 	  }
-	  else if(childNode.tagName == "action" || childNode.tagName == "condition"
-		  || childNode.tagName == "branch"){
+	  else if(childNode.tagName == "int" || childNode.tagName == "string" 
+		  || childNode.tagName == "date" || childNode.tagName == "datetime"){
+	    for(var j = 0; j < childNode.childNodes.length; j++){
+	      if(childNode.childNodes[j] instanceof Text){
+		attrs._character = childNode.childNodes[j].data;
+		console.log(childNode.childNodes[j].data);
+	      }
+	    }
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, true);
 	  }
-	  else
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
+	  else  {
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, isDisplay);
+
+	    for(var j = 0; j < childNode.childNodes.length; j++){
+	      if(childNode.childNodes[j] instanceof Text){
+		child.properties._character = childNode.childNodes[j].data;
+	      }
+	    }
+
+	  }
 	  if(child instanceof ajweb.editor.model.Eventable){//eventを追加
 	    child.clearEventView();
 	    var events = doc.getElementsByTagName("event");
@@ -168,11 +187,11 @@ dojo.declare("ajweb.editor.model.Model", null,
 		var event = this.editor.createModel("event", eventAttrs,
 		  this.application.events, this.editor.eventTc, true);
 		child.events.push(event);
-		event.xmlToModel(events[i], doc);
+		event.xmlToModel(events[k], doc, true);
 	      }
 	    }
 	  }
-	  child.xmlToModel(childNode, doc);
+	  child.xmlToModel(childNode, doc, isDisplay);
 	}
       }
     }

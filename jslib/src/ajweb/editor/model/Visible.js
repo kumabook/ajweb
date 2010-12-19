@@ -65,13 +65,17 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      */
     reCreateDom: function(container){
       this.element = this.createDom(container);
-      for(var i = 0; i < this.children.length; i++){
-	this.children[i].reCreateDom(this.element);
-      }
+      if(this.tagName != "value")
+	for(var i = 0; i < this.children.length; i++){
+	  this.children[i].reCreateDom(this.element);
+	}
     },
     removeDom: function(){
-      if(this.isDisplay)
-	this.element.removeDom();
+      if(this.isDisplay){
+	if(this.element)
+	  this.element.removeDom();
+      }
+	
       delete this.element;
       this.isDisplay = false;	
     },

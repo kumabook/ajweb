@@ -91,7 +91,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 		      this.application.events, this.editor.eventTc);
 	this.events.push(event);
 	this.editor.createModel("condition", {top: "25px", left: "10px"}, event, event.element);
-	this.editor.createModel("action", {top: "100px", left: "150px"}, event, event.element);
+	this.editor.createModel("action", {top: "50px", left: "150px"}, event, event.element);
       }
       this.editor.eventTc.currentModel = this;
     },

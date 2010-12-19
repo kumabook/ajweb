@@ -73,16 +73,31 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       return store;
     },
     getValueStore: function(){
-      var models = this.getWidgetModels();
-      var items = [];
-      for(var i = 0; i < models.length; i++){
-	items.push({name: models[i].properties.id, modelId: models[i].id});
+      var items = [
+	{id: "int", name: "int"},
+	{id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"},
+	{id: "separator1"},
+	{id: "element", name: "ウィジェット"}
+      ];
+      var i;
+      var widgetModels = this.getWidgetModels();
+      for(i = 0; i < widgetModels.length; i++){
+	items.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id});
       }
       
+      items.push({id: "separator2"});
+      items.push({id: "database", name: "データベース"});
+
+      var databases = this.getDatabasesModel();
+      for(i = 0; i < databases.children.length; i++){
+	items.push({name: databases.children[i].properties.id, modelId: databases.children[i].id, id: databases.children[i].id});
+      }
+
+  
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
-	    identifier: "modelId",
+	    identifier: "id",
 	    label : "name",
 	    items: items
 	  }

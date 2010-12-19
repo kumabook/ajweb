@@ -179,6 +179,16 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
+    name: "login",
+    modelType: "func",
+    modelClass: "Login",
+    elementClass: "Login",
+    acceptModelType: ["param"],
+    propertyList: ["tagName", "id"],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
     name: "insert",
     modelType: "func",
     modelClass: "Func",
@@ -254,7 +264,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Param",
     elementClass: "Param",
     acceptModelType: ["param"],
-    propertyList: ["tagName", "id", "name"],
+    propertyList: ["tagName", "id", "name", "type"],
     eventList: [],
     defaultProperties: {name: "key"}
   },
@@ -263,7 +273,7 @@ ajweb.editor.MODELLIST =  [
     name: "int",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "value",
+    elementClass: "Primitive",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
@@ -273,7 +283,7 @@ ajweb.editor.MODELLIST =  [
     name: "string",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "value",
+    elementClass: "Primitive",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
@@ -283,7 +293,7 @@ ajweb.editor.MODELLIST =  [
     name: "date",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "value",
+    elementClass: "Primitive",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
@@ -315,7 +325,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: ["element", "property"],
+    propertyList: ["element", "property", "func"],
     eventList: [],
     defaultProperties: {}
   },
@@ -398,6 +408,16 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "Predicate",
     acceptModelType: ["value"],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "success",
+    modelType: "predicate",
+    modelClass: "Model",
+    elementClass: "Predicate",
+    acceptModelType: [],
     propertyList: [],
     eventList: [],
     defaultProperties: {}
