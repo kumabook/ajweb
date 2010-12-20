@@ -65,9 +65,10 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      */
     reCreateDom: function(container){
       this.element = this.createDom(container);
-      if(this.tagName != "value")
+      if(this.tagName != "value" && this.tagName != "frame")
 	for(var i = 0; i < this.children.length; i++){
-	  this.children[i].reCreateDom(this.element);
+	  if(this.children[i].reCreateDom)
+	    this.children[i].reCreateDom(this.element);
 	}
     },
     removeDom: function(){
@@ -81,6 +82,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     },
     removeDomRecursive: function(){
       for(var i = 0; i < this.children.length; i++){
+	if(this.children[i].removeDomRecursive)
 	this.children[i].removeDomRecursive(this.element);
       }
       this.removeDom();

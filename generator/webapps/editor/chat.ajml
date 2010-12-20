@@ -12,7 +12,10 @@
       </event>
       <event id="event16" target="rootFrame" type="onDisplay">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="397px" top="67px">
+          <call element="rootFrame" func="selectPanel" id="call0" left="181px" top="64px">
+            <param id="param1" name="panel" type="element">
+              <value element="loginPanel" func="self"/>            </param>          </call>        </action>
       </event>
       <event id="event17" target="loginPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -46,15 +49,15 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event25" target="textbox1" type="onDisplay">
+      <event id="event25" target="passwordbox" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event26" target="textbox1" type="onFocus">
+      <event id="event26" target="passwordbox" type="onFocus">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event27" target="textbox1" type="onBlur">
+      <event id="event27" target="passwordbox" type="onBlur">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -64,11 +67,30 @@
       </event>
       <event id="event29" target="button1" type="onClick">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="411px" top="43px">
+          <login id="login0" left="129px" top="33px">
+            <param id="param1" name="user_id" type="string">
+              <value element="userIdTextbox" func="value"/>            </param>
+            <param id="param2" name="password" type="password">
+              <value/>            </param>          </login>
+          <branch id="branch1" left="295px" top="36px">
+            <condition element="success" left="0px" top="15px">
+              <success/>            </condition>
+            <then id="then1" left="655px" top="16px">
+              <call element="rootFrame" func="selectPanel" id="call2" left="512px" top="23px">
+                <param id="param8" name="panel" type="element">
+                  <value element="roomSelectPanel" func="self"/>                </param>              </call>            </then>
+            <else id="else1" left="528px" top="84px"/>          </branch>        </action>
       </event>
       <event id="event30" target="roomSelectPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="150px" top="100px">
+          <call element="roomSelect" func="load" id="call2" left="246px" top="120px">
+            <param id="param4" name="datum" type="objects">
+              <value element="room" func="select"/>
+            </param>
+          </call>
+        </action>
       </event>
       <event id="event31" target="label3" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -84,7 +106,14 @@
       </event>
       <event id="event34" target="selectButton" type="onClick">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="575px" top="34px">
+          <call element="rootFrame" func="selectPanel" id="call3" left="174px" top="50px">
+            <param id="param5" name="panel" type="element">
+              <value element="chatRoomPanel" func="self"/>
+            </param>
+          </call>
+          <call element="nowRoomLabel" id="call4" left="383px" top="51px"/>
+        </action>
       </event>
       <event id="event33" target="roomSelect" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -98,11 +127,11 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event37" target="label4" type="onDisplay">
+      <event id="event37" target="nowRoomLabel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event38" target="label4" type="onClick">
+      <event id="event38" target="nowRoomLabel" type="onClick">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -236,7 +265,7 @@
       </event>
       <event id="event4" target="users" type="onUpdate">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="156px" top="59px"/>
       </event>
       <event id="event5" target="message" type="onChange">
         <condition left="10px" top="25px"/>
@@ -268,19 +297,19 @@
       </event>
       <event id="event12" target="room" type="onUpdate">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="383px" top="77px"/>
       </event>
     </events>
     <interfaces>
       <panel height="500px" id="rootPanel" left="392" tagName="panel" top="2" width="700px">
         <label content="チャットアプリケーション" id="label0" left="27px" tagName="label" top="22px"/>
-        <frame height="450px" id="rootFrame" left="25px" tagName="frame" top="45px" width="650px">
+        <frame height="450px" id="rootFrame" left="24px" tagName="frame" top="45px" width="650px">
           <panel height="450px" id="loginPanel" left="417" tagName="panel" top="6" width="650px">
             <label content="ユーザID" id="label1" left="29px" tagName="label" top="29px"/>
             <textbox content="user_name" id="userIdTextbox" left="132px" tagName="textbox" top="29px" width="100px"/>
             <label content="パスワード" id="label2" left="29px" tagName="label" top="59px"/>
-            <textbox content="password" id="textbox1" left="130px" tagName="textbox" top="59px" width="100px"/>
-            <button content="ログイン" id="button1" left="32px" tagName="button" top="92px"/>
+            <textbox content="password" id="passwordbox" left="131px" tagName="textbox" top="59px" width="100px"/>
+            <button content="ログイン" id="button1" left="32px" tagName="button" top="91px"/>
           </panel>
           <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="6" width="650px">
             <label content="ルーム選択" id="label3" left="0px" tagName="label" top="0px"/>
@@ -288,8 +317,8 @@
             <selectbox id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
           </panel>
           <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="6" width="650px">
-            <label content="ラベル" id="label4" left="60px" tagName="label" top="0px"/>
-            <frame height="100px" id="contentsFrame" left="-1px" tagName="frame" top="79px" width="450px">
+            <label content="ラベル" id="nowRoomLabel" left="60px" tagName="label" top="0px"/>
+            <frame height="100px" id="contentsFrame" left="25px" tagName="frame" top="80px" width="450px">
               <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="181" width="450px">
                 <label content="名前" id="userNameTextbox" left="40px" tagName="label" top="6px"/>
                 <textbox id="textbox2" left="100px" tagName="textbox" top="10px" width="100px"/>
@@ -301,33 +330,26 @@
                 <textbox id="textbox3" left="150px" tagName="textbox" top="10" width="100px"/>
                 <button content="送信" id="button4" left="100px" tagName="button" top="50px"/>
                 <button content="ボタン" id="button5" left="350px" tagName="button" top="50px"/>
-              </panel>
-            </frame>
+              </panel>            </frame>
             <table height="225px" id="table0" left="25px" tagName="table" top="200px" width="600px">
               <th field="user_name" id="th0" label="user_name" left="203" tagName="th" top="13" width="100px"/>
               <th field="message" id="th1" label="message" left="343" tagName="th" top="30" width="100px"/>
               <th field="posted" id="th2" label="posted" left="354" tagName="th" top="25" width="350px"/>
-              <th field="room" id="th3" label="room" left="350" tagName="th" top="37" width="30px"/>
-            </table>
-          </panel>
-        </frame>
-      </panel>
-    </interfaces>
+              <th field="room" id="th3" label="room" left="350" tagName="th" top="37" width="30px"/>            </table>
+          </panel>        </frame>
+      </panel>    </interfaces>
     <databases id="databases0" tagName="databases">
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="265px" tablename="users" tagName="database" top="122px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="83px" tablename="users" tagName="database" top="61px" type="server">
         <property left="164" name="user_id" top="27" type="string"/>
         <property left="217" name="password" top="61" type="password"/>
-        <property left="195" name="role" top="96" type="string"/>
-      </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="673px" tablename="message" tagName="database" top="314px" type="server">
+        <property left="195" name="role" top="96" type="string"/>      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="406px" tablename="message" tagName="database" top="160px" type="server">
         <property left="212" name="message" top="33" type="string"/>
         <property left="224" name="posted" top="63" type="datetime"/>
         <property left="234" name="room_id" top="88" type="int"/>
-        <property left="228" name="user" top="120" type="string"/>
-      </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="755px" tablename="room" tagName="database" top="72px" type="server">
-        <property left="157" name="name" top="23" type="string"/>
-      </database>
+        <property left="228" name="user" top="120" type="string"/>      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="533px" tablename="room" tagName="database" top="28px" type="server">
+        <property left="157" name="name" top="23" type="string"/>      </database>
     </databases>
   </application>
 </ajml>

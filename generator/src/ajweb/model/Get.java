@@ -10,6 +10,7 @@ public class Get implements Parameterable, AbstractModel{
 	public static ArrayList<String> elements = new ArrayList<String>();
 	static {
 		elements.add("get");
+		elements.add("value");
 		elements.add("select");
 		elements.add("selectById");
 		elements.add("selectByCondition");
@@ -75,12 +76,12 @@ public class Get implements Parameterable, AbstractModel{
 		String jsSource = "";
 		
 		if(!isContainCallback()){
-			
+			System.out.println(element + " " + getter + " " + property );
 			Template getter_template = new Template("js/getter");
 			getter_template.apply("ELEMENT", element);
 			
 			getter_template.apply("GETTER", getter);
-			if(property==null)
+			if(property==null)//
 				property = "";
 			else 
 				property =  property.substring(0, 1).toUpperCase() + property.substring(1);//1文字目を大文字にしてonをつける
@@ -88,6 +89,10 @@ public class Get implements Parameterable, AbstractModel{
 			getter_template.apply("PARAMS", paramToJsSource(func, key, rest));
 
 			jsSource = getter_template.source.trim();
+			
+			if(property.equals("Self"))
+				jsSource = element;
+				
 		}
 		else {//select系だったらコールバックにfunc({key:items ....};  rest  を追加する
 			Template select_template = new Template("js/select");

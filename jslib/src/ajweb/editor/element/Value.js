@@ -71,19 +71,17 @@ dojo.declare("ajweb.editor.element.Value",
 	      { label: that.model.properties.element ? "変更" : "決定",
 		style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
 		onClick: function(){
-		  that.model.properties.element = typeSelect.value;
-		  var model = ajweb.getModelById(typeSelect.value);
-		  ajweb.editor.updateGetterStore(model ? model.properties.tagName : typeSelect.value, funcSelect.store);
+
 		  funcSelect.set({ disabled: false});
 		  funcButton.set({ disabled: false});
 		  this.set({label: "変更"});
 		}});
-
+	    var model = that.model.application.getElementByPropId(that.model.properties.element);
 	    var elemName = new dijit.layout.ContentPane(
 	      { content: "エレメント: ",
 		style: {position: "absolute",top: "55px",left: "10px"}});
 	    var elemSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+	      {	name: "modelId", value: model ? model.id : "",
 		store: that.model.application.getValueStore(), sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
@@ -104,7 +102,7 @@ dojo.declare("ajweb.editor.element.Value",
 	    var funcName = new dijit.layout.ContentPane(
 	      {content: "関数名: ",
 		style: { position: "absolute", top: "80px", left: "10px"}});
-	    var model = ajweb.getModelById(that.model.properties.element);
+
 	    var selectedElemTag = model ? model.properties.tagName : that.model.properties.element;
 	    var funcSelect = new dijit.form.Select(
 	      {	name: "modelId", 

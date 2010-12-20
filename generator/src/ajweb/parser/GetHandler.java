@@ -33,8 +33,11 @@ public class GetHandler extends AbstractHandler{
 		String property = attributes.get("property");
 		String getter = qName;// + property.substring(0, 1).toUpperCase() + property.substring(1);
 		if(qName.equals("get")){
-			
 			get = new Get(attributes.get("element"), getter, property, params);
+		}
+		else if(qName.equals("value")){
+			String func = attributes.get("func"); 
+			get = new Get(attributes.get("element"), "", func, params);
 		}
 		else if(qName.equals("select")){
 			get = new Get(attributes.get("database"), "select", property, params);

@@ -150,7 +150,7 @@ dojo.addOnLoad(
 /*eventsの記述 */
     //初期画面の設定
     ajweb.addEvent(rootFrame, "onDisplay", true, function(){
-		     alert("handler");
+//		     alert("handler");
 //	rootFrame.selectPanel({child:roomSelectPanel});
 	rootFrame.selectPanel({panel:loginPanel});
 	rootFrame.widget.startup();

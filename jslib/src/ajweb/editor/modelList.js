@@ -142,7 +142,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Database",
     acceptModelType: ["property"],
     propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver"],
-    eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
+    eventList: ["onChange", "onInsert", "onDelete", "onUpdate", "onCreate"],
     defaultProperties: { tagName: "database", type: "server",
 			dbName: "jdbc:derby:work/appName",
 			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
@@ -348,7 +348,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "Condition",
     acceptModelType: ["predicate"],
-    propertyList: [],
+    propertyList: ["element"],
     eventList: [],
     defaultProperties: {}
   },

@@ -106,6 +106,22 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       return store;
     },
     getElementStore: function(){
+    },
+    getElementByPropId: function(id){
+      return this._getElementByPropId(id, this);
+    },
+    _getElementByPropId: function(id, child){
+      for(var i = 0; i < child.children.length; i++){
+	if(child.children[i].properties.id == id){
+	  return child.children[i];
+	}
+	else {
+	  var elem = this._getElementByPropId(id, child.children[i]);
+	  if(elem)
+	    return elem;
+	}
+      }
+      return null;
     }
   }
 );

@@ -54,11 +54,14 @@ dojo.declare("ajweb.editor.element.Func",
 	    that.containerNode = paramContainer.domNode;
 	    that.dialog = dialog;
 
+
+	    var model = that.model.application.getElementByPropId(that.model.properties.element);
+
 	    var elemName = new dijit.layout.ContentPane(
 	      { content: "要素名: ",
 		style: {position: "absolute",top: "30px",left: "10px"}});
 	    var elemSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+	      {	name: "modelId", value: model ? model.id: "",
 		store: that.model.application.getWidgetStore(), sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
 	      });
@@ -66,9 +69,9 @@ dojo.declare("ajweb.editor.element.Func",
 	      { label: that.model.properties.element ? "変更" : "決定",
 		style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
 		onClick: function(){
-		  that.model.properties.element = elemSelect.value;
-		  var model = ajweb.getModelById(elemSelect.value);
-		  ajweb.editor.updateFuncStore(model.properties.tagName, funcSelect.store);
+		  that.element = ajweb.getModelById(elemSelect.value);
+		  that.model.properties.element = that.element ? that.element.properties.id : null;		  
+		  ajweb.editor.updateFuncStore(that.element.properties.tagName, funcSelect.store);
 		  funcSelect.set({disabled: false});
 		  funcButton.set({disabled: false});
 		  this.set({label: "変更"});
@@ -76,7 +79,7 @@ dojo.declare("ajweb.editor.element.Func",
 	    var funcName = new dijit.layout.ContentPane(
 	      {content: "関数名: ",
 	       style: { position: "absolute", top: "55px", left: "10px"}});
-	    var model = ajweb.getModelById(that.model.properties.element);
+
 	    var selectedElemTag = model ? model.properties.tagName : "";
 	    var funcSelect = new dijit.form.Select(
 	      {	name: "name", value: that.model.properties.func ? that.model.properties.func : "",
@@ -91,7 +94,7 @@ dojo.declare("ajweb.editor.element.Func",
 		onClick: function(){
 		  that.model.clearParam();
 		  that.model.properties.func = funcSelect.value;
-		  that.model.createParam(that.model.properties.element, that.model.properties.func);
+		  that.model.createParam(that.element.id, that.model.properties.func);
 		  this.set({label: "変更"});
 		}});
 	    if(that.model.properties.element && that.model.properties.func)

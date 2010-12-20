@@ -47,9 +47,9 @@ dojo.declare("ajweb.editor.element.Param",
       var value = new dijit.layout.ContentPane(
 	{style: {
 	   position: "absolute",
-	   top: "0px", left: "200px",
-	   width: "120px", height: "20px",
-	   border: "dotted 1px"
+	   top: "0px", left: "150px",
+	   width: "120px", height: "20px"
+//	   border: "dotted 1px"
 	 }});
       this.domNode.appendChild(value.domNode);
       return value.domNode;

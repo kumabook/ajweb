@@ -50,7 +50,7 @@ public class Server {
 				for(int j = 0; j < libFiles.length; j++){
 					if(libFiles[j].getName().matches(".*\\.jar")){
 						webapp.setExtraClasspath(libFiles[j].getAbsolutePath());
-						// System.out.println(libFiles[j].getAbsolutePath());
+						System.out.println(libFiles[j].getAbsolutePath());
 					}
 				}
 				

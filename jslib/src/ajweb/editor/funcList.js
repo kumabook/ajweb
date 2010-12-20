@@ -83,7 +83,9 @@ ajweb.editor.FUNCLIST = [
       {	name: "selectItem", params: [{key: "property", type: "string"}], returnType: "object", description: "" }
     ],
     setters: [
-      {	name: "newItem", params: [{key: "item", type: "object"}], description: ""}
+      {	name: "newItem", params: [{key: "item", type: "object"}], description: ""},
+      {name: "clear",params: [], description: "" },
+      {	name: "load", params: [{key: "datum", type: "objects"}], description: ""}
     ]
   },
   {
@@ -106,7 +108,8 @@ ajweb.editor.FUNCLIST = [
     name: "database",
     getters: [
       { name: "selectById",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "select", params: [{key: "condition", type: "condition", returnType: "object"}]}
+      { name: "selectByCondition", params: [{key: "condition", type: "condition"}], returnType: "objects"},
+      { name: "select", params: [], returnType: "objects"}
     ],
     setters: [
       { name: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
