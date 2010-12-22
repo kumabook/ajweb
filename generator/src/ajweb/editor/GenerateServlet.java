@@ -74,7 +74,7 @@ public class GenerateServlet extends AbstractServlet {
 	//			}
 				
 				String filename = request.getParameter("filename");
-//				System.out.println(ajml);
+
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
