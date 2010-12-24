@@ -38,11 +38,29 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    name: "label",
+    name: "targetItem",
+    properties: [{name: "property", type: "select"}],
     getters: [
-      {	name: "label",params: [{key: "value", type: "string"}]}
+      {name: "self", params:[], returnType: "object"},
+      {name: "property", params:[{key: "propertyName", type: "string", input: "selectbox"}], returnType: "database"}
     ],
     setters: []
+  },
+  {
+    name: "receivedItem",
+    properties: [{name: "property", type: "select"}],
+    getters: [
+      {name: "self", params:[], returnType: "object"},
+      {name: "property", params:[{key: "propertyName", type: "string", input: "selectbox"}], returnType: "database"}
+    ],
+    setters: []
+  },
+  {
+    name: "label",
+    getters: [
+      {	name: "content", params: [{key: "value", type: "string"}]}
+    ],
+    setters: [{name: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
   },
   {
     name: "button",
@@ -79,8 +97,8 @@ ajweb.editor.FUNCLIST = [
   {
     name: "selectbox",
     getters: [
-      {	name: "value", params: [{key: "value", type: "string"}], returnType: "string", description: ""},
-      {	name: "selectItem", params: [{key: "property", type: "string"}], returnType: "object", description: "" }
+      {	name: "selectItemPropety", params: [{key: "property", type: "string"}], returnType: "string", description: ""},
+      {	name: "selectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [
       {	name: "newItem", params: [{key: "item", type: "object"}], description: ""},
@@ -108,7 +126,7 @@ ajweb.editor.FUNCLIST = [
     name: "database",
     getters: [
       { name: "selectById",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "selectByCondition", params: [{key: "condition", type: "condition"}], returnType: "objects"},
+      { name: "selectByCondition", params: [{key: "condition", type: "paramCondition", input: "paramCondition"}], returnType: "objects"},
       { name: "select", params: [], returnType: "objects"}
     ],
     setters: [

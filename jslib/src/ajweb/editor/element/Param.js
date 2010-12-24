@@ -30,15 +30,15 @@ dojo.declare("ajweb.editor.element.Param",
       var keyName = new dijit.layout.ContentPane(
 	{
 	  content: properties.name + ":",
-	  style: { position: "absolute", top: "0px", left: "10px"}
+	  style: { position: "absolute", top: "5px", left: "10px"}
 	});
 
       this.widget = new dijit.layout.ContentPane(
 	{ 
 	  style: {
 	   position: "absolute",
-	   top: (this.container.containerNode.childNodes.length * 30) + "px", left: "10px",
-	   width: "350px", height: "30px"
+	   top: (this.container.containerNode.childNodes.length * 35) + "px", left: "10px",
+	   width: "350px", height: "35px"
 	 }});
       this.widget.domNode.appendChild(keyName.domNode);
       return this.widget.domNode;
@@ -48,8 +48,7 @@ dojo.declare("ajweb.editor.element.Param",
 	{style: {
 	   position: "absolute",
 	   top: "0px", left: "150px",
-	   width: "120px", height: "20px"
-//	   border: "dotted 1px"
+	   width: "120px", height: "30px"
 	 }});
       this.domNode.appendChild(value.domNode);
       return value.domNode;

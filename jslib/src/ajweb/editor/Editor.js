@@ -17,6 +17,9 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.tree.dndSource");
 dojo.require("dojox.grid.DataGrid");
+dojo.require("dojox.grid.cells.dijit");
+dojo.require("ajweb.editor.gridCellEdit");
+
 
 dojo.require("ajweb.base");
 dojo.require("ajweb.editor.base");
@@ -41,6 +44,7 @@ dojo.require("ajweb.editor.element.Database");
 dojo.require("ajweb.editor.element.Branch");
 dojo.require("ajweb.editor.element.Then");
 dojo.require("ajweb.editor.element.Condition");
+dojo.require("ajweb.editor.element.ParamCondition");
 dojo.require("ajweb.editor.element.Predicate");
 dojo.require("ajweb.editor.element.PredicateOperator");
 dojo.require("ajweb.editor.element.Panel");
@@ -65,9 +69,12 @@ dojo.declare(
      * @constructs
      * @param {String} 名前
      */
-    constructor: function(name){
+    constructor: function(name, generateURL, uploadURL){
       this.name = name;
+      this.generateURL = generateURL;
+      this.uploadURL = uploadURL;
       var that = this;
+      
 
       var container = document.createElement("div");
       var menu = document.createElement("div");
@@ -210,12 +217,7 @@ dojo.declare(
       );
       this.toolboxCp.wipeNode.appendChild(this.toolboxTree.domNode);
       this.toolboxTree.dndController.checkAcceptance = function(){ return false;};
-      var propertyDataGridStructure =  {
-	cells:  [
-	  {name: "name", field: "property", width: "30%"},
-	  {name: "value", field: "value", width: "auto", editable: "true"}
-	]
-      };
+
       /**
        * プロパティエディター部分に表示されるプロパティのリストを保持するdojoストア<br/>
        * currentModelプロパティに保持しているモデルへの参照をもつ。<br/>
@@ -223,11 +225,20 @@ dojo.declare(
        * @type dojo.data.ItemFileWriteStore
        */
      this.propertyDataStore = new dojo.data.ItemFileWriteStore({identifier: "properties",  data: { items: []}});
+      var propertyDataGridStructure =  {
+	cells:  [
+	  {name: "name", field: "property", width: "30%"},
+	  {name: "value", field: "value", width: "auto", editable: "true",
+           store: this.propertyDataStore,
+           type: ajweb.editor.gridCellEdit}
+	]
+      };
       var propertyDataStore = this.propertyDataStore;
       this.propertyDataGrid = new dojox.grid.DataGrid(
 	{
 	  store: this.propertyDataStore,
 	  structure: propertyDataGridStructure,
+	  singleClickEdit: true,
 	  onApplyCellEdit: function(inValue, inRowIndex, inFieldIndex)
 	    {
 	      var _item = this.getItem(inRowIndex);
@@ -313,7 +324,7 @@ dojo.declare(
       var uploadForm = new dijit.form.Form(
 	{
 	  method: "POST",
-	  action: "upload",
+	  action: this.uploadURL,
 	  target: "result_frame",
 	  encType: "multipart/form-data"
 	});
@@ -512,7 +523,7 @@ dojo.declare(
 	{
 	  id: "generate_form",
 	  method: "POST",
-	  action: "generate",
+	  action: this.generateURL,
 	  style: { visibility: "hidden"}
 	});
       generateForm.placeAt(document.body);

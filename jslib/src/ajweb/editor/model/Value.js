@@ -9,8 +9,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
  {
    createParam: function(elemName, funcName){
      var model = ajweb.getModelById(elemName);
-     
-     console.log("elemName: " + elemName + "  funcName: " + funcName);
+//     console.log("elemName: " + elemName + "  funcName: " + funcName);
      var name = model ? model.properties.tagName : elemName;
      var element, func;
      var i = 0;
@@ -26,14 +25,16 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        if(funcName == element.getters[i].name)
 	 func  = element.getters[i];
      }
-     
+  
+
+   
      for(i = 0; i < func.params.length; i++){
        var param = this.editor.createModel("param", 
 					   {name: func.params[i].key,
 					    type: func.params[i].type},
 					   this,
 					   this.element);
-       var value = this.editor.createModel(func.params[i].input ? name : "value",
+       var value = this.editor.createModel(func.params[i].input ? func.params[i].type : "value",
 					   {},
 					   param,
 					   param.element
@@ -41,8 +42,9 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      }
    },
    clearParam: function(){
-     while(this.children.length != 0)
+     while(this.children.length != 0){
        this.children[0].remove();
+     }
    },
    reCreateParamDom: function(){
      for(var i = 0; i < this.children.length; i++){

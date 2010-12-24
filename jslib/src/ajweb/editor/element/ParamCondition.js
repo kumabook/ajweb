@@ -4,12 +4,12 @@ dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Condition");
-dojo.declare("ajweb.editor.element.Condition", 
+dojo.provide("ajweb.editor.element.ParamCondition");
+dojo.declare("ajweb.editor.element.ParamCondition", 
 	     [ajweb.editor.element.Element,
 //	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.DndEnable],
-  /** @lends ajweb.editor.element.Condition.prototype */
+  /** @lends ajweb.editor.element.ParamCondition.prototype */
   {
     /**
      * Constructor
@@ -37,16 +37,12 @@ dojo.declare("ajweb.editor.element.Condition",
     createDom: function(properties){
       var that = this;
       that.dialogStack = [];
-      this.widget = new dijit.TitlePane(
-	{title: this.model.tagName, toggleable: false, open: false,
-	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
-	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"},
-	  onDblClick: function(){
+      this.widget = new dijit.form.Button(
+	{label: "condition", 
+	  style:{position: "absolute", top: "0px" ,left: "0px"},
+	  onClick: function(){
 	    var dialog = new dijit.Dialog({title: that.model.tagName,
-					   style: {position: "absolute", height: "150px", width: "350px"},
-					     onHide: function(){
-					       //this.destroyRecursive();
-					     }
+					   style: {position: "absolute", height: "150px", width: "350px"}
 					  });
 	    that.containerNode = dialog.containerNode;
 	    that.dialog = dialog;
@@ -66,7 +62,7 @@ dojo.declare("ajweb.editor.element.Condition",
 		  for(var i = 0; i < that.model.children.length; i++)
 		    that.model.children[i].remove();
 		  
-		  var tagName = predictSelect.value;
+		  var tagName = predictSelect.value;		  
 		  that.model.properties.operator = predictSelect.value;
 		  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
 		  newModel.properties.name = tagName;
@@ -76,13 +72,12 @@ dojo.declare("ajweb.editor.element.Condition",
 		  }
 		}
 	      });
-
 	    if(that.model.properties.operator){
 	      for(var i = 0; i < that.model.children.length; i++){
 		that.model.children[i].reCreateDom(that);
 	      }
 	    }
-	      
+
 	    dialog.containerNode.appendChild(predictName.domNode);
 	    dialog.containerNode.appendChild(predictSelect.domNode);
 	    dialog.containerNode.appendChild(button.domNode);
@@ -91,10 +86,11 @@ dojo.declare("ajweb.editor.element.Condition",
 	    button.startup();
 	    dialog.show();
 
+	    that.parentDialog = that.model.parent.parent.element.dialog;
 	    that.dialog._relativePosition = {};
-	    dialog._relativePosition.x  = 200;
-	    dialog._relativePosition.y  = parseInt(dialog.domNode.style.top) - 50;
-	    dialog.layout();
+	    that.dialog._relativePosition.x  = parseInt(that.parentDialog.domNode.style.left) + 300;
+	    that.dialog._relativePosition.y  = parseInt(that.parentDialog.domNode.style.top);
+	    that.dialog.layout();
 
 	    dialog.containerNode.style.width = dialog.domNode.style.width;
 	    dialog.containerNode.style.height = dialog.domNode.style.height;

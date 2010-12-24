@@ -79,21 +79,32 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	{id: "separator1"},
 	{id: "element", name: "ウィジェット"}
       ];
+
+      var widget_children = [];
       var i;
       var widgetModels = this.getWidgetModels();
       for(i = 0; i < widgetModels.length; i++){
 	items.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id});
+//	widget_children.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id + "visible"});
       }
-      
+
+//      items.push({id: "element", name: "ウィジェット", children: widget_children});
       items.push({id: "separator2"});
       items.push({id: "database", name: "データベース"});
+      
+      var databases_children = [];
+//      databases_children.push({id: "targetItem", name: "targetItem"});
+//      databases_children.push({id: "receivedItem", name: "receivedItem"});
+      items.push({id: "targetItem", name: "targetItem"});
+      items.push({id: "receivedItem", name: "receivedItem"});
 
       var databases = this.getDatabasesModel();
       for(i = 0; i < databases.children.length; i++){
 	items.push({name: databases.children[i].properties.id, modelId: databases.children[i].id, id: databases.children[i].id});
+//	databases_children.push({name: databases.children[i].properties.id, modelId: databases.children[i].id, id: databases.children[i].id});
       }
-
-  
+//      console.log(databases_children);
+  //    items.push({id: "database", name: "データベース", children: databases_children});
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {

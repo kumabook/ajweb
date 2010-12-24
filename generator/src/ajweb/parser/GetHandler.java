@@ -36,8 +36,16 @@ public class GetHandler extends AbstractHandler{
 			get = new Get(attributes.get("element"), getter, property, params);
 		}
 		else if(qName.equals("value")){
-			String func = attributes.get("func"); 
-			get = new Get(attributes.get("element"), "", func, params);
+			if(attributes.get("type").equals("element")){
+				String func = attributes.get("func"); 
+				get = new Get(attributes.get("element"), "", func, params);
+			}
+			else if(attributes.get("type").equals("targetItem")){
+				get = new TargetItem(params);
+			}
+			else if(attributes.get("type").equals("receivedItem")){
+				get = new ReceivedItem(params);
+			}
 		}
 		else if(qName.equals("select")){
 			get = new Get(attributes.get("database"), "select", property, params);

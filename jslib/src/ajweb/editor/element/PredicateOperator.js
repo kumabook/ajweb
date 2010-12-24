@@ -61,7 +61,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	      { content: "条件種類: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
 	    var predictSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+	      {	name: "modelId", value: that.model.properties.left ? that.model.properties.left : "",
 		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
@@ -72,7 +72,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 		  that.containerNode = dialog.containerNode;
 		  if(that.model.children.length == 0){
 		    var tagName = predictSelect.value;
-		    that.model.properties.element = predictSelect.value;
+		    that.model.properties.left = predictSelect.value;
 		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
 		    newModel.properties.name = tagName;
 		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
@@ -114,7 +114,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	      { content: "条件: ",
 		style: {position: "absolute",top: "50px",left: "10px"}});
 	    var predictSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.element ? that.model.properties.element : "",
+	      {	name: "modelId", value: that.model.properties.right ? that.model.properties.right : "",
 		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
@@ -125,7 +125,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 		  that.containerNode = dialog.containerNode;
 		  if(that.model.children.length == 0){
 		    var tagName = predictSelect.value;
-		    that.model.properties.element = predictSelect.value;
+		    that.model.properties.right = predictSelect.value;
 		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
 		    newModel.properties.name = tagName;
 		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
@@ -134,7 +134,6 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 		    }
 		  }
 		}
-
 	      });
 	    dialog.containerNode.appendChild(predictName.domNode);
 	    dialog.containerNode.appendChild(predictSelect.domNode);

@@ -325,7 +325,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: ["element", "property", "func"],
+    propertyList: ["element", "property", "func", "type"],
     eventList: [],
     defaultProperties: {}
   },
@@ -339,7 +339,17 @@ ajweb.editor.MODELLIST =  [
     eventList: [],
     defaultProperties: {}
   },
-
+  {
+    name: "paramCondition",
+    tagName: "condition",
+    modelType: "condition",
+    modelClass: "Visible",
+    elementClass: "ParamCondition",
+    acceptModelType: ["predicate"],
+    propertyList: ["operator"],
+    eventList: [],
+    defaultProperties: {}
+  },
 
 //Condition
   {
@@ -348,7 +358,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "Condition",
     acceptModelType: ["predicate"],
-    propertyList: ["element"],
+    propertyList: ["operator"],
     eventList: [],
     defaultProperties: {}
   },
@@ -358,7 +368,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "PredicateOperator",
     acceptModelType: ["predicate"],
-    propertyList: [],
+    propertyList: ["right", "left"],
     eventList: [],
     defaultProperties: {}
   },
@@ -368,7 +378,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "PredicateOperator",
     acceptModelType: ["predicate"],
-    propertyList: [],
+    propertyList: ["right", "left"],
     eventList: [],
     defaultProperties: {}
   },

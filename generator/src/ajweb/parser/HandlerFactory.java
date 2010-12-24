@@ -36,15 +36,12 @@ public abstract class HandlerFactory {
 		else if(Action.elements.contains(qName)){
 			return "action";
 		}
-					
-		return qName ;
-		
+		else if(qName.equals("paramCondition"))
+			return "condition";
+		return qName;		
 	}
 	
-	
-	
-	
-	
+		
 	
 	public static ArrayList<String> acceptanceElements(String elemName){
 		ArrayList<String> result = new ArrayList<String>();

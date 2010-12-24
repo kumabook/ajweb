@@ -30,7 +30,7 @@ dojo.declare("ajweb.editor.element.Primitive",
     createDom: function(properties){
       var that = this;
       this.widget = dijit.form.TextBox(
-	{style: {position: "absolute", width: "110px"},
+	{style: {position: "absolute", width: "110px", top: "5px"},
 	 value: that.model.properties._character,
 	 onChange: function(){
 	   that.model.properties._character = this.value;

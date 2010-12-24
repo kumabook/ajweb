@@ -13,7 +13,7 @@
       <event id="event16" target="rootFrame" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="397px" top="67px">
-          <call element="rootFrame" func="selectPanel" id="call0" left="181px" top="64px">
+          <call element="rootFrame" func="selectPanel" id="call0" left="182px" top="65px">
             <param id="param1" name="panel" type="element">
               <value element="loginPanel" func="self"/>            </param>          </call>        </action>
       </event>
@@ -112,7 +112,45 @@
               <value element="chatRoomPanel" func="self"/>
             </param>
           </call>
-          <call element="nowRoomLabel" id="call4" left="383px" top="51px"/>
+          <call element="nowRoomLabel" func="setContent" id="call4" left="385px" top="53px">
+            <param id="param6" name="content" type="string">
+              <value element="roomSelect" func="selectItemPropety">
+                <param id="param7" name="property" type="string">
+                  <value element="string" func="direct">
+                    <param id="param8" name="value" type="string">
+                      <string>name</string>
+                    </param>
+                  </value>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="table0" func="load" id="call5" left="577px" top="30px">
+            <param id="param9" name="item" type="object">
+              <value element="message" func="selectByCondition">
+                <param id="param10" name="condition" type="paramCondition">
+                  <paramCondition operator="eq">
+                    <eq>
+                      <value element="targetItem" func="property">
+                        <param id="param11" name="propertyName" type="string">
+                          <string>room</string>
+                        </param>
+                      </value>
+                      <value element="roomSelect" func="selectItemPropety">
+                        <param id="param12" name="property" type="string">
+                          <value element="string" func="direct">
+                            <param id="param13" name="value" type="string">
+                              <string>name</string>
+                            </param>
+                          </value>
+                        </param>
+                      </value>
+                    </eq>
+                  </paramCondition>
+                </param>
+              </value>
+            </param>
+          </call>
         </action>
       </event>
       <event id="event33" target="roomSelect" type="onDisplay">
@@ -303,29 +341,29 @@
     <interfaces>
       <panel height="500px" id="rootPanel" left="392" tagName="panel" top="2" width="700px">
         <label content="チャットアプリケーション" id="label0" left="27px" tagName="label" top="22px"/>
-        <frame height="450px" id="rootFrame" left="24px" tagName="frame" top="45px" width="650px">
-          <panel height="450px" id="loginPanel" left="417" tagName="panel" top="6" width="650px">
+        <frame height="450px" id="rootFrame" left="25px" tagName="frame" top="45px" width="650px">
+          <panel height="450px" id="loginPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ユーザID" id="label1" left="29px" tagName="label" top="29px"/>
             <textbox content="user_name" id="userIdTextbox" left="132px" tagName="textbox" top="29px" width="100px"/>
             <label content="パスワード" id="label2" left="29px" tagName="label" top="59px"/>
             <textbox content="password" id="passwordbox" left="131px" tagName="textbox" top="59px" width="100px"/>
             <button content="ログイン" id="button1" left="32px" tagName="button" top="91px"/>
           </panel>
-          <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="6" width="650px">
+          <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ルーム選択" id="label3" left="0px" tagName="label" top="0px"/>
-            <button content="選択" id="selectButton" left="370px" tagName="button" top="50px"/>
+            <button content="選択" id="selectButton" left="369px" tagName="button" top="50px"/>
             <selectbox id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
           </panel>
-          <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="6" width="650px">
+          <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ラベル" id="nowRoomLabel" left="60px" tagName="label" top="0px"/>
             <frame height="100px" id="contentsFrame" left="25px" tagName="frame" top="80px" width="450px">
-              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="181" width="450px">
+              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="145" width="450px">
                 <label content="名前" id="userNameTextbox" left="40px" tagName="label" top="6px"/>
                 <textbox id="textbox2" left="100px" tagName="textbox" top="10px" width="100px"/>
                 <button content="入室" id="enterButton" left="100px" tagName="button" top="50px"/>
                 <button content="ルーム選択画面に戻る" id="backButton" left="300px" tagName="button" top="50px"/>
               </panel>
-              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="181" width="450px">
+              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="145" width="450px">
                 <label content="メッセージ" id="messageLabel" left="20px" tagName="label" top="10px"/>
                 <textbox id="textbox3" left="150px" tagName="textbox" top="10" width="100px"/>
                 <button content="送信" id="button4" left="100px" tagName="button" top="50px"/>

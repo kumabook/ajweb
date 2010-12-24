@@ -22,7 +22,7 @@ public class Config {
 	public static long TIMEOUT = 60000;//ポーリングのタイムアウトmillsecond
 	public static int port = 8000;
 	
-	public static boolean isJar = false;
+	public static boolean isJar 	= false;
 	
 	public static void setBaseDir(String str){
 		baseDir = str;
