@@ -37,6 +37,8 @@ dojo.require("ajweb.editor.model.Func");
 dojo.require("ajweb.editor.model.Login");
 dojo.require("ajweb.editor.model.Value");
 dojo.require("ajweb.editor.model.Param");
+dojo.require("ajweb.editor.model.ParamCondition");
+dojo.require("ajweb.editor.model.StringSelect");
 dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
@@ -44,7 +46,6 @@ dojo.require("ajweb.editor.element.Database");
 dojo.require("ajweb.editor.element.Branch");
 dojo.require("ajweb.editor.element.Then");
 dojo.require("ajweb.editor.element.Condition");
-dojo.require("ajweb.editor.element.ParamCondition");
 dojo.require("ajweb.editor.element.Predicate");
 dojo.require("ajweb.editor.element.PredicateOperator");
 dojo.require("ajweb.editor.element.Panel");
@@ -54,6 +55,8 @@ dojo.require("ajweb.editor.element.Th");
 dojo.require("ajweb.editor.element.Textbox");
 dojo.require("ajweb.editor.element.Frame");
 dojo.require("ajweb.editor.element.Value");
+dojo.require("ajweb.editor.element.ElementSelect");
+
 
 
 dojo.provide("ajweb.editor.Editor");
@@ -226,29 +229,30 @@ dojo.declare(
        */
      this.propertyDataStore = new dojo.data.ItemFileWriteStore({identifier: "properties",  data: { items: []}});
       var propertyDataGridStructure =  {
-	cells:  [
-	  {name: "name", field: "property", width: "30%"},
-	  {name: "value", field: "value", width: "auto", editable: "true",
-           store: this.propertyDataStore,
-           type: ajweb.editor.gridCellEdit}
-	]
-      };
+	cells:  [{name: "name", field: "property", width: "30%"},
+		 {name: "value", field: "value", width: "auto", editable: "true",
+		  store: this.propertyDataStore,
+		  type: ajweb.editor.gridCellEdit}]};
       var propertyDataStore = this.propertyDataStore;
       this.propertyDataGrid = new dojox.grid.DataGrid(
 	{
 	  store: this.propertyDataStore,
 	  structure: propertyDataGridStructure,
 	  singleClickEdit: true,
+	  canSort: function(){return false;},
+//	  onSelectionChanged: function(){ console.log("selection");},
 	  onApplyCellEdit: function(inValue, inRowIndex, inFieldIndex)
 	    {
+//	      console.log("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
 	      var _item = this.getItem(inRowIndex);
 	      var item = {};
 	      for(var i = 0; i < this.structure.cells.length; i++){
 		item[this.structure.cells[i].field] = _item[this.structure.cells[i].field][0];
 	      }
+	      var model = propertyDataStore.currentModel;
 	      if(item.property != "tagName")//タグ名は変更不可
-		propertyDataStore.currentModel.properties[item.property] = item.value;
-//	      console.log("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
+		model.properties[item.property] = item.value;
+	      
 	      propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
 	      propertyDataStore.currentModel.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
@@ -578,8 +582,10 @@ dojo.declare(
 	propertyList.push("top");
 	propertyList.push("left");
 	for(var i = 0; i < propertyList.length; i++){
-	  if(properties[propertyList[i]])
-	    defaultProperties[propertyList[i]] = properties[propertyList[i]];
+	  var propertyName = typeof propertyList[i] == "string"
+	    ? propertyList[i] : propertyList[i].name;
+	  if(properties[propertyName])
+	    defaultProperties[propertyName] = properties[propertyName];
 	}
       }
 
@@ -596,8 +602,7 @@ dojo.declare(
 	  application: parent.application,
 	  container: container,
 	  editor: this
-	}, display
-      );
+	}, display);
       
 /*      if(ModelClass == "Widget" || ModelClass == "Database"){
 	parent.application[ModelClass + "Store"].newItem({modelId: id, name: defaultProperties.id});

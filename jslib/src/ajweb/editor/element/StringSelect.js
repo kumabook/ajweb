@@ -1,13 +1,14 @@
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.Select");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.require("ajweb.editor.element.Element");
-dojo.provide("ajweb.editor.element.Param");
-dojo.declare("ajweb.editor.element.Param",
+dojo.provide("ajweb.editor.element.StringSelect");
+dojo.declare("ajweb.editor.element.StringSelect",
 	     [ajweb.editor.element.Element],
-  /** @lends ajweb.editor.element.Property.prototype */
+  /** @lends ajweb.editor.element.StringSelect.prototype */
   {
     /**
      * Constructor
@@ -21,37 +22,44 @@ dojo.declare("ajweb.editor.element.Param",
      * @param {DOM} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
-    constructor: function(opt){},
+    constructor: function(opt)
+    {},
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
     createDom: function(properties){
       var that = this;
-      var keyName = new dijit.layout.ContentPane(
-	{
-	  content: properties.name + ":",
-	  style: { position: "absolute", top: "5px", left: "50px"}
-	});
 
-      this.widget = new dijit.layout.ContentPane(
-	{ 
-	  style: {
-	   position: "absolute",
-	   top: (this.container.containerNode.childNodes.length * 35) + "px", left: "10px",
-	   width: "350px", height: "35px"
-	 }});
-      this.widget.domNode.appendChild(keyName.domNode);
+      var store = new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: "name",
+	    label : "name",
+	    items: []
+	  }
+	}
+      );
+
+      if(that.model.properties.type == "data"){
+	if(that.model.properties.target){
+	  var databaseModel = this.model.application.getElementByPropId(that.model.properties.target);
+	  for(var i = 0; i < databaseModel.children.length; i++){
+	    if(databaseModel.children[i].tagName == "property"){
+	      store.newItem({name: databaseModel.children[i].properties.name});
+	    }
+	  }
+	}
+      }
+
+      this.widget = dijit.form.Select(
+	{style: {position: "absolute", top: "3px"},
+	 store: store,
+	 value: that.model.properties._character ? that.model.properties._character: "",
+	 onChange: function(){
+	   that.model.properties._character = this.value;
+	 }
+	});      
       return this.widget.domNode;
-    },
-    createContainerNode: function(){
-      var value = new dijit.layout.ContentPane(
-	{style: {
-	   position: "absolute",
-	   top: "0px", left: "150px",
-	   width: "200px", height: "30px"
-	 }});
-      this.domNode.appendChild(value.domNode);
-      return value.domNode;
     },
     removeDom: function(){
       this.widget.destroyRecursive();

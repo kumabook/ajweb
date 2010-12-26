@@ -22,7 +22,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      * @param {DOM} opt.parent 親モデル
      *
      */
-    constructor: function(opt)
+    constructor: function(opt, isDisplay)
     {
       /**
        * イベント名のリスト
@@ -33,7 +33,8 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
        * イベントモデルのリスト
        */
       this.events = [];//this.createEventModel();
-      this.updatePropertiesView();
+      if(isDisplay)
+	this.updatePropertiesView();
     },
     remove: function(){
       this.inherited(arguments);
@@ -49,13 +50,25 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 
       this.editor.propertyDataStore.currentModel = this;
       this.clearPropertiesView();
+
       for(var i = 0; i < this.propertyList.length; i++){
-	var value = this.properties[this.propertyList[i]];
+	var propertyName, propertyType;
+	if(typeof this.propertyList[i] == "string"){
+	  propertyName = this.propertyList[i];
+	  propertyType = "text";
+	}
+	else {
+	  propertyName = this.propertyList[i].name;
+	  propertyType = this.propertyList[i].type;
+	}
+
+	var value = this.properties[propertyName];
 	if(!value)
 	  value = "";
-	this.editor.propertyDataStore.newItem({
-	  property : this.propertyList[i],
-	  value: value
+	this.editor.propertyDataStore.newItem(
+	  {
+	    property : propertyName,
+	    value: value
 	  });
       }
       if(e){//一番上のDOMのモデルのプロパティを表示。

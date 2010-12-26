@@ -105,8 +105,11 @@ dojo.declare("ajweb.editor.model.Model", null,
       var xml = ajweb.xml._xml;//createDocument("ajml");
       var node =  xml.createElement(this.tagName);
       for(var i = 0; i < this.propertyList.length; i++){
-	if(this.propertyList[i] != "tagName")
-	  node.setAttribute(this.propertyList[i], this.properties[this.propertyList[i]]);
+	var propertyName = typeof this.propertyList[i] == "string"
+	  ? this.propertyList[i] : this.propertyList[i].name;
+	if(propertyName != "tagName")
+	  node.setAttribute(propertyName, this.properties[propertyName]);
+//	  node.setAttribute(this.propertyName, this.getGenerateProperty(propertyName));
       }
       for(i = 0; i < this.children.length; i++){
 	var child = this.children[i].toXMLElement(xml);
@@ -129,8 +132,10 @@ dojo.declare("ajweb.editor.model.Model", null,
       propertyList.push("left");
 
       for(var i = 0; i < propertyList.length; i++){
-	if(this.properties[propertyList[i]])
-	  node.setAttribute(propertyList[i], this.properties[propertyList[i]]);
+	var propertyName = typeof propertyList[i] == "string"
+	  ? propertyList[i] : propertyList[i].name;
+	if(this.properties[propertyName])
+	  node.setAttribute(propertyName, this.properties[propertyName]);
       }
 
       for(i = 0; i < this.children.length; i++){
@@ -151,7 +156,6 @@ dojo.declare("ajweb.editor.model.Model", null,
 	var attrs = {};
 	if(childNode instanceof Element){
 	  attrs = ajweb.editor.attributesToHash(childNode.attributes);
-	  
 	  if(childNode.tagName == "events")
 	    continue;
 	  var child;
@@ -163,7 +167,7 @@ dojo.declare("ajweb.editor.model.Model", null,
 	    for(var j = 0; j < childNode.childNodes.length; j++){
 	      if(childNode.childNodes[j] instanceof Text){
 		attrs._character = childNode.childNodes[j].data;
-		console.log(childNode.childNodes[j].data);
+//		console.log(childNode.childNodes[j].data);
 	      }
 	    }
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, true);

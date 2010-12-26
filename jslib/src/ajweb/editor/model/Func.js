@@ -25,7 +25,7 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
        }
      }
      else {//funcInfoListから情報を取得して、paramModelを追加
-       console.log("elemName: " + elemName + "  funcName: " + funcName);
+ //      console.log("elemName: " + elemName + "  funcName: " + funcName);
        var name = model.properties.tagName;
        var element, func;
        var i = 0;
@@ -43,12 +43,12 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
 					      type: func.params[i].type},
 					     this,
 					     this.element);
-	 
-	 var value= this.editor.createModel("value",
-					{},
-					param,
-					param.element
-				       );	
+	 var input = func.params[i].input;
+	 var value= this.editor.createModel(input ? input.className : "value",
+					    input ? {type: input.type, target: model.properties.id} : {},
+					    param,
+					    param.element
+					   );	
        }
      }
    },
@@ -59,7 +59,9 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
    reCreateParamDom: function(){
      for(var i = 0; i < this.children.length; i++){
        this.children[i].reCreateDom(this.element);
+       this.children[i].startup();
      }
+    
    },
    removeParamDom: function(){
      for(var i = 0; i < this.children.length; i++){

@@ -32,7 +32,7 @@ public class Condition extends AbstractCondition{
 		this.left = left;
 		this.right = right;
 	}
-	
+
 	public Condition(String op, String func_id){
 		this.op = op;
 		this.func_id = func_id;

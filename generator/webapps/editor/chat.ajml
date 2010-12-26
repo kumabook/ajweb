@@ -74,7 +74,7 @@
             <param id="param2" name="password" type="password">
               <value/>            </param>          </login>
           <branch id="branch1" left="295px" top="36px">
-            <condition element="success" left="0px" top="15px">
+            <condition left="0px" top="15px">
               <success/>            </condition>
             <then id="then1" left="655px" top="16px">
               <call element="rootFrame" func="selectPanel" id="call2" left="512px" top="23px">
@@ -125,24 +125,20 @@
               </value>
             </param>
           </call>
-          <call element="table0" func="load" id="call5" left="577px" top="30px">
+          <call element="table0" func="load" id="call5" left="578px" top="31px">
             <param id="param9" name="item" type="object">
               <value element="message" func="selectByCondition">
                 <param id="param10" name="condition" type="paramCondition">
                   <paramCondition operator="eq">
                     <eq>
-                      <value element="targetItem" func="property">
-                        <param id="param11" name="propertyName" type="string">
-                          <string>room</string>
+                      <value element="message:targetItem" func="property" type="message:targetItem">
+                        <param id="param14" name="property" type="string">
+                          <StringSelect target="message" type="data">room_id</StringSelect>
                         </param>
                       </value>
                       <value element="roomSelect" func="selectItemPropety">
-                        <param id="param12" name="property" type="string">
-                          <value element="string" func="direct">
-                            <param id="param13" name="value" type="string">
-                              <string>name</string>
-                            </param>
-                          </value>
+                        <param id="param15" name="property" type="string">
+                          <StringSelect target="room" type="data">name</StringSelect>
                         </param>
                       </value>
                     </eq>
@@ -352,7 +348,7 @@
           <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ルーム選択" id="label3" left="0px" tagName="label" top="0px"/>
             <button content="選択" id="selectButton" left="369px" tagName="button" top="50px"/>
-            <selectbox id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
+            <selectbox data="room" id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
           </panel>
           <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ラベル" id="nowRoomLabel" left="60px" tagName="label" top="0px"/>

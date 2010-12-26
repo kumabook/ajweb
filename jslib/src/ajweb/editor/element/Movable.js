@@ -53,8 +53,8 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	= dojo.connect(this.moveTriggerDomNode, "onmousedown", this,
 	function(e){
 	  //console.log(this.id + " regist move");
-	  this.model.updatePropertiesView();
-	  this.model.updateEventView();
+//	  this.model.updatePropertiesView();
+//	  this.model.updateEventView();
 	  var top, left, width, height;
 	  if(!this.domNode.style.top)  top = 0;
 	  else  top = parseInt(this.domNode.style.top);
@@ -99,11 +99,12 @@ dojo.declare("ajweb.editor.element.Movable", null,
 						  var container = this.container.containerNode;//domNode
 						  var left = ajweb.editor.getX(this.domNode) - ajweb.editor.getX(container) + 1 + "px";
 						  var top = ajweb.editor.getY(this.domNode) - ajweb.editor.getY(container) + 1 + "px";
-						  this.model.properties.top = top;
-						  this.model.properties.left = left;
-
-						  this.model.updatePropertiesView();
-						  this.model.updateEventView();      
+						  if(top != this.model.properties.top || left != this.model.properties.left){
+						    this.model.properties.top = top;
+						    this.model.properties.left = left;
+						    this.model.updatePropertiesView();
+						    this.model.updateEventView();      
+						  }
 
 						  e.preventDefault();
 						  e.stopPropagation();

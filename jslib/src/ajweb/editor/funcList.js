@@ -3,14 +3,14 @@ ajweb.editor.FUNCLIST = [
   {
     name: "int",
     getters: [
-      {name: "direct", params:[{key: "value", type: "int", input: "textbox"}]}
+      {name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
     ],
     setters: []
   },
   {
     name: "string",
     getters: [
-      {name: "direct", params:[{key: "value", type: "string", input: "textbox"}]},
+      {name: "direct", params:[{key: "value", type: "string", input:{className: "int"}}]},
       {name: "concat",	params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
@@ -18,7 +18,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "date",
     getters: [
-      {name: "direct", params:[{key: "base", type: "date", input: "textbox"}]},
+      {name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
       {name: "now", params:[]}
     ],
     setters: []
@@ -26,7 +26,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "datetime",
     getters: [
-      {name: "direct", params:[{key: "base", type: "datetime", input: "textbox"}]},
+      {name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
       {name: "now", params:[]}
     ],
     setters: []
@@ -37,12 +37,12 @@ ajweb.editor.FUNCLIST = [
     ],
     setters: []
   },
-  {
+/*  {
     name: "targetItem",
     properties: [{name: "property", type: "select"}],
     getters: [
       {name: "self", params:[], returnType: "object"},
-      {name: "property", params:[{key: "propertyName", type: "string", input: "selectbox"}], returnType: "database"}
+      {name: "property", params:[{key: "propertyName", type: "property", input: "selectbox"}], returnType: "database"}
     ],
     setters: []
   },
@@ -51,10 +51,10 @@ ajweb.editor.FUNCLIST = [
     properties: [{name: "property", type: "select"}],
     getters: [
       {name: "self", params:[], returnType: "object"},
-      {name: "property", params:[{key: "propertyName", type: "string", input: "selectbox"}], returnType: "database"}
+      {name: "property", params:[{key: "propertyName", type: "property", input: "selectbox"}], returnType: "database"}
     ],
     setters: []
-  },
+  },*/
   {
     name: "label",
     getters: [
@@ -90,14 +90,14 @@ ajweb.editor.FUNCLIST = [
   {
     name: "th",
     getters: [
-      {name: "label",params: [{key: "value", type: "string"}]}
+//      {name: "label",params: [{key: "value", type: "string"}]}
     ],
     setters: []
   },
   {
     name: "selectbox",
     getters: [
-      {	name: "selectItemPropety", params: [{key: "property", type: "string"}], returnType: "string", description: ""},
+      {	name: "selectItemPropety", params: [{key: "property", type: "string", input:{className:  "StringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
       {	name: "selectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [
@@ -119,14 +119,14 @@ ajweb.editor.FUNCLIST = [
       {	name: "selectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
     ],
     setters: [
-      {	name: "selectPanel", params: [{key: "panel", type: "element"}], description: "idのpanelを選択する"}
+      {	name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
     ]
   },
   {
     name: "database",
     getters: [
       { name: "selectById",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "selectByCondition", params: [{key: "condition", type: "paramCondition", input: "paramCondition"}], returnType: "objects"},
+      { name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
       { name: "select", params: [], returnType: "objects"}
     ],
     setters: [

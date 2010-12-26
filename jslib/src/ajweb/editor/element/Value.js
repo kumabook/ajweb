@@ -51,10 +51,11 @@ dojo.declare("ajweb.editor.element.Value",
 	      that.elemName = new dijit.layout.ContentPane(
 		{ content: "エレメント: ",
 		  style: {position: "absolute",top: "30px",left: "10px"}});
+	      
 	      that.elemSelect = new dijit.form.Select(
 		{	name: "modelId", 
 			value: that.element.id ? that.element.id : that.element,
-			store: that.model.application.getValueStore(), sortByLabel: false,
+			store: that.model.application.getValueStore(that), sortByLabel: false,
 			style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
 		});
 //	      that.elemSelect._setValueAttr(that.element.id ? that.element.id : that.element);
@@ -77,6 +78,10 @@ dojo.declare("ajweb.editor.element.Value",
 		    ajweb.editor.updateGetterStore(
 		      that.element.properties ? that.element.properties.tagName : that.elemSelect.value, 
 		      that.funcSelect.store);
+
+
+
+
 		    that.funcSelect.set({ disabled: false});
 		    that.funcButton.set({ disabled: false});
 		    this.set({label: "変更"});
@@ -89,10 +94,13 @@ dojo.declare("ajweb.editor.element.Value",
 	      
 	      var selectedElemTag = that.element.properties ? 
 		that.element.properties.tagName : that.model.properties.element;
+	      var funcStore = ajweb.editor.getGetterStore(selectedElemTag);
+
+
 	      that.funcSelect = new dijit.form.Select(
 		{	name: "modelId", 
 			value: that.model.properties.func ? that.model.properties.func : "",
-			store: ajweb.editor.getGetterStore(selectedElemTag),
+			store: funcStore,//ajweb.editor.getGetterStore(selectedElemTag),
 			style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 		});
 	      that.funcButton = new dijit.form.Button(
@@ -103,7 +111,7 @@ dojo.declare("ajweb.editor.element.Value",
 		    that.model.clearParam();
 		    that.model.properties.func = that.funcSelect.value;
 		    that.model.createParam(that.element.id ? that.element.id : that.element, 
-					 that.model.properties.func);
+					   that.model.properties.func, that.element);
 		    this.set({label: "変更"});
 		  }});
 	      //引数
@@ -162,6 +170,7 @@ dojo.declare("ajweb.editor.element.Value",
 	parentDialogElem.addDialogStack(elem);
     },
     removeDialog: function(){
+      if(this.dialog){
       this.dialog.destroyRecursive();
       this.elemName.destroyRecursive();
       this.funcName.destroyRecursive();
@@ -179,6 +188,7 @@ dojo.declare("ajweb.editor.element.Value",
       delete this.elemButton;
       delete this.funcButton;
       delete this.paramContainer;      
+      }
     },
     removeDom: function(){
       this.widget.destroyRecursive();      

@@ -36,15 +36,15 @@ public class GetHandler extends AbstractHandler{
 			get = new Get(attributes.get("element"), getter, property, params);
 		}
 		else if(qName.equals("value")){
-			if(attributes.get("type").equals("element")){
-				String func = attributes.get("func"); 
-				get = new Get(attributes.get("element"), "", func, params);
-			}
-			else if(attributes.get("type").equals("targetItem")){
+			if(attributes.get("type").equals("targetItem")){
 				get = new TargetItem(params);
 			}
 			else if(attributes.get("type").equals("receivedItem")){
 				get = new ReceivedItem(params);
+			}
+			else if(attributes.containsKey("element")){//if(attributes.get("type").equals("element")){
+				String func = attributes.get("func"); 
+				get = new Get(attributes.get("element"), "", func, params);
 			}
 		}
 		else if(qName.equals("select")){
@@ -71,6 +71,7 @@ public class GetHandler extends AbstractHandler{
 		else if(qName.equals("concat")){
 			get = new Get("ajweb.data.String", "concat", property, params);
 		}
+		
 		setModel(get);
 		super.endElement(uri, localName, qName);
 	}

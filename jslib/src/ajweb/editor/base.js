@@ -174,21 +174,27 @@ ajweb.editor.updateFuncStore = function(modelName, store){
     }
   }
 };
+
 ajweb.editor.getGetterStore = function(modelName){
   var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
   var list =  ajweb.editor.FUNCLIST;
   var items = [];
-  for(var i = 0; i < list.length; i++){
+
+  if(modelName.match("([0-9a-z]+):targetItem")){
+    store.newItem({name: "self"});
+    store.newItem({name: "property"});
+  }
+  else{
+    for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].getters.length; j++){
 	store.newItem(list[i].getters[j]);
       }
     }
   }
+  }
   return store;
 };
-
-
 
 ajweb.editor.updateGetterStore = function(modelName, store){
   var list =  ajweb.editor.FUNCLIST;
@@ -198,12 +204,18 @@ ajweb.editor.updateGetterStore = function(modelName, store){
 		store.deleteItem(item);
 	      }});
   store.save();
+  if(modelName.match("([0-9a-z]+):targetItem")){
+    store.newItem({name: "self"});
+    store.newItem({name: "property"});
+  }
+  else{
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].getters.length; j++){
       store.newItem(list[i].getters[j]);
       }
     }
+  }
   }
 };
 

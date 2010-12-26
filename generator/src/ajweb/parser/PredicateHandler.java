@@ -40,8 +40,10 @@ public class PredicateHandler extends AbstractHandler {
 			setModel(con);
 		}
 		else {
-			Condition con = new Condition(elementName, operands.get(0), operands.get(1));
-			setModel(con);
+			if(operands.size() == 2){
+				Condition con = new Condition(elementName, operands.get(0), operands.get(1));
+				setModel(con);
+			}
 		}
 		super.endElement(uri, localName, qName);
 	}

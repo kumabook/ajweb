@@ -36,8 +36,6 @@ public abstract class HandlerFactory {
 		else if(Action.elements.contains(qName)){
 			return "action";
 		}
-		else if(qName.equals("paramCondition"))
-			return "condition";
 		return qName;		
 	}
 	

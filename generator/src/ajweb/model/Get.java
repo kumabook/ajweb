@@ -74,9 +74,9 @@ public class Get implements Parameterable, AbstractModel{
 	@Override
 	public String toJsSource(Flowable func, String key, Action rest) throws IOException {
 		String jsSource = "";
-		
+		System.out.println(element + " " + getter + " " + property );
 		if(!isContainCallback()){
-			System.out.println(element + " " + getter + " " + property );
+			
 			Template getter_template = new Template("js/getter");
 			getter_template.apply("ELEMENT", element);
 			
@@ -84,7 +84,7 @@ public class Get implements Parameterable, AbstractModel{
 			if(property==null)//
 				property = "";
 			else 
-				property =  property.substring(0, 1).toUpperCase() + property.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É‚µ‚Äon‚ð‚Â‚¯‚é
+				property =  property.substring(0, 1).toUpperCase() + property.substring(1);//1•¶Žš–Ú‚ð‘å•¶Žš‚É
 			getter_template.apply("PROPERTY", property);
 			getter_template.apply("PARAMS", paramToJsSource(func, key, rest));
 
