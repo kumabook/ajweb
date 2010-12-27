@@ -41,21 +41,20 @@ dojo.declare("ajweb.editor.element.Login",
 	  onDblClick: function(){
 	    var dialog = new dijit.Dialog(
 	      {title: that.model.tagName,
-	       style: {position: "absolute",height: "150px", width: "400px"},
+	       style: {position: "absolute",height: "120px", width: "450px"},
 	       onHide: function(){
 		 delete that.store;
 		 this.destroyRecursive();
 	       }
 	      });
 	    var paramContainer = new dijit.layout.ContentPane(
-	      { content: "引数",
-		style: {position: "absolute",top: "25px", left: "10px",width: "95%", height: "70%"}});
+	      { //content: "引数",
+		style: {position: "absolute",top: "30px", left: "0px",width: "450px", height: "90px"}});
 	    dialog.containerNode.appendChild(paramContainer.domNode);
 	    that.containerNode = paramContainer.domNode;
 	    that.dialog = dialog;
-
 	
-	    if(that.model.properties.element && that.model.properties.func)
+	    if(that.model.children.length > 0)
 	      that.model.reCreateParamDom();
 	    else
 	      that.model.createParam();

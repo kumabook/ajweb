@@ -110,7 +110,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "widget",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "top", "left", {name: "data", type: "select"}],
+    propertyList: ["tagName", "id", "top", "left", {name: "data", input: "selectbox", type: "data"}],
     eventList: ["onDisplay", "onChange"],
     defaultProperties: { tagName: "selectbox"}
   },
@@ -224,7 +224,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Func",
     elementClass: "Func",
     acceptModelType: ["param"],
-    propertyList: ["tagName", "id", "element", "func"],
+    propertyList: ["tagName", "id", "element", "func", "_title"],
     eventList: [],
     defaultProperties: {}
   },
@@ -310,7 +310,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "StringSelect",
+    name: "stringSelect",
     modelType: "value",
     modelClass: "StringSelect",
     elementClass: "StringSelect",
@@ -335,7 +335,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: ["element", "property", "func", "type"],
+    propertyList: ["element", "property", "func", "type", "_label"],
     eventList: [],
     defaultProperties: {}
   },

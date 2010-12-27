@@ -13,9 +13,10 @@
       <event id="event16" target="rootFrame" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="397px" top="67px">
-          <call element="rootFrame" func="selectPanel" id="call0" left="182px" top="65px">
-            <param id="param1" name="panel" type="element">
-              <value element="loginPanel" func="self"/>            </param>          </call>        </action>
+          <call _title="rootFrame:selectPanel" element="rootFrame" func="selectPanel" id="call0" left="183px" top="66px">
+            <param id="param13" name="panel" type="element">
+              <element target="rootFrame" type="child">loginPanel</element>
+            </param>          </call>        </action>
       </event>
       <event id="event17" target="loginPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -68,26 +69,27 @@
       <event id="event29" target="button1" type="onClick">
         <condition left="10px" top="25px"/>
         <action left="411px" top="43px">
-          <login id="login0" left="129px" top="33px">
+          <login id="login0" left="131px" top="35px">
             <param id="param1" name="user_id" type="string">
-              <value element="userIdTextbox" func="value"/>            </param>
+              <value _label="userIdTextbox:value" element="userIdTextbox" func="value"/>            </param>
             <param id="param2" name="password" type="password">
-              <value/>            </param>          </login>
-          <branch id="branch1" left="295px" top="36px">
-            <condition left="0px" top="15px">
+              <value _label="passwordbox:value" element="passwordbox" func="value" type="element"/>            </param>          </login>
+          <branch id="branch1" left="278px" top="31px">
+            <condition left="0px" operator="success" top="15px">
               <success/>            </condition>
             <then id="then1" left="655px" top="16px">
-              <call element="rootFrame" func="selectPanel" id="call2" left="512px" top="23px">
-                <param id="param8" name="panel" type="element">
-                  <value element="roomSelectPanel" func="self"/>                </param>              </call>            </then>
-            <else id="else1" left="528px" top="84px"/>          </branch>        </action>
+              <call _title="rootFrame:selectPanel" element="rootFrame" func="selectPanel" id="call2" left="495px" top="24px">
+                <param id="param13" name="panel" type="element">
+                  <element target="rootFrame" type="child">roomSelectPanel</element>
+                </param>              </call>            </then>
+            <else id="else1" left="522px" top="86px"/>          </branch>        </action>
       </event>
       <event id="event30" target="roomSelectPanel" type="onDisplay">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px">
-          <call element="roomSelect" func="load" id="call2" left="246px" top="120px">
-            <param id="param4" name="datum" type="objects">
-              <value element="room" func="select"/>
+        <action left="428px" top="28px">
+          <call _title="roomSelect:load" element="roomSelect" func="load" id="call2" left="184px" top="24px">
+            <param id="param13" name="datum" type="objects">
+              <value _label="room:select" element="room" func="select" type="element"/>
             </param>
           </call>
         </action>
@@ -106,41 +108,33 @@
       </event>
       <event id="event34" target="selectButton" type="onClick">
         <condition left="10px" top="25px"/>
-        <action left="575px" top="34px">
-          <call element="rootFrame" func="selectPanel" id="call3" left="174px" top="50px">
-            <param id="param5" name="panel" type="element">
-              <value element="chatRoomPanel" func="self"/>
+        <action left="889px" top="32px">
+          <call _title="rootFrame:selectPanel" element="rootFrame" func="selectPanel" id="call3" left="137px" top="38px">
+            <param id="param14" name="panel" type="element">
+              <element target="rootFrame" type="child">chatRoomPanel</element>
             </param>
           </call>
-          <call element="nowRoomLabel" func="setContent" id="call4" left="385px" top="53px">
-            <param id="param6" name="content" type="string">
-              <value element="roomSelect" func="selectItemPropety">
-                <param id="param7" name="property" type="string">
-                  <value element="string" func="direct">
-                    <param id="param8" name="value" type="string">
-                      <string>name</string>
-                    </param>
-                  </value>
+          <call _title="nowRoomLabel:setContent" element="nowRoomLabel" func="setContent" id="call4" left="398px" top="35px">
+            <param id="param15" name="content" type="string">
+              <value _label="roomSelect:selectItemPropety" element="roomSelect" func="selectItemPropety" type="element">
+                <param id="param16" name="property" type="string">
+                  <stringSelect target="room" type="data">name</stringSelect>
                 </param>
               </value>
             </param>
           </call>
-          <call element="table0" func="load" id="call5" left="578px" top="31px">
-            <param id="param9" name="item" type="object">
-              <value element="message" func="selectByCondition">
-                <param id="param10" name="condition" type="paramCondition">
+          <call _title="table0:load" element="table0" func="load" id="call5" left="697px" top="25px">
+            <param id="param17" name="item" type="object">
+              <value _label="message:selectByCondition" element="message" func="selectByCondition" type="element">
+                <param id="param18" name="condition" type="condition">
                   <paramCondition operator="eq">
                     <eq>
-                      <value element="message:targetItem" func="property" type="message:targetItem">
-                        <param id="param14" name="property" type="string">
-                          <StringSelect target="message" type="data">room_id</StringSelect>
+                      <value _label="message:targetItem:property" element="message:targetItem" func="property" type="message:targetItem">
+                        <param id="param19" name="property" type="string">
+                          <stringSelect target="message" type="data">room_id</stringSelect>
                         </param>
                       </value>
-                      <value element="roomSelect" func="selectItemPropety">
-                        <param id="param15" name="property" type="string">
-                          <StringSelect target="room" type="data">name</StringSelect>
-                        </param>
-                      </value>
+                      <value _label="roomSelect:selectItem" element="roomSelect" func="selectItem" type="element"/>
                     </eq>
                   </paramCondition>
                 </param>
@@ -177,23 +171,23 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event45" target="userNameTextbox" type="onDisplay">
+      <event id="event45" target="userNameLabel" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event46" target="userNameTextbox" type="onClick">
+      <event id="event46" target="userNameLabel" type="onClick">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event47" target="textbox2" type="onDisplay">
+      <event id="event47" target="userNameTextbox" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event48" target="textbox2" type="onFocus">
+      <event id="event48" target="userNameTextbox" type="onFocus">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event49" target="textbox2" type="onBlur">
+      <event id="event49" target="userNameTextbox" type="onBlur">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -203,7 +197,38 @@
       </event>
       <event id="event51" target="enterButton" type="onClick">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="716px" top="41px">
+          <insert database="message" id="insert0" left="180px" top="47px">
+            <param id="param11" name="message" type="string">
+              <value _label="string:concat" element="string" func="concat" type="string">
+                <param id="param15" name="first" type="string">
+                  <value _label="textbox2:value" element="textbox2" func="value" type="element"/>
+                </param>
+                <param id="param16" name="second" type="string">
+                  <value _label="string:direct" element="string" func="direct" type="string">
+                    <param id="param17" name="value" type="string">
+                      <string>が入室しました。</string>
+                    </param>
+                  </value>
+                </param>
+              </value>
+            </param>
+            <param id="param12" name="posted" type="datetime">
+              <value _label="datetime:now" element="datetime" func="now" type="datetime"/>
+            </param>
+            <param id="param13" name="room_id" type="int">
+              <value _label="roomSelect:selectItem" element="roomSelect" func="selectItem" type="element"/>
+            </param>
+            <param id="param14" name="user" type="string">
+              <value _label="userNameTextbox:value" element="userNameTextbox" func="value" type="element"/>
+            </param>
+          </insert>
+          <call _title="contentsFrame:selectPanel" element="contentsFrame" func="selectPanel" id="call9" left="367px" top="65px">
+            <param id="param33" name="panel" type="element">
+              <element target="contentsFrame" type="child">messagePanel</element>
+            </param>
+          </call>
+        </action>
       </event>
       <event id="event52" target="backButton" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -211,7 +236,13 @@
       </event>
       <event id="event53" target="backButton" type="onClick">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="264px" top="19px">
+          <call _title="rootFrame:selectPanel" element="rootFrame" func="selectPanel" id="call8" left="236px" top="47px">
+            <param id="param32" name="panel" type="element">
+              <element target="rootFrame" type="child">roomSelectPanel</element>
+            </param>
+          </call>
+        </action>
       </event>
       <event id="event54" target="messagePanel" type="onDisplay">
         <condition left="10px" top="25px"/>
@@ -225,47 +256,93 @@
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event57" target="textbox3" type="onDisplay">
+      <event id="event57" target="messageTextbox" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event58" target="textbox3" type="onFocus">
+      <event id="event58" target="messageTextbox" type="onFocus">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event59" target="textbox3" type="onBlur">
+      <event id="event59" target="messageTextbox" type="onBlur">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event60" target="button4" type="onDisplay">
+      <event id="event60" target="messageSubmitButton" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event61" target="button4" type="onClick">
+      <event id="event61" target="messageSubmitButton" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="203px" top="25px">
+          <insert database="message" id="insert1" left="238px" top="39px">
+            <param id="param18" name="message" type="string">
+              <value _label="messageTextbox:value" element="messageTextbox" func="value" type="element"/>
+            </param>
+            <param id="param19" name="posted" type="datetime">
+              <value _label="datetime:now" element="datetime" func="now" type="datetime"/>
+            </param>
+            <param id="param20" name="room_id" type="int">
+              <value _label="roomSelect:selectItem" element="roomSelect" func="selectItem" type="element"/>
+            </param>
+            <param id="param21" name="user" type="string">
+              <value _label="userNameTextbox:value" element="userNameTextbox" func="value" type="element"/>
+            </param>
+          </insert>
+        </action>
+      </event>
+      <event id="event62" target="exitButton" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event62" target="button5" type="onDisplay">
+      <event id="event63" target="exitButton" type="onClick">
+        <condition left="10px" top="25px"/>
+        <action left="432px" top="25px">
+          <insert database="message" id="insert3" left="205px" top="35px">
+            <param id="param23" name="message" type="string">
+              <value _label="string:concat" element="string" func="concat" type="string">
+                <param id="param28" name="first" type="string">
+                  <value _label="userNameTextbox:value" element="userNameTextbox" func="value" type="element"/>
+                </param>
+                <param id="param29" name="second" type="string">
+                  <value _label="string:direct" element="string" func="direct" type="string">
+                    <param id="param30" name="value" type="string">
+                      <int>が退室しました。</int>
+                    </param>
+                  </value>
+                </param>
+              </value>
+            </param>
+            <param id="param24" name="posted" type="datetime">
+              <value _label="datetime:now" element="datetime" func="now" type="datetime"/>
+            </param>
+            <param id="param25" name="room_id" type="int">
+              <value _label="roomSelect:selectItem" element="roomSelect" func="selectItem" type="element"/>
+            </param>
+            <param id="param26" name="user" type="string">
+              <value _label="userNameTextbox:value" element="userNameTextbox" func="value" type="element"/>
+            </param>
+          </insert>
+          <call _title="contentsFrame:selectPanel" element="contentsFrame" func="selectPanel" id="call7" left="357px" top="37px">
+            <param id="param31" name="panel" type="element">
+              <element target="contentsFrame" type="child">entrancePanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event id="event40" target="messageTable" type="onDisplay">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event63" target="button5" type="onClick">
+      <event id="event41" target="messageTable" type="onClick">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event40" target="table0" type="onDisplay">
+      <event id="event42" target="messageTable" type="onDbClick">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
-      <event id="event41" target="table0" type="onClick">
-        <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
-      </event>
-      <event id="event42" target="table0" type="onDbClick">
-        <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
-      </event>
-      <event id="event43" target="table0" type="onCellEdit">
+      <event id="event43" target="messageTable" type="onCellEdit">
         <condition left="10px" top="25px"/>
         <action left="150px" top="100px"/>
       </event>
@@ -306,8 +383,19 @@
         <action left="150px" top="100px"/>
       </event>
       <event id="event6" target="message" type="onInsert">
-        <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <condition left="10px" operator="eq" top="25px">
+          <eq>
+            <value element="message:receivedItem" type="message:receivedItem"/>
+            <value _label="roomSelect:selectItem" element="roomSelect" func="selectItem" type="element"/>
+          </eq>
+        </condition>
+        <action left="457px" top="11px">
+          <call _title="messageTable:insert" element="messageTable" func="insert" id="call6" left="186px" top="37px">
+            <param id="param22" name="item" type="object">
+              <value _label="message:receivedItem:self" element="message:receivedItem" func="self" type="message:receivedItem"/>
+            </param>
+          </call>
+        </action>
       </event>
       <event id="event7" target="message" type="onDelete">
         <condition left="10px" top="25px"/>
@@ -315,7 +403,7 @@
       </event>
       <event id="event8" target="message" type="onUpdate">
         <condition left="10px" top="25px"/>
-        <action left="150px" top="100px"/>
+        <action left="167px" top="47px"/>
       </event>
       <event id="event9" target="room" type="onChange">
         <condition left="10px" top="25px"/>
@@ -353,19 +441,19 @@
           <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="2" width="650px">
             <label content="ラベル" id="nowRoomLabel" left="60px" tagName="label" top="0px"/>
             <frame height="100px" id="contentsFrame" left="25px" tagName="frame" top="80px" width="450px">
-              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="145" width="450px">
-                <label content="名前" id="userNameTextbox" left="40px" tagName="label" top="6px"/>
-                <textbox id="textbox2" left="100px" tagName="textbox" top="10px" width="100px"/>
+              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="145.5" width="450px">
+                <label content="名前" id="userNameLabel" left="40px" tagName="label" top="10px"/>
+                <textbox id="userNameTextbox" left="100px" tagName="textbox" top="10px" width="100px"/>
                 <button content="入室" id="enterButton" left="100px" tagName="button" top="50px"/>
                 <button content="ルーム選択画面に戻る" id="backButton" left="300px" tagName="button" top="50px"/>
               </panel>
-              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="145" width="450px">
+              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="145.5" width="450px">
                 <label content="メッセージ" id="messageLabel" left="20px" tagName="label" top="10px"/>
-                <textbox id="textbox3" left="150px" tagName="textbox" top="10" width="100px"/>
-                <button content="送信" id="button4" left="100px" tagName="button" top="50px"/>
-                <button content="ボタン" id="button5" left="350px" tagName="button" top="50px"/>
+                <textbox id="messageTextbox" left="150px" tagName="textbox" top="10px" width="100px"/>
+                <button content="送信" id="messageSubmitButton" left="100px" tagName="button" top="50px"/>
+                <button content="退出" id="exitButton" left="350px" tagName="button" top="50px"/>
               </panel>            </frame>
-            <table height="225px" id="table0" left="25px" tagName="table" top="200px" width="600px">
+            <table height="225px" id="messageTable" left="25px" tagName="table" top="200px" width="600px">
               <th field="user_name" id="th0" label="user_name" left="203" tagName="th" top="13" width="100px"/>
               <th field="message" id="th1" label="message" left="343" tagName="th" top="30" width="100px"/>
               <th field="posted" id="th2" label="posted" left="354" tagName="th" top="25" width="350px"/>
@@ -377,7 +465,7 @@
         <property left="164" name="user_id" top="27" type="string"/>
         <property left="217" name="password" top="61" type="password"/>
         <property left="195" name="role" top="96" type="string"/>      </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="406px" tablename="message" tagName="database" top="160px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="409px" tablename="message" tagName="database" top="163px" type="server">
         <property left="212" name="message" top="33" type="string"/>
         <property left="224" name="posted" top="63" type="datetime"/>
         <property left="234" name="room_id" top="88" type="int"/>

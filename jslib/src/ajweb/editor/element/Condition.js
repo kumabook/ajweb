@@ -79,7 +79,8 @@ dojo.declare("ajweb.editor.element.Condition",
 
 	    if(that.model.properties.operator){
 	      for(var i = 0; i < that.model.children.length; i++){
-		that.model.children[i].reCreateDom(that);
+		if(that.model.children[i].reCreateDom)
+		  that.model.children[i].reCreateDom(that);
 	      }
 	    }
 	      

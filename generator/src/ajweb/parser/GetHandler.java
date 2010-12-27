@@ -54,7 +54,6 @@ public class GetHandler extends AbstractHandler{
 			get = new Get(attributes.get("database"), "selectById", property, param);
 		}
 		else if(qName.equals("selectByCondition")){
-			
 			get = new Get(attributes.get("database"), "selectByCondition", property, param);
 		}
 		else if(qName.equals("targetItem")){
@@ -71,7 +70,6 @@ public class GetHandler extends AbstractHandler{
 		else if(qName.equals("concat")){
 			get = new Get("ajweb.data.String", "concat", property, params);
 		}
-		
 		setModel(get);
 		super.endElement(uri, localName, qName);
 	}

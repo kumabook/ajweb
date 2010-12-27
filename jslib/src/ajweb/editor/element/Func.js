@@ -28,16 +28,20 @@ dojo.declare("ajweb.editor.element.Func",
      */
     constructor: function(opt)
     {
+      this.dialogStack = [];
     },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
       var that = this;
-      that.dialogStack = [];
+      var a = ajweb.editor;
+      var title = this.model.properties._title ? this.model.properties._title : this.model.tagName;
        this.widget = new dijit.TitlePane(
-	{ title: this.model.tagName, open: false, toggleable: false,
-	  style:{position: "absolute", width: "80px",top: properties.top, left: properties.left,
+	{ title: title,
+	  open: false, toggleable: false,
+	  style:{position: "absolute", width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px", 
+		 top: properties.top, left: properties.left,
 		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" },
 	  onDblClick: function(){
 	    if(!that.dialog){
@@ -101,6 +105,12 @@ dojo.declare("ajweb.editor.element.Func",
 		    that.model.properties.func = that.funcSelect.value;
 		    that.model.createParam(that.element.id, that.model.properties.func);
 		    this.set({label: "変更"});
+
+		    //ラベルを変更
+		    that.model.properties._title = that.model.properties.element + ":" + that.model.properties.func;
+		    var title = that.model.properties._title;
+		    that.widget.set({title: title, style:{width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px"}});
+		    that.container.reDrawChild(that);
 		  }});
 	      if(that.model.properties.element && that.model.properties.func)
 		that.model.reCreateParamDom();

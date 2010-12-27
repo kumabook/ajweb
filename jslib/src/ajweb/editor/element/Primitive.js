@@ -1,7 +1,6 @@
-
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
-dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.Textarea");
 dojo.require("dijit.form.Select");
 dojo.require("dijit.layout.ContentPane");
 
@@ -30,7 +29,7 @@ dojo.declare("ajweb.editor.element.Primitive",
      */
     createDom: function(properties){
       var that = this;
-      this.widget = dijit.form.TextBox(
+      this.widget = dijit.form.Textarea(
 	{style: {position: "absolute", width: "110px", top: "5px"},
 	 value: that.model.properties._character,
 	 onChange: function(){

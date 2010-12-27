@@ -83,12 +83,13 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	    //lineがあれば更新
 //	    this.count++;
 	    if(this.container.draw!=undefined){// && this.count > 1){
-	      for(var i = 0; i < this.container.lines.length; i++){
+	      this.container.reDrawChild(this);
+	     /* for(var i = 0; i < this.container.lines.length; i++){
 		if(this.container.lines[i].start == this.domNode 
 		   || this.container.lines[i].end == this.domNode){
 		  this.container.reDraw(this.container.lines[i]);
 		}
-	      }
+	      }*/
 	    }
 	  };
 	  var move_connection = dojo.connect(document, "onmousemove", this, move);

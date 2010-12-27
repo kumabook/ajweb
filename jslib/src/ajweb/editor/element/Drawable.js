@@ -113,6 +113,14 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 		   }
 		 }
 	       },
+	       reDrawChild: function(child){
+		 for(var i = 0; i < this.lines.length; i++){
+		   if(this.lines[i].start == child.domNode 
+		      || this.lines[i].end == child.domNode){
+		     this.reDraw(this.lines[i]);
+		   }
+		 }
+	       },
 	       startup: function(){
 		 this.inherited(arguments);
 	       }

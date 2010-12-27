@@ -74,18 +74,23 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
     },
     getValueStore: function(that){
       var items = [];
-      //selectByConditionの内部の場合は,targetItemを追加
-      var parentModel = that.model.parent;
-      while(parentModel.tagName != "action"){
-	if(parentModel.tagName == "paramCondition"){
+
+      var parentModel = that.parent;
+      while(parentModel.tagName != "events"){
+	if(parentModel.tagName == "paramCondition"){      //databaseのselect系の内部の場合は,targetItemを追加
 	  var targetElement = parentModel.parent.parent.element.element;
-//	  console.log(parentModel.parent.parent.element.element);
 	  items.push({id:  targetElement.properties.id + ":targetItem", name: "targetItem(" + targetElement.properties.id + ")"});
-	  items.push({id: "separator0"});
-	  break;
+	}
+	else if(parentModel.tagName == "event"){
+	  var targetElement = that.application.getElementByPropId(parentModel.properties.target);
+	  if(targetElement.tagName == "database"){//databaseイベントの場合はreceivedItemを追加
+	    items.push({id:  targetElement.properties.id + ":receivedItem", name: "receivedItem(" + targetElement.properties.id + ")"});
+	  }
 	}
 	parentModel = parentModel.parent;	
       }
+      items.push({id: "separator0"});
+
 //イベントから受け取るエレメントがある場合は追加
 
       items = items.concat([

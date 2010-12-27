@@ -97,6 +97,24 @@ dojo.declare("ajweb.editor.model.Model", null,
      */
     startup: function(){
     },
+    updatePropId: function(id){
+      
+    },
+    _updatePropId: function(id, child){
+      for(var i = 0; i < child.children.length; i++){
+	var model = child.children[i];
+	for(var j = 0; j < model.propertyList.length; j++)
+	if(model.propertyList[j] == id){
+	  return child.children[i];
+	}
+	else {
+	  var elem = this._getElementByPropId(id, child.children[i]);
+	  if(elem)
+	    return elem;
+	}
+      }
+      return null;
+    },
     /**
     * XMLに変換してXMLElementを返す
     * @param {XMLDocument} ウィジェットタイプ

@@ -28,34 +28,36 @@ dojo.declare("ajweb.editor.element.Value",
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
     createDom: function(properties){
+      var a = ajweb.editor;
       var that = this;
-
+      that.dialogStack = [];
+      var label = that.model.properties._label ? 
+	that.model.properties._label : that.model.tagName;
       this.widget =  new dijit.form.Button(
-	{ label: "value",
-	  style: {position: "absolute", top: "0px", left: "0px", width: "80px"},
+	{ label: label,
+	  style: {position: "absolute", top: "0px", left: "0px"
+		 // width: (title.length*a.FONTSIZE)+a.REMOVEICONSIZE+"px"
+		 },
 	  onClick: function(){
 	    if(!that.dialog){
-	      var title = that.model.parent.properties.name ? 
-		that.model.parent.properties.name : that.model.parent.tagName;
 	      that.dialog = new dijit.Dialog(
-		{ title: title,
+		{ title: label,
 		  style: { position: "absolute",
 			   height: "300px", width: "400px"}});
 	      that.containerNode = that.dialog.containerNode;
-	      
 	      //エレメント選択
 	      that.element = that.model.application.getElementByPropId(that.model.properties.element);
-	    if(!that.element)
-	      that.element = that.model.properties.element ? that.model.properties.element : "";
-	      
+	      if(!that.element)
+		that.element = that.model.properties.element ? that.model.properties.element : "";
+
 	      that.elemName = new dijit.layout.ContentPane(
 		{ content: "エレメント: ",
 		  style: {position: "absolute",top: "30px",left: "10px"}});
-	      
+
 	      that.elemSelect = new dijit.form.Select(
 		{	name: "modelId", 
 			value: that.element.id ? that.element.id : that.element,
-			store: that.model.application.getValueStore(that), sortByLabel: false,
+			store: that.model.application.getValueStore(that.model), sortByLabel: false,
 			style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
 		});
 //	      that.elemSelect._setValueAttr(that.element.id ? that.element.id : that.element);
@@ -79,21 +81,22 @@ dojo.declare("ajweb.editor.element.Value",
 		      that.element.properties ? that.element.properties.tagName : that.elemSelect.value, 
 		      that.funcSelect.store);
 
-
-
-
 		    that.funcSelect.set({ disabled: false});
 		    that.funcButton.set({ disabled: false});
 		    this.set({label: "変更"});
+
+
+
 		  }});
 
 	      //メソッド
 	      that.funcName = new dijit.layout.ContentPane(
 		{content: "メソッド名: ",
 		 style: { position: "absolute", top: "55px", left: "10px"}});
-	      
+
 	      var selectedElemTag = that.element.properties ? 
 		that.element.properties.tagName : that.model.properties.element;
+
 	      var funcStore = ajweb.editor.getGetterStore(selectedElemTag);
 
 
@@ -113,6 +116,11 @@ dojo.declare("ajweb.editor.element.Value",
 		    that.model.createParam(that.element.id ? that.element.id : that.element, 
 					   that.model.properties.func, that.element);
 		    this.set({label: "変更"});
+
+		    //ラベルを変更
+		    that.model.properties._label = that.model.properties.element + ":" + that.model.properties.func;
+		    var label = that.model.properties._label;
+		    that.widget.set({label: label});
 		  }});
 	      //引数
 	      that.paramContainer = new dijit.layout.ContentPane(
@@ -165,9 +173,16 @@ dojo.declare("ajweb.editor.element.Value",
       return this.widget.domNode;
     },
     addDialogStack: function(elem){
-      var parentDialogElem = this.model.parent.parent.element;
-      if(parentDialogElem)
+      var parentDialogElem = this.model.parent.element;
+      if(parentDialogElem.addDialogStack){
 	parentDialogElem.addDialogStack(elem);
+      }
+      else {
+	parentDialogElem = this.model.parent.parent.element;
+	if(parentDialogElem.addDialogStack){
+	  parentDialogElem.addDialogStack(elem);
+	}
+      }
     },
     removeDialog: function(){
       if(this.dialog){

@@ -30,17 +30,13 @@ dojo.declare("ajweb.editor.element.StringSelect",
     createDom: function(properties){
       var that = this;
 
-      var store = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "name",
-	    label : "name",
-	    items: []
-	  }
-	}
-      );
+      var store = new dojo.data.ItemFileWriteStore({ data: {
+						       identifier: "name",
+						       label : "name",
+						       items: [] }
+						   });
 
-      if(that.model.properties.type == "data"){
+      if(that.model.properties.type == "data"){//databaseのスキーマを参照
 	if(that.model.properties.target){
 	  var databaseModel = this.model.application.getElementByPropId(that.model.properties.target);
 	  for(var i = 0; i < databaseModel.children.length; i++){

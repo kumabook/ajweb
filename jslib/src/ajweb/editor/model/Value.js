@@ -11,16 +11,19 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      var name = this.properties.element;
      if(!name)
        return this.inherited(arguments);
-     if(name.match("([0-9a-z]+):targetItem")){
-       this.tagName = "targetItem";
+     if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){
+       this.tagName = name.match("([0-9a-z]+):(targetItem|receivedItem)")[2];
 
        var node = this.inherited(arguments);
-       node.removeChild(node.childNodes[0]);
+       for(var i = 0; i < node.childNodes.length; i++){
+	 node.removeChild(node.childNodes[i]);	 
+       }
        node.removeAttribute("type");
        node.removeAttribute("element");
        node.removeAttribute("func");
-
-       var property = this.children[0].children[0].properties._character;
+       var property;
+       if(this.properties.func == "property" && this.children[0].children[0])
+	 property = this.children[0].children[0].properties._character;
        node.setAttribute("property", property);
        this.tagName = "value";
        return node;
@@ -33,9 +36,9 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      var model = ajweb.getModelById(elemName);
      var name = model ? model.properties.tagName : elemName;
 
-     if(name.match("([0-9a-z]+):targetItem")){
-       var database = name.match("([0-9a-z]+):targetItem")[1];
-
+     if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){
+       var database = name.match("([0-9a-z]+):(targetItem|receivedItem)")[1];
+       
        if(funcName == "property"){
 	 var param = this.editor.createModel("param", 
 					     {name: "property",
@@ -43,7 +46,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 					     this,
 					     this.element);
 
-	 var value = this.editor.createModel("StringSelect",
+	 var value = this.editor.createModel("stringSelect",
 					     {type: "data", target: database},
 					     param,
 					     param.element
@@ -73,11 +76,12 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 					     this,
 					     this.element);
 	 var input = func.params[i].input;
-	 if(input){
+	 if(input && model){
 	   var target = model.properties[func.params[i].input.targetProperty];
 	 }
 	 var value = this.editor.createModel(input ? input.className : "value",
-					     input ?  {type: input.type,target: target ? target : model.properties.id} : {},
+					     input ?  {type: input.type,target: target ? target
+						       : model ? model.properties.id : null} : {},
 					     param,
 					     param.element
 					    );	

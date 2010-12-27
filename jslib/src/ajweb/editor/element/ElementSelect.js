@@ -46,14 +46,20 @@ dojo.declare("ajweb.editor.element.ElementSelect",
 	    store.newItem({name: parentModel.children[i].properties.id});
 	}
       }
-      
-      if(that.model.properties.type == "data"){
+      else if(that.model.properties.type == "data"){
 	var parentModel = that.model.application.getDatabasesModel();
 	for(var i = 0; i < parentModel.children.length; i++){
 	  if(parentModel.children[i].tagName == "database"){
 	    store.newItem({name: parentModel.children[i].properties.id});
 	  }
 	}
+      }
+      else if(that.model.properties.type == "widget"){
+      }
+      else if(that.model.properties.type == "all"){
+      }
+      else {//tagName で指定
+	
       }
 
       this.widget = dijit.form.Select(

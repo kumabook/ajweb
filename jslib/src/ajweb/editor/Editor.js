@@ -199,9 +199,6 @@ dojo.declare(
     this.toolboxTreeModel = new dijit.tree.ForestStoreModel(
 	{
 	  store: this.toolboxStore,
-	  /* query: {
-	   "type": "topNode"
-	   }, */
 	  rootId: "root",
 	  rootLabel: "COMLIST",
 	  childrenAttrs: ["children"]
@@ -250,9 +247,12 @@ dojo.declare(
 		item[this.structure.cells[i].field] = _item[this.structure.cells[i].field][0];
 	      }
 	      var model = propertyDataStore.currentModel;
-	      if(item.property != "tagName")//タグ名は変更不可
+	      if(item.property != "tagName"){//タグ名は変更不可
+		if(item.property == "id"){
+		  propertyDataStore.currentModel.updatePropId(item.value);
+		}
 		model.properties[item.property] = item.value;
-	      
+	      }
 	      propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
 	      propertyDataStore.currentModel.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
@@ -655,7 +655,6 @@ dojo.declare(
     removeProjectTree: function(model){
       var store = this.projectStore;
       this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
-//					       console.log(item);
 					       store.deleteItem(item);
 					     }});
     }

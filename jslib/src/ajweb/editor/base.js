@@ -179,8 +179,8 @@ ajweb.editor.getGetterStore = function(modelName){
   var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
   var list =  ajweb.editor.FUNCLIST;
   var items = [];
-
-  if(modelName.match("([0-9a-z]+):targetItem")){
+  if(!modelName) return store;
+  if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){
     store.newItem({name: "self"});
     store.newItem({name: "property"});
   }
@@ -204,18 +204,18 @@ ajweb.editor.updateGetterStore = function(modelName, store){
 		store.deleteItem(item);
 	      }});
   store.save();
-  if(modelName.match("([0-9a-z]+):targetItem")){
+  if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){
     store.newItem({name: "self"});
     store.newItem({name: "property"});
-  }
+  }  
   else{
-  for(var i = 0; i < list.length; i++){
-    if(list[i].name == modelName){
-      for(var j = 0; j < list[i].getters.length; j++){
-      store.newItem(list[i].getters[j]);
+    for(var i = 0; i < list.length; i++){
+      if(list[i].name == modelName){
+	for(var j = 0; j < list[i].getters.length; j++){
+	  store.newItem(list[i].getters[j]);
+	}
       }
     }
-  }
   }
 };
 
@@ -237,3 +237,6 @@ ajweb.editor.attributesToHash = function(attributes){
   }
   return attrs;
 };
+
+ajweb.editor.FONTSIZE = 7.8;
+ajweb.editor.REMOVEICONSIZE = 30;
