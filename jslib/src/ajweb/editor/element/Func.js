@@ -47,7 +47,7 @@ dojo.declare("ajweb.editor.element.Func",
 	  onDblClick: function(){
 	    if(!that.dialog){
 	      that.dialog = new dijit.Dialog(
-		{title: that.model.tagName,
+		{title: title,
 		 style: {position: "absolute",height: "300px", width: "400px"},
 		 onHide: function(){
 		   delete that.store;
@@ -78,31 +78,21 @@ dojo.declare("ajweb.editor.element.Func",
 		    element = that.model.application.getElementByPropId(value);
 		    that.model.properties.element = element ? element.properties.id : null;		  
 		    ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
-		    that.funcSelect.set({disabled: false});
+		    that.funcSelect.set({disabled: false, value: that.model.properties.func ? that.model.properties.func : null});
 		    that.funcButton.set({disabled: false});
 		  }
 		});
-/*	      that.elemButton = new dijit.form.Button(
-		{ label: that.model.properties.element ? "変更" : "決定",
-		  style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
-		  onClick: function(){
-		    element = that.model.application.getElementByPropId(that.elemSelect.value);
-		    that.model.properties.element = element ? element.properties.id : null;		  
-		    ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
-		    that.funcSelect.set({disabled: false});
-		    that.funcButton.set({disabled: false});
-		    this.set({label: "変更"});
-		  }});*/
+
 	      that.funcName = new dijit.layout.ContentPane(
 	      {content: "メソッド名: ",
 	       style: { position: "absolute", top: "55px", left: "10px"}});
 	      
 	      var selectedElemTag = element ? element.properties.tagName : "";
 	      that.funcSelect = new dijit.form.Select(
-		{	name: "name", value: that.model.properties.func ? that.model.properties.func : "",
-			store: ajweb.editor.getFuncStore(selectedElemTag),
-			sortByLabel: false, disabled: that.model.properties.element ? false : true,
-			style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+		{ //value: that.model.properties.func ? that.model.properties.func : "",
+		  store: ajweb.editor.getFuncStore(selectedElemTag),
+		  sortByLabel: false, disabled: that.model.properties.element ? false : true,
+		  style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 		});
 	      that.funcButton = new dijit.form.Button(
 		{ label: that.model.properties.func ? "変更" : "決定", 
@@ -114,9 +104,8 @@ dojo.declare("ajweb.editor.element.Func",
 		    that.model.createParam(element.properties.id, that.model.properties.func);
 		    this.set({label: "変更"});
 		    //ラベルを変更
-		    var title = that.model.properties.element && that.model.properties.func ? 
-		      that.model.properties.element + ":" + that.model.properties.func : "no func"; 
-		    that.widget.set({title: title, style:{width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px"}});
+		    that.updateDom();
+
 		    that.container.reDrawChild(that);
 		  }});
 	      if(that.model.properties.element && that.model.properties.func)
@@ -126,14 +115,12 @@ dojo.declare("ajweb.editor.element.Func",
 	      that.dialog.containerNode.appendChild(that.funcSelect.domNode);
 	      that.dialog.containerNode.appendChild(that.elemName.domNode);
 	      that.dialog.containerNode.appendChild(that.funcName.domNode);
-//	      that.dialog.containerNode.appendChild(that.elemButton.domNode);
 	      that.dialog.containerNode.appendChild(that.funcButton.domNode);
 	      
 	      that.elemSelect.startup();
 	      that.funcSelect.startup();
 	      that.elemName.startup();
 	      that.funcName.startup();
-//	      that.elemButton.startup();
 	      that.funcButton.startup();
 	    }
 
@@ -160,16 +147,20 @@ dojo.declare("ajweb.editor.element.Func",
 
       return this.widget.domNode;
     },
-    updateDom: function(properties){
-      this.model.properties._title = that.model.properties.element + ":" + that.model.properties.func;
-      var title = this.model.properties._title ? this.model.properties._title : this.model.tagName;
+    updateDom: function(){
+      var a = ajweb.editor;      
+      var title = this.model.properties.element && this.model.properties.func ? 
+	this.model.properties.element + ":" + this.model.properties.func : "no func";
       this.widget.set({
 	title: title,
 	style:{
-	    top: properties.top,
-	    left: properties.left
+	  top: this.model.properties.top,
+	  left: this.model.properties.left,
+	  width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px"
 	  }
 	});
+      if(this.dialog)
+	this.dialog.set({title: title});
     },
     removeDialog: function(){
       this.dialog.destroyRecursive();
@@ -177,7 +168,6 @@ dojo.declare("ajweb.editor.element.Func",
       this.funcSelect.destroyRecursive();
       this.elemName.destroyRecursive();
       this.funcName.destroyRecursive();
-//      this.elemButton.destroyRecursive();
       this.funcButton.destroyRecursive();
 
       delete this.dialog;
@@ -185,7 +175,6 @@ dojo.declare("ajweb.editor.element.Func",
       delete this.funcSelect;
       delete this.elemName;
       delete this.funcName;
-//      delete this.elemButton;
       delete this.funcButton;
     },
     removeDom: function(){

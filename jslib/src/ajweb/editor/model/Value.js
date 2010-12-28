@@ -33,7 +33,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
    },
 
    createParam: function(elemName, funcName){
-       var i = 0;
+     var i = 0;
      var model = this.application.getElementByPropId(elemName);
      var name = model ? model.properties.tagName : elemName;
 

@@ -54,14 +54,14 @@ dojo.declare("ajweb.editor.element.Database",
       this.widget.domNode.appendChild(this.tablename);
       return this.widget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
       this.widget.set({
 	style:{
-	    top: properties.top,
-	    left: properties.left
+	    top: this.model.properties.top,
+	    left: this.model.properties.left
 	  }
 	});
-      this.tablename.innerHTML  = properties.tablename;
+      this.tablename.innerHTML  = this.model.properties.tablename;
 
       this.domNode.style.height = (this.model.children.length) * 30 + 35 + "px";
     },

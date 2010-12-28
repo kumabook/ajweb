@@ -1,4 +1,8 @@
 dojo.provide("ajweb.editor.gridCellEdit");
+dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dijit.form.Select");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.NumberSpinner");
 var dgc = dojox.grid.cells;
 
 dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
@@ -20,7 +24,7 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		     this.widget.destroyRecursive();
 		     var model = this.store.currentModel;
 		     var grid = model.editor.propertyDataGrid;
-		     console.log(inDatum);
+		   //  console.log(inDatum);
 		     this.widget = new dijit.form.Select(
 		       {store: this.selectStore, 
 			value: inDatum,
@@ -28,7 +32,8 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 //			  console.log(property.name + "  " + newValue);
 		//	  model.properties[property.name] = newValue;
 		//	  grid.onApplyCellEdit(newValue, inRowIndex, "value");
-			}}, inNode);
+			}},
+		       inNode);
 		     this.widget.startup();
 		     return this.widget;
 		   }
@@ -39,13 +44,14 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		   }
 		 }
 		 else if(property.input == "number"){
+		   this.widget = new dijit.form.NumberSpinner({value: parseInt(inDatum), constraints: {min: 0, max: 9999}}, inNode);
 		   return this.widget;
 		 }
-		 else if(property.input == "date"){
+/*		 else if(property.input == "date"){
 		   return this.widget;
-		 }
+		 }*/
 		 else {// if(property.input == "textbox"
-		   this.widget = new dijit.form.TextBox(this.getWidgetProps(inDatum),inNode);
+		   this.widget = new dijit.form.TextBox(this.getWidgetProps(inDatum), inNode);
 		   return this.widget;		   
 		  }
 		},

@@ -43,11 +43,11 @@ dojo.declare("ajweb.editor.element.Branch",
       return this.widget.domNode;
     },
 
-    updateDom: function(properties){
+    updateDom: function(){
       this.widget.set({
 	style:{
-	    top: properties.top,
-	    left: properties.left
+	    top: this.model.properties.top,
+	    left: this.model.properties.left
 	  }
 	});
     },

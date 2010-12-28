@@ -59,7 +59,10 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "Label",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "top", "left", "content"],
+    propertyList: ["tagName", "id", 
+		   {name: "top", input: "number", type: "int"}, 
+		   {name: "left", input: "number", type: "int"},
+		   "content"],
     eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "label", content: "ラベル" }
   },
@@ -70,7 +73,10 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "Button",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "top", "left", "content"],
+    propertyList: ["tagName", "id", 
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   "content"],
     eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "button", width: "100px", height: "50px",content: "ボタン"}
   },
@@ -335,7 +341,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: [{name: "element", type: "element", ref: true, refProp: "id"}, "property", "func", "type"],
+    propertyList: [{name: "element", type: "element", ref: true, refProp: "id"}, "funcName", "property", "func", "type"],
     eventList: [],
     defaultProperties: {}
   },

@@ -47,7 +47,8 @@ dojo.declare("ajweb.editor.element.Table",
       this.widget.domNode.appendChild(this.containerWidget.domNode);
       return this.containerWidget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
+      var properties = this.model.properties;
       this.widget.set(
 	{style:{ top: properties.top, left: properties.left, 
 		 cssFloat: "left", styleFloat: "left",

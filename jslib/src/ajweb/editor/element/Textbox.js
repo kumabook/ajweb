@@ -39,10 +39,10 @@ dojo.declare("ajweb.editor.element.Textbox",
 	});
       return this.widget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
       this.widget.set(
-	{style:{top: properties.top,left: properties.left, width: properties.width},
-	  content: properties.content
+	{style:{top: this.model.properties.top, left: this.model.properties.left, width: this.model.properties.width},
+	  content: this.model.properties.content
 	});
     },
     removeDom: function(){

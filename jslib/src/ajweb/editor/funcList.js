@@ -11,7 +11,7 @@ ajweb.editor.FUNCLIST = [
     name: "string",
     getters: [
       {name: "direct", params:[{key: "value", type: "string", input:{className: "int"}}]},
-      {name: "concat",	params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
+      {name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
   },
@@ -40,7 +40,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "label",
     getters: [
-      {	name: "content", params: [{key: "value", type: "string"}]}
+      {	name: "content", func: "get", property: "Content", params: [{key: "value", type: "string"}]}
     ],
     setters: [{name: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
   },
@@ -54,14 +54,14 @@ ajweb.editor.FUNCLIST = [
   {
     name: "textbox",
     getters: [
-      {	name: "value",params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+      {	name: "value", func: "get", property: "Value", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
     setters: []
   },
   {
     name: "table",
     getters: [
-      {name: "label",params: [ {key: "value", type: "string"}] }
+//      {name: "label",params: [ {key: "value", type: "string"}] }
     ],
     setters: [
       {name: "load",params: [{key: "item", type: "object"}], description: "" },
@@ -79,12 +79,12 @@ ajweb.editor.FUNCLIST = [
   {
     name: "selectbox",
     getters: [
-      {	name: "selectItemPropety", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
-      {	name: "selectItem", params: [], returnType: "object", description: "" }
+      {	name: "selectItemPropety", func: "get", property: "SelectItemProperty", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
+      {	name: "selectItem", func: "get", property: "SelectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [
       {	name: "newItem", params: [{key: "item", type: "object"}], description: ""},
-      {name: "clear",params: [], description: "" },
+      { name: "clear",params: [], description: "" },
       {	name: "load", params: [{key: "datum", type: "objects"}], description: ""}
     ]
   },
@@ -98,7 +98,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "frame",
     getters: [
-      {	name: "selectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
+      {	name: "selectPanel", func: "get", property: "SelectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
     ],
     setters: [
       {	name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
@@ -107,7 +107,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "database",
     getters: [
-      { name: "selectById",params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
       { name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
       { name: "select", params: [], returnType: "objects"}
     ],

@@ -239,7 +239,6 @@ dojo.declare(
 	  structure: propertyDataGridStructure,
 	  singleClickEdit: true,
 	  canSort: function(){return false;},
-//	  onSelectionChanged: function(){ console.log("selection");},
 	  onApplyCellEdit: function(inValue, inRowIndex, inFieldIndex)
 	    {
 //	      console.log("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);

@@ -37,7 +37,7 @@ dojo.declare("ajweb.editor.element.Th",
 	});
       return this.widget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
       this.widget.set(
 	{ style:{width: this.model.properties.width },
 	  content: this.model.properties.label

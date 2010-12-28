@@ -130,7 +130,6 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  ? this.propertyList[i] : this.propertyList[i].name;
 	if(propertyName != "tagName")
 	  node.setAttribute(propertyName, this.properties[propertyName]);
-//	  node.setAttribute(this.propertyName, this.getGenerateProperty(propertyName));
       }
       for(i = 0; i < this.children.length; i++){
 	var child = this.children[i].toXMLElement(xml);

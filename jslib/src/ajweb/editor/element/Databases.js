@@ -46,8 +46,8 @@ dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajw
       this.widget.modelId = this.model.id;
       return this.widget.domNode;
     },
-    updateDom: function(properties){
-//      this.widget.set({ title: properties.id});
+    updateDom: function(){
+//      this.widget.set({ title: this.model.properties.id});
     },
     removeDom: function(){
       this.widget.destroyRecursive();

@@ -47,7 +47,7 @@ dojo.declare("ajweb.editor.element.Event", [
       this.widget.element = this;
       return this.widget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
     },
     removeDom: function(){
       this.container.removeChild(this.widget);

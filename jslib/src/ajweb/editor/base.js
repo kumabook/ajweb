@@ -171,8 +171,10 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
     for(var i = 0; i < list.length; i++){
       if(list[i].name == modelName){
 	for(var j = 0; j < list[i].getters.length; j++){
-	  if(!returnType || list[i].getters[j].returnType == returnType)
+	  if(!returnType || list[i].getters[j].returnType == returnType){
 	    store.newItem(list[i].getters[j]);
+	  }
+	    
 	}
       }
     }

@@ -82,7 +82,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var parentModel = that.parent;
       while(parentModel.tagName != "events"){
 	if(parentModel.tagName == "paramCondition"){      //databaseのselect系の内部の場合は,targetItemを追加
-	  var targetElement = parentModel.parent.parent.element.element;
+	  var targetElement = this.getElementByPropId(parentModel.parent.parent.properties.element);
 	  items.push({id:  targetElement.properties.id + ":targetItem", name: "targetItem(" + targetElement.properties.id + ")"});
 	}
 	else if(parentModel.tagName == "event"){
@@ -123,8 +123,6 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       items.push({id: "database", name: "データベース"});
       
       var databases_children = [];
-      items.push({id: "targetItem", name: "targetItem"});
-      items.push({id: "receivedItem", name: "receivedItem"});
 
       var databases = this.getDatabasesModel();
       for(i = 0; i < databases.children.length; i++){

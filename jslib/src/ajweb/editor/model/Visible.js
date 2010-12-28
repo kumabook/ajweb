@@ -56,7 +56,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     */
     updateDom: function(){
       if(this.element)
-	this.element.updateDom(this.properties);
+	this.element.updateDom();
 //      for(var i = 0; i < this.children.length; i++){
 	//this.children[i].updateDom();
 //      }
@@ -100,9 +100,10 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     startup: function(){
       if(this.element)
 	this.element.startup();
-      for(var i = 0; i < this.children.length; i++){
-	this.children[i].startup();
-      }
+      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition")
+	for(var i = 0; i < this.children.length; i++){
+	  this.children[i].startup();
+	}
     },
     /**
      * ダミー

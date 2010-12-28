@@ -40,7 +40,8 @@ dojo.declare("ajweb.editor.element.Button",
     createMenuTriggerDomNode: function(){
       return this.widget.containerNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
+      var properties = this.model.properties;
       this.widget.set(
 	{style:{top: parseInt(properties.top)-3 + "px",left: parseInt(properties.left)-3+ "px"},
 	  label: properties.content});

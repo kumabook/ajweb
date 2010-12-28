@@ -47,7 +47,8 @@ dojo.declare("ajweb.editor.element.Frame",
     removeDom: function(){
       this.widget.destroy();
     },
-    updateDom: function(properties){
+    updateDom: function(){
+      var properties = this.model.properties;
       this.widget.set({ style: {
 			    width: parseInt(properties.width) + "px",
 			    height:  parseInt(properties.height) + "px",

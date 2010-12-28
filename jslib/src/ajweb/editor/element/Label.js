@@ -45,10 +45,10 @@ dojo.declare("ajweb.editor.element.Label",
 	});
       return this.widget.domNode;
     },
-    updateDom: function(properties){
+    updateDom: function(){
       this.widget.set(
-	{style:{top: properties.top,left: properties.left},
-	  content: properties.content
+	{style:{top: this.model.properties.top, left: this.model.properties.left},
+	  content: this.model.properties.content
 	});
     },
     removeDom: function(){
