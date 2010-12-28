@@ -34,6 +34,9 @@ ajweb.editor.COMLIST =  [
   }*/
 ];
 
+ajweb.editor.dataTypes =[
+  {id: "int", name: "int" }, {id: "string", name: "string" }, {id: "password", name: "password" },{id: "date", name: "date" },{id: "datetime", name: "datetime"}
+];
 /**
  * ajwebでサポートされる型を保持するdojoストア
  */
@@ -42,27 +45,7 @@ ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
 	  data:{
 	    identifier: "name",
 	    label: "name",
-	    items: [
-	      { name: "int" }, { name: "string" }, { name: "password" },{ name: "date" },{name: "datetime"}
-	    ]
-	  }
-	});
-/**
- * valueタイプを保持するdojoストア
- */
-ajweb.editor.valueTypeStore = new dojo.data.ItemFileWriteStore(
-	{
-	  data:{
-	    identifier: "id",
-	    label: "name",
-	    items: [
-	      {id: "int", name: "int"},
-	      {id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"},
-	      {id: "separator1"},
-	      {id: "element", name: '<span class="ajwebValueMenuSeparate">element</span>', selected: false}, 
-	      {id: "separator2"},
-	      {id: "database",name: '<span class="ajwebValueMenuSeparate">database</span>', selected: false}
-	    ]
+	    items: ajweb.editor.dataTypes
 	  }
 	});
 /**
@@ -143,8 +126,16 @@ ajweb.editor.getModelInfo = function(name){
   return null;
 };
 
-ajweb.editor.getFuncStore = function(modelName){
-  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+ajweb.editor.getFuncStore = function(modelName, store){
+  if(!store)
+    store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+  else {
+    store.fetch({
+		  onItem: function(item){
+		    store.deleteItem(item);
+		  }});
+    store.save();
+  }
   var list =  ajweb.editor.FUNCLIST;
   var items = [];
   for(var i = 0; i < list.length; i++){
@@ -156,27 +147,19 @@ ajweb.editor.getFuncStore = function(modelName){
   }
   return store;
 };
-
-
-ajweb.editor.updateFuncStore = function(modelName, store){
-  var list =  ajweb.editor.FUNCLIST;
-  var items;
-  store.fetch({
-	      onItem: function(item){
-		store.deleteItem(item);
-	      }});
-  store.save();
-  for(var i = 0; i < list.length; i++){
-    if(list[i].name == modelName){
-      for(var j = 0; j < list[i].setters.length; j++){
-	store.newItem(list[i].setters[j]);
-      }
-    }
+/**
+ * FUNCLISTからmodelNameのfuncのリストを検索しdojo storeとして返す。
+ * returnTypeは、funcのreturnTypeによる絞り込み
+ */
+ajweb.editor.getGetterStore = function(modelName, store, returnType){
+  if(!store)
+    store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+  else {
+    store.fetch({onItem: function(item){
+		   store.deleteItem(item);
+		 }});
+    store.save();
   }
-};
-
-ajweb.editor.getGetterStore = function(modelName){
-  var store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
   var list =  ajweb.editor.FUNCLIST;
   var items = [];
   if(!modelName) return store;
@@ -186,37 +169,15 @@ ajweb.editor.getGetterStore = function(modelName){
   }
   else{
     for(var i = 0; i < list.length; i++){
-    if(list[i].name == modelName){
-      for(var j = 0; j < list[i].getters.length; j++){
-	store.newItem(list[i].getters[j]);
-      }
-    }
-  }
-  }
-  return store;
-};
-
-ajweb.editor.updateGetterStore = function(modelName, store){
-  var list =  ajweb.editor.FUNCLIST;
-  var items;
-  store.fetch({
-	      onItem: function(item){
-		store.deleteItem(item);
-	      }});
-  store.save();
-  if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){
-    store.newItem({name: "self"});
-    store.newItem({name: "property"});
-  }  
-  else{
-    for(var i = 0; i < list.length; i++){
       if(list[i].name == modelName){
 	for(var j = 0; j < list[i].getters.length; j++){
-	  store.newItem(list[i].getters[j]);
+	  if(!returnType || list[i].getters[j].returnType == returnType)
+	    store.newItem(list[i].getters[j]);
 	}
       }
     }
   }
+  return store;
 };
 
 ajweb.editor.modelCounter = {};
@@ -230,11 +191,18 @@ ajweb.editor.modelCount = function(tagName){
   }
   return ajweb.editor.modelCounter[tagName]++;
 };
-ajweb.editor.attributesToHash = function(attributes){
+ajweb.editor.getNodeAttributes = function(childNode){
+  var attributes = childNode.attributes;
   var attrs = {};
   for(var i = 0; i < attributes.length; i++){
     attrs[attributes[i].name] = attributes[i].value;
   }
+  for(var j = 0; j < childNode.childNodes.length; j++){
+    if(childNode.childNodes[j] instanceof Text){
+      attrs._character = childNode.childNodes[j].data;
+    }
+  }
+
   return attrs;
 };
 

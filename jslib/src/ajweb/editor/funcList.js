@@ -37,24 +37,6 @@ ajweb.editor.FUNCLIST = [
     ],
     setters: []
   },
-/*  {
-    name: "targetItem",
-    properties: [{name: "property", type: "select"}],
-    getters: [
-      {name: "self", params:[], returnType: "object"},
-      {name: "property", params:[{key: "propertyName", type: "property", input: "selectbox"}], returnType: "database"}
-    ],
-    setters: []
-  },
-  {
-    name: "receivedItem",
-    properties: [{name: "property", type: "select"}],
-    getters: [
-      {name: "self", params:[], returnType: "object"},
-      {name: "property", params:[{key: "propertyName", type: "property", input: "selectbox"}], returnType: "database"}
-    ],
-    setters: []
-  },*/
   {
     name: "label",
     getters: [
@@ -97,7 +79,7 @@ ajweb.editor.FUNCLIST = [
   {
     name: "selectbox",
     getters: [
-      {	name: "selectItemPropety", params: [{key: "property", type: "string", input:{className:  "StringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
+      {	name: "selectItemPropety", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
       {	name: "selectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [

@@ -76,11 +76,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	e.stopPropagation();
       }
 
-      for(var j = 0; j < this.events.length; j++){
-	this.events[j].properties.target = this.properties.id;
-      }
-//      this.element.updateDom(this.properties);
-
     },
     clearPropertiesView: function(){
       var that = this;
@@ -102,7 +97,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	var event = this.editor.createModel("event",
 		      { title: this.eventList[i], target: this.properties.id, type: this.eventList[i]},
 		      this.application.events, this.editor.eventTc);
-	this.events.push(event);
 	this.editor.createModel("condition", {top: "25px", left: "10px"}, event, event.element);
 	this.editor.createModel("action", {top: "50px", left: "150px"}, event, event.element);
       }

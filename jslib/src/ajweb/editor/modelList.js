@@ -42,7 +42,7 @@ ajweb.editor.MODELLIST =  [
   {
     name:"events",
     modelType: "events",
-    modelClass: "Model",
+    modelClass: "Events",
     acceptModelType: ["event"],
     propertyList: [],
     eventList: [],
@@ -110,7 +110,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "widget",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "top", "left", {name: "data", input: "selectbox", type: "data"}],
+    propertyList: ["tagName", "id", "top", "left", {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"}],
     eventList: ["onDisplay", "onChange"],
     defaultProperties: { tagName: "selectbox"}
   },
@@ -164,7 +164,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Event",
     elementClass: "Event",
     acceptModelType: ["action"],
-    propertyList: ["tagName", "id", "type", "target"],
+    propertyList: ["tagName", "id", "type", {name: "target", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -224,7 +224,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Func",
     elementClass: "Func",
     acceptModelType: ["param"],
-    propertyList: ["tagName", "id", "element", "func", "_title"],
+    propertyList: ["tagName", "id", {name: "element", type: "element", ref: true, refProp: "id"}, "func"],
     eventList: [],
     defaultProperties: {}
   },
@@ -325,7 +325,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Visible",
     elementClass: "ElementSelect",
     acceptModelType: [],
-    propertyList: ["type", "target"],
+    propertyList: ["type", {name: "target", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -335,7 +335,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: ["element", "property", "func", "type", "_label"],
+    propertyList: [{name: "element", type: "element", ref: true, refProp: "id"}, "property", "func", "type"],
     eventList: [],
     defaultProperties: {}
   },

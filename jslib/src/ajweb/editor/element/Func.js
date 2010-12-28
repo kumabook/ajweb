@@ -35,8 +35,9 @@ dojo.declare("ajweb.editor.element.Func",
      */
     createDom: function(properties){
       var that = this;
-      var a = ajweb.editor;
-      var title = this.model.properties._title ? this.model.properties._title : this.model.tagName;
+      var a = ajweb.editor;      
+      var title = that.model.properties.element && that.model.properties.func ? 
+	that.model.properties.element + ":" + that.model.properties.func : "no func";
        this.widget = new dijit.TitlePane(
 	{ title: title,
 	  open: false, toggleable: false,
@@ -50,7 +51,6 @@ dojo.declare("ajweb.editor.element.Func",
 		 style: {position: "absolute",height: "300px", width: "400px"},
 		 onHide: function(){
 		   delete that.store;
-
 		   for(var i = 0; i < that.dialogStack.length; i++){
 		     that.dialogStack[i].removeDialog();
 		   }
@@ -64,32 +64,40 @@ dojo.declare("ajweb.editor.element.Func",
 	      that.dialog.containerNode.appendChild(that.paramContainer.domNode);
 	      that.containerNode = that.paramContainer.domNode;
 	      
-	      that.element = that.model.application.getElementByPropId(that.model.properties.element);
+	      var element = that.model.application.getElementByPropId(that.model.properties.element);
+	      element = element ? element : that.model.properties.element;
 	      
 	      that.elemName = new dijit.layout.ContentPane(
 		{ content: "エレメント名: ",
 		  style: {position: "absolute",top: "30px",left: "10px"}});
 	      that.elemSelect = new dijit.form.Select(
-		{	name: "modelId", value: that.element ? that.element.id: "",
-			store: that.model.application.getWidgetStore(), sortByLabel: false,
-			style: {position : "absolute",width: "150px",top: "25px",left: "100px"}
+		{ value: element ? element.properties.id: null,
+		  store: that.model.application.getWidgetStore(), sortByLabel: false,
+		  style: {position : "absolute",width: "150px",top: "25px",left: "100px"},
+		  onChange: function(value){
+		    element = that.model.application.getElementByPropId(value);
+		    that.model.properties.element = element ? element.properties.id : null;		  
+		    ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
+		    that.funcSelect.set({disabled: false});
+		    that.funcButton.set({disabled: false});
+		  }
 		});
-	      that.elemButton = new dijit.form.Button(
+/*	      that.elemButton = new dijit.form.Button(
 		{ label: that.model.properties.element ? "変更" : "決定",
 		  style: {position : "absolute",width: "80px", top: "22px",left: "280px"},
 		  onClick: function(){
-		    that.element = ajweb.getModelById(that.elemSelect.value);
-		    that.model.properties.element = that.element ? that.element.properties.id : null;		  
-		    ajweb.editor.updateFuncStore(that.element.properties.tagName, that.funcSelect.store);
+		    element = that.model.application.getElementByPropId(that.elemSelect.value);
+		    that.model.properties.element = element ? element.properties.id : null;		  
+		    ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
 		    that.funcSelect.set({disabled: false});
 		    that.funcButton.set({disabled: false});
 		    this.set({label: "変更"});
-		  }});
+		  }});*/
 	      that.funcName = new dijit.layout.ContentPane(
 	      {content: "メソッド名: ",
 	       style: { position: "absolute", top: "55px", left: "10px"}});
 	      
-	      var selectedElemTag = that.element ? that.element.properties.tagName : "";
+	      var selectedElemTag = element ? element.properties.tagName : "";
 	      that.funcSelect = new dijit.form.Select(
 		{	name: "name", value: that.model.properties.func ? that.model.properties.func : "",
 			store: ajweb.editor.getFuncStore(selectedElemTag),
@@ -103,12 +111,11 @@ dojo.declare("ajweb.editor.element.Func",
 		  onClick: function(){
 		    that.model.clearParam();
 		    that.model.properties.func = that.funcSelect.value;
-		    that.model.createParam(that.element.id, that.model.properties.func);
+		    that.model.createParam(element.properties.id, that.model.properties.func);
 		    this.set({label: "変更"});
-
 		    //ラベルを変更
-		    that.model.properties._title = that.model.properties.element + ":" + that.model.properties.func;
-		    var title = that.model.properties._title;
+		    var title = that.model.properties.element && that.model.properties.func ? 
+		      that.model.properties.element + ":" + that.model.properties.func : "no func"; 
 		    that.widget.set({title: title, style:{width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px"}});
 		    that.container.reDrawChild(that);
 		  }});
@@ -119,14 +126,14 @@ dojo.declare("ajweb.editor.element.Func",
 	      that.dialog.containerNode.appendChild(that.funcSelect.domNode);
 	      that.dialog.containerNode.appendChild(that.elemName.domNode);
 	      that.dialog.containerNode.appendChild(that.funcName.domNode);
-	      that.dialog.containerNode.appendChild(that.elemButton.domNode);
+//	      that.dialog.containerNode.appendChild(that.elemButton.domNode);
 	      that.dialog.containerNode.appendChild(that.funcButton.domNode);
 	      
 	      that.elemSelect.startup();
 	      that.funcSelect.startup();
 	      that.elemName.startup();
 	      that.funcName.startup();
-	      that.elemButton.startup();
+//	      that.elemButton.startup();
 	      that.funcButton.startup();
 	    }
 
@@ -154,7 +161,10 @@ dojo.declare("ajweb.editor.element.Func",
       return this.widget.domNode;
     },
     updateDom: function(properties){
+      this.model.properties._title = that.model.properties.element + ":" + that.model.properties.func;
+      var title = this.model.properties._title ? this.model.properties._title : this.model.tagName;
       this.widget.set({
+	title: title,
 	style:{
 	    top: properties.top,
 	    left: properties.left
@@ -167,7 +177,7 @@ dojo.declare("ajweb.editor.element.Func",
       this.funcSelect.destroyRecursive();
       this.elemName.destroyRecursive();
       this.funcName.destroyRecursive();
-      this.elemButton.destroyRecursive();
+//      this.elemButton.destroyRecursive();
       this.funcButton.destroyRecursive();
 
       delete this.dialog;
@@ -175,7 +185,7 @@ dojo.declare("ajweb.editor.element.Func",
       delete this.funcSelect;
       delete this.elemName;
       delete this.funcName;
-      delete this.elemButton;
+//      delete this.elemButton;
       delete this.funcButton;
     },
     removeDom: function(){

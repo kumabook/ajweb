@@ -97,24 +97,27 @@ dojo.declare("ajweb.editor.model.Model", null,
      */
     startup: function(){
     },
-    updatePropId: function(id){
-      
-    },
-    _updatePropId: function(id, child){
-      for(var i = 0; i < child.children.length; i++){
-	var model = child.children[i];
-	for(var j = 0; j < model.propertyList.length; j++)
-	if(model.propertyList[j] == id){
-	  return child.children[i];
-	}
-	else {
-	  var elem = this._getElementByPropId(id, child.children[i]);
-	  if(elem)
-	    return elem;
+    setRefProperty: function(){
+      this._ref = {};
+      for(var i = 0; i < this.propertyList.length; i++){
+	if(this.propertyList[i].ref){
+	  var refProp = this.propertyList[i].refProp;
+	  this._ref[refProp] = this.application.getElementByPropId(this.properties[this.propertyList[i].name]);	  
 	}
       }
-      return null;
     },
+    updateRefProperty: function(model){//propertiesListから自動的に判定してもよい
+     for(var i = 0; i < this.propertyList.length; i++){
+       if(this.propertyList[i].ref){
+	 var refProp = this.propertyList[i].refProp;
+	 if(this._ref[refProp] == model){
+	   this.properties[this.propertyList[i].name] = model.properties[refProp];
+	   this.updateDom();
+	   //console.log("update  " + this.id + "  " +  this.propertyList[i].name + "   " + refProp);
+	 }
+       }
+     }
+   },
     /**
     * XMLに変換してXMLElementを返す
     * @param {XMLDocument} ウィジェットタイプ
@@ -171,48 +174,13 @@ dojo.declare("ajweb.editor.model.Model", null,
       var childNode;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
-	var attrs = {};
 	if(childNode instanceof Element){
-	  attrs = ajweb.editor.attributesToHash(childNode.attributes);
-	  if(childNode.tagName == "events")
-	    continue;
-	  var child;
+	  var attrs = ajweb.editor.getNodeAttributes(childNode);
+	  var child, container = this.element;
 	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
+	    container = this.editor.centerTc;
 	  }
-	  else if(childNode.tagName == "int" || childNode.tagName == "string" 
-		  || childNode.tagName == "date" || childNode.tagName == "datetime"){
-	    for(var j = 0; j < childNode.childNodes.length; j++){
-	      if(childNode.childNodes[j] instanceof Text){
-		attrs._character = childNode.childNodes[j].data;
-//		console.log(childNode.childNodes[j].data);
-	      }
-	    }
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, true);
-	  }
-	  else  {
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, isDisplay);
-
-	    for(var j = 0; j < childNode.childNodes.length; j++){
-	      if(childNode.childNodes[j] instanceof Text){
-		child.properties._character = childNode.childNodes[j].data;
-	      }
-	    }
-
-	  }
-	  if(child instanceof ajweb.editor.model.Eventable){//eventを追加
-	    child.clearEventView();
-	    var events = doc.getElementsByTagName("event");
-	    for(var k = 0; k < events.length; k++){
-	      var eventAttrs = ajweb.editor.attributesToHash(events[k].attributes);
-	      if(eventAttrs.target ==  attrs.id){
-		var event = this.editor.createModel("event", eventAttrs,
-		  this.application.events, this.editor.eventTc, true);
-		child.events.push(event);
-		event.xmlToModel(events[k], doc, true);
-	      }
-	    }
-	  }
+	  child = this.editor.createModel(childNode.tagName, attrs, this, container, isDisplay);
 	  child.xmlToModel(childNode, doc, isDisplay);
 	}
       }

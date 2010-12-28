@@ -31,9 +31,10 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      else 
        return this.inherited(arguments);
    },
+
    createParam: function(elemName, funcName){
        var i = 0;
-     var model = ajweb.getModelById(elemName);
+     var model = this.application.getElementByPropId(elemName);
      var name = model ? model.properties.tagName : elemName;
 
      if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){

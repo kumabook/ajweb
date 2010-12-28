@@ -7,7 +7,7 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Func.prototype */
  {
    createParam: function(elemName, funcName){
-     var model = ajweb.getModelById(elemName);
+     var model = this.application.getElementByPropId(elemName);
      if(model instanceof ajweb.editor.model.Database){//データベースのスキーマからparamModelを追加
        for(var i = 0; i < model.children.length; i++){
 	 if(model.children[i].tagName == "property"){

@@ -31,6 +31,7 @@ dojo.require("ajweb.editor.model.Eventable");
 dojo.require("ajweb.editor.model.Database");
 dojo.require("ajweb.editor.model.Property");
 dojo.require("ajweb.editor.model.Event");
+dojo.require("ajweb.editor.model.Events");
 dojo.require("ajweb.editor.model.Action");
 dojo.require("ajweb.editor.model.Branch");
 dojo.require("ajweb.editor.model.Func");
@@ -229,7 +230,8 @@ dojo.declare(
 	cells:  [{name: "name", field: "property", width: "30%"},
 		 {name: "value", field: "value", width: "auto", editable: "true",
 		  store: this.propertyDataStore,
-		  type: ajweb.editor.gridCellEdit}]};
+		  type: ajweb.editor.gridCellEdit
+		 }]};
       var propertyDataStore = this.propertyDataStore;
       this.propertyDataGrid = new dojox.grid.DataGrid(
 	{
@@ -248,13 +250,12 @@ dojo.declare(
 	      }
 	      var model = propertyDataStore.currentModel;
 	      if(item.property != "tagName"){//タグ名は変更不可
-		if(item.property == "id"){
-		  propertyDataStore.currentModel.updatePropId(item.value);
-		}
+
 		model.properties[item.property] = item.value;
+		model.application.updateRefProperty(model);
 	      }
-	      propertyDataStore.currentModel.updateDom();//変更されたプロパティをもとにDOMを更新
-	      propertyDataStore.currentModel.updatePropertiesView();//変更不可のものをもとに戻す
+	      model.updateDom();//変更されたプロパティをもとにDOMを更新
+	      model.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
 	}, dojo.doc.createElement('div'));
 
@@ -445,7 +446,6 @@ dojo.declare(
      * @param {String}  ajml 保存したajmlの文字列
      */
     openAjml: function(ajml){
-
       var xml =  ajweb.xml.parse(ajml);
       var rootElement = xml.documentElement;
       var applicationNode, appName;
@@ -469,7 +469,7 @@ dojo.declare(
 	});
       this.application = application;
       this.applications.push(application);
-      var events = this.newModel("events", {}, application);
+//      var events = this.newModel("events", {}, application);
       application.xmlToModel(applicationNode, xml);
 
       var that = this;

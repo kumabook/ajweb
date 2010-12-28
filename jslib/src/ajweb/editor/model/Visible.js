@@ -55,7 +55,8 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     * propertiesの値を、モデルエディター上のDOM要素のプロパティに反映
     */
     updateDom: function(){
-      this.element.updateDom(this.properties);
+      if(this.element)
+	this.element.updateDom(this.properties);
 //      for(var i = 0; i < this.children.length; i++){
 	//this.children[i].updateDom();
 //      }

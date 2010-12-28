@@ -19,16 +19,20 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       }
       return databases;
     },
+    getDatabaseModels: function(){
+      var databases = this.getDatabasesModel();
+      return databases.children;
+    },
     getDatabaseStore: function(){
       var items = [];
       var databases = this.getDatabasesModel();
       for(var i = 0; i < databases.children.length; i++){
-	items.push({name: databases.children[i].properties.id, modelId: databases.children[i].id});
+	items.push({name: databases.children[i].properties.id, jsId: databases.children[i].id, id: databases.children[i].properties.id});
       }
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
-	    identifier: "modelId",
+	    identifier: "id",
 	    label : "name",
 	    items: items
 	  }
@@ -58,13 +62,13 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var models = this.getWidgetModels();
       var items = [];
       for(var i = 0; i < models.length; i++){
-	items.push({name: models[i].properties.id, modelId: models[i].id});
+	items.push({name: models[i].properties.id, jsId: models[i].id, id: models[i].properties.id});
       }
       
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
-	    identifier: "modelId",
+	    identifier: "id",
 	    label : "name",
 	    items: items
 	  }
@@ -72,9 +76,9 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       );
       return store;
     },
-    getValueStore: function(that){
+    getValueStore: function(that, returnType){
       var items = [];
-
+//イベントから受け取るエレメントがある場合は追加
       var parentModel = that.parent;
       while(parentModel.tagName != "events"){
 	if(parentModel.tagName == "paramCondition"){      //databaseのselect系の内部の場合は,targetItemを追加
@@ -90,16 +94,17 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	parentModel = parentModel.parent;	
       }
       items.push({id: "separator0"});
-
-//イベントから受け取るエレメントがある場合は追加
-
-      items = items.concat([
-	{id: "primitive", name: "基本型"},
-	{id: "int", name: "int"},
-	{id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"},
-	{id: "separator1"},
-	{id: "element", name: "ウィジェット"}
-      ]);
+      items.push({id: "primitive", name: "基本型"});
+      items = items.concat(ajweb.editor.dataTypes);
+//      items = items.concat([
+//	{id: "primitive", name: "基本型"},
+//	{id: "int", name: "int"},
+//	{id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"}
+//	{id: "separator1"},
+//	{id: "element", name: "ウィジェット"}
+//      ]);
+      items.push({id: "separator1"});
+      items.push({id: "element", name: "ウィジェット"});
 
       var widget_children = [];
       var i;
@@ -109,30 +114,22 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	for(var j = 0; j < list.length; j++){
 	  if(list[j].name == widgetModels[i].tagName){
 	    if(list[j].getters.length > 0)
-	      items.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id});
+	      items.push({name: widgetModels[i].properties.id, jsId: widgetModels[i].id, id: widgetModels[i].properties.id});
 	  }
 	}
-//	items.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id});
-//	widget_children.push({name: widgetModels[i].properties.id, modelId: widgetModels[i].id, id: widgetModels[i].id + "visible"});
       }
 
-//      items.push({id: "element", name: "繧ｦ繧｣繧ｸ繧ｧ繝�ヨ", children: widget_children});
       items.push({id: "separator2"});
       items.push({id: "database", name: "データベース"});
       
       var databases_children = [];
-//      databases_children.push({id: "targetItem", name: "targetItem"});
-//      databases_children.push({id: "receivedItem", name: "receivedItem"});
       items.push({id: "targetItem", name: "targetItem"});
       items.push({id: "receivedItem", name: "receivedItem"});
 
       var databases = this.getDatabasesModel();
       for(i = 0; i < databases.children.length; i++){
-	items.push({name: databases.children[i].properties.id, modelId: databases.children[i].id, id: databases.children[i].id});
-//	databases_children.push({name: databases.children[i].properties.id, modelId: databases.children[i].id, id: databases.children[i].id});
+	items.push({name: databases.children[i].properties.id, jsId: databases.children[i].id, id: databases.children[i].properties.id});
       }
-//      console.log(databases_children);
-  //    items.push({id: "database", name: "繝��繧ｿ繝吶�繧ｹ", children: databases_children});
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
@@ -161,6 +158,56 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	}
       }
       return null;
+    },
+    /**
+     * あるモデルを更新したときに、呼び出し、そのモデルを参照しているモデルも更新する
+     */
+    updateRefProperty: function(model){
+      this._updateRefProperty(model, this);
+    },
+    _updateRefProperty: function(model, child){
+      for(var i = 0; i < child.children.length; i++){
+	if(child.children[i].updateRefProperty)
+	  child.children[i].updateRefProperty(model);
+	this._updateRefProperty(model, child.children[i]);
+      }
+    },
+    setRefProperty: function(){
+      this._setRefProperty(this);
+    },
+    _setRefProperty: function(child){
+      for(var i = 0; i < child.children.length; i++){
+	if(child.children[i].setRefProperty)
+	  child.children[i].setRefProperty();
+	this._setRefProperty(child.children[i]);
+      }
+    },
+    xmlToModel: function(node, doc, isDisplay){
+      var childNode, eventsNode, child;
+      for(var i = 0; i < node.childNodes.length; i++){
+	childNode = node.childNodes[i];
+	
+	if(childNode instanceof Element){
+	  var attrs = ajweb.editor.getNodeAttributes(childNode);
+	  if(childNode.tagName == "events"){
+	    eventsNode = node.childNodes[i];
+	    continue;	    
+	  }
+	  else if(childNode.tagName == "databases"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
+	  }
+	  else {//interfaces
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, isDisplay);
+	  }
+	  child.xmlToModel(childNode, doc, isDisplay);
+	}
+      }
+      //eventsモデル
+      var eventsAttrs = ajweb.editor.getNodeAttributes(eventsNode);
+      child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element, isDisplay);
+      child.xmlToModel(eventsNode, doc, isDisplay);
+
+      this.setRefProperty();
     }
   }
 );
