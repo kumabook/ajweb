@@ -148,7 +148,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Database",
     acceptModelType: ["property"],
     propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver"],
-    eventList: ["onChange", "onInsert", "onDelete", "onUpdate", "onCreate"],
+    eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
     defaultProperties: { tagName: "database", type: "server",
 			dbName: "jdbc:derby:work/appName",
 			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
@@ -162,6 +162,33 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: [],
     propertyList: ["name", "type"],
     defaultProperties: {name:"propertyName", type: "int"}
+  },
+  {
+    name: "init",
+    modelType: "init",
+    modelClass: "Init",
+    elementClass: "Init",
+    acceptModelType: [],
+    propertyList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "item",
+    modelType: "item",
+    modelClass: "Visible",
+    elementClass: "Item",
+    acceptModelType: [],
+    propertyList: [],
+    defaultProperties: {}
+  },
+  {
+    name: "initProperty",
+    modelType: "initProperty",
+    modelClass: "InitProperty",
+    elementClass: "InitProperty",
+    acceptModelType: [],
+    propertyList: ["name", "value", "type"],
+    defaultProperties: {}
   },
   //Functionモデル
   {

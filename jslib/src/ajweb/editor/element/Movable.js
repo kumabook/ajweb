@@ -53,8 +53,8 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	= dojo.connect(this.moveTriggerDomNode, "onmousedown", this,
 	function(e){
 	  //console.log(this.id + " regist move");
-//	  this.model.updatePropertiesView();
-//	  this.model.updateEventView();
+	  this.model.updatePropertiesView();
+	  this.model.updateEventView();
 	  var top, left, width, height;
 	  if(!this.domNode.style.top)  top = 0;
 	  else  top = parseInt(this.domNode.style.top);

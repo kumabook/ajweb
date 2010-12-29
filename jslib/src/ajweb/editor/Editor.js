@@ -30,6 +30,8 @@ dojo.require("ajweb.editor.model.Widget");
 dojo.require("ajweb.editor.model.Eventable");
 dojo.require("ajweb.editor.model.Database");
 dojo.require("ajweb.editor.model.Property");
+dojo.require("ajweb.editor.model.Init");
+dojo.require("ajweb.editor.model.InitProperty");
 dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Events");
 dojo.require("ajweb.editor.model.Action");
@@ -44,6 +46,9 @@ dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
 dojo.require("ajweb.editor.element.Database");
+dojo.require("ajweb.editor.element.Init");
+dojo.require("ajweb.editor.element.Item");
+dojo.require("ajweb.editor.element.InitProperty");
 dojo.require("ajweb.editor.element.Branch");
 dojo.require("ajweb.editor.element.Then");
 dojo.require("ajweb.editor.element.Condition");
@@ -56,6 +61,7 @@ dojo.require("ajweb.editor.element.Th");
 dojo.require("ajweb.editor.element.Textbox");
 dojo.require("ajweb.editor.element.Frame");
 dojo.require("ajweb.editor.element.Value");
+
 dojo.require("ajweb.editor.element.ElementSelect");
 
 
@@ -135,7 +141,7 @@ dojo.declare(
 					   }
 					  );
 
-      this.rightBc = new dijit.layout.BorderContainer({region: "center", splitter: "true"});
+      this.rightBc = new dijit.layout.BorderContainer({region: "center"});
       /**
        * 中央のタブコンテナ <br/>
        *
@@ -159,29 +165,59 @@ dojo.declare(
        */
       this.logCp = new dijit.layout.ContentPane({title: ajweb.getValue("log")});
       /**
-       * イベントモデルエディター部分ののペイン。eventsModelプロパティに現在のアプリケーションのeventsモデルを保持する。
+       * イベントモデルエディター部分ののペイン。
+       */
+      this.eventCp = new dijit.layout.ContentPane({title: ajweb.getValue("event")});
+
+      this.eventTarget = new dijit.form.Button(
+	{style: {position: "absolute", top: "0px", left: "10px"},
+	 label: "エレメントが選択されていません"});      
+/*      this.eventTarget = document.createTextNode();
+      this.eventTarget.innerHTML = "エレメントが選択されていません";
+      this.eventTarget.style.position = "absolute";
+      this.eventTarget.style.width = "200px";*/
+      
+      /**
+       * イベントのリストを表示するタブコンテナ
+       * eventsModelプロパティに現在のアプリケーションのeventsモデルを保持する。
        * @type dijit.layout.TabContainer
        */
-      this.eventTc = new dijit.layout.TabContainer({tabPosition: "left-h", title: ajweb.getValue("event")});
-      this.eventTc.resizeConnects = [];
+      this.eventTc = new dijit.layout.TabContainer(
+	{ style: {position: "absolute", top: "30px", left: "0px"},
+	  tabPosition: "left-h", title: ajweb.getValue("event")});
+      this.addEventMenu = new dijit.Menu();
+      this.addEventButton = new dijit.form.DropDownButton(
+	{ label: "イベントを追加", disabled: true,
+	  dropDown: this.addEventMenu,
+	  style: {position: "absolute", top: "0px", 
+		  left: (this.eventTarget.label.length * ajweb.editor.FONT_SIZE)
+		  +ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT+"px"}}
+      );
+
+      this.eventTc.placeAt(this.eventCp.domNode);
+      this.addEventButton.placeAt(this.eventCp.domNode);
+      this.eventCp.domNode.appendChild(this.eventTarget.domNode);
+
 
       this.outerBc.addChild(this.mainBc);
       this.mainBc.addChild(this.rightBc);
       this.mainBc.addChild(this.toolboxCp);
       this.rightBc.addChild(this.bottomTc);
       this.bottomTc.addChild(this.propertyCp);
-      this.bottomTc.addChild(this.eventTc);
+      this.bottomTc.addChild(this.eventCp);
       this.bottomTc.addChild(this.logCp);
 
       this.bottomTc.selectChild(this.logCp);
       this.bottomTc.selectChild(this.propertyCp);
-      this.bottomTc.selectChild(this.eventTc);
+      this.bottomTc.selectChild(this.eventCp);
 
 
       this.outerBc.startup();
       this.mainBc.startup();
       this.rightBc.startup();
       this.toolboxCp.startup();
+
+      this.eventTc.startup();
 
       /**
        * ツールボックス用のリストを保持するdojoストア
@@ -618,7 +654,7 @@ dojo.declare(
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
       if(model instanceof ajweb.editor.model.Eventable){
-	model.createEventModel();
+//	model.createEventModel();
       }
       return model;
     },

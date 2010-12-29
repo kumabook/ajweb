@@ -92,8 +92,10 @@ dojo.declare("ajweb.editor.element.Element", null,
      * 所属するモデル側で自動的に呼び出される。
      */
     startup: function(){
-      dojo.connect(this.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
-      dojo.connect(this.domNode, "onmousedown", this.model, this.model.updateEventView);
+      if(!this instanceof ajweb.editor.element.Movable){
+	dojo.connect(this.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
+	dojo.connect(this.domNode, "onmousedown", this.model, this.model.updateEventView);
+      }
       this.inherited(arguments);
     }
   }

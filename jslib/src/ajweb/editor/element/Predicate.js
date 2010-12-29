@@ -32,12 +32,12 @@ dojo.declare("ajweb.editor.element.Predicate",
     createDom: function(properties){
       var that = this;
       this.widget = new dijit.layout.ContentPane(
-	{ style: { position: "absolute", width: "300px", height: "25px",
+	{ style: { position: "absolute", width: "300px", height: "130px",
 		   top: "100px", left: "80px"}});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
-	  style: { position: "absolute", height: "30px", fontSize: "20px",
-		   top: "0px", left: "75px" }});
+	  style: { position: "absolute", height: "40px", fontSize: "20px",
+		   top: "35px", left: "75px" }});
       this.widget.domNode.appendChild(operator.domNode);
 
       return this.widget.domNode;

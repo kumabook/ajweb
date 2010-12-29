@@ -40,7 +40,7 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 		   var objLine = document.createElement("div");
 		   objLine.style.backgroundColor = color;
 		   objLine.style.position  = "absolute";
-                     objLine.style.overflow  = "hidden";
+                   objLine.style.overflow  = "hidden";
 		   if(start.x == end.x){
                      objLine.style.width = this.lineWidth;
                      objLine.style.height    = Math.abs(end.y-start.y+1);
@@ -83,6 +83,7 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                        objPalatte.appendChild(this._drawLine(intX,intY,color));
                      }
                    }
+		 console.log({ domNode: objPalatte, start: startDom, end: endDom, label: label, color: color});
                  return { domNode: objPalatte, start: startDom, end: endDom, label: label, color: color};
                  },
 
@@ -95,7 +96,6 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                    objPoint.style.height    = this.lineWidth;
                    objPoint.style.top  = y + "px";
                    objPoint.style.left = x + "px";
-
                    return objPoint;
                },
 	       reDraw: function(line){

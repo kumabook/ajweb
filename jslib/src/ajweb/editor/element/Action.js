@@ -30,7 +30,10 @@ dojo.declare("ajweb.editor.element.Action",
       this.isDisplay = false;
     },
     createInitLine: function(){
-      this.line = this.container.draw(this.model.parent.children[0].element.domNode, this.domNode);
+      var conditionModel = this.model.parent.getCondition();
+      this.line = this.container.draw(
+	conditionModel ? conditionModel.element.domNode : this.model.parent.element.dndDomNode,
+	this.domNode);
       this.container.lines.push(this.line);
       this.container.domNode.appendChild(this.line.domNode);
       return this.line;
@@ -41,6 +44,7 @@ dojo.declare("ajweb.editor.element.Action",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
+	  content: "<br/>&nbsp;drop function",
 	  style:{
 	    position: "absolute",
 	    width: "100px",
@@ -50,9 +54,9 @@ dojo.declare("ajweb.editor.element.Action",
 	    border: "dotted 1px #769DC0"
 	  }
 	});
-      if(this.model.children.length > 0){
+/*      if(this.model.children.length > 0){
 	this.widget.style.display = "none";
-      }
+      }*/
       this.isDisplay = true;
       return this.widget.domNode;
     },

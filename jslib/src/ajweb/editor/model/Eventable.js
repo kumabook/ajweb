@@ -102,14 +102,42 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       }
       this.editor.eventTc.currentModel = this;
     },
+
     /**
      * イベントモデルエディター上にこの要素のイベントリスト
      */
     updateEventView : function(){
+      var that = this;
       if(this.editor.eventTc.currentModel == this)
 	return;
       var i = 0;
       this.clearEventView();
+      
+      //ターゲットラベルを変更
+      this.editor.eventTarget.set({label: this.properties.id});
+      //addEventButtonを更新
+      this.editor.addEventButton.set({ disabled: this.eventList.length == 0 ? true : false,
+				       style: { left: (this.properties.id.length * ajweb.editor.FONT_SIZE)
+						+ ajweb.editor.ADD_EVENT_BUTTON_LEFT + "px"}});
+      //addEventMenuを更新
+      for(i = 0; i < this.eventList.length; i++){
+	var eventName = this.eventList[i];
+	this.editor.addEventMenu.addChild(new dijit.MenuItem(
+	 {
+	   label: eventName,
+	   onClick: function(eventName) {
+	     return function(){ 
+	       var event = that.editor.createModel("event",
+			{ title: eventName, target: that.properties.id, type: eventName},
+			that.application.events, that.editor.eventTc);
+//	     that.editor.createModel("condition", {top: "25px", left: "10px"}, event, event.element);
+	     that.editor.createModel("action", {top: "50px", left: "150px"}, event, event.element);
+	     };
+	   }(eventName)
+	 }));
+      } 
+
+      //eventModelを追加
       for(i = 0; i < this.events.length; i++){
 	this.events[i].reCreateDom(this.editor.eventTc);
 	this.events[i].startup();
@@ -120,9 +148,15 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      * イベントビューの内容をクリア(モデルは保持)。
      */
     clearEventView :function(){
-      var i;
-      var children = this.editor.eventTc.getChildren();
-
+      var i, children;
+      
+      children = this.editor.addEventMenu.getChildren();
+      for(i = 0; i < children.length; i++){
+	children[i].destroyRecursive();
+	//removeChildは?
+      }
+      
+      children = this.editor.eventTc.getChildren();      
       for(i = 0; i < children.length; i++){///eventTc にmodelのリスト格納したほうがよいかも
 	this.editor.eventTc.removeChild(children[i]);
 	//children[i].destroyRecursive();
@@ -135,7 +169,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      * モデルを削除
      */
     removeEventModel: function(){
-      for(var i = 0; i < this.eventList.length; i++){
+      for(var i = 0; i < this.events.length; i++){
 	this.events[i].remove();
       }
     }

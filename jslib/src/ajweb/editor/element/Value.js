@@ -149,11 +149,13 @@ dojo.declare("ajweb.editor.element.Value",
 	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }
 	});
+      
 
+      //conditionの場合は位置を変更
       var tagName = this.model.parent.tagName;
       if(tagName == "eq" || tagName == "gt" || tagName == "lt")
 	this.widget.set({style: {position: "absolute",
-				 left: (this.container.containerNode.childNodes.length-1) * 120 + "px"}});
+				 top: (this.container.containerNode.childNodes.length-1) * 70 + "px"}});
       
       return this.widget.domNode;
     },

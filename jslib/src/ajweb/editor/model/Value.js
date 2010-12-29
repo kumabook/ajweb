@@ -22,9 +22,10 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        node.removeAttribute("element");
        node.removeAttribute("func");
        var property;
-       if(this.properties.func == "property" && this.children[0].children[0])
+       if(this.properties.funcName == "property" && this.children[0].children[0]){
 	 property = this.children[0].children[0].properties._character;
-       node.setAttribute("property", property);
+	 node.setAttribute("property", property);
+       }
        this.tagName = "value";
        return node;
      }

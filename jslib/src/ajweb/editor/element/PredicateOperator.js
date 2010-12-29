@@ -32,21 +32,22 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
      */
     createDom: function(properties){
       var that = this;
+      var operandLeft = "55px";
       this.widget = new dijit.layout.ContentPane(
-	{ style: { position: "absolute", width: "300px", height: "25px",
-		   top: "100px", left: "50px" }});
+	{ style: { position: "absolute", width: "300px", height: "130px",
+		   top: "100px", left: "80px" }});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
-	  style: { position: "absolute", height: "30px", fontSize: "15px",
-		   top: "5px", left: "95px" }});
+	  style: { position: "absolute", height: "40px", fontSize: "15px",
+		   top: "35px", left: "75px" }});
       var leftButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute",top: "0px",left: "0px"},
+	  style: {position : "absolute",top: "0px",left: operandLeft},
 	  onClick: function(){
 	    var dialog = new dijit.Dialog({
 					    title: "left",
 					    style: {position: "absolute",
-					       height: "150px", width: "350px"
+					       height: "350px", width: "350px"
 					      },
 					    onHide: function(){
 					      this.destroyRecursive();
@@ -90,21 +91,24 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	    predictSelect.startup();
 	    button.startup();
 	    dialog.show();
+
 	    var parentDialog = that.model.parent.element.dialog;
-	    dialog.set({style: {left: parseInt(parentDialog.domNode.style.left) + 300 + "px",
-			       top: parseInt(parentDialog.domNode.style.top) - 50 + "px"}});
+	    that.dialog._relativePosition = {};
+	    that.dialog._relativePosition.x  = parseInt(parentDialog.domNode.style.left) + 300;
+	    that.dialog._relativePosition.y  = parseInt(parentDialog.domNode.style.top) - 50;
+	    that.dialog.layout();
 
 	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
 	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }});
       var rightButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute", top: "0px",left: "150px"},
+	  style: {position : "absolute", top: "70px", left: operandLeft},
 	  onClick: function(){
 	    var dialog = new dijit.Dialog({
 					    title: "left",
 					    style: {position: "absolute",
-					       height: "150px", width: "350px"
+					       height: "350px", width: "350px"
 					      },
 					    onHide: function(){
 					    }

@@ -41,7 +41,7 @@ dojo.declare("ajweb.editor.element.Func",
        this.widget = new dijit.TitlePane(
 	{ title: title,
 	  open: false, toggleable: false,
-	  style:{position: "absolute", width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px", 
+	  style:{position: "absolute", width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px", 
 		 top: properties.top, left: properties.left,
 		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" },
 	  onDblClick: function(){
@@ -156,7 +156,7 @@ dojo.declare("ajweb.editor.element.Func",
 	style:{
 	  top: this.model.properties.top,
 	  left: this.model.properties.left,
-	  width: title.length*a.FONTSIZE+a.REMOVEICONSIZE+"px"
+	  width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px"
 	  }
 	});
       if(this.dialog)

@@ -38,7 +38,6 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     createDom: function(container, display){
       if(display) 
 	return null;
-
       this.isDisplay = true;
       var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
       return new ajweb.editor.element[Element](
@@ -66,7 +65,8 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      */
     reCreateDom: function(container){
       this.element = this.createDom(container);
-      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition")
+      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition"
+	&& this.tagName != "init" && this.tagName != "item")
 	for(var i = 0; i < this.children.length; i++){
 	  if(this.children[i].reCreateDom)
 	    this.children[i].reCreateDom(this.element);
@@ -100,7 +100,8 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     startup: function(){
       if(this.element)
 	this.element.startup();
-      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition")
+      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition"
+	 && this.tagName != "init" && this.tagName != "item")
 	for(var i = 0; i < this.children.length; i++){
 	  this.children[i].startup();
 	}

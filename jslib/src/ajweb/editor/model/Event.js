@@ -17,9 +17,27 @@ dojo.declare("ajweb.editor.model.Event", ajweb.editor.model.Visible,
      */
     constructor: function(opt)
     {
-      this.target = this.application.getElementByPropId(this.properties.target);
-      if(this.target)
-	this.target.events.push(this);
-    }
+      var target = this.application.getElementByPropId(this.properties.target);
+      if(target)
+	target.events.push(this);
+    },
+    remove: function(){
+      this.inherited(arguments);
+      var target = this.application.getElementByPropId(this.properties.target);
+      if(target)
+	for(var i = 0; i < target.events.length; i++){
+	  if(this == target.events[i]){
+	    target.events.splice(i, 1);
+	  }
+	}
+    },
+   getCondition: function(){
+      for(var i = 0; i < this.children.length; i++){//すでに存在する場合は表示しない。
+	if(this.children[i].tagName == "condition"){
+	  return this.children[i];
+	}
+      }
+     return null;
+   }
   }
 );

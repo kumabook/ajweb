@@ -31,23 +31,48 @@ dojo.declare("ajweb.editor.element.Event", [
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
     createDom: function(properties){
-       this.widget =   new dijit.layout.ContentPane(
+      var target = this.model.application.getElementByPropId(this.model.properties.target);
+      this.widget =   new dijit.layout.ContentPane(
 	{
-	  content: this.id,
+	  content: target.properties.id + " " + this.model.properties.type,
 	  title: properties.type,
-	  closable: false,
+	  closable: true,
 	  doLayout: false,
 	  style:{
 	    position: "absolute",
 	    top: "0px",
 	    left: "0px"
-	  }
+	  },
+	  onClose: function(){ that.model.remove();}
 	});
       this.isDisplay = true;
       this.widget.element = this;
       return this.widget.domNode;
     },
+    createDndDomNode: function(){
+      this.conditionContainer = new dijit.layout.ContentPane(
+	{
+	  content : "<br/>&nbsp;drop condition!",
+	  style:{
+	    position: "absolute",
+	    width: "100px",
+	    height: "50px",
+	    top: this.model.properties.top,
+	    left: this.model.properties.left,
+	    border: "dotted 1px #769DC0"
+	  }
+	});
+      //すでに存在する場合は表示しない。
+      if(this.model.getCondition()){
+	this.conditionContainer.domNode.style.display = "none";
+      }
+
+      this.widget.domNode.appendChild(this.conditionContainer.domNode);
+      return this.conditionContainer.domNode;
+    },
     updateDom: function(){
+      var target = this.model.application.getElementByPropId(this.model.properties.target);
+      this.widget.set({content: target.properties.id + " " + this.model.properties.type});
     },
     removeDom: function(){
       this.container.removeChild(this.widget);

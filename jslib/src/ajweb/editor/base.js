@@ -208,5 +208,9 @@ ajweb.editor.getNodeAttributes = function(childNode){
   return attrs;
 };
 
-ajweb.editor.FONTSIZE = 7.8;
-ajweb.editor.REMOVEICONSIZE = 30;
+ajweb.editor.FONT_SIZE = 7.8;
+ajweb.editor.REMOVE_ICON_SIZE = 30;
+ajweb.editor.ADD_EVENT_BUTTON_LEFT = 40;
+ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT = 110;
+ajweb.editor.CONDITION_DIALOG_HEIGHT = 250;
+ajweb.editor.CONDITION_DIALOG_WIDTH = 350;

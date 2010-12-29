@@ -30,44 +30,51 @@ dojo.declare("ajweb.editor.element.Condition",
     constructor: function(opt)
     {
       this.isDisplay = false;
+      this.dialogStack = [];
     },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
       var that = this;
-      that.dialogStack = [];
+      var a = ajweb.editor;
       this.widget = new dijit.TitlePane(
 	{title: this.model.tagName, toggleable: false, open: false,
 	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
 	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"},
 	  onDblClick: function(){
-	    var dialog = new dijit.Dialog({title: that.model.tagName,
-					   style: {position: "absolute", height: "150px", width: "350px"},
+	    that.dialog = new dijit.Dialog({title: that.model.tagName,
+					   style: {position: "absolute",
+						   height: a.CONDITION_DIALOG_HEIGHT,
+						   width: a.CONDITION_DIALOG_WIDTH},
 					     onHide: function(){
-					       //this.destroyRecursive();
+					       for(var i = 0; i < that.dialogStack.length; i++){
+						 that.dialogStack[i].removeDialog();
+					       }
+					       that.removeDialog();
+					       that.dialogStack = [];
 					     }
 					  });
-	    that.containerNode = dialog.containerNode;
-	    that.dialog = dialog;
-	    var predictName = new dijit.layout.ContentPane(
+	    that.containerNode = that.dialog.containerNode;
+
+	    that.predictName = new dijit.layout.ContentPane(
 	      { content: "条件: ",
-		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.Select(
+		style: {position: "absolute", top: "50px",left: "10px"}});
+	    that.predictSelect = new dijit.form.Select(
 	      {	name: "modelId", value: that.model.properties.operator ? that.model.properties.operator : "",
 		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	      });
-	    var button = new dijit.form.Button(
+	    that.button = new dijit.form.Button(
 	      { label: that.model.properties.operator ? "変更" : "決定",
 		style: {position : "absolute",top: "45px",left: "280px"},
 		onClick: function(){
-		  button.set({label: "変更"});
+		  that.button.set({label: "変更"});
 		  for(var i = 0; i < that.model.children.length; i++)
 		    that.model.children[i].remove();
 		  
-		  var tagName = predictSelect.value;
-		  that.model.properties.operator = predictSelect.value;
+		  var tagName = that.predictSelect.value;
+		  that.model.properties.operator = that.predictSelect.value;
 		  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
 		  newModel.properties.name = tagName;
 		  if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
@@ -84,21 +91,21 @@ dojo.declare("ajweb.editor.element.Condition",
 	      }
 	    }
 	      
-	    dialog.containerNode.appendChild(predictName.domNode);
-	    dialog.containerNode.appendChild(predictSelect.domNode);
-	    dialog.containerNode.appendChild(button.domNode);
-	    predictName.startup();
-	    predictSelect.startup();
-	    button.startup();
-	    dialog.show();
+	    that.dialog.containerNode.appendChild(that.predictName.domNode);
+	    that.dialog.containerNode.appendChild(that.predictSelect.domNode);
+	    that.dialog.containerNode.appendChild(that.button.domNode);
+	    that.predictName.startup();
+	    that.predictSelect.startup();
+	    that.button.startup();
+	    that.dialog.show();
 
 	    that.dialog._relativePosition = {};
-	    dialog._relativePosition.x  = 200;
-	    dialog._relativePosition.y  = parseInt(dialog.domNode.style.top) - 50;
-	    dialog.layout();
+	    that.dialog._relativePosition.x  = 200;
+	    that.dialog._relativePosition.y  = parseInt(that.dialog.domNode.style.top) - 50;
+	    that.dialog.layout();
 
-	    dialog.containerNode.style.width = dialog.domNode.style.width;
-	    dialog.containerNode.style.height = dialog.domNode.style.height;
+	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  }
 	});
 
@@ -107,6 +114,18 @@ dojo.declare("ajweb.editor.element.Condition",
     },
     removeDom: function(){
       this.widget.destroyRecursive();
+    },
+    removeDialog: function(){
+      if(this.dialog){
+	this.dialog.destroyRecursive();
+	this.predictName.destroyRecursive();
+	this.predictSelect.destroyRecursive();
+	this.button.destroyRecursive();
+	delete this.dialog;
+	delete this.predictName;
+	delete this.redictSelect;
+	delete this.button;
+      }
     },
     addDialogStack: function(elem){
       this.dialogStack.push(elem);

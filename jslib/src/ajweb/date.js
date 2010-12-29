@@ -51,6 +51,7 @@ dojo.declare("ajweb.date", null,
       return param;
   },
 
+
   /**
    * inspectメソッド：デバッグ情報を出力
    * @return {String} デバッグ用出力
@@ -77,12 +78,23 @@ ajweb.date.now = function(){
 	}
 
 	if(seconds < 10){
-		var seconds = "0" + seconds;
+	  seconds = "0" + seconds;
 	}
 
 	return now.getFullYear()+"-"+ month +"-"+now.getDate()+" "
 		+now.getHours()+":"+ minutes+":"+ seconds;
 
+};
+ajweb.date.parse = function(str){
+    var dateTime = str.split(" ");
+    var dateArray = dateTime[0].split("-");
+    var timeArray = dateTime[1].split(":");
+    return new Date(dateArray[0], dateArray[1], dateArray[2], 
+		    timeArray[0], timeArray[1], timeArray[2], timeArray[3]);
+  };
+ajweb.date.format = function(date, time){
+    return dojo.date.locale.format(date, {datePattern: "yyyy-MM-dd", selector: "date"}) + " "
+	       + dojo.date.locale.format(time, {timePattern: "hh:mm:dd:ss", selector: "time"});
 };
 
 

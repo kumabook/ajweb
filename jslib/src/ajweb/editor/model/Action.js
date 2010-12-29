@@ -14,5 +14,6 @@ dojo.declare("ajweb.editor.model.Action", ajweb.editor.model.Visible,
        this.children[i].reCreateDom(container);
      }
    }
+
  }
 );
