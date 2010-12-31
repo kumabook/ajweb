@@ -180,7 +180,7 @@ dojo.declare(
        * @type dijit.layout.TabContainer
        */
       this.eventTc = new dijit.layout.TabContainer(
-	{ style: {position: "absolute", top: "30px", left: "0px"},
+	{ style: {position: "absolute", top: "30px", left: "0px", overflowX: "scroll"},
 	  tabPosition: "left-h", title: ajweb.getValue("event")});
       this.addEventMenu = new dijit.Menu();
       this.addEventButton = new dijit.form.DropDownButton(
@@ -282,7 +282,6 @@ dojo.declare(
 	      }
 	      var model = propertyDataStore.currentModel;
 	      if(item.property != "tagName"){//タグ名は変更不可
-
 		model.properties[item.property] = item.value;
 		model.application.updateRefProperty(model);
 	      }
@@ -534,7 +533,7 @@ dojo.declare(
     saveAjml: function(applicationModel){
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
-      var applicationElement = applicationModel.toSaveXMLElement(xml);
+      var applicationElement = applicationModel.toXMLElement(true);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
       this.sendForm(content, "ajml", applicationModel.properties.name);
@@ -650,6 +649,7 @@ dojo.declare(
     },
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
+      model.setRefProperty();
       if(model instanceof ajweb.editor.model.Eventable){
 //	model.createEventModel();
       }

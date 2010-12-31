@@ -72,19 +72,7 @@ dojo.declare("ajweb.editor.element.Branch",
     removeDom: function(){
       var lines = this.container.lines;
       var i;
-/*      for(i = 0; i < lines.length; i++){
-	if(lines[i].start == this.domNode){
-	  console.log(this.domNode);
-	    this.container.domNode.removeChild(lines[i].domNode);
-	    lines.splice(i, 1);
-	}
-      }*/
-      for(i = 0; i < lines.length; i++){
-	if(lines[i].end == this.domNode){
-	    lines[i].end = this.model.parent.element.widget.domNode;
-	    this.container.reDraw(lines[i]);
-	}
-      }
+      this.container.replaceNode(this.domNode, this.model.parent.element.widget.domNode);
       this.widget.destroyRecursive();
       this.model.parent.element.widget.domNode.style.display = "";
     },

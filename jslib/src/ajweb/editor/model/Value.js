@@ -7,7 +7,9 @@ dojo.provide("ajweb.editor.model.Value");
 dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Value.prototype */
  {
-   toXMLElement: function(xml){
+   toXMLElement: function(isSave){
+     if(isSave)
+       return this.inherited(arguments);
      var name = this.properties.element;
      if(!name)
        return this.inherited(arguments);
@@ -16,7 +18,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 
        var node = this.inherited(arguments);
        for(var i = 0; i < node.childNodes.length; i++){
-	 node.removeChild(node.childNodes[i]);	 
+	 node.removeChild(node.childNodes[i]);
        }
        node.removeAttribute("type");
        node.removeAttribute("element");
@@ -29,7 +31,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        this.tagName = "value";
        return node;
      }
-     else 
+     else
        return this.inherited(arguments);
    },
 
@@ -40,9 +42,9 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 
      if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){
        var database = name.match("([0-9a-z]+):(targetItem|receivedItem)")[1];
-       
+
        if(funcName == "property"){
-	 var param = this.editor.createModel("param", 
+	 var param = this.editor.createModel("param",
 					     {name: "property",
 					      type: "string"},
 					     this,
@@ -52,7 +54,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 					     {type: "data", target: database},
 					     param,
 					     param.element
-					    );	
+					    );
        }
      }
      else {
@@ -62,17 +64,17 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 	 if(name == ajweb.editor.FUNCLIST[i].name)
 	   element = ajweb.editor.FUNCLIST[i];
        }
-       
+
        if(!element)
 	 return;
-       
+
        for(i = 0; i < element.getters.length; i++){
 	 if(funcName == element.getters[i].name)
 	   func = element.getters[i];
        }
 
        for(i = 0; i < func.params.length; i++){
-	 var param = this.editor.createModel("param", 
+	 var param = this.editor.createModel("param",
 					     {name: func.params[i].key,
 					      type: func.params[i].type},
 					     this,
@@ -86,7 +88,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 						       : model ? model.properties.id : null} : {},
 					     param,
 					     param.element
-					    );	
+					    );
        }
      }
    },

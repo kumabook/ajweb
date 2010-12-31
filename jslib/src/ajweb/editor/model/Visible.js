@@ -36,7 +36,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
     createDom: function(container, display){
-      if(display) 
+      if(display)
 	return null;
       this.isDisplay = true;
       var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
@@ -77,16 +77,19 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
 	if(this.element)
 	  this.element.removeDom();
       }
-	
+
       delete this.element;
-      this.isDisplay = false;	
+      this.isDisplay = false;
     },
     removeDomRecursive: function(){
+      this.removeDomDescendants();
+      this.removeDom();
+    },
+    removeDomDescendants: function(){
       for(var i = 0; i < this.children.length; i++){
 	if(this.children[i].removeDomRecursive)
-	this.children[i].removeDomRecursive(this.element);
+	  this.children[i].removeDomRecursive(this.element);
       }
-      this.removeDom();
     },
    /**
      * モデルを削除する。

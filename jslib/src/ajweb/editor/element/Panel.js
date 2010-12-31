@@ -37,9 +37,7 @@ dojo.declare("ajweb.editor.element.Panel",
 	  onClose: function(){
 	    that.model.clearPropertiesView();
 	    that.model.clearEventView();
-	    for(var i = 0; i < that.model.children.length; i++){
-	      that.model.children[i].removeDom();
-	    }
+	    that.model.removeDomDescendants();
 	    return true;
 	  }
 	});
@@ -54,7 +52,7 @@ dojo.declare("ajweb.editor.element.Panel",
       this.widget.domNode.appendChild(this.panel.domNode);
       return this.panel.domNode;
     },
-    removeDom: function(){     
+    removeDom: function(){
       this.model.editor.centerTc.removeChild(this.widget);
       this.widget.destroyRecursive();
     },
@@ -62,7 +60,7 @@ dojo.declare("ajweb.editor.element.Panel",
       var that = this;
       var menu = new dijit.Menu();
       menu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
-      menu.addChild(new dijit.MenuItem({label: "削除", 
+      menu.addChild(new dijit.MenuItem({label: "削除",
 					disabled: this.model.properties.id == "rootPanel" ? true: false,
 					onClick: function(){
 					  that.model.remove();
@@ -82,7 +80,7 @@ dojo.declare("ajweb.editor.element.Panel",
       this.panel.domNode.style.top = parseInt(this.model.properties.top) + "px";
       this.panel.domNode.style.left = parseInt(this.model.properties.left) + "px";
       this.widget.set({title: this.model.properties.id});
-      
+
       this.model.editor.updateProjectTree(this.model);
     },
     createDndDomNode: function(){

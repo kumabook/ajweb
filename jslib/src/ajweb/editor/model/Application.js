@@ -24,21 +24,8 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       return databases.children;
     },
     getDatabaseStore: function(){
-      var items = [];
       var databases = this.getDatabasesModel();
-      for(var i = 0; i < databases.children.length; i++){
-	items.push({name: databases.children[i].properties.id, jsId: databases.children[i].id, id: databases.children[i].properties.id});
-      }
-      var store = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "id",
-	    label : "name",
-	    items: items
-	  }
-	}
-      );
-      return store;
+      return databases.getChildrenStore();
     },
     getWidgetModels: function(){
       var interfaces;
@@ -58,22 +45,14 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       }
       return models;
     },
-    getWidgetStore: function(){
+    getWidgetStore: function(store){
+      if(!store)
+	store = ajweb.editor.getEmptyStore("id", "name");
       var models = this.getWidgetModels();
-      var items = [];
-      for(var i = 0; i < models.length; i++){
-	items.push({name: models[i].properties.id, jsId: models[i].id, id: models[i].properties.id});
+
+      for(var i = 0; i < models.length; i++){//todo filterを用意する必要あり
+	store.newItem({name: models[i].properties.id, jsId: models[i].id, id: models[i].properties.id});
       }
-      
-      var store = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "id",
-	    label : "name",
-	    items: items
-	  }
-	}
-      );
       return store;
     },
     getValueStore: function(that, returnType){
@@ -91,18 +70,11 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	    items.push({id:  targetElement.properties.id + ":receivedItem", name: "receivedItem(" + targetElement.properties.id + ")"});
 	  }
 	}
-	parentModel = parentModel.parent;	
+	parentModel = parentModel.parent;
       }
       items.push({id: "separator0"});
       items.push({id: "primitive", name: "基本型"});
       items = items.concat(ajweb.editor.dataTypes);
-//      items = items.concat([
-//	{id: "primitive", name: "基本型"},
-//	{id: "int", name: "int"},
-//	{id: "string", name: "string" }, { id: "password", name: "password" },{ id: "date" ,name: "date" },{id: "datetime", name: "datetime"}
-//	{id: "separator1"},
-//	{id: "element", name: "ウィジェット"}
-//      ]);
       items.push({id: "separator1"});
       items.push({id: "element", name: "ウィジェット"});
 
@@ -121,7 +93,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 
       items.push({id: "separator2"});
       items.push({id: "database", name: "データベース"});
-      
+
       var databases_children = [];
 
       var databases = this.getDatabasesModel();
@@ -184,12 +156,12 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var childNode, eventsNode, child;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
-	
+
 	if(childNode instanceof Element){
 	  var attrs = ajweb.editor.getNodeAttributes(childNode);
 	  if(childNode.tagName == "events"){
 	    eventsNode = node.childNodes[i];
-	    continue;	    
+	    continue;
 	  }
 	  else if(childNode.tagName == "databases"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);

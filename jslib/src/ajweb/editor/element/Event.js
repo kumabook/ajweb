@@ -35,8 +35,7 @@ dojo.declare("ajweb.editor.element.Event", [
     createDom: function(properties){
       var target = this.model.application.getElementByPropId(this.model.properties.target);
       this.widget =   new dijit.layout.ContentPane(
-	{
-	  content: target.properties.id + " " + this.model.properties.type,
+	{  //content: target.properties.id + " " + this.model.properties.type,
 	  title: properties.type,
 	  closable: true,
 	  doLayout: false,
@@ -47,6 +46,10 @@ dojo.declare("ajweb.editor.element.Event", [
 	  },
 	  onClose: function(){ that.model.remove();}
 	});
+/*      this.title = new dijit.form.Button(
+	{label: target.properties.id + " " + this.model.properties.type,
+	 style: {position: "absolute", top: "0px", left:}
+	});*/
       this.isDisplay = true;
       this.widget.element = this;
       this.conditionContainer = new dijit.layout.ContentPane(
@@ -88,11 +91,11 @@ dojo.declare("ajweb.editor.element.Event", [
       this.conditionContainer.domNode.style.display = "none";
       //新しい要素で線をつなぎかえる
       this.lines[0].start = newModel.element.domNode;
-      this.reDraw(this.lines[0]);
+      this.reDrawLine(this.lines[0]);
     },
     updateDom: function(){
-      var target = this.model.application.getElementByPropId(this.model.properties.target);
-      this.widget.set({content: target.properties.id + " " + this.model.properties.type});
+//      var target = this.model.application.getElementByPropId(this.model.properties.target);
+//      this.title.set({label: target.properties.id + " " + this.model.properties.type});
     },
     removeDom: function(){
       this.container.removeChild(this.widget);

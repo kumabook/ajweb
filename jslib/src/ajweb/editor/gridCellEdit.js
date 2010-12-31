@@ -8,7 +8,9 @@ var dgc = dojox.grid.cells;
 dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 	       formatNode: function(inNode, inDatum, inRowIndex){
 		 if(!this.selectStore)
-		   this.selectStore = new dojo.data.ItemFileWriteStore({data:{identifier: "name", label: "name", items: []}});
+		   this.selectStore = ajweb.editor.getEmptyStore();
+		 if(this.widget)
+		   this.widget.destroyRecursive();
 		 var property = this.getProperty(inRowIndex);
 		 if(property.input == "selectbox"){
 		   if(property.type == "data"){
@@ -21,12 +23,10 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		     for(var j = 0; j < databases.children.length; j++){
 		       store.newItem({name: databases.children[j].properties.id});
 		     }
-		     this.widget.destroyRecursive();
 		     var model = this.store.currentModel;
 		     var grid = model.editor.propertyDataGrid;
-		   //  console.log(inDatum);
 		     this.widget = new dijit.form.Select(
-		       {store: this.selectStore, 
+		       {store: this.selectStore,
 			value: inDatum,
 			onChange: function(newValue){
 //			  console.log(property.name + "  " + newValue);
@@ -52,7 +52,7 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		 }*/
 		 else {// if(property.input == "textbox"
 		   this.widget = new dijit.form.TextBox(this.getWidgetProps(inDatum), inNode);
-		   return this.widget;		   
+		   return this.widget;
 		  }
 		},
 	       getProperty: function(inRowIndex){

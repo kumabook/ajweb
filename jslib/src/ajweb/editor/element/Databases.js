@@ -3,7 +3,9 @@ dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Databases");
-dojo.declare("ajweb.editor.element.Databases", [ajweb.editor.element.Element,ajweb.editor.element.DndEnable],
+dojo.declare("ajweb.editor.element.Databases",
+  [ajweb.editor.element.Element,
+   ajweb.editor.element.DndEnable],
   /** @lends ajweb.editor.element.Databases.prototype */
   {
     /**

@@ -22,20 +22,15 @@ ajweb.editor.COMLIST =  [
   },
   {
   name: "Event",
-    children: [{name: "condition"}]
-  },
-  {
-    name: "Function",
-    children: [{name: "login"},{name: "insert"},{name: "update"},{name: "delete"},{name: "call"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
-  }/*,
-  {
-    name: "Value",
-    children: [{name: "int"},{name: "string"},{name: "date"},{name: "datetime"},{name: "getValue"},{name: "select"}]
-  },
-  {
-    name: "Condition",
-    children: [{name: "condition"},{name: "and"},{name: "or"},{name: "not"},{name: "eq"},{name: "lt"},{name: "gt"}]
-  }*/
+    children: [
+      {name: "condition"},
+      {
+	name: "Function",
+	children: [{name: "login"},{name: "insert"},{name: "update"},{name: "delete"},{name: "call"}]
+      }
+    ]
+  }
+
 ];
 
 ajweb.editor.dataTypes =[
@@ -132,7 +127,7 @@ ajweb.editor.getModelInfo = function(name){
 
 ajweb.editor.getFuncStore = function(modelName, store){
   if(!store)
-    store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+    store = ajweb.editor.getEmptyStore();
   else {
     store.fetch({
 		  onItem: function(item){
@@ -157,7 +152,7 @@ ajweb.editor.getFuncStore = function(modelName, store){
  */
 ajweb.editor.getGetterStore = function(modelName, store, returnType){
   if(!store)
-    store = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+    store = ajweb.editor.getEmptyStore();
   else {
     store.fetch({onItem: function(item){
 		   store.deleteItem(item);
@@ -210,6 +205,27 @@ ajweb.editor.getNodeAttributes = function(childNode){
   }
 
   return attrs;
+};
+ajweb.editor.getStore =  function(id, label, items){
+    return new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: id ? id : "name",
+	    label : label ? label : "name",
+	    items: items ? items : []
+	  }
+	}
+      );
+};
+ajweb.editor.getEmptyStore =  function(id, label, items){
+  return ajweb.editor.getStore(id, label, []);
+};
+
+ajweb.remove = function(item, array){
+  for(var i = 0; i < array.length; i++){
+    if(array[i] == item)
+      array.splice(i,1);
+    }
 };
 
 ajweb.editor.FONT_SIZE = 7.8;

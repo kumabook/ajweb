@@ -8,10 +8,11 @@ dojo.declare("ajweb.editor.model.StringSelect", ajweb.editor.model.Visible,
 	     getGenerateTagName: function(){
 	       return "string";
 	     },
-	       toXMLElement: function(){
-		 this.tagName = "string";
-		 var node = this.inherited(arguments);
-		 this.tagName = "stringSelect";
-		 return node;
+	     toXMLElement: function(isSave){
+	       if(isSave) return this.inherited(arguments);
+	       this.tagName = "string";
+	       var node = this.inherited(arguments);
+	       this.tagName = "stringSelect";
+	       return node;
 	       }
 	     });

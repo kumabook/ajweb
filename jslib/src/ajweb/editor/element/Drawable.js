@@ -103,76 +103,74 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                    objPoint.style.left = x + "px";
                    return objPoint;
                },
-	       reDraw: function(line){
-/*	       dojo.forEach(this.lines,
-		   function(value, i, a){
-		     if(a[i] == line){
-		       var newLine = this.draw(a[i].start, a[i].end, a[i].label, a[i].color);
-		       this.lineContainerNode.replaceChild(newLine.domNode, a[i].domNode);
+	       reDraw: function(){
+		 dojo.forEach(this.lines,
+		   function(v, i, a){
+		     this.reDrawLine(v);
+		   },
+		   this);
+	       },
+	       reDrawLine: function(line){
+		 dojo.forEach(this.lines,
+		   function(v, i, a){
+		     if(v == line){
+		       var newLine = this.draw(v.start, v.end, v.label, v.color);
+		       this.lineContainerNode.replaceChild(newLine.domNode, v.domNode);
 		       a[i] = newLine;
-		   }
-		 }, this);*/
-		 for(var i = 0; i < this.lines.length; i++){
-		   if(this.lines[i] == line){
-		     var newLine = this.draw(
-		       this.lines[i].start,
-		       this.lines[i].end,
-		       this.lines[i].label,
-		       this.lines[i].color);
-		     this.lineContainerNode.replaceChild(newLine.domNode, this.lines[i].domNode);
-		     this.lines[i] = newLine;
-		   }
-		 }
+		     }
+		   }, this);
 	       },
 	       reDrawChildNode: function(childNode){
-		 for(var i = 0; i < this.lines.length; i++){
-		   if(this.lines[i].start == childNode
-		      || this.lines[i].end == childNode){
-		     this.reDraw(this.lines[i]);
-		   }
-		 }
+		 dojo.forEach(this.lines,
+		   function(v, i ,a){
+		     if(v.start == childNode || v.end == childNode){
+		       this.reDrawLine(v);
+		     }
+		   }, this);
 	       },
 	       replaceNode: function(oldNode, newNode){
-		 var i;
-		 for(i = 0; i < this.lines.length; i++){
-		   if(this.lines[i].start == oldNode){
-		     this.lines[i].start = newNode;
-		     this.reDraw(this.lines[i]);
-		   }
-		 }
-		 for(i = 0; i < this.lines.length; i++){
-		   if(this.lines[i].end == oldNode){
-		     this.lines[i].end = newNode;
-		     this.reDraw(this.lines[i]);
-		   }
-		 }
+		 dojo.forEach(this.lines,
+		   function(v, i ,a){
+		     if(v.start == oldNode){
+		       v.start = newNode;
+		       this.reDrawLine(v);
+		     }
+		   }, this);
+		 dojo.forEach(this.lines,
+		   function(v, i ,a){
+		     if(v.end == oldNode){
+		       v.end = newNode;
+		       this.reDrawLine(v);
+		     }
+		   }, this);
 	       },
 	       /**
 		* あるノードを取り除いて、関連するエッジも取り除く。つなぎ替えも行う。
 		*/
 	       removeNode: function(node){
-		 for(var i = 0; i < this.lines.length; i++){
-		   if(this.lines[i].end == node){
-		     if(i==this.lines.length-1){//最後のノードなら取り除くだけ
-		       this.lineContainerNode.removeChild(this.lines[i].domNode);
-		       this.lines.splice(i,1);
-		     }
-		     else {
-		       for(var j = 0; j < this.lines.length; j++){//つなぎかえを行う
-			 if(this.lines[j].start == node){
-			   this.lines[j].start = this.lines[i].start;
-
-			   this.lines[j].end.style.top = this.lines[i].end.style.top;
-			   this.lines[j].end.style.left = this.lines[i].end.style.left;
-
-			   this.lineContainerNode.removeChild(this.lines[i].domNode);
-			   this.reDraw(this.lines[j]);
-			   this.lines.splice(i,1);
+		 this.lines =
+		   dojo.filter(this.lines,
+		   function(v, i ,a){
+		     if(v.end == node){
+		       if(i==a.length-1){//最後のノードなら取り除くだけ
+			 this.lineContainerNode.removeChild(v.domNode);
+			 return false;
+		       }
+		       else {
+			 for(var j = 0; j < a.length; j++){//つなぎかえを行う
+			   if(a[j].start == node){
+			     a[j].start = v.start;
+			     a[j].end.style.top = v.end.style.top;
+			     a[j].end.style.left = v.end.style.left;
+			     this.lineContainerNode.removeChild(v.domNode);
+			     return false;
+			   }
 			 }
 		       }
 		     }
-		   }
-		 }
+		     return true;
+		   }, this);
+		 this.reDraw();
 	       },
 	       startup: function(){
 		 this.inherited(arguments);

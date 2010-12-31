@@ -5,7 +5,8 @@ dojo.provide("ajweb.editor.model.ParamCondition");
 dojo.declare("ajweb.editor.model.ParamCondition", ajweb.editor.model.Visible,
   /** @lends ajweb.model.ParamCondition.prototype */
 	     {
-	       toXMLElement: function(xml){
+	       toXMLElement: function(isSave){
+		 if(isSave) return this.inherited(arguments);
 		 this.tagName = "condition";
 		 var node = this.inherited(arguments);
 		 this.tagName = "paramCondition";

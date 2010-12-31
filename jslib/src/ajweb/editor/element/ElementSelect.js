@@ -30,36 +30,22 @@ dojo.declare("ajweb.editor.element.ElementSelect",
     createDom: function(properties){
       var that = this;
 
-      var store = new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: "name",
-	    label : "name",
-	    items: []
-	  }
-	}
-      );
+      var store = ajweb.editor.getEmptyStore();
 
       if(that.model.properties.type == "child"){
 	var parentModel = that.model.application.getElementByPropId(that.model.properties.target);
-	for(var i = 0; i < parentModel.children.length; i++){
-	    store.newItem({name: parentModel.children[i].properties.id});
-	}
+	store = parentModel.getChildrenStore(store);
       }
       else if(that.model.properties.type == "data"){
 	var parentModel = that.model.application.getDatabasesModel();
-	for(var i = 0; i < parentModel.children.length; i++){
-	  if(parentModel.children[i].tagName == "database"){
-	    store.newItem({name: parentModel.children[i].properties.id});
-	  }
-	}
+	store = parentModel.getChildrenStore(store);
       }
       else if(that.model.properties.type == "widget"){
       }
       else if(that.model.properties.type == "all"){
       }
       else {//tagName で指定
-	
+
       }
 
       this.widget = dijit.form.Select(
@@ -69,7 +55,7 @@ dojo.declare("ajweb.editor.element.ElementSelect",
 	 onChange: function(){
 	   that.model.properties._character = this.value;
 	 }
-	});      
+	});
       return this.widget.domNode;
     },
     removeDom: function(){

@@ -9,5 +9,5 @@ dojo.declare("ajweb.editor.model.Condition", ajweb.editor.model.Visible,
 	if(this.parent.tagName == "branch"){
 	  this.parent.remove();
 	}
-      },
+      }
     });

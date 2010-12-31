@@ -122,7 +122,7 @@ dojo.declare("ajweb.editor.element.Condition",
       var initLine = this.container.lines[0];
       if(initLine.start == this.domNode){
 	initLine.start = this.container.conditionContainer.domNode;//線のつなぎかえ
-	this.container.reDraw(initLine);
+	this.container.reDrawLine(initLine);
 	this.container.conditionContainer.domNode.style.display = "";//ドロップ要素を表示
       }
       //brachの子要素の場合

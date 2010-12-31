@@ -62,7 +62,6 @@ dojo.declare("ajweb.editor.element.Database",
 	  }
 	});
       this.tablename.innerHTML  = this.model.properties.tablename;
-
       this.domNode.style.height = (this.model.children.length) * 30 + 35 + "px";
     },
     removeDom: function(){

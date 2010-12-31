@@ -6,10 +6,13 @@ dojo.require("dojox.widget.Dialog");
 dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.Login");
 dojo.declare("ajweb.editor.element.Login",
-	     [ajweb.editor.element.Element,
+	     [
+	       ajweb.editor.element.Func
+	     /*  ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable,
 	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Removable],
+	      ajweb.editor.element.Removable*/
+	     ],
   /** @lends ajweb.editor.element.Login.prototype */
   {
     /**
@@ -53,12 +56,12 @@ dojo.declare("ajweb.editor.element.Login",
 	    dialog.containerNode.appendChild(paramContainer.domNode);
 	    that.containerNode = paramContainer.domNode;
 	    that.dialog = dialog;
-	
+
 	    if(that.model.children.length > 0)
 	      that.model.reCreateParamDom();
 	    else
 	      that.model.createParam();
-	
+
 	    dialog.show();
 	    dialog.set({style: {left: "200px", top: parseInt(dialog.domNode.style.top) - 50 + "px"}});
 
@@ -68,12 +71,12 @@ dojo.declare("ajweb.editor.element.Login",
 	});
       this.widget.element = this;
       //ドロップ要素を更新
-      
+
       if(this.model.parent.element)
 	this.model.parent.element.widget.set(
 	  { style: {
 	      top: this.model.parent.properties.top,
-	      left: parseInt(this.model.parent.properties.left) + 250 + "px" 
+	      left: parseInt(this.model.parent.properties.left) + 250 + "px"
 	    }
 	  });
 
@@ -87,40 +90,8 @@ dojo.declare("ajweb.editor.element.Login",
 	  }
 	});
     },
-    removeDom: function(){
-      var lines = this.container.lines;
-      for(var i = 0; i < lines.length; i++){
-	if(lines[i].end == this.domNode){
-	  if(i==lines.length-1){
-	    this.container.domNode.removeChild(lines[i].domNode);
-	    lines.splice(i);
-	  }
-	  else {
-	    for(var j = 0; j < lines.length; j++){
-	      if(lines[j].start == this.domNode){
-		lines[i].end = lines[j].end;
-		this.container.domNode.removeChild(lines[j].domNode);
-		lines.splice(j,1);
-		this.container.reDraw(lines[i]);
-	      }
-	    }
-	  }
-	}
-      }
-      this.widget.destroyRecursive();
-    },
-    createMoveTriggerDomNode: function(){
-      return this.domNode;
-    },
-
-    onDrop: function(){
-      this.inherited(arguments);
-    },
     startup: function(){
       this.inherited(arguments);
-      var that = this;
-      this.widget.startup();
-      this.model.parent.element.addNewNode(this.domNode);
     }
   }
 );

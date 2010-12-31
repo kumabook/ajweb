@@ -77,13 +77,11 @@ dojo.declare("ajweb.editor.model.Model", null,
      * モデルを削除する。
      */
     remove: function(){
-      while(this.children.length != 0){
+      while(this.children.length != 0){//childrenをremove
 	this.children[0].remove();
       }
-      for(var i = 0; i < this.parent.children.length; i++){
-	if(this.parent.children[i] == this)
-	  this.parent.children.splice(i,1);
-      }
+      //親から自分への参照を消す
+      ajweb.remove(this, this.parent.children);
     },
     /**
      * モデルを表すDOMノードを削除する。モデルを削除するタイミングでよびだされる。
@@ -97,100 +95,95 @@ dojo.declare("ajweb.editor.model.Model", null,
      */
     startup: function(){
     },
+    /**
+     * propertyListから外部のモデルを参照しているpropertyのリスト取得してthis._refにセットする
+     */
     setRefProperty: function(){
       this._ref = {};
-      for(var i = 0; i < this.propertyList.length; i++){
-	if(this.propertyList[i].ref){
-	  var refProp = this.propertyList[i].refProp;
-	  this._ref[refProp] = this.application.getElementByPropId(this.properties[this.propertyList[i].name]);	  
-	}
-      }
+      dojo.forEach(this.propertyList,
+	function(v, i ,a){
+	  if(v.ref && this._ref){
+	    var refProp = v.refProp;
+	    this._ref[refProp] = this.application.getElementByPropId(this.properties[v.name]);
+	  }
+      }, this);
     },
-    updateRefProperty: function(model){//propertiesListから自動的に判定してもよい
-     for(var i = 0; i < this.propertyList.length; i++){
-       if(this.propertyList[i].ref){
-	 var refProp = this.propertyList[i].refProp;
-	 if(this._ref[refProp] == model){
-	   this.properties[this.propertyList[i].name] = model.properties[refProp];
-	   this.updateDom();
+    /**
+     * modelを参照しているプロパティがあったら、変更を反映する。
+     */
+    updateRefProperty: function(model){
+      dojo.forEach(this.propertyList,
+	function(v, i ,a){
+	  if(v.ref){
+	    var refProp = v.refProp;
+	    if(this._ref[refProp] == model){
+	      this.properties[v.name] = model.properties[refProp];
+	      this.updateDom();
 	   //console.log("update  " + this.id + "  " +  this.propertyList[i].name + "   " + refProp);
-	 }
-       }
-     }
+	    }
+	  }
+	}, this);
    },
     /**
     * XMLに変換してXMLElementを返す
     * @param {XMLDocument} ウィジェットタイプ
     */
-    toXMLElement: function(){
+    toXMLElement: function(isSave){
       var xml = ajweb.xml._xml;//createDocument("ajml");
       var node =  xml.createElement(this.tagName);
-      for(var i = 0; i < this.propertyList.length; i++){
-	var propertyName = typeof this.propertyList[i] == "string"
-	  ? this.propertyList[i] : this.propertyList[i].name;
-	if(propertyName != "tagName" && propertyName.charAt(0) != "_")
+	var propertyList = dojo.clone(this.propertyList);
+      if(!isSave){
+	propertyList = propertyList ? propertyList : [];
+	propertyList.push("top");
+	propertyList.push("left");
+      }
+      dojo.forEach(propertyList,
+	function(v, i ,a){
+	  var propertyName = typeof v == "string" ? v : v.name;
+	  if(propertyName != "tagName" && propertyName.charAt(0) != "_")
 	  if(this.properties[propertyName])
 	    node.setAttribute(propertyName, this.properties[propertyName]);
-      }
-      for(i = 0; i < this.children.length; i++){
-	var child = this.children[i].toXMLElement(xml);
-	if(child)
-	  node.appendChild(child);
-      }
+	}, this);
+      dojo.forEach(this.children,
+	function(v, i ,a){
+	  var child = v.toXMLElement(isSave);
+	  if(child)
+	    node.appendChild(child);
+	}, this);
       if(this.properties._character)
 	node.appendChild(document.createTextNode(this.properties._character));
-      return node;
-    },
-    /**
-     * DOMElementの位置なども含めた、xml要素を返す
-     */
-    toSaveXMLElement: function(xml){
-      var node =  xml.createElement(this.tagName);
-      var propertyList = dojo.clone(this.propertyList);
-
-      propertyList = propertyList ? propertyList : [];
-      propertyList.push("top");
-      propertyList.push("left");
-
-      for(var i = 0; i < propertyList.length; i++){
-	var propertyName = typeof propertyList[i] == "string"
-	  ? propertyList[i] : propertyList[i].name;
-	if(this.properties[propertyName])
-	  node.setAttribute(propertyName, this.properties[propertyName]);
-      }
-
-      for(i = 0; i < this.children.length; i++){
-	var child = this.children[i].toSaveXMLElement(xml);
-	if(child)
-	  node.appendChild(child);
-      }
-
-      if(this.properties._character)
-	node.appendChild(document.createTextNode(this.properties._character));
-
       return node;
     },
     xmlToModel: function(node, doc, isDisplay){
       var childNode;
-      for(var i = 0; i < node.childNodes.length; i++){
-	childNode = node.childNodes[i];
-	if(childNode instanceof Element){
-	  var attrs = ajweb.editor.getNodeAttributes(childNode);
-	  var child, container = this.element;
-	  if(childNode.tagName == "databases" ||childNode.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	    container = this.editor.centerTc;
+      dojo.forEach(node.childNodes,
+	function(v, i ,a){
+	  if(v instanceof Element){
+	    var attrs = ajweb.editor.getNodeAttributes(v);
+	    var child, container = this.element;
+	    if(v.tagName == "databases" || v.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
+	      container = this.editor.centerTc;
+	    }
+	    if(v.tagName == "item"){
+	      //	    console.log("item" + isDisplay + "  " + container);
+	      child = this.editor.createModel(v.tagName, attrs, this, container, true);
+	      child.xmlToModel(v, doc, true);
+	    }
+	    else {
+	      child = this.editor.createModel(v.tagName, attrs, this, container, isDisplay);
+	      child.xmlToModel(v, doc, isDisplay);
+	    }
 	  }
-	  if(childNode.tagName == "item"){
-	    console.log("item" + isDisplay + "  " + container);
-	    child = this.editor.createModel(childNode.tagName, attrs, this, container, true);
-	    child.xmlToModel(childNode, doc, true);
-	  }
-	  else {
-	    child = this.editor.createModel(childNode.tagName, attrs, this, container, isDisplay);
-	    child.xmlToModel(childNode, doc, isDisplay);	    
-	  }
-	}
+	}, this);
+    },
+    getChildrenStore: function(store){
+      if(!store)
+	store = ajweb.editor.getEmptyStore("id", "name");
+
+      for(var i = 0; i < this.children.length; i++){
+	store.newItem({name: this.children[i].properties.id, id: this.children[i].properties.id, jsId: this.children[i].id});
       }
+      return store;
     }
   }
 );

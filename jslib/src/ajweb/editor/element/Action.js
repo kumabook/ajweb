@@ -53,9 +53,6 @@ dojo.declare("ajweb.editor.element.Action",
 	    border: "dotted 1px #769DC0"
 	  }
 	});
-/*      if(this.model.children.length > 0){
-	this.widget.style.display = "none";
-      }*/
       this.isDisplay = true;
       return this.widget.domNode;
     },
@@ -97,7 +94,7 @@ dojo.declare("ajweb.editor.element.Action",
 	if(this.container.lines[i].start == this.domNode
 	   || this.container.lines[i].end == this.domNode){
 	  this.container.lines[i].end = newNode;
-	  this.container.reDraw(this.container.lines[i]);
+	  this.container.reDrawLine(this.container.lines[i]);
 	}
       }
       if(isBranch){
@@ -121,7 +118,7 @@ dojo.declare("ajweb.editor.element.Action",
     onDrop: function(name){
       if(name == "condition")
 	name = "branch";
-      var newModel = this.model.editor.createModel(
+      var newModel = this.model.editor.newModel(
 	name,
 	{
 	  top: ajweb.editor.mousePosition.y - ajweb.editor.getY(this.container.domNode),
@@ -131,7 +128,7 @@ dojo.declare("ajweb.editor.element.Action",
 	this.container
       );
       if(name == "branch"){
-	var thenModel = newModel.editor.createModel(
+	var thenModel = newModel.editor.newModel(
 	  "then",
 	  {
 	    top :(parseInt(newModel.properties.top) - 50) + "px",
@@ -140,7 +137,7 @@ dojo.declare("ajweb.editor.element.Action",
 	  newModel,
 	  this.container
 	);
-	var elseModel = newModel.editor.createModel(
+	var elseModel = newModel.editor.newModel(
 	  "else",
 	  {
 	    top :(parseInt(newModel.properties.top) + 50) + "px",
@@ -149,7 +146,7 @@ dojo.declare("ajweb.editor.element.Action",
 	  newModel,
 	  this.container
 	);
-	var conditionModel = newModel.editor.createModel(
+	var conditionModel = newModel.editor.newModel(
 	  "condition",
 	  {top: newModel.properties.top, left: newModel.properties.left},
 	  newModel,
@@ -161,7 +158,6 @@ dojo.declare("ajweb.editor.element.Action",
     startup: function(){
       this.inherited(arguments);
       this.widget.startup();
-//      this.updateDom(this.model.properties);
     }
   }
 );

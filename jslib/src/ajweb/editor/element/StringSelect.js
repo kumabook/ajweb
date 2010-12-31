@@ -29,21 +29,13 @@ dojo.declare("ajweb.editor.element.StringSelect",
      */
     createDom: function(properties){
       var that = this;
+      var store;
 
-      var store = new dojo.data.ItemFileWriteStore({ data: {
-						       identifier: "name",
-						       label : "name",
-						       items: [] }
-						   });
-
+      //todo modelから
       if(that.model.properties.type == "data"){//databaseのスキーマを参照
 	if(that.model.properties.target){
 	  var databaseModel = this.model.application.getElementByPropId(that.model.properties.target);
-	  for(var i = 0; i < databaseModel.children.length; i++){
-	    if(databaseModel.children[i].tagName == "property"){
-	      store.newItem({name: databaseModel.children[i].properties.name});
-	    }
-	  }
+	  store = databaseModel.getSchemeStore();
 	}
       }
 
@@ -54,7 +46,7 @@ dojo.declare("ajweb.editor.element.StringSelect",
 	 onChange: function(){
 	   that.model.properties._character = this.value;
 	 }
-	});      
+	});
       return this.widget.domNode;
     },
     removeDom: function(){
