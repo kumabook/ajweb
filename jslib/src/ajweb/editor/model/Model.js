@@ -65,12 +65,11 @@ dojo.declare("ajweb.editor.model.Model", null,
 //      if(this.parent instanceof ajweb.editor.model.AbstractModel)
       if(this.parent!=undefined)
 	this.parent.children.push(this);
-
-    /**
-       * イベントリストを保持するcenterTc
+      /**
+       * プロジェクトエディタ上のラベル
        */
-      this.eventTc = opt.eventTc;
-      this.projectStore = opt.projectStore;
+      this.projLabel = opt.projLabel ? opt.projLabel : this.properties.id;
+
       ajweb.addModel(this);
     },
     /**

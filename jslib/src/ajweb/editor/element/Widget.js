@@ -1,12 +1,14 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.Movable");
+dojo.require("ajweb.editor.element.Menuable");
 dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Widget");
 dojo.declare("ajweb.editor.element.Widget",
 	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.Movable
+	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Menuable
 	     ],
   /** @lends ajweb.editor.element.Widget.prototype */
   {

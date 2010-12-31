@@ -46,7 +46,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
     /**
      * ドラッグで移動可能にする
      */
-    enableDragMove: function(){//改良の余地あり
+    enableDragMove: function(){//todo 改良の余地あり
     //		 console.log(this.id + "   enableDragMove");
 
       this.drag_move_connection
@@ -68,8 +68,15 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	  if(!this.moveDomNode.style.height) height = 0;
 	  else  height = parseInt(this.moveDomNode.style.height);
 
-	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
-	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
+	  var container_width = this.moveContainerDomNode.scrollWidth ? this.moveContainerDomNode.scrollWidth :
+	      parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
+	  var container_height = this.moveContainerDomNode.scrollHeight ? this.moveContainerDomNode.scrollHeight :
+	      parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
+/*	  console.log(this.moveContainerDomNode.scrollWidth);
+	  console.log(this.moveContainerDomNode.scrollLeft);
+	  console.log(this.moveContainerDomNode.offsetWidth);
+	  console.log(this.moveContainerDomNode.offsetLeft);*/
+
 	  var move = function(e){
 	    var _x = e.clientX + left;
 	    var _y = e.clientY + top;
@@ -110,8 +117,12 @@ dojo.declare("ajweb.editor.element.Movable", null,
 						  e.preventDefault();
 						  e.stopPropagation();
 						});
-	  e.preventDefault();
-	  e.stopPropagation();
+
+	  if(this.menu)
+	    if((ajweb.Browser.IE && e.button != 1) || e.button != 0)
+	      this.menu._openMyself({target: this.menuTriggerDomNode});
+	    e.preventDefault();
+	    e.stopPropagation();
 	});
     },
     /**
@@ -121,8 +132,8 @@ dojo.declare("ajweb.editor.element.Movable", null,
       dojo.disconnect(this.drag_move_connection);
     },
     startup: function(){
-      this.enableDragMove();
       this.inherited(arguments);
+      this.enableDragMove();
     }
   }
 );

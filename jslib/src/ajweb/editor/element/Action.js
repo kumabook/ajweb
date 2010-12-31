@@ -30,8 +30,7 @@ dojo.declare("ajweb.editor.element.Action",
       this.isDisplay = false;
     },
     createInitLine: function(){
-      var conditionModel = this.model.parent.getCondition();
-      var startDom = conditionModel ? conditionModel.element.domNode : this.model.parent.element.dndDomNode;
+      var startDom =  this.model.parent.element.dndDomNode;
       this.line = this.container.draw(startDom, this.domNode);
       this.container.lines.push(this.line);
       this.container.domNode.appendChild(this.line.domNode);

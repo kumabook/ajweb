@@ -41,8 +41,8 @@ dojo.declare("ajweb.editor.element.Event", [
 	  doLayout: false,
 	  style:{
 	    position: "absolute",
-	    top: "0px",
-	    left: "0px"
+	    top: "0px", left: "0px"
+//	    overflowX: "auto"
 	  },
 	  onClose: function(){ that.model.remove();}
 	});
@@ -65,9 +65,9 @@ dojo.declare("ajweb.editor.element.Event", [
 	  }
 	});
       //すでに存在する場合は表示しない。
-      if(this.model.getCondition()){
+/*      if(this.model.getCondition()){
 	this.conditionContainer.domNode.style.display = "none";
-      }
+      }*/
 
       this.widget.domNode.appendChild(this.conditionContainer.domNode);
       return this.widget.domNode;
@@ -105,6 +105,9 @@ dojo.declare("ajweb.editor.element.Event", [
     },
     startup: function(){
       this.inherited(arguments);
+//      this.domNode.parentNode.style.height = this.domNode.style.height;
+//      this.domNode.style.height = this.domNode.parentNode.style.height;
+//      this.domNode.parentNode.style.overflow = "scroll";
     }
   }
 );

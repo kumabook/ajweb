@@ -88,22 +88,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       });
     },
     /**
-     * イベントモデルエディター上にこの要素のイベントリストを作成する
-     */
-    createEventModel: function(){
-      this.clearEventView();
-
-      for(var i = 0; i < this.eventList.length; i++){
-	var event = this.editor.createModel("event",
-		      { title: this.eventList[i], target: this.properties.id, type: this.eventList[i]},
-		      this.application.events, this.editor.eventTc);
-	this.editor.createModel("condition", {top: "25px", left: "10px"}, event, event.element);
-	this.editor.createModel("action", {top: "50px", left: "150px"}, event, event.element);
-      }
-      this.editor.eventTc.currentModel = this;
-    },
-
-    /**
      * イベントモデルエディター上にこの要素のイベントリスト
      */
     updateEventView : function(){
@@ -129,7 +113,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	     return function(){
 	       var event = that.editor.newModel("event",
 			{ title: eventName, target: that.properties.id, type: eventName},
-			that.application.events, that.editor.eventTc);
+			that.application.getEventsModel(), that.editor.eventTc);
 //	     that.editor.newModel("condition", {top: "25px", left: "10px"}, event, event.element);
 	     that.editor.newModel("action", {top: "50px", left: "150px"}, event, event.element);
 	     };

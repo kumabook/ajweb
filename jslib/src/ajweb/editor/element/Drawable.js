@@ -160,6 +160,7 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 			 for(var j = 0; j < a.length; j++){//つなぎかえを行う
 			   if(a[j].start == node){
 			     a[j].start = v.start;
+			     //位置をずらす
 			     a[j].end.style.top = v.end.style.top;
 			     a[j].end.style.left = v.end.style.left;
 			     this.lineContainerNode.removeChild(v.domNode);

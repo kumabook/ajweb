@@ -46,7 +46,8 @@ dojo.declare("ajweb.editor.element.Panel",
 	{
 	  style:{
 	    position: "absolute",
-	    border: "dashed 1px black"
+	    border: "dashed 1px black",
+	    overflow: "hidden"
 	  }
 	});
       this.widget.domNode.appendChild(this.panel.domNode);
@@ -55,17 +56,6 @@ dojo.declare("ajweb.editor.element.Panel",
     removeDom: function(){
       this.model.editor.centerTc.removeChild(this.widget);
       this.widget.destroyRecursive();
-    },
-    createMenu: function(){
-      var that = this;
-      var menu = new dijit.Menu();
-      menu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
-      menu.addChild(new dijit.MenuItem({label: "削除",
-					disabled: this.model.properties.id == "rootPanel" ? true: false,
-					onClick: function(){
-					  that.model.remove();
-					}}));
-      return menu;
     },
     updateDom: function(){
 

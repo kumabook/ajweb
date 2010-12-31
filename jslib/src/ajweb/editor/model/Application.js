@@ -5,19 +5,22 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
   /** @lends ajweb.editor.model.Application.prototype */
   {
     constructor: function(){
-      if(this.tagName == "application")
-	this.app = this.editor.projectStore.newItem(
-	  {name: this.properties.name, modelType: "application", modelId: this.id});
-      this.editor.projectStore.save();
       this.application = this;
+      this.projLabel = this.properties.name;
+    },
+    getEventsModel: function(){
+      for(var i = 0; i < this.children.length; i++){
+	if(this.children[i].tagName == "events")
+	  return this.children[i];
+      }
+      return null;
     },
     getDatabasesModel: function(){
-      var databases;
       for(var i = 0; i < this.children.length; i++){
 	if(this.children[i].tagName == "databases")
-	databases = this.children[i];
+	  return this.children[i];
       }
-      return databases;
+      return null;
     },
     getDatabaseModels: function(){
       var databases = this.getDatabasesModel();

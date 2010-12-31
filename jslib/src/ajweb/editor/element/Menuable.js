@@ -15,11 +15,9 @@ dojo.declare("ajweb.editor.element.Menuable", null,
       this.menuTriggerDomNode = this.createMenuTriggerDomNode();
 
       /**
-       * 右クリックメニューのDOMノード
+       * 右クリックメニューのdijit.Menuオブジェクト
        */
       this.menu = this.createMenu();
-
-      this.menuAble();
      },
     /**
      * 移動用のDOM要素を返す。サブクラスでオーバーライド
@@ -30,11 +28,15 @@ dojo.declare("ajweb.editor.element.Menuable", null,
     createMenu :function(){
       var that = this;
       var menu = new dijit.Menu();
-      menu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
-      menu.addChild(new dijit.MenuItem({label: "削除", 
-						    onClick: function(){
-						      that.model.remove();
-						    }}));
+      menu.addChild(new dijit.MenuItem({label: "コンテキストメニュー"
+//					+ this.model.tagName
+					+ " (" +this.model.id + ")",
+					disabled: true
+				       }));
+      menu.addChild(new dijit.MenuItem({label: "削除",
+	onClick: function(){
+	  that.model.remove();
+	}}));
       return menu;
     },
     menuAble :function(){
@@ -44,6 +46,7 @@ dojo.declare("ajweb.editor.element.Menuable", null,
       this.menu.unBindDomNode(this.menuTriggerDomNode);
     },
     startup: function(){
+      this.menuAble();
       this.inherited(arguments);
     }
   }

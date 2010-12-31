@@ -188,7 +188,7 @@ dojo.declare(
 	  dropDown: this.addEventMenu,
 	  style: {position: "absolute", top: "3px",
 		  left: (this.eventTarget.label.length * ajweb.editor.FONT_SIZE)
-		  +ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT+"px"}}
+		    +ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT+"px"}}
       );
 
       this.eventTc.placeAt(this.eventCp.domNode);
@@ -243,6 +243,7 @@ dojo.declare(
 	  showRoot: false,
 	  model: this.toolboxTreeModel,
 	  dndController: "dijit.tree.dndSource",
+	  //todo アイコンをそれっぽいのに
 	  getIconClass: function(item, opened){
 	    return (!item || this.model.mayHaveChildren(item)) ?
 	      (opened ? "dijitFolderOpened" : "dijitFolderClosed") : "dijitLeaf";
@@ -310,7 +311,7 @@ dojo.declare(
        * プロジェクトエクスプローラー用のリストをのdojoストア
        * @type dojo.data.ItemFileWriteStore
        */
-      this.projectStore = new dojo.data.ItemFileWriteStore({data:{identifier: "modelId",label: "name",items: []}});
+      this.projectStore = new dojo.data.ItemFileWriteStore({data:{identifier: "jsId" ,label: "name",items: []}});
       this.projectTreeModel = new dijit.tree.ForestStoreModel(
 	{
 	  store: this.projectStore,
@@ -324,9 +325,9 @@ dojo.declare(
 	  model: this.projectTreeModel,
 	  onDblClick : function(item, node, evt){
 	    var children = that.centerTc.getChildren();
-	    var id = item.modelId;
+	    var id = item.jsId;
 	    for(var i = 0; i < children.length ; i++){
-	      if(children[i].modelId == id){
+	      if(children[i].jsId == id){
 		that.centerTc.selectChild(children[i]);
 		return;
 	      }
@@ -339,6 +340,7 @@ dojo.declare(
 		that.centerTc.selectChild(model.element.widget);
 	      }
 	},
+//todo アイコンをそれっぽいのに
 	getIconClass: function(item, opened){
 	  return (!item || this.model.mayHaveChildren(item)) ?
 	    (opened ? "dijitFolderOpened" : "dijitFolderClosed") : "dijitLeaf";
@@ -428,7 +430,7 @@ dojo.declare(
 	  }
 	});
       this.contextMenu.bindDomNode(this.projectTree.domNode);
-      this.contextMenu.addChild(new dijit.MenuItem({label: "右クリックメニュー" }));
+      this.contextMenu.addChild(new dijit.MenuItem({label: "コンテキストメニュー", disabled: true}));
 
     },
     /**
@@ -480,6 +482,7 @@ dojo.declare(
       var xml =  ajweb.xml.parse(ajml);
       var rootElement = xml.documentElement;
       var applicationNode, appName;
+
       for(var i = 0; i < rootElement.childNodes.length; i++){
 	var child = rootElement.childNodes[i];
 	if(child instanceof Element && child.tagName == "application"){
@@ -490,17 +493,11 @@ dojo.declare(
 	  }
 	}
       }
-      var application =  new ajweb.editor.model.Application(
-	{
-	  id: "application_" + ajweb.editor.modelCount("application"),
-	  tagName: "application",
-	  properties: { name: appName},
-	  propertyList: ["name"],
-	  editor: this
-	});
+      var application = this.createModel("application", {name: appName}, null, null);
+
       this.application = application;
       this.applications.push(application);
-//      var events = this.newModel("events", {}, application);
+
       application.xmlToModel(applicationNode, xml);
 
       var that = this;
@@ -629,20 +626,12 @@ dojo.declare(
 	  properties: defaultProperties,
 	  propertyList: modelInfo.propertyList,
 	  eventList: modelInfo.eventList,
+	  projLabel: modelInfo.projLabel,
 	  parent: parent,
-	  application: parent.application,
+	  application: parent ? parent.application : null,
 	  container: container,
 	  editor: this
 	}, display);
-
-/*      if(ModelClass == "Widget" || ModelClass == "Database"){
-	parent.application[ModelClass + "Store"].newItem({modelId: id, name: defaultProperties.id});
-      }*/
-
-
-      if(name == "events")
-	parent.application.events = newModel;
-      newModel.label = modelInfo.label ? modelInfo.label : newModel.properties.id;
       this.addProjectTree(newModel);
       newModel.startup();
       return newModel;
@@ -650,9 +639,6 @@ dojo.declare(
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
       model.setRefProperty();
-      if(model instanceof ajweb.editor.model.Eventable){
-//	model.createEventModel();
-      }
       return model;
     },
     /**
@@ -664,24 +650,33 @@ dojo.declare(
       treeModel.getChildren(item,
 	function(items){
 	  for(var i = 0; i < items.length; i++){
-	    if(items[i].modelId == model.parent.id){
-	      treeModel.newItem({name: model.label, modelType: model.tagName, modelId: model.id}, items[i]);
+	    if(items[i].jsId == model.parent.id){
+	      treeModel.newItem({name: model.projLabel, id: model.properties.id,
+				 jsId: model.id, modelType: model.tagName},
+				items[i]);
 	      return;
 	    }
 	    addTreeModel(model, items[i], treeModel);
 	  }
 	});
       };
-      this.projectTreeModel.getRoot(
-	function(item){
-	  addTreeModel(model, item, that.projectTreeModel);
-	}
-      );
+
+	this.projectTreeModel.getRoot(
+	  function(item){
+	    if(model.parent)//applicationモデル
+	      addTreeModel(model, item, that.projectTreeModel);
+	    else
+	      that.projectTreeModel.newItem({name: model.projLabel, id: model.properties.id,
+				 jsId: model.id, modelType: model.tagName},item);
+	  }
+	);
+
+
     },
     updateProjectTree: function(model){
-           var store = this.projectStore;
+      var store = this.projectStore;
       this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
-					       store.setValue(item, "name", model.label);
+					       store.setValue(item, "name", model.projLabel);
 					     }});
     },
     removeProjectTree: function(model){

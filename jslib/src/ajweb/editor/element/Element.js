@@ -52,7 +52,7 @@ dojo.declare("ajweb.editor.element.Element", null,
 	  this.container.containerNode.appendChild(this.domNode);
 
       }
-      else　{// centerTcの場合 
+      else　{// centerTcの場合
 	this.container.addChild(this.widget);
 	this.container.selectChild(this.widget);
       }
@@ -92,7 +92,7 @@ dojo.declare("ajweb.editor.element.Element", null,
      * 所属するモデル側で自動的に呼び出される。
      */
     startup: function(){
-      if(!this instanceof ajweb.editor.element.Movable){
+      if(!(this.enableDragMove)){
 	dojo.connect(this.domNode, "onmousedown", this.model, this.model.updatePropertiesView);
 	dojo.connect(this.domNode, "onmousedown", this.model, this.model.updateEventView);
       }

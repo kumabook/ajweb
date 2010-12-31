@@ -115,8 +115,6 @@ dojo.declare("ajweb.editor.element.Condition",
     },
     removeDom: function(){
       this.widget.destroyRecursive();
-
-
       var i;
       //eventの子要素の場合
       var initLine = this.container.lines[0];
@@ -155,6 +153,15 @@ dojo.declare("ajweb.editor.element.Condition",
     startup: function(){
       this.inherited(arguments);
       this.widget.startup();
+      var parent = this.model.parent;
+      if(parent.tagName == "branch" && parent.children.length > 0){
+	this.container.replaceNode(this.model.parent.element.domNode, this.domNode);
+	parent.element.domNode.style.display = "none";
+      }
+      else if(parent.tagName == "event" && parent.getCondition()){
+	this.container.replaceNode(parent.element.dndDomNode, this.domNode);
+	parent.element.dndDomNode.style.display = "none";
+      }
     }
   }
 );

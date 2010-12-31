@@ -34,7 +34,9 @@ dojo.declare("ajweb.editor.element.Button",
       this.widget = new dijit.form.Button(
 	{style:{position: "absolute",
 		top: parseInt(properties.top)-3 + "px",left: parseInt(properties.left)-3+ "px"},
-	 label: properties.content});
+	 label: properties.content,
+	 disabled: true
+	});
       return this.widget.domNode;
     },
     createMenuTriggerDomNode: function(){

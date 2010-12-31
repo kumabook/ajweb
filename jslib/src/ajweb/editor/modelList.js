@@ -14,7 +14,7 @@ ajweb.editor.MODELLIST =  [
   {
     name:"application",
     modelType: "application",
-    modelClass: "Model",
+    modelClass: "Application",
     acceptModelType: ["interfaces", "databases", "events"],
     propertyList: ["name"],
     defaultProperties: {}
@@ -26,7 +26,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["widget"],
     propertyList: [],
     defaultProperties: {},
-    label: "UIモデル"
+    projLabel: "UIモデル"
   },
   {
     name:"databases",
@@ -37,7 +37,7 @@ ajweb.editor.MODELLIST =  [
     propertyList: ["tagName", "id"],
     eventList: [],
     defaultProperties: { tagName: "databases"},
-    label: "データモデル"
+    projLabel: "データモデル"
   },
   {
     name:"events",
@@ -47,7 +47,7 @@ ajweb.editor.MODELLIST =  [
     propertyList: [],
     eventList: [],
     defaultProperties: {},
-    label: "イベントモデル"
+    projLabel: "イベントモデル"
   },
 
 
