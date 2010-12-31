@@ -4,20 +4,26 @@ dojo.declare("ajweb.editor.element.Drawable", null,
 	       constructor: function(){
 		 this.nodes = [];
 		 this.lines = [];
+		 this.lineContainerNode = this.createLineContainerNode();
 	       },
 	       lineWidth: "1px",//線の太さ
-	       
+	       /**
+		* lineを格納するコンテナノード
+		*/
+	       createLineContainerNode: function(){
+		 return this.domNode;
+	       },
 	       draw: function drawLine(start, end, label, color){
 		 var startDom, endDom;
 		 label = label ? label : "";
 		 color = color ? color : "black";
 
 		 if(start.style){
-		   startDom = start;		  
+		   startDom = start;
 		   start = {};
 		   start.x = parseInt(startDom.style.left) + parseInt(startDom.style.width);
 		   start.y = parseInt(startDom.style.top) +
-		     parseInt(startDom.style.height ? startDom.style.height : "15px")/2;
+		   parseInt(startDom.style.height ? startDom.style.height : "15px")/2;
 		 }
 		 if(end.style){
 		   endDom = end;
@@ -56,7 +62,7 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                   objPalatte.appendChild(objLine);
                  }
                  else if(Math.abs(start.x - end.x) > Math.abs(start.y - end.y)){
-                       
+
                      // |傾き| < 1
                      var A = [start.x, start.y];
                      var B = [end.x, end.y];
@@ -83,7 +89,6 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                        objPalatte.appendChild(this._drawLine(intX,intY,color));
                      }
                    }
-		 console.log({ domNode: objPalatte, start: startDom, end: endDom, label: label, color: color});
                  return { domNode: objPalatte, start: startDom, end: endDom, label: label, color: color};
                  },
 
@@ -99,25 +104,73 @@ dojo.declare("ajweb.editor.element.Drawable", null,
                    return objPoint;
                },
 	       reDraw: function(line){
+/*	       dojo.forEach(this.lines,
+		   function(value, i, a){
+		     if(a[i] == line){
+		       var newLine = this.draw(a[i].start, a[i].end, a[i].label, a[i].color);
+		       this.lineContainerNode.replaceChild(newLine.domNode, a[i].domNode);
+		       a[i] = newLine;
+		   }
+		 }, this);*/
 		 for(var i = 0; i < this.lines.length; i++){
 		   if(this.lines[i] == line){
 		     var newLine = this.draw(
-		       this.lines[i].start, 
-		       this.lines[i].end, 
-		       this.lines[i].label, 
+		       this.lines[i].start,
+		       this.lines[i].end,
+		       this.lines[i].label,
 		       this.lines[i].color);
-		     this.domNode.replaceChild(newLine.domNode, this.lines[i].domNode);
-//		     this.domNode.removeChild(this.lines[i].domNode);
-//		     this.domNode.appendChild(newLine.domNode);
+		     this.lineContainerNode.replaceChild(newLine.domNode, this.lines[i].domNode);
 		     this.lines[i] = newLine;
 		   }
 		 }
 	       },
-	       reDrawChild: function(child){
+	       reDrawChildNode: function(childNode){
 		 for(var i = 0; i < this.lines.length; i++){
-		   if(this.lines[i].start == child.domNode 
-		      || this.lines[i].end == child.domNode){
+		   if(this.lines[i].start == childNode
+		      || this.lines[i].end == childNode){
 		     this.reDraw(this.lines[i]);
+		   }
+		 }
+	       },
+	       replaceNode: function(oldNode, newNode){
+		 var i;
+		 for(i = 0; i < this.lines.length; i++){
+		   if(this.lines[i].start == oldNode){
+		     this.lines[i].start = newNode;
+		     this.reDraw(this.lines[i]);
+		   }
+		 }
+		 for(i = 0; i < this.lines.length; i++){
+		   if(this.lines[i].end == oldNode){
+		     this.lines[i].end = newNode;
+		     this.reDraw(this.lines[i]);
+		   }
+		 }
+	       },
+	       /**
+		* あるノードを取り除いて、関連するエッジも取り除く。つなぎ替えも行う。
+		*/
+	       removeNode: function(node){
+		 for(var i = 0; i < this.lines.length; i++){
+		   if(this.lines[i].end == node){
+		     if(i==this.lines.length-1){//最後のノードなら取り除くだけ
+		       this.lineContainerNode.removeChild(this.lines[i].domNode);
+		       this.lines.splice(i,1);
+		     }
+		     else {
+		       for(var j = 0; j < this.lines.length; j++){//つなぎかえを行う
+			 if(this.lines[j].start == node){
+			   this.lines[j].start = this.lines[i].start;
+
+			   this.lines[j].end.style.top = this.lines[i].end.style.top;
+			   this.lines[j].end.style.left = this.lines[i].end.style.left;
+
+			   this.lineContainerNode.removeChild(this.lines[i].domNode);
+			   this.reDraw(this.lines[j]);
+			   this.lines.splice(i,1);
+			 }
+		       }
+		     }
 		   }
 		 }
 	       },

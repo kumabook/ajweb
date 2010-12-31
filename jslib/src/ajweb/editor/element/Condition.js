@@ -5,9 +5,10 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Condition");
-dojo.declare("ajweb.editor.element.Condition", 
+dojo.declare("ajweb.editor.element.Condition",
 	     [ajweb.editor.element.Element,
-//	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Removable,
 	      ajweb.editor.element.DndEnable],
   /** @lends ajweb.editor.element.Condition.prototype */
   {
@@ -42,7 +43,7 @@ dojo.declare("ajweb.editor.element.Condition",
 	{title: this.model.tagName, toggleable: false, open: false,
 	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
 	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"},
-	  onDblClick: function(){
+	    onDblClick: function(){
 	    that.dialog = new dijit.Dialog({title: that.model.tagName,
 					   style: {position: "absolute",
 						   height: a.CONDITION_DIALOG_HEIGHT,
@@ -72,7 +73,7 @@ dojo.declare("ajweb.editor.element.Condition",
 		  that.button.set({label: "変更"});
 		  for(var i = 0; i < that.model.children.length; i++)
 		    that.model.children[i].remove();
-		  
+
 		  var tagName = that.predictSelect.value;
 		  that.model.properties.operator = that.predictSelect.value;
 		  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
@@ -90,7 +91,7 @@ dojo.declare("ajweb.editor.element.Condition",
 		  that.model.children[i].reCreateDom(that);
 	      }
 	    }
-	      
+
 	    that.dialog.containerNode.appendChild(that.predictName.domNode);
 	    that.dialog.containerNode.appendChild(that.predictSelect.domNode);
 	    that.dialog.containerNode.appendChild(that.button.domNode);
@@ -114,6 +115,21 @@ dojo.declare("ajweb.editor.element.Condition",
     },
     removeDom: function(){
       this.widget.destroyRecursive();
+
+
+      var i;
+      //eventの子要素の場合
+      var initLine = this.container.lines[0];
+      if(initLine.start == this.domNode){
+	initLine.start = this.container.conditionContainer.domNode;//線のつなぎかえ
+	this.container.reDraw(initLine);
+	this.container.conditionContainer.domNode.style.display = "";//ドロップ要素を表示
+      }
+      //brachの子要素の場合
+      else if(this.model.parent.tagName == "branch"){
+	this.container.replaceNode(this.domNode, this.model.parent.element.domNode);//線のつなぎかえ
+	this.model.parent.element.domNode.style.display = "";//ドロップ要素を表示(branch)
+      }
     },
     removeDialog: function(){
       if(this.dialog){
@@ -132,13 +148,13 @@ dojo.declare("ajweb.editor.element.Condition",
     },
     checkAcceptance: function(){
       if(this.model.children.length > 0)
-	return false; 
-      else 
+	return false;
+      else
 	return this.inherited(arguments);
     },
     startup: function(){
       this.inherited(arguments);
-      this.widget.startup();     
+      this.widget.startup();
     }
   }
 );

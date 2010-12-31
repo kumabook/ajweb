@@ -31,9 +31,8 @@ dojo.declare("ajweb.editor.element.Action",
     },
     createInitLine: function(){
       var conditionModel = this.model.parent.getCondition();
-      this.line = this.container.draw(
-	conditionModel ? conditionModel.element.domNode : this.model.parent.element.dndDomNode,
-	this.domNode);
+      var startDom = conditionModel ? conditionModel.element.domNode : this.model.parent.element.dndDomNode;
+      this.line = this.container.draw(startDom, this.domNode);
       this.container.lines.push(this.line);
       this.container.domNode.appendChild(this.line.domNode);
       return this.line;
@@ -95,7 +94,7 @@ dojo.declare("ajweb.editor.element.Action",
     },
     addNewNode: function(newNode, isBranch){
       for(var i = 0; i < this.container.lines.length; i++){//追加されたノードを線でつなぐ
-	if(this.container.lines[i].start == this.domNode 
+	if(this.container.lines[i].start == this.domNode
 	   || this.container.lines[i].end == this.domNode){
 	  this.container.lines[i].end = newNode;
 	  this.container.reDraw(this.container.lines[i]);
@@ -110,50 +109,53 @@ dojo.declare("ajweb.editor.element.Action",
 	this.widget.set(
 	  { style: {
 	      top: parseInt(newNode.style.top) + "px",
-	      left: parseInt(newNode.style.left) + 250 + "px" 
+	      left: parseInt(newNode.style.left) + 250 + "px"
 	    }
 	  });
-	
+
 	this.line = this.container.draw(newNode, this.domNode);
 	this.container.lines.push(this.line);
 	this.container.domNode.appendChild(this.line.domNode);
       }
     },
     onDrop: function(name){
-      var model = this.model.editor.createModel(
+      if(name == "condition")
+	name = "branch";
+      var newModel = this.model.editor.createModel(
 	name,
 	{
-	  top :ajweb.editor.mousePosition.y - ajweb.editor.getY(this.container.domNode),
-	  left :ajweb.editor.mousePosition.x - ajweb.editor.getX(this.container.domNode)
+	  top: ajweb.editor.mousePosition.y - ajweb.editor.getY(this.container.domNode),
+	  left: ajweb.editor.mousePosition.x - ajweb.editor.getX(this.container.domNode)
 	},
 	this.model,
 	this.container
       );
       if(name == "branch"){
-	var conditionModel = model.editor.createModel(
-	  "condition",
-	  {top: "15px", left: "0px"},
-	  model,
-	  model.element
-	);
-	var thenModel = model.editor.createModel(
+	var thenModel = newModel.editor.createModel(
 	  "then",
 	  {
-	    top :(parseInt(model.properties.top) - 50) + "px",
-	    left :(parseInt(model.properties.left) + 200) + "px"
+	    top :(parseInt(newModel.properties.top) - 50) + "px",
+	    left :(parseInt(newModel.properties.left) + 200) + "px"
 	  },
-	  model,
+	  newModel,
 	  this.container
 	);
-	var elseModel = model.editor.createModel(
+	var elseModel = newModel.editor.createModel(
 	  "else",
 	  {
-	    top :(parseInt(model.properties.top) + 50) + "px",
-	    left :(parseInt(model.properties.left) + 200) + "px"
+	    top :(parseInt(newModel.properties.top) + 50) + "px",
+	    left :(parseInt(newModel.properties.left) + 200) + "px"
 	  },
-	  model,
+	  newModel,
 	  this.container
 	);
+	var conditionModel = newModel.editor.createModel(
+	  "condition",
+	  {top: newModel.properties.top, left: newModel.properties.left},
+	  newModel,
+	  this.container//	  model.element
+	);
+	this.container.replaceNode(newModel.element.domNode, conditionModel.element.domNode);
       }
     },
     startup: function(){

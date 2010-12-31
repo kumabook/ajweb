@@ -21,6 +21,10 @@ ajweb.editor.COMLIST =  [
     children: [{name: "database"},{name: "property"}]
   },
   {
+  name: "Event",
+    children: [{name: "condition"}]
+  },
+  {
     name: "Function",
     children: [{name: "login"},{name: "insert"},{name: "update"},{name: "delete"},{name: "call"},{name: "branch"}/*,{name: "then"},{name: "else"},{name: "param"}*/]
   }/*,
@@ -174,7 +178,7 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
 	  if(!returnType || list[i].getters[j].returnType == returnType){
 	    store.newItem(list[i].getters[j]);
 	  }
-	    
+
 	}
       }
     }

@@ -1,5 +1,6 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
+dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Drawable");
 //dojo.require("dojox.gfx");
 
@@ -7,6 +8,7 @@ dojo.provide("ajweb.editor.element.Event");
 dojo.declare("ajweb.editor.element.Event", [
 	       ajweb.editor.element.Element,
 	       ajweb.editor.element.DndEnable,
+	       ajweb.editor.element.Movable,
 	       ajweb.editor.element.Drawable
 	     ],
   /** @lends ajweb.editor.element.Event.prototype */
@@ -47,18 +49,15 @@ dojo.declare("ajweb.editor.element.Event", [
 	});
       this.isDisplay = true;
       this.widget.element = this;
-      return this.widget.domNode;
-    },
-    createDndDomNode: function(){
       this.conditionContainer = new dijit.layout.ContentPane(
 	{
-	  content : "<br/>&nbsp;drop condition!",
+	  content : "<br/>&nbsp;drop condition",
 	  style:{
 	    position: "absolute",
 	    width: "100px",
 	    height: "50px",
-	    top: this.model.properties.top,
-	    left: this.model.properties.left,
+	    top: "25px",
+	    left: "10px",
 	    border: "dotted 1px #769DC0"
 	  }
 	});
@@ -68,7 +67,28 @@ dojo.declare("ajweb.editor.element.Event", [
       }
 
       this.widget.domNode.appendChild(this.conditionContainer.domNode);
+      return this.widget.domNode;
+    },
+    createMoveDomNode: function(){
       return this.conditionContainer.domNode;
+    },
+    createMoveContainerDomNode: function(){
+      return this.domNode;
+    },
+    createMoveTriggerDomNode: function(){
+      return this.conditionContainer.domNode;
+    },
+
+    createDndDomNode: function(){
+      return this.conditionContainer.domNode;
+    },
+    onDrop: function(name){
+      var newModel = this.inherited(arguments);
+      //ドロップ用要素を隠す
+      this.conditionContainer.domNode.style.display = "none";
+      //新しい要素で線をつなぎかえる
+      this.lines[0].start = newModel.element.domNode;
+      this.reDraw(this.lines[0]);
     },
     updateDom: function(){
       var target = this.model.application.getElementByPropId(this.model.properties.target);

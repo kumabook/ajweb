@@ -36,6 +36,7 @@ dojo.require("ajweb.editor.model.Event");
 dojo.require("ajweb.editor.model.Events");
 dojo.require("ajweb.editor.model.Action");
 dojo.require("ajweb.editor.model.Branch");
+dojo.require("ajweb.editor.model.Condition");
 dojo.require("ajweb.editor.model.Func");
 dojo.require("ajweb.editor.model.Login");
 dojo.require("ajweb.editor.model.Value");
@@ -84,7 +85,7 @@ dojo.declare(
       this.generateURL = generateURL;
       this.uploadURL = uploadURL;
       var that = this;
-      
+
 
       var container = document.createElement("div");
       var menu = document.createElement("div");
@@ -170,13 +171,9 @@ dojo.declare(
       this.eventCp = new dijit.layout.ContentPane({title: ajweb.getValue("event")});
 
       this.eventTarget = new dijit.form.Button(
-	{style: {position: "absolute", top: "0px", left: "10px"},
-	 label: "エレメントが選択されていません"});      
-/*      this.eventTarget = document.createTextNode();
-      this.eventTarget.innerHTML = "エレメントが選択されていません";
-      this.eventTarget.style.position = "absolute";
-      this.eventTarget.style.width = "200px";*/
-      
+	{style: {position: "absolute", top: "3px", left: "10px"},
+	 label: "エレメントが選択されていません"});
+
       /**
        * イベントのリストを表示するタブコンテナ
        * eventsModelプロパティに現在のアプリケーションのeventsモデルを保持する。
@@ -189,7 +186,7 @@ dojo.declare(
       this.addEventButton = new dijit.form.DropDownButton(
 	{ label: "イベントを追加", disabled: true,
 	  dropDown: this.addEventMenu,
-	  style: {position: "absolute", top: "0px", 
+	  style: {position: "absolute", top: "3px",
 		  left: (this.eventTarget.label.length * ajweb.editor.FONT_SIZE)
 		  +ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT+"px"}}
       );
@@ -352,7 +349,7 @@ dojo.declare(
       this.projectTree.placeAt(this.projectExploerBc.wipeNode);
       this.outerBc.addChild(this.projectExploerBc);
       /**
-       * 
+       *
        */
 
       /**
@@ -638,12 +635,12 @@ dojo.declare(
 	  container: container,
 	  editor: this
 	}, display);
-      
+
 /*      if(ModelClass == "Widget" || ModelClass == "Database"){
 	parent.application[ModelClass + "Store"].newItem({modelId: id, name: defaultProperties.id});
       }*/
-      
-      
+
+
       if(name == "events")
 	parent.application.events = newModel;
       newModel.label = modelInfo.label ? modelInfo.label : newModel.properties.id;

@@ -58,7 +58,7 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
      * @param {String} name ドラッグ&ドロップされツリー上の要素の文字列
      */
     onDrop: function(name){
-	    this.model.editor.newModel(
+	return this.model.editor.newModel(
 	      name,
 	      {
 		top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(this.model.element.domNode),

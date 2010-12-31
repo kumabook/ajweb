@@ -14,7 +14,7 @@ dojo.declare("ajweb.editor.element.Movable", null,
        */
       this.moveDomNode = this.createMoveDomNode();
        /**
-       * マウスに反応するのDOMノード
+       * マウスに反応するDOMノード
        * @type HTMLElement
        */
       this.moveTriggerDomNode = this.createMoveTriggerDomNode();
@@ -40,13 +40,13 @@ dojo.declare("ajweb.editor.element.Movable", null,
     /**
      * 移動範囲の境界となるのDOM要素を返す。サブクラスでオーバーライド
      */
-    createMoveContainerDomNode :function(){
+    createMoveContainerDomNode : function(){
       return this.container.containerNode;
     },
     /**
      * ドラッグで移動可能にする
      */
-    enableDragMove: function(){//改良の余地あり 
+    enableDragMove: function(){//改良の余地あり
     //		 console.log(this.id + "   enableDragMove");
 
       this.drag_move_connection
@@ -56,55 +56,55 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	  this.model.updatePropertiesView();
 	  this.model.updateEventView();
 	  var top, left, width, height;
-	  if(!this.domNode.style.top)  top = 0;
-	  else  top = parseInt(this.domNode.style.top);
-	  if(!this.domNode.style.left) left = 0;
-	  else  left = parseInt(this.domNode.style.left);
+	  if(!this.moveDomNode.style.top)  top = 0;
+	  else top = parseInt(this.moveDomNode.style.top);
+	  if(!this.moveDomNode.style.left) left = 0;
+	  else left = parseInt(this.moveDomNode.style.left);
 	  top = top - e.clientY;
 	  left = left - e.clientX;
 
-	  if(!this.domNode.style.width)  width = 0;
-	  else  width = parseInt(this.domNode.style.width);
-	  if(!this.domNode.style.height) height = 0;
-	  else  height = parseInt(this.domNode.style.height);
-	  
+	  if(!this.moveDomNode.style.width)  width = 0;
+	  else  width = parseInt(this.moveDomNode.style.width);
+	  if(!this.moveDomNode.style.height) height = 0;
+	  else  height = parseInt(this.moveDomNode.style.height);
+
 	  var container_width = parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
 	  var container_height = parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
 	  var move = function(e){
 	    var _x = e.clientX + left;
 	    var _y = e.clientY + top;
 	    if(_x < container_width-1 &&  _x > 0){
-	      this.domNode.style.left = _x + "px";
+	      this.moveDomNode.style.left = _x + "px";
 	    }
 	    if(_y < container_height-1 &&  _y > 0){
-					this.domNode.style.top = _y + "px";
+	      this.moveDomNode.style.top = _y + "px";
 	    }
-	    //				      console.log("drag move " + _x + "  " + _y);
+
 	    //lineがあれば更新
 //	    this.count++;
-	    if(this.container.draw!=undefined){// && this.count > 1){
-	      this.container.reDrawChild(this);
-	     /* for(var i = 0; i < this.container.lines.length; i++){
-		if(this.container.lines[i].start == this.domNode 
-		   || this.container.lines[i].end == this.domNode){
-		  this.container.reDraw(this.container.lines[i]);
-		}
-	      }*/
+	    var lineContainer;
+	    if(this.container.draw)
+	      lineContainer = this.container;
+	    else if(this.draw)
+	      lineContainer = this;
+//	    if(this.container.draw!=undefined){// && this.count > 1){
+	    if(lineContainer){
+	     lineContainer.reDrawChildNode(this.moveDomNode);
 	    }
 	  };
 	  var move_connection = dojo.connect(document, "onmousemove", this, move);
 	  var remove_connection  = dojo.connect(document, "onmouseup", this, function(e){
 						  dojo.disconnect(move_connection);
 						  dojo.disconnect(remove_connection);
-						  
+
 						  var container = this.container.containerNode;//domNode
-						  var left = ajweb.editor.getX(this.domNode) - ajweb.editor.getX(container) + 1 + "px";
-						  var top = ajweb.editor.getY(this.domNode) - ajweb.editor.getY(container) + 1 + "px";
+						  var left = ajweb.editor.getX(this.moveDomNode) - ajweb.editor.getX(container) + 1 + "px";
+						  var top = ajweb.editor.getY(this.moveDomNode) - ajweb.editor.getY(container) + 1 + "px";
 						  if(top != this.model.properties.top || left != this.model.properties.left){
 						    this.model.properties.top = top;
 						    this.model.properties.left = left;
 						    this.model.updatePropertiesView();
-						    this.model.updateEventView();      
+						    this.model.updateEventView();
 						  }
 
 						  e.preventDefault();
