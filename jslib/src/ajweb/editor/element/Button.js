@@ -37,6 +37,7 @@ dojo.declare("ajweb.editor.element.Button",
 	 label: properties.content,
 	 disabled: true
 	});
+      this.widget.domNode.className = "dijit dijitReset dijitInline dijitButton";
       return this.widget.domNode;
     },
     createMenuTriggerDomNode: function(){

@@ -38,72 +38,49 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	  style:{ position: "absolute", width: "80px",
 		  top: properties.top,left: properties.left,
 		  backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"
-	  },
-	  onDblClick: function(){
-	    var dialog = new dijit.Dialog(
-	      {title: that.model.tagName,
-	       style: {position: "absolute",height: "300px", width: "400px"},
-	       onHide: function(){
-		 delete that.store;
-		 this.destroyRecursive();
-	       }
-	      });
-	    var paramContainer = new dijit.layout.ContentPane(
-	      {content: "params",
-	       style: {position: "absolute",top: "70px", left: "10px",width: "95%", height: "70%"}});
-	    dialog.containerNode.appendChild(paramContainer.domNode);
-	    that.containerNode = paramContainer.domNode;
-	    that.dialog = dialog;
-
-	    that.store = that.model.application.getDatabaseStore();
-	    var tablename = new dijit.layout.ContentPane(
-	      {content: "データベース名",
-	       style: { position: "absolute", top: "30px", left: "10px"}
-	      });
-	    var tablenameSelect = new dijit.form.Select(
-	      {name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
-	       store: that.store, sortByLabel: false,
-	       style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
-	    var button = new dijit.form.Button(
-	      { label: "決定",
-		style: {position : "absolute",width: "80px",top: "25px",left: "280px"},
-		onClick: function(){
-		  if(that.model.children.length > 0){
-		    that.model.removeParam();
-		  }
-		  var model = ajweb.getModelById(tablenameSelect.value);
-		  that.model.properties.database = model.properties.id;
-		  that.model.createParam(tablenameSelect.value);
-		}
-	      });
-	    dialog.containerNode.appendChild(tablenameSelect.domNode);
-	    dialog.containerNode.appendChild(tablename.domNode);
-	    dialog.containerNode.appendChild(button.domNode);
-	    tablenameSelect.startup();
-	    tablename.startup();
-	    button.startup();
-
-	    if(that.model.properties.database){
-	      that.model.reCreateParamDom();
-	    }
-	    
-	    dialog.show();
-	    dialog.set({style: {left: "200px", top: parseInt(dialog.domNode.style.top) - 100 + "px"}});
-
-	    dialog.containerNode.style.width = dialog.domNode.style.width;
-	    dialog.containerNode.style.height = dialog.domNode.style.height;
 	  }
 	});
-      this.widget.element = this;
-      //ドロップ要素を更新
-      this.model.parent.element.widget.set(
-	  { style: {
-	      top: this.model.parent.properties.top,
-	      left: parseInt(this.model.parent.properties.left) + 250 + "px" 
-	    }
-	  });
-
       return this.widget.domNode;
+    },
+    createDialogContents: function(){
+      var that = this;
+      var paramContainer = new dijit.layout.ContentPane(
+	      {content: "params",
+	       style: {position: "absolute",top: "70px", left: "10px",width: "95%", height: "70%"}});
+      that.dialog.containerNode.appendChild(paramContainer.domNode);
+      that.containerNode = paramContainer.domNode;
+
+      that.store = that.model.application.getDatabaseStore();
+      var tablename = new dijit.layout.ContentPane(
+	{content: "データベース名",
+	style: { position: "absolute", top: "30px", left: "10px"}
+      });
+      var tablenameSelect = new dijit.form.Select(
+	{name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
+	store: that.store, sortByLabel: false,
+	style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
+      var button = new dijit.form.Button(
+	{ label: "決定",
+	style: {position : "absolute",width: "80px",top: "25px",left: "280px"},
+	onClick: function(){
+	  if(that.model.children.length > 0){
+	    that.model.removeParam();
+	  }
+	  var model = ajweb.getModelById(tablenameSelect.value);
+	  that.model.properties.database = model.properties.id;
+	  that.model.createParam(tablenameSelect.value);
+	}
+      });
+      that.dialog.containerNode.appendChild(tablenameSelect.domNode);
+      that.dialog.containerNode.appendChild(tablename.domNode);
+      that.dialog.containerNode.appendChild(button.domNode);
+      tablenameSelect.startup();
+      tablename.startup();
+      button.startup();
+
+      if(that.model.properties.database){
+	that.model.reCreateParamDom();
+      }
     }
   }
 );

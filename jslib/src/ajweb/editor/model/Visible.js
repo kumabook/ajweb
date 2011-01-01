@@ -64,9 +64,9 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      * タブを閉じたあとに再びDOM要素表示する。modelができた状態でDOMを生成。
      */
     reCreateDom: function(container){
+//      console.log(this.id);
       this.element = this.createDom(container);
-      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition"
-	&& this.tagName != "init" && this.tagName != "item")
+      if(!(this.element.openDialog) && this.tagName != "frame")
 	for(var i = 0; i < this.children.length; i++){
 	  if(this.children[i].reCreateDom)
 	    this.children[i].reCreateDom(this.element);
@@ -101,13 +101,14 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       this.editor.removeProjectTree(this);
     },
     startup: function(){
-      if(this.element)
+      if(this.element){
 	this.element.startup();
-      if(this.tagName != "value" && this.tagName != "frame" && this.tagName != "paramCondition"
-	 && this.tagName != "init" && this.tagName != "item")
-	for(var i = 0; i < this.children.length; i++){
-	  this.children[i].startup();
+	if(!(this.element.openDialog) && this.tagName != "frame"){
+	  for(var i = 0; i < this.children.length; i++){
+	    this.children[i].startup();
+	  }
 	}
+      }
     },
     /**
      * ダミー

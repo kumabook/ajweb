@@ -1,12 +1,10 @@
 dojo.require("ajweb.editor.element.Element");
-dojo.require("ajweb.editor.element.DndEnable");
-dojo.require("ajweb.editor.element.Movable");
-dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.PredicateOperator");
 dojo.declare("ajweb.editor.element.PredicateOperator",
-	     [ajweb.editor.element.Element],
+	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.HasDialog],
   /** @lends ajweb.editor.element.PredicateOperator.prototype */
   {
     /**
@@ -40,137 +38,131 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
 	  style: { position: "absolute", height: "40px", fontSize: "15px",
 		   top: "35px", left: "75px" }});
-      var leftButton = new dijit.form.Button(
+      this.leftButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute",top: "0px",left: operandLeft},
-	  onClick: function(){
-	    var dialog = new dijit.Dialog({
-					    title: "left",
-					    style: {position: "absolute",
-					       height: "350px", width: "350px"
-					      }
-/*						,
-					    onHide: function(){
-					      this.destroyRecursive();
-					      var parentDialog = that.model.parent.element.dialog;
-					      if(parentDialog){
-						parentDialog._fadeIn.play();
-					      }
-					    }*/
-					  });
-	    that.dialog = dialog;
-	    var predictName = new dijit.layout.ContentPane(
-	      { content: "条件種類: ",
-		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.left ? that.model.properties.left : "",
-		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
-		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
-	      });
-	    var button = new dijit.form.Button(
-	      { label: "選択",
-		style: {position : "absolute", top: "45px",left: "280px"},
-		onClick: function(){
-		  that.containerNode = dialog.containerNode;
-		  if(that.model.children.length == 0){
-		    var tagName = predictSelect.value;
-		    that.model.properties.left = predictSelect.value;
-		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
-		    newModel.properties.name = tagName;
-		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		    }
-		  }
-		}
+	  style: {position : "absolute",top: "0px",left: operandLeft}
+	});
 
-	      });
-	    dialog.containerNode.appendChild(predictName.domNode);
-	    dialog.containerNode.appendChild(predictSelect.domNode);
-	    dialog.containerNode.appendChild(button.domNode);;
-	    predictName.startup();
-	    predictSelect.startup();
-	    button.startup();
-	    dialog.show();
-
-	    var parentDialog = that.model.parent.element.dialog;
-	    that.dialog._relativePosition = {};
-	    that.dialog._relativePosition.x  = parseInt(parentDialog.domNode.style.left) + 300;
-	    that.dialog._relativePosition.y  = parseInt(parentDialog.domNode.style.top) - 50;
-	    that.dialog.layout();
-
-	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
-	  }});
-      var rightButton = new dijit.form.Button(
+      this.rightButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute", top: "70px", left: operandLeft},
-	  onClick: function(){
-	    var dialog = new dijit.Dialog({
-					    title: "left",
-					    style: {position: "absolute",
-					       height: "350px", width: "350px"
-					      },
-					    onHide: function(){
-					    }
-					  });
-	    that.dialog = dialog;
-	    var predictName = new dijit.layout.ContentPane(
-	      { content: "条件: ",
-		style: {position: "absolute",top: "50px",left: "10px"}});
-	    var predictSelect = new dijit.form.Select(
-	      {	name: "modelId", value: that.model.properties.right ? that.model.properties.right : "",
-		store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
-		style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
-	      });
-	    var button = new dijit.form.Button(
-	      { label: "選択",
-		style: {position : "absolute", top: "45px",left: "280px"},
-		onClick: function(){
-		  that.containerNode = dialog.containerNode;
-		  if(that.model.children.length == 0){
-		    var tagName = predictSelect.value;
-		    that.model.properties.right = predictSelect.value;
-		    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
-		    newModel.properties.name = tagName;
-		    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		      that.model.editor.createModel("value", {}, newModel, newModel.element);
-		    }
-		  }
-		}
-	      });
-	    dialog.containerNode.appendChild(predictName.domNode);
-	    dialog.containerNode.appendChild(predictSelect.domNode);
-	    dialog.containerNode.appendChild(button.domNode);;
-	    predictName.startup();
-	    predictSelect.startup();
-	    button.startup();
-	    dialog.show();
-	    var parentDialog = that.model.parent.element.dialog;
-
-	    that.dialog._relativePosition = {};
-	    that.dialog._relativePosition.x  = parseInt(that.parentDialog.domNode.style.left) + 400;
-	    that.dialog._relativePosition.y  = parseInt(that.parentDialog.domNode.style.top) + 50;
-	    that.dialog.layout();
-
-	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
-	  }});
+	  style: {position : "absolute", top: "70px", left: operandLeft}
+	});
 
       this.widget.domNode.appendChild(operator.domNode);
-      this.widget.domNode.appendChild(leftButton.domNode);
-      this.widget.domNode.appendChild(rightButton.domNode);
+      this.widget.domNode.appendChild(this.leftButton.domNode);
+      this.widget.domNode.appendChild(this.rightButton.domNode);
       return this.widget.domNode;
+    },
+    openDialog: function(operand){
+      var that = this;
+      var title = that.model.properties.element && that.model.properties.func ?
+      that.model.properties.element + ":" + that.model.properties.func : "no func";
+
+      if(!that[operand+"dialog"]){
+	that[operand+"dialog"] = new dijit.Dialog(
+	  {title: title,
+	  style: {position: "absolute",height: this.dialogWidth, width: this.dialogHeight},
+	  onHide: function(){
+	    if(that.getParentDialogElem() == null){//トップダイアログなら子ダイアログをすべて削除
+	      that.removeDialog();
+	      this.childDialogElems = [];
+	    }
+	  }
+	});
+
+	var parentDialogElem = that.getParentDialogElem();
+	if(parentDialogElem){
+//	  console.log("add child " + that.model.id);
+	  parentDialogElem.childDialogElems.push(that);
+	}
+	that.containerNode = that[operand+"dialog"].containerNode;
+	that.createDialogContents(that[operand+"dialog"], operand);
+      }
+
+      that[operand+"dialog"].show();
+      that.dialog = that[operand+"dialog"];
+      that.setDialogPosition(operand);//that.dialogLeft, that.dialogTop);
+      that.changeDialogPosition(that.dialogLeft, that.dialogTop, that[operand+"dialog"]);
+
+      that[operand+"dialog"].containerNode.style.width = that[operand+"dialog"].domNode.style.width;
+      that[operand+"dialog"].containerNode.style.height = that[operand+"dialog"].domNode.style.height;
+    },
+    setDialogPosition: function(operand){
+      var parentDialog = this.getParentDialogElem().dialog;
+      if(operand == "left"){
+	this.dialogLeft = parseInt(parentDialog.domNode.style.left) + 50;
+	this.dialogTop = parseInt(parentDialog.domNode.style.top) + 25;
+      }
+      else if(operand == "right"){
+	this.dialogLeft = parseInt(parentDialog.domNode.style.left) + 50;
+	this.dialogTop = parseInt(parentDialog.domNode.style.top) - 25;
+      }
+    },
+    removeDialog: function(){
+//      console.log(this.model.id + " removeDialog"  + this.childDialogElems.length);
+      for(var i = 0; i < this.childDialogElems.length; i++){
+	this.childDialogElems[i].removeDialog();
+      }
+      if(this.leftdialog)
+	this.leftdialog.destroyRecursive();
+      if(this.rightdialog)
+	this.rightdialog.destroyRecursive();
+      delete this.leftdialog;
+      delete this.rightdialog;
+    },
+    getParentDialogElem: function(){
+      return this.model.parent.element;
+    },
+    addOpenDialogEvent: function(){
+      dojo.connect(this.leftButton, "onClick", this, function(){
+		     this.openDialog("left");
+		   });
+      dojo.connect(this.rightButton, "onClick", this, function(){
+		     this.openDialog("right");
+		   });
+    },
+    setDialogPosition: function(){
+      var parentDialog = this.getParentDialogElem().dialog;
+      this.dialogLeft =	parseInt(parentDialog.domNode.style.left) + 50;
+      this.dialogTop =	parseInt(parentDialog.domNode.style.top) + 50;
+    },
+    createDialogContents: function(dialog, operand){
+      var that = this;
+
+      var predictName = new dijit.layout.ContentPane(
+	{content: "条件種類: ",
+	 style: {position: "absolute",top: "50px", left: "10px"}});
+      var predictSelect = new dijit.form.Select(
+	{name: "modelId", value: that.model.properties[operand] ? that.model.properties[operand] : "",
+	 store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
+	 style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+      });
+      var button = new dijit.form.Button(
+	{ label: "選択",
+	style: {position : "absolute", top: "45px",left: "280px"},
+	onClick: function(){
+	  that.containerNode = dialog.containerNode;
+	  if(that.model.children.length == 0){
+	    var tagName = predictSelect.value;
+	    that.model.properties[operand] = predictSelect.value;
+	    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+	      newModel.properties.name = tagName;
+	    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+	      that.model.editor.createModel("value", {}, newModel, newModel.element);
+	      that.model.editor.createModel("value", {}, newModel, newModel.element);
+	    }
+	  }
+	}
+      });
+      dialog.containerNode.appendChild(predictName.domNode);
+      dialog.containerNode.appendChild(predictSelect.domNode);
+      dialog.containerNode.appendChild(button.domNode);;
+      predictName.startup();
+      predictSelect.startup();
+      button.startup();
     },
     removeDom: function(){
       this.widget.destroyRecursive();
-    },
-
-    removeDialog: function(){
-      if(this.dialog){
-      this.dialog.destroyRecursive();
-      }
     },
     startup: function(){
       this.inherited(arguments);

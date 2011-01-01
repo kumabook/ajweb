@@ -1,17 +1,9 @@
-dojo.require("ajweb.editor.element.Element");
-dojo.require("ajweb.editor.element.DndEnable");
-dojo.require("ajweb.editor.element.Movable");
-dojo.require("ajweb.editor.element.Removable");
-dojo.require("dojox.widget.Dialog");
 dojo.require("dijit.TitlePane");
+dojo.require("ajweb.editor.element.Func");
 dojo.provide("ajweb.editor.element.Login");
 dojo.declare("ajweb.editor.element.Login",
 	     [
 	       ajweb.editor.element.Func
-	     /*  ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Removable*/
 	     ],
   /** @lends ajweb.editor.element.Login.prototype */
   {
@@ -40,34 +32,7 @@ dojo.declare("ajweb.editor.element.Login",
        this.widget = new dijit.TitlePane(
 	{ title: this.model.tagName, open: false, toggleable: false,
 	  style:{position: "absolute", width: "80px",top: properties.top, left: properties.left,
-		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" },
-	  onDblClick: function(){
-	    var dialog = new dijit.Dialog(
-	      {title: that.model.tagName,
-	       style: {position: "absolute",height: "120px", width: "450px"},
-	       onHide: function(){
-		 delete that.store;
-		 this.destroyRecursive();
-	       }
-	      });
-	    var paramContainer = new dijit.layout.ContentPane(
-	      { //content: "引数",
-		style: {position: "absolute",top: "30px", left: "0px",width: "450px", height: "90px"}});
-	    dialog.containerNode.appendChild(paramContainer.domNode);
-	    that.containerNode = paramContainer.domNode;
-	    that.dialog = dialog;
-
-	    if(that.model.children.length > 0)
-	      that.model.reCreateParamDom();
-	    else
-	      that.model.createParam();
-
-	    dialog.show();
-	    dialog.set({style: {left: "200px", top: parseInt(dialog.domNode.style.top) - 50 + "px"}});
-
-	    dialog.containerNode.style.width = dialog.domNode.style.width;
-	    dialog.containerNode.style.height = dialog.domNode.style.height;
-	  }
+		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" }
 	});
       this.widget.element = this;
       //ドロップ要素を更新
@@ -81,6 +46,26 @@ dojo.declare("ajweb.editor.element.Login",
 	  });
 
       return this.widget.domNode;
+    },
+    createDialogContents: function(){
+//      console.log("dialog create" + this.model.id + " " + this.model.children.length);
+      var that = this;
+      var paramContainer = new dijit.layout.ContentPane(
+	{ //content: "引数",
+	style: {position: "absolute",top: "30px", left: "0px",width: "450px", height: "90px"}});
+      that.dialog.containerNode.appendChild(paramContainer.domNode);
+      that.containerNode = paramContainer.domNode;
+
+      if(that.model.children.length > 0)
+	that.model.reCreateParamDom();
+      else
+	that.model.createParam();
+
+      that.dialog.show();
+      that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 50 + "px"}});
+
+      that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
+      that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
     },
     updateDom: function(){
       this.widget.set({

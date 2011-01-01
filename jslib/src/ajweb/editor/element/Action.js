@@ -90,18 +90,16 @@ dojo.declare("ajweb.editor.element.Action",
     },
     addNewNode: function(newNode, isBranch){
       for(var i = 0; i < this.container.lines.length; i++){//追加されたノードを線でつなぐ
-	if(this.container.lines[i].start == this.domNode
-	   || this.container.lines[i].end == this.domNode){
+	if(//this.container.lines[i].start == this.domNode ||
+	    this.container.lines[i].end == this.domNode){
 	  this.container.lines[i].end = newNode;
 	  this.container.reDrawLine(this.container.lines[i]);
 	}
       }
-      if(isBranch){
-	//ドロップ要素を隠す
+      if(isBranch){//ドロップ要素を隠す
 	this.widget.domNode.style.display = "none";
       }
-      else {
-	//ドロップ要素を更新
+      else {//ドロップ要素を更新
 	this.widget.set(
 	  { style: {
 	      top: parseInt(newNode.style.top) + "px",

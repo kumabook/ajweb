@@ -7,7 +7,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.provide("ajweb.editor.element.Label");
 dojo.declare("ajweb.editor.element.Label",
 	     [ajweb.editor.element.Element,
-//	      ajweb.editor.element.Menuable,
+	      ajweb.editor.element.Menuable,
 	      ajweb.editor.element.Movable
 	     ],
   /** @lends ajweb.editor.element.Button.prototype */

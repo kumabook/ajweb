@@ -27,6 +27,7 @@ dojo.declare("ajweb.editor.element.Branch",
      */
     constructor: function(opt)
     {
+      this.model.parent.element.addNewNode(this.domNode, true);
     },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
@@ -83,7 +84,7 @@ dojo.declare("ajweb.editor.element.Branch",
       this.inherited(arguments);
       var that = this;
       this.widget.startup();
-      this.model.parent.element.addNewNode(this.domNode, true);
+//      this.model.parent.element.addNewNode(this.domNode, true);
     }
   }
 );

@@ -2,14 +2,17 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
-dojo.require("dojox.widget.Dialog");
+dojo.require("ajweb.editor.element.HasDialog");
 dojo.require("dijit.TitlePane");
 dojo.provide("ajweb.editor.element.Func");
 dojo.declare("ajweb.editor.element.Func",
-	     [ajweb.editor.element.Element,
-	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Removable],
+	     [
+	       ajweb.editor.element.Element,
+	       ajweb.editor.element.DndEnable,
+	       ajweb.editor.element.Movable,
+	       ajweb.editor.element.Removable,
+	       ajweb.editor.element.HasDialog
+	     ],
   /** @lends ajweb.editor.element.Func.prototype */
   {
     /**
@@ -26,9 +29,8 @@ dojo.declare("ajweb.editor.element.Func",
      * @param {DOM} opt.model
      * @param {DOM} opt.container コンテナ要素
      */
-    constructor: function(opt)
-    {
-      this.dialogStack = [];
+    constructor: function(opt){
+      this.model.parent.element.addNewNode(this.domNode);
     },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
@@ -43,22 +45,24 @@ dojo.declare("ajweb.editor.element.Func",
 	  open: false, toggleable: false,
 	  style:{position: "absolute", width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px",
 		 top: properties.top, left: properties.left,
-		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" },
-	  onDblClick: function(){
-	    if(!that.dialog){
-	      that.dialog = new dijit.Dialog(
-		{title: title,
-		 style: {position: "absolute",height: "300px", width: "400px"},
-		 onHide: function(){
-		   delete that.store;
-		   for(var i = 0; i < that.dialogStack.length; i++){
-		     that.dialogStack[i].removeDialog();
-		   }
-		   that.removeDialog();
-		   that.dialogStack = [];
-		 }
-		});
-	      that.paramContainer = new dijit.layout.ContentPane(
+		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" }
+	});
+
+      this.widget.element = this;
+      //ドロップ要素を更新
+      if(this.model.parent.element)
+	this.model.parent.element.widget.set(
+	  { style: {
+	      top: this.model.parent.properties.top,
+	      left: parseInt(this.model.parent.properties.left) + 250 + "px"
+	    }
+	  });
+      return this.widget.domNode;
+    },
+    createDialogContents: function(){
+      console.log("createDialogContents");
+      var that = this;
+      	      that.paramContainer = new dijit.layout.ContentPane(
 		{ content: "引数",
 		  style: {position: "absolute",top: "80px", left: "10px",width: "95%", height: "70%"}});
 	      that.dialog.containerNode.appendChild(that.paramContainer.domNode);
@@ -110,7 +114,6 @@ dojo.declare("ajweb.editor.element.Func",
 		  }});
 	      if(that.model.properties.element && that.model.properties.func)
 		that.model.reCreateParamDom();
-
 	      that.dialog.containerNode.appendChild(that.elemSelect.domNode);
 	      that.dialog.containerNode.appendChild(that.funcSelect.domNode);
 	      that.dialog.containerNode.appendChild(that.elemName.domNode);
@@ -122,30 +125,6 @@ dojo.declare("ajweb.editor.element.Func",
 	      that.elemName.startup();
 	      that.funcName.startup();
 	      that.funcButton.startup();
-	    }
-
-	    that.dialog.show();
-
-	    that.dialog._relativePosition = {};
-	    that.dialog._relativePosition.x  = 200;
-	    that.dialog._relativePosition.y  = parseInt(that.dialog.domNode.style.top) - 50;
-	    that.dialog.layout();
-
-	    that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-	    that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
-	  }
-	});
-      this.widget.element = this;
-      //ドロップ要素を更新
-      if(this.model.parent.element)
-	this.model.parent.element.widget.set(
-	  { style: {
-	      top: this.model.parent.properties.top,
-	      left: parseInt(this.model.parent.properties.left) + 250 + "px"
-	    }
-	  });
-
-      return this.widget.domNode;
     },
     updateDom: function(){
       var a = ajweb.editor;
@@ -162,21 +141,6 @@ dojo.declare("ajweb.editor.element.Func",
       if(this.dialog)
 	this.dialog.set({title: title});
     },
-    removeDialog: function(){
-      this.dialog.destroyRecursive();
-      this.elemSelect.destroyRecursive();
-      this.funcSelect.destroyRecursive();
-      this.elemName.destroyRecursive();
-      this.funcName.destroyRecursive();
-      this.funcButton.destroyRecursive();
-
-      delete this.dialog;
-      delete this.elemSelect;
-      delete this.funcSelect;
-      delete this.elemName;
-      delete this.funcName;
-      delete this.funcButton;
-    },
     removeDom: function(){
       this.container.removeNode(this.domNode);
       this.widget.destroyRecursive();
@@ -187,14 +151,11 @@ dojo.declare("ajweb.editor.element.Func",
     onDrop: function(){
       this.inherited(arguments);
     },
-    addDialogStack: function(elem){
-      this.dialogStack.push(elem);
-    },
     startup: function(){
       this.inherited(arguments);
       var that = this;
       this.widget.startup();
-      this.model.parent.element.addNewNode(this.domNode);
+//      this.model.parent.element.addNewNode(this.domNode);
     }
   }
 );
