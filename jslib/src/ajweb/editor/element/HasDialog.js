@@ -58,6 +58,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
 	}
 	that.containerNode = that.dialog.containerNode;
 	that.createDialogContents(arguments);
+	that.dialogContentsStartup();
       }
 
       that.dialog.show();
@@ -67,7 +68,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
       that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
       that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 
-      that.dialogContentsStartup();
+
     },
     dialogContentsStartup: function(){
     },

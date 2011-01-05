@@ -59,6 +59,7 @@ dojo.declare("ajweb.editor.element.Value",
     dialogContentsStartup: function(){
       this.elemName.startup();
       this.funcName.startup();
+
       this.elemSelect.startup();
       this.funcSelect.startup();
       this.funcButton.startup();
@@ -74,8 +75,8 @@ dojo.declare("ajweb.editor.element.Value",
 	  style: {position: "absolute",top: "30px",left: "10px"}});
       that.elemSelect = new dijit.form.Select(
 	{value: that.element.properties ? that.element.properties.id : that.element,
-	store: that.model.application.getValueStore(that.model), sortByLabel: false,
-	style: {position : "absolute", width: "150px", top: "25px",left: "100px"},
+	 store: that.model.application.getValueStore(that.model), sortByLabel: false,
+	 style: {position : "absolute", width: "150px", top: "25px",left: "100px"},
 	onChange: function(value){
 	  that.element = that.model.application.getElementByPropId(that.elemSelect.value);
 	  if(that.element){
@@ -105,7 +106,6 @@ dojo.declare("ajweb.editor.element.Value",
 	that.element.properties.tagName : that.model.properties.element;
 
       var funcStore = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
-
       that.funcSelect = new dijit.form.Select(
 	{//value: that.model.properties.funcName ? that.model.properties.funcName : "",
 	store: funcStore,//ajweb.editor.getGetterStore(selectedElemTag),
@@ -132,6 +132,7 @@ dojo.declare("ajweb.editor.element.Value",
 	    that.updateDom();
 	  }});
       //引数
+
       that.paramContainer = new dijit.layout.ContentPane(
 	{ content: "引数",
       style: {position: "absolute",top: "80px", left: "10px",width: "350px", height: "300px"}});
