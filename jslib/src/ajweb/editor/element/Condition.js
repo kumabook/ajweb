@@ -33,6 +33,8 @@ dojo.declare("ajweb.editor.element.Condition",
     {
       this.isDisplay = false;
     },
+    dialogWidth: ajweb.editor.CONDITION_DIALOG_WIDTH+"px",
+    dialogHeight: ajweb.editor.CONDITION_DIALOG_HEIGHT+"px",
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
@@ -40,7 +42,7 @@ dojo.declare("ajweb.editor.element.Condition",
       var that = this;
       var a = ajweb.editor;
       this.widget = new dijit.TitlePane(
-	{title: this.model.tagName, toggleable: false, open: false,
+	{title: ajweb.resources.condition, toggleable: false, open: false,
 	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
 	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"}
 	});
@@ -52,28 +54,33 @@ dojo.declare("ajweb.editor.element.Condition",
       var that = this;
       that.containerNode = that.dialog.containerNode;
       that.predictName = new dijit.layout.ContentPane(
-	{ content: "条件: ",
-	  style: {position: "absolute", top: "50px",left: "10px"}});
-	  that.predictSelect = new dijit.form.Select(
-	  { name: "modelId", value: that.model.properties.operator ? that.model.properties.operator : "",
-	    store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
-	    style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
-	  });
+	{ content: ajweb.resources.conditionSelect,
+	  style: {position: "absolute", top: "45px",left: "10px"}
+      });
+      that.predictSelect = new dijit.form.Select(
+	{ value: that.model.properties.operator ? that.model.properties.operator : "",
+	  store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
+	  style: {position : "absolute", width: "150px",top: "40px", left: "70px"}
+	});
       that.button = new dijit.form.Button(
-	{ label: that.model.properties.operator ? "変更" : "決定",
-	style: {position : "absolute",top: "45px",left: "280px"},
+	{ label: that.model.properties.operator ? ajweb.resources.change : ajweb.resources.enter,
+	style: {position : "absolute",top: "40px",left: "250px"},
 	onClick: function(){
-	  that.button.set({label: "変更"});
+	  that.button.set({label: ajweb.resources.change});
 	  for(var i = 0; i < that.model.children.length; i++)
 	    that.model.children[i].remove();
 
 	  var tagName = that.predictSelect.value;
 	  that.model.properties.operator = that.predictSelect.value;
-	  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
-	  newModel.properties.name = tagName;
-	  if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-	      that.model.editor.createModel("value", {}, newModel, newModel.element);
-	    that.model.editor.createModel("value", {}, newModel, newModel.element);
+	  if(tagName != "true"){
+	    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+	    newModel.properties.name = tagName;
+//	    var left = (parseInt(that.dialog.style.width) / 2) + "px";
+	    var left = "70px";
+	    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
+	      that.model.editor.createModel("value", {top: "0px", left: left}, newModel, newModel.element);
+	      that.model.editor.createModel("value", {top: "70px", left: left}, newModel, newModel.element);
+	    }
 	  }
 	}
       });
@@ -82,6 +89,7 @@ dojo.declare("ajweb.editor.element.Condition",
 	for(var i = 0; i < that.model.children.length; i++){
 	  if(that.model.children[i].reCreateDom)
 	    that.model.children[i].reCreateDom(that);
+	    that.model.children[i].startup();
 	    }
       }
 

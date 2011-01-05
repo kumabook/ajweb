@@ -1,120 +1,120 @@
 dojo.provide("ajweb.editor.funcList");
 ajweb.editor.FUNCLIST = [
   {
-    name: "int",
+    id: "int", name: "int",
     getters: [
-      {name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
+      {id: "direct", name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
     ],
     setters: []
   },
   {
-    name: "string",
+    id: "string", name: "string",
     getters: [
-      {name: "direct", params:[{key: "value", type: "string", input:{className: "int"}}]},
-      {name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
+      {id: "direct", name: "direct", params:[{key: "value", type: "string", input:{className: "int"}}]},
+      {id: "concat", name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
   },
   {
-    name: "date",
+    id: "date", name: "date",
     getters: [
-      {name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
-      {name: "now", params:[]}
+      {id: "direct", name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
+      {id: "now", name: "now", params:[]}
     ],
     setters: []
   },
   {
-    name: "datetime",
+    id: "datetime", name: "datetime",
     getters: [
-      {name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
-      {name: "now", params:[]}
+      {id: "direct", name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
+      {id: "now", name: "now", params:[]}
     ],
     setters: []
   },
   {
-    name: "password",
+    id: "password", name: "password",
     getters: [
     ],
     setters: []
   },
   {
-    name: "label",
+    id: "label", name: "label",
     getters: [
-      {	name: "content", func: "get", property: "Content", params: [{key: "value", type: "string"}]}
+      {	id: "content", name: "content", func: "get", property: "Content", params: [{key: "value", type: "string"}]}
     ],
-    setters: [{name: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
+    setters: [{id: "setContent", name: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
   },
   {
-    name: "button",
+    id: "button", name: "button",
     getters: [
-      {name: "label",params: [{key: "value", type: "string"}]}
-    ],
-    setters: []
-  },
-  {
-    name: "textbox",
-    getters: [
-      {	name: "value", func: "get", property: "Value", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+      {id: "label", name: "label",params: [{key: "value", type: "string"}]}
     ],
     setters: []
   },
   {
-    name: "table",
+    id: "textbox", name: "textbox",
+    getters: [
+      {	id: "value", name: "value", func: "get", property: "Value", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+    ],
+    setters: []
+  },
+  {
+    id: "table", name: "table",
     getters: [
 //      {name: "label",params: [ {key: "value", type: "string"}] }
     ],
     setters: [
-      {name: "load",params: [{key: "item", type: "object"}], description: "" },
-      {name: "clear",params: [], description: "" },
-      {name: "insert",params: [ {key: "item", type: "object"}], description: "" }
+      {id: "load", name: "load",params: [{key: "item", type: "object"}], description: "" },
+      {id: "clear", name: "clear",params: [], description: "" },
+      {id: "insert", name: "insert",params: [ {key: "item", type: "object"}], description: "" }
     ]
   },
   {
-    name: "th",
+    id: "th", name: "th",
     getters: [
 //      {name: "label",params: [{key: "value", type: "string"}]}
     ],
     setters: []
   },
   {
-    name: "selectbox",
+    id: "selectbox", name: "selectbox",
     getters: [
-      {	name: "selectItemPropety", func: "get", property: "SelectItemProperty", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
-      {	name: "selectItem", func: "get", property: "SelectItem", params: [], returnType: "object", description: "" }
+      {	id: "selectItemPropety", name: "selectItemPropety", func: "get", property: "SelectItemProperty", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
+      {	id: "selectItem", name: "selectItem", func: "get", property: "SelectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [
-      {	name: "newItem", params: [{key: "item", type: "object"}], description: ""},
-      { name: "clear",params: [], description: "" },
-      {	name: "load", params: [{key: "datum", type: "objects"}], description: ""}
+      {	id: "newItem", name: "newItem", params: [{key: "item", type: "object"}], description: ""},
+      { id: "clear", name: "clear",params: [], description: "" },
+      {	id: "load", name: "load", params: [{key: "datum", type: "objects"}], description: ""}
     ]
   },
   {
-    name: "panel",
+    id: "panel", name: "panel",
     getters: [
-      { name: "self", params: [], returnType: "element"}
+      { id: "self", name: "self", params: [], returnType: "element"}
     ],
     setters: []
   },
   {
-    name: "frame",
+    id: "frame", name: "frame",
     getters: [
-      {	name: "selectPanel", func: "get", property: "SelectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
+      {	id: "selectPanel", name: "selectPanel", func: "get", property: "SelectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
     ],
     setters: [
-      {	name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
+      {	id: "selectPanel", name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
     ]
   },
   {
-    name: "database",
+    id: "database", name: "database",
     getters: [
-      { name: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
-      { name: "select", params: [], returnType: "objects"}
+      { id: "selectById", name: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
+      { id: "selectByCondition", name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
+      { id: "select", name: "select", params: [], returnType: "objects"}
     ],
     setters: [
-      { name: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
-      { name: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
+      { id: "insert", name: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
+      { id: "update", name: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
+      { id: "delete", name: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
     ]
   }
 

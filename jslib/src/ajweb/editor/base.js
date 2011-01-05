@@ -3,50 +3,42 @@ dojo.require("ajweb.xml");
 dojo.require("ajweb.editor.modelList");
 dojo.require("ajweb.editor.funcList");
 dojo.require("dojo.data.ItemFileReadStore");
+dojo.requireLocalization("ajweb.editor", "resources");
+dojo.requireLocalization("ajweb.editor", "toolboxItems");
 dojo.provide("ajweb.editor.base");
-
+//alert(dojo.toJson(dojo.i18n.getLocalization("ajweb.editor", "toolboxItems")));
 ajweb.editor.mousePosition = { left: 0, width: 0 };
 
-var propertyDataStore;
-/**
- * コンポーネントのリスト
- */
-ajweb.editor.COMLIST =  [
-  {
-    name:"UI",
-    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'selectbox'},{name:'table'},{name:'th'},{name:'panel'},{name:'frame'}]
-  },
-  {
-    name: "DB",
-    children: [{name: "database"},{name: "property"}]
-  },
-  {
-  name: "Event",
-    children: [
-      {name: "condition"},
-      {
-	name: "Function",
-	children: [{name: "login"},{name: "insert"},{name: "update"},{name: "delete"},{name: "call"}]
-      }
-    ]
-  }
 
-];
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
 
-ajweb.editor.dataTypes =[
-  {id: "int", name: "int" }, {id: "string", name: "string" }, {id: "password", name: "password" },{id: "date", name: "date" },{id: "datetime", name: "datetime"}
-];
+ajweb.editor.getStore =  function(id, label, items){
+    return new dojo.data.ItemFileWriteStore(
+	{
+	  data: {
+	    identifier: id ? id : "name",
+	    label : label ? label : "name",
+	    items: items ? items : []
+	  }
+	}
+      );
+};
+ajweb.editor.getEmptyStore =  function(id, label, items){
+  return ajweb.editor.getStore(id, label, []);
+};
+
+ajweb.remove = function(item, array){
+  for(var i = 0; i < array.length; i++){
+    if(array[i] == item)
+      array.splice(i,1);
+    }
+};
+
 /**
  * ajwebでサポートされる型を保持するdojoストア
  */
-ajweb.editor.dataTypeStore = new dojo.data.ItemFileReadStore(
-	{
-	  data:{
-	    identifier: "name",
-	    label: "name",
-	    items: ajweb.editor.dataTypes
-	  }
-	});
+ajweb.editor.dataTypeStore = ajweb.editor.getStore("id", "name", ajweb.resources.dataTypes);
+
 /**
  * 条件式の演算子をアルファベットから記号表記に変換
  */
@@ -69,19 +61,7 @@ ajweb.editor.conditionToOperator = function(name){
 /**
  * 条件式のdojoストア
  */
-
-ajweb.editor.conditionOperatorStore = new dojo.data.ItemFileReadStore(
-	{
-	  data:{
-	    identifier: "name",
-	    label: "name",
-	    items: [
-	      {name: "true"},
-	      { name: "and" }, { name: "or" }, { name: "not" },
-	      { name: "eq" },{name: "gt"} ,{name: "lt"}, {name: "success"}
-	    ]
-	  }
-	});
+ajweb.editor.conditionOperatorStore = ajweb.editor.getStore("id", "name", ajweb.resources.conditionOperators);
 
 //マウスの位置を取得するため
 ajweb.editor.getX = function(container) {
@@ -112,6 +92,37 @@ dojo.addOnLoad(
       });
   }
 );
+/**
+ *
+ */
+ajweb.editor.getModelName = function(label){
+  var model = ajweb.editor.getModel(label, "name");
+  if(model){
+    return model.id;
+  }
+  else
+    return null;
+},
+
+ajweb.editor.getModel = function(propValue, propName){
+  return ajweb.editor._getModel(propValue, propName, ajweb.resources.toolboxItems);
+},
+
+ajweb.editor._getModel = function(propValue, propName, array){
+  for(var i = 0; i < array.length; i++){
+    var model;
+    if(array[i].children)
+      model = ajweb.editor._getModel(propValue, propName, array[i].children);
+    else{
+      if(array[i][propName] == propValue)
+	return array[i];
+    }
+    if(model)
+      return model;
+  }
+  return null;
+},
+
 /**
  * モデルの情報を保持するオブジェクト取得。
  * @param {String} name モデルの名前
@@ -163,8 +174,8 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
   var items = [];
   if(!modelName) return store;
   if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){
-    store.newItem({name: "self"});
-    store.newItem({name: "property"});
+    store.newItem({id: "self", name: "self"});
+    store.newItem({id: "property", name: "property"});
   }
   else{
     for(var i = 0; i < list.length; i++){
@@ -206,31 +217,10 @@ ajweb.editor.getNodeAttributes = function(childNode){
 
   return attrs;
 };
-ajweb.editor.getStore =  function(id, label, items){
-    return new dojo.data.ItemFileWriteStore(
-	{
-	  data: {
-	    identifier: id ? id : "name",
-	    label : label ? label : "name",
-	    items: items ? items : []
-	  }
-	}
-      );
-};
-ajweb.editor.getEmptyStore =  function(id, label, items){
-  return ajweb.editor.getStore(id, label, []);
-};
-
-ajweb.remove = function(item, array){
-  for(var i = 0; i < array.length; i++){
-    if(array[i] == item)
-      array.splice(i,1);
-    }
-};
 
 ajweb.editor.FONT_SIZE = 7.8;
 ajweb.editor.REMOVE_ICON_SIZE = 30;
 ajweb.editor.ADD_EVENT_BUTTON_LEFT = 40;
 ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT = 110;
-ajweb.editor.CONDITION_DIALOG_HEIGHT = 250;
-ajweb.editor.CONDITION_DIALOG_WIDTH = 350;
+ajweb.editor.CONDITION_DIALOG_HEIGHT = 200;
+ajweb.editor.CONDITION_DIALOG_WIDTH = 300;

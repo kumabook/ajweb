@@ -6,8 +6,8 @@ dojo.declare("ajweb.editor.model.Login", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Func.prototype */
  {
    createParam: function(elemName, funcName){
-     var paramUser = this.editor.createModel("param", 
-					     {name: "user_id", 
+     var paramUser = this.editor.createModel("param",
+					     {name: "user_id",
 					      type: "string"},
 					     this,
 					     this.element);
@@ -16,8 +16,8 @@ dojo.declare("ajweb.editor.model.Login", ajweb.editor.model.Visible,
 					     paramUser,
 					     paramUser.element
 					    );
-     var paramPass = this.editor.createModel("param", 
-					     {name: "password", 
+     var paramPass = this.editor.createModel("param",
+					     {name: "password",
 					      type: "password"},
 					     this,
 					     this.element);
@@ -34,6 +34,7 @@ dojo.declare("ajweb.editor.model.Login", ajweb.editor.model.Visible,
    reCreateParamDom: function(){
      for(var i = 0; i < this.children.length; i++){
        this.children[i].reCreateDom(this.element);
+       this.children[i].startup();
      }
    },
    removeParamDom: function(){

@@ -59,72 +59,74 @@ dojo.declare("ajweb.editor.element.Func",
 	  });
       return this.widget.domNode;
     },
+    dialogContentsStartup: function(){
+      this.elemSelect.startup();
+      this.funcSelect.startup();
+      this.elemName.startup();
+      this.funcName.startup();
+      this.funcButton.startup();
+    },
     createDialogContents: function(){
-      console.log("createDialogContents");
       var that = this;
-      	      that.paramContainer = new dijit.layout.ContentPane(
-		{ content: "引数",
-		  style: {position: "absolute",top: "80px", left: "10px",width: "95%", height: "70%"}});
-	      that.dialog.containerNode.appendChild(that.paramContainer.domNode);
-	      that.containerNode = that.paramContainer.domNode;
+      that.paramContainer = new dijit.layout.ContentPane(
+	{ content: ajweb.resources.param,
+	  style: {position: "absolute",top: "80px", left: "10px",
+		  width: this.dialog.style.width, height: this.dialog.style.height}
+	});
+      that.dialog.containerNode.appendChild(that.paramContainer.domNode);
+      that.containerNode = that.paramContainer.domNode;
 
-	      var element = that.model.application.getElementByPropId(that.model.properties.element);
-	      element = element ? element : that.model.properties.element;
+      var element = that.model.application.getElementByPropId(that.model.properties.element);
+      element = element ? element : that.model.properties.element;
 
-	      that.elemName = new dijit.layout.ContentPane(
-		{ content: "エレメント名: ",
-		  style: {position: "absolute",top: "30px",left: "10px"}});
-	      that.elemSelect = new dijit.form.Select(
-		{ value: element ? element.properties.id: null,
-		  store: that.model.application.getWidgetStore(), sortByLabel: false,
-		  style: {position : "absolute",width: "150px",top: "25px",left: "100px"},
-		  onChange: function(value){
-		    element = that.model.application.getElementByPropId(value);
-		    that.model.properties.element = element ? element.properties.id : null;
-		    ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
-		    that.funcSelect.set({disabled: false, value: that.model.properties.func ? that.model.properties.func : null});
-		    that.funcButton.set({disabled: false});
-		  }
-		});
+      that.elemName = new dijit.layout.ContentPane(
+	{ content: "エレメント名: ",
+	style: {position: "absolute",top: "30px",left: "10px"}});
+      that.elemSelect = new dijit.form.Select(
+	{ value: element ? element.properties.id: null,
+	store: that.model.application.getWidgetStore(), sortByLabel: false,
+	style: {position : "absolute",width: "150px",top: "25px",left: "100px"},
+	onChange: function(value){
+	  element = that.model.application.getElementByPropId(value);
+	  that.model.properties.element = element ? element.properties.id : null;
+	  ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
+	  that.funcSelect.set({disabled: false, value: that.model.properties.func ? that.model.properties.func : null});
+	  that.funcButton.set({disabled: false});
+	}
+	});
 
-	      that.funcName = new dijit.layout.ContentPane(
-	      {content: "メソッド名: ",
-	       style: { position: "absolute", top: "55px", left: "10px"}});
+      that.funcName = new dijit.layout.ContentPane(
+	{content: ajweb.resources.methodSelect,
+	style: { position: "absolute", top: "55px", left: "10px"}});
 
-	      var selectedElemTag = element ? element.properties.tagName : "";
-	      that.funcSelect = new dijit.form.Select(
-		{ //value: that.model.properties.func ? that.model.properties.func : "",
-		  store: ajweb.editor.getFuncStore(selectedElemTag),
-		  sortByLabel: false, disabled: that.model.properties.element ? false : true,
-		  style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
-		});
-	      that.funcButton = new dijit.form.Button(
-		{ label: that.model.properties.func ? "変更" : "決定",
-		  disabled: that.model.properties.element ? false : true,
-		  style: {position : "absolute",width: "80px", top: "47px",left: "280px"},
-		  onClick: function(){
-		    that.model.clearParam();
-		    that.model.properties.func = that.funcSelect.value;
-		    that.model.createParam(element.properties.id, that.model.properties.func);
-		    this.set({label: "変更"});
-		    //ラベルを変更
-		    that.updateDom();
+      var selectedElemTag = element ? element.properties.tagName : "";
+      that.funcSelect = new dijit.form.Select(
+	{ //value: that.model.properties.func ? that.model.properties.func : "",
+	store: ajweb.editor.getFuncStore(selectedElemTag),
+	sortByLabel: false, disabled: that.model.properties.element ? false : true,
+	style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	});
+      that.funcButton = new dijit.form.Button(
+	{ label: that.model.properties.func ? ajweb.resources.change : ajweb.resources.enter,
+	disabled: that.model.properties.element ? false : true,
+	style: {position : "absolute",width: "80px", top: "47px",left: "280px"},
+	onClick: function(){
+	  that.model.clearParam();
+	  that.model.properties.func = that.funcSelect.value;
+	  that.model.createParam(element.properties.id, that.model.properties.func);
+	  this.set({label: ajweb.resources.change});
+	  //ラベルを変更
+	  that.updateDom();
 
-		    that.container.reDrawChildNode(that.domNode);
-		  }});
-	      if(that.model.properties.element && that.model.properties.func)
-		that.model.reCreateParamDom();
-	      that.dialog.containerNode.appendChild(that.elemSelect.domNode);
-	      that.dialog.containerNode.appendChild(that.funcSelect.domNode);
-	      that.dialog.containerNode.appendChild(that.elemName.domNode);
-	      that.dialog.containerNode.appendChild(that.funcName.domNode);
-	      that.dialog.containerNode.appendChild(that.funcButton.domNode);
-
-	      that.elemSelect.startup();
-	      that.funcSelect.startup();
-	      that.elemName.startup();
-	      that.funcName.startup();
-	      that.funcButton.startup();
+	  that.container.reDrawChildNode(that.domNode);
+	}});
+      if(that.model.properties.element && that.model.properties.func)
+	that.model.reCreateParamDom();
+      that.dialog.containerNode.appendChild(that.elemSelect.domNode);
+      that.dialog.containerNode.appendChild(that.funcSelect.domNode);
+      that.dialog.containerNode.appendChild(that.elemName.domNode);
+      that.dialog.containerNode.appendChild(that.funcName.domNode);
+      that.dialog.containerNode.appendChild(that.funcButton.domNode);
     },
     updateDom: function(){
       var a = ajweb.editor;

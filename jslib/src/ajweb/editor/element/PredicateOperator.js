@@ -30,10 +30,10 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
      */
     createDom: function(properties){
       var that = this;
-      var operandLeft = "55px";
+      var operandLeft = "70px";
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute", width: "300px", height: "130px",
-		   top: "100px", left: "80px" }});
+		   top: "100px", left: "0px" }});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
 	  style: { position: "absolute", height: "40px", fontSize: "15px",
@@ -87,17 +87,6 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
       that[operand+"dialog"].containerNode.style.width = that[operand+"dialog"].domNode.style.width;
       that[operand+"dialog"].containerNode.style.height = that[operand+"dialog"].domNode.style.height;
     },
-    setDialogPosition: function(operand){
-      var parentDialog = this.getParentDialogElem().dialog;
-      if(operand == "left"){
-	this.dialogLeft = parseInt(parentDialog.domNode.style.left) + 50;
-	this.dialogTop = parseInt(parentDialog.domNode.style.top) + 25;
-      }
-      else if(operand == "right"){
-	this.dialogLeft = parseInt(parentDialog.domNode.style.left) + 50;
-	this.dialogTop = parseInt(parentDialog.domNode.style.top) - 25;
-      }
-    },
     removeDialog: function(){
 //      console.log(this.model.id + " removeDialog"  + this.childDialogElems.length);
       for(var i = 0; i < this.childDialogElems.length; i++){
@@ -114,6 +103,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
       return this.model.parent.element;
     },
     addOpenDialogEvent: function(){
+//      console.log("addOpenDialogEvent");
       dojo.connect(this.leftButton, "onClick", this, function(){
 		     this.openDialog("left");
 		   });
@@ -129,22 +119,22 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
     createDialogContents: function(dialog, operand){
       var that = this;
 
-      var predictName = new dijit.layout.ContentPane(
-	{content: "条件種類: ",
-	 style: {position: "absolute",top: "50px", left: "10px"}});
-      var predictSelect = new dijit.form.Select(
-	{name: "modelId", value: that.model.properties[operand] ? that.model.properties[operand] : "",
+      this.predictName = new dijit.layout.ContentPane(
+	{content: ajweb.resources.conditionSelect,
+	 style: {position: "absolute",top: "45px", left: "10px"}});
+      this.predictSelect = new dijit.form.Select(
+	{value: that.model.properties[operand] ? that.model.properties[operand] : "",
 	 store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
-	 style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
+	 style: {position : "absolute",width: "150px",top: "40px",left: "70px"}
       });
-      var button = new dijit.form.Button(
-	{ label: "選択",
-	style: {position : "absolute", top: "45px",left: "280px"},
+      this.button = new dijit.form.Button(
+	{ label: ajweb.resources.select,
+	style: {position : "absolute", top: "40px",left: "250px"},
 	onClick: function(){
 	  that.containerNode = dialog.containerNode;
 	  if(that.model.children.length == 0){
-	    var tagName = predictSelect.value;
-	    that.model.properties[operand] = predictSelect.value;
+	    var tagName = this.predictSelect.value;
+	    that.model.properties[operand] = this.predictSelect.value;
 	    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
 	      newModel.properties.name = tagName;
 	    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
@@ -154,13 +144,14 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
 	  }
 	}
       });
-      dialog.containerNode.appendChild(predictName.domNode);
-      dialog.containerNode.appendChild(predictSelect.domNode);
-      dialog.containerNode.appendChild(button.domNode);;
-      predictName.startup();
-      predictSelect.startup();
-      button.startup();
+      dialog.containerNode.appendChild(this.predictName.domNode);
+      dialog.containerNode.appendChild(this.predictSelect.domNode);
+      dialog.containerNode.appendChild(this.button.domNode);;
+      this.predictName.startup();
+      this.predictSelect.startup();
+      this.button.startup();
     },
+
     removeDom: function(){
       this.widget.destroyRecursive();
     },

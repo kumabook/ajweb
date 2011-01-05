@@ -252,7 +252,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "call",//call
+    name: "call",
     modelType: "func",
     modelClass: "Func",
     elementClass: "Func",

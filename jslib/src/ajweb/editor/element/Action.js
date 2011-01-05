@@ -42,7 +42,7 @@ dojo.declare("ajweb.editor.element.Action",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  content: "<br/>&nbsp;drop function",
+	  content: ajweb.resources.dropFunction,//
 	  style:{
 	    position: "absolute",
 	    width: "100px",

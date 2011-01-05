@@ -48,6 +48,20 @@ dojo.declare("ajweb.editor.element.Databases",
       this.widget.modelId = this.model.id;
       return this.widget.domNode;
     },
+    onDrop: function(name){
+      var databaseModel = this.model.editor.newModel(
+	name,
+	{
+	  top: ajweb.editor.mousePosition.y - ajweb.editor.getY(this.container.domNode),
+	  left: ajweb.editor.mousePosition.x - ajweb.editor.getX(this.container.domNode)
+	},
+	this.model,
+	this
+      );
+      var initModel = this.model.editor.newModel(
+	"init",	{}, databaseModel, databaseModel.element
+      );
+    },
     updateDom: function(){
 //      this.widget.set({ title: this.model.properties.id});
     },

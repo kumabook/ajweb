@@ -24,13 +24,15 @@ dojo.declare("ajweb.editor.element.Login",
     constructor: function(opt)
     {
     },
+    dialogWidth: "300px",
+    dialogHeight: "130px",
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
       var that = this;
        this.widget = new dijit.TitlePane(
-	{ title: this.model.tagName, open: false, toggleable: false,
+	{ title: ajweb.resources.login, open: false, toggleable: false,
 	  style:{position: "absolute", width: "80px",top: properties.top, left: properties.left,
 		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" }
 	});
@@ -47,6 +49,9 @@ dojo.declare("ajweb.editor.element.Login",
 
       return this.widget.domNode;
     },
+    dialogContentsStartup: function(){
+
+    },
     createDialogContents: function(){
 //      console.log("dialog create" + this.model.id + " " + this.model.children.length);
       var that = this;
@@ -61,11 +66,10 @@ dojo.declare("ajweb.editor.element.Login",
       else
 	that.model.createParam();
 
-      that.dialog.show();
       that.dialog.set({style: {left: "200px", top: parseInt(that.dialog.domNode.style.top) - 50 + "px"}});
+    },
+    setDialogPosition: function(){
 
-      that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-      that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
     },
     updateDom: function(){
       this.widget.set({

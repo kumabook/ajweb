@@ -26,11 +26,14 @@ dojo.declare("ajweb.editor.element.HasDialog",
     {
       this.childDialogElems = [];
     },
-    dialogWidth: "300px",
-    dialogHeight: "400px",
+    dialogWidth: "350px",
+    dialogHeight: "300px",
     dialogTop: 100,
     dialogLeft: 50,
     createDialogContents: function(){
+    },
+    getDialogTitle: function(){
+      return this.model.tagName;
     },
     openDialog: function(operand){
       var that = this;
@@ -39,8 +42,8 @@ dojo.declare("ajweb.editor.element.HasDialog",
 //      console.log("OpenDialog");
       if(!that.dialog){
 	that.dialog = new dijit.Dialog(
-	  {title: title,
-	  style: {position: "absolute",height: this.dialogWidth, width: this.dialogHeight},
+	  {title: this.getDialogTitle(),
+	  style: {position: "absolute",height: this.dialogHeight, width: this.dialogWidth},
 	  onHide: function(){
 	    if(that.getParentDialogElem() == null){//トップダイアログなら子ダイアログをすべて削除
 	      that.removeDialog();
@@ -50,7 +53,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
 	});
 	var parentDialogElem = that.getParentDialogElem();
 	if(parentDialogElem){
-	  console.log("add child " + that.model.id);
+//	  console.log("add child " + that.model.id);
 	  parentDialogElem.childDialogElems.push(that);
 	}
 	that.containerNode = that.dialog.containerNode;
@@ -63,9 +66,18 @@ dojo.declare("ajweb.editor.element.HasDialog",
 
       that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
       that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
+
+      that.dialogContentsStartup();
+    },
+    dialogContentsStartup: function(){
     },
     getParentDialogElem: function(){
-      return null;
+      if(this.model.parent.element.openDialog)
+	return this.model.parent.element;
+      else if(this.model.parent.parent.element && this.model.parent.parent.element.openDialog)
+	return this.model.parent.parent.element;
+      else
+	return null;
     },
     setDialogPosition: function(){
     },
@@ -76,7 +88,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
 	this.dialogTop = top;
       if(!dialog)
 	dialog = this.dialog;
-      console.log(this.model.id + " top:" + this.dialogTop + "  left: " + this.dialogLeft);
+//      console.log(this.model.id + " top:" + this.dialogTop + "  left: " + this.dialogLeft);
       dialog._relativePosition = {};
       dialog._relativePosition.x  = this.dialogLeft;//200;
       dialog._relativePosition.y  = this.dialogTop;//parseInt(that.dialog.domNode.style.top) - 50;
@@ -87,7 +99,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
       dojo.connect(this.widget, "onDblClick", this, this.openDialog);
     },
     removeDialog: function(){
-      console.log(this.model.id + " removeDialog"  + this.childDialogElems.length);
+  //    console.log(this.model.id + " removeDialog"  + this.childDialogElems.length);
       for(var i = 0; i < this.childDialogElems.length; i++){
 	this.childDialogElems[i].removeDialog();
       }

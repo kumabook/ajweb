@@ -30,9 +30,12 @@ dojo.declare("ajweb.editor.element.DBFunc",
      */
     createDom: function(properties){
       var that = this;
+      var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
+      var databaseName = that.model.properties.database ? that.model.properties.database : "未設定";
+      var title = actionName + "(" + databaseName+")";
        this.widget = new dijit.TitlePane(
 	{
-	  title: this.model.tagName,
+	  title: title,
 	  open: false,
 	  toggleable: false,
 	  style:{ position: "absolute", width: "80px",
@@ -52,15 +55,15 @@ dojo.declare("ajweb.editor.element.DBFunc",
 
       that.store = that.model.application.getDatabaseStore();
       var tablename = new dijit.layout.ContentPane(
-	{content: "データベース名",
+	{content: ajweb.resources.databaseName,
 	style: { position: "absolute", top: "30px", left: "10px"}
       });
       var tablenameSelect = new dijit.form.Select(
-	{name: "modelId",value: that.model.properties.database ? that.model.properties.database : "",
+	{value: that.model.properties.database ? that.model.properties.database : "",
 	store: that.store, sortByLabel: false,
 	style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
       var button = new dijit.form.Button(
-	{ label: "決定",
+	{ label: ajweb.resources.enter,
 	style: {position : "absolute",width: "80px",top: "25px",left: "280px"},
 	onClick: function(){
 	  if(that.model.children.length > 0){

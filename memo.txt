@@ -21,3 +21,7 @@ dojo付属のjsdocはPHPサーバを使って動的に解析してdocumentを見
 
 画面の要素の位置などに変数を許すか？
 画面の要素を動的に生成できる機能はいるか？
+
+firefoxでmenuableとmovableの入れ子が競合。今のところ両方同時に起こる箇所はないので、menuableを優先. 1/1 0:21
+menuableのインスタンスかどうかを判定すること + 右クリックどうか直接判定すること + menu._openMyselfで無理矢理解決.
+なぜかinstanceof　が使えない. thisがobject扱いになっている. 1/1 0:43

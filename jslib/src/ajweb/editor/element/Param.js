@@ -34,10 +34,11 @@ dojo.declare("ajweb.editor.element.Param",
 	});
 
       this.widget = new dijit.layout.ContentPane(
-	{ 
+	{
 	  style: {
 	   position: "absolute",
-	   top: (this.container.containerNode.childNodes.length * 35) + "px", left: "10px",
+	   top: (this.container.containerNode.childNodes.length * 35) + "px",
+	   left: "0px",//	   left: "10px",
 	   width: "350px", height: "35px",
 	   overflow : "visible"
 	 }});

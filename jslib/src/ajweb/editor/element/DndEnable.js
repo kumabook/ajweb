@@ -43,11 +43,12 @@ dojo.declare("ajweb.editor.element.DndEnable", null,
 	{
 	  accept: ["text", "treeNode"],
 	  checkAcceptance : function(source, nodes){
-	    var modelInfo = ajweb.editor.getModelInfo(nodes[0].childNodes[2].childNodes[2].innerHTML);
+	    var modelName = ajweb.editor.getModelName(nodes[0].childNodes[2].childNodes[2].innerHTML);
+	    var modelInfo = ajweb.editor.getModelInfo(modelName);
 	    return that.checkAcceptance(modelInfo.modelType);
 	  },
 	  onDrop: function(sources, nodes, copy){
-	    var name = nodes[0].childNodes[2].childNodes[2].innerHTML;
+	    var name = ajweb.editor.getModelName(nodes[0].childNodes[2].childNodes[2].innerHTML);
 	    that.onDrop(name);
 	  }
 	}

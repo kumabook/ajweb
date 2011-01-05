@@ -77,7 +77,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       }
       items.push({id: "separator0"});
       items.push({id: "primitive", name: "基本型"});
-      items = items.concat(ajweb.editor.dataTypes);
+      items = items.concat(ajweb.resources.dataTypes);
       items.push({id: "separator1"});
       items.push({id: "element", name: "ウィジェット"});
 

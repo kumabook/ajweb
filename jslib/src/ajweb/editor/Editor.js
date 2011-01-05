@@ -110,17 +110,17 @@ dojo.declare(
       this.pMenuBar = new dijit.MenuBar({ style: {top: "0px"}}, menu);
       this.fileMenu = new dijit.Menu({});
 
-      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("new"),
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.resources["new"],
 						 onClick: function(){that.newDialog.show();}}));
-      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.getValue("open"),
+      this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.resources.open,
 						 onClick: function(){ that.openFile();}}));
       this.saveMenu = new dijit.Menu();
-      this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.getValue("save"),popup: this.saveMenu}));
-      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.getValue("file"),popup: this.fileMenu}));
+      this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.resources.save, popup: this.saveMenu}));
+      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.resources.file, popup: this.fileMenu}));
       this.generateMenu = new dijit.Menu({});
       this.generateWarMenu = new dijit.Menu();
-      this.generateMenu.addChild(new dijit.PopupMenuItem({label: ajweb.getValue("war"),popup: this.generateWarMenu}));
-      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.getValue("generate") ,popup: this.generateMenu}));
+      this.generateMenu.addChild(new dijit.PopupMenuItem({label: ajweb.resources.war, popup: this.generateWarMenu}));
+      this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.resources.generate ,popup: this.generateMenu}));
       var logo = document.createElement("div");
       logo.appendChild(document.createTextNode("Ajml Editor"));
       logo.style.position = "absolute";
@@ -136,7 +136,7 @@ dojo.declare(
       this.toolboxCp = new dijit.TitlePane({
 					     region: "right",
 					     style: {width: "200px", overflowY: "auto"},
-					     title: ajweb.getValue("toolbox"),
+					     title: ajweb.resources.toolbox,
 					     splitter: "true",
 					     toggleable: false
 					   }
@@ -159,16 +159,16 @@ dojo.declare(
        * プロパティエディター部分のペイン
        * @type dijit.layout.ContentPane
        */
-      this.propertyCp = new dijit.layout.ContentPane({ title: ajweb.getValue("property")});
+      this.propertyCp = new dijit.layout.ContentPane({ title: ajweb.resources.property});
       /**
        * ログ表示部分のペイン
        * @type dijit.layout.ContentPane
        */
-      this.logCp = new dijit.layout.ContentPane({title: ajweb.getValue("log")});
+      this.logCp = new dijit.layout.ContentPane({title: ajweb.resources.log});
       /**
        * イベントモデルエディター部分ののペイン。
        */
-      this.eventCp = new dijit.layout.ContentPane({title: ajweb.getValue("event")});
+      this.eventCp = new dijit.layout.ContentPane({title: ajweb.resources.event});
 
       this.eventTarget = new dijit.form.Button(
 	{style: {position: "absolute", top: "3px", left: "10px"},
@@ -181,7 +181,7 @@ dojo.declare(
        */
       this.eventTc = new dijit.layout.TabContainer(
 	{ style: {position: "absolute", top: "30px", left: "0px", overflowX: "scroll"},
-	  tabPosition: "left-h", title: ajweb.getValue("event")});
+	  tabPosition: "left-h", title: ajweb.resources.event});
       this.addEventMenu = new dijit.Menu();
       this.addEventButton = new dijit.form.DropDownButton(
 	{ label: "イベントを追加", disabled: true,
@@ -224,9 +224,9 @@ dojo.declare(
 	{
 	  data:
 	  {
-	    identifier: "name",
+	    identifier: "id",
 	    label : "name",
-	    items: ajweb.editor.COMLIST
+	    items: ajweb.resources.toolboxItems
 	  }
 	}
       );
@@ -304,7 +304,7 @@ dojo.declare(
 	  region: "left",
 	  toggleable: false,
 	  splitter: "true",
-	  title: ajweb.getValue("projectExploer")
+	  title: ajweb.resources.projectExploer
 	}
       );
       /**
@@ -358,7 +358,7 @@ dojo.declare(
        */
       this.uploadDialog = new dijit.Dialog(
 	{
-	  title: ajweb.getValue("loadFile")});
+	  title: ajweb.resources.loadFile});
       var uploadForm = new dijit.form.Form(
 	{
 	  method: "POST",
@@ -379,7 +379,7 @@ dojo.declare(
 
       var uploadButton = document.createElement("input");
       uploadButton.setAttribute("type", "submit");
-      uploadButton.setAttribute("value", ajweb.getValue("load"));
+      uploadButton.setAttribute("value", ajweb.resources.load);
       uploadForm.domNode.appendChild(filenameInput);
       uploadForm.domNode.appendChild(editorInput);
       uploadForm.domNode.appendChild(uploadButton);
@@ -387,12 +387,12 @@ dojo.declare(
       /**
        * 新規作成ダイアログ
        */
-      this.newDialog = new dijit.Dialog({ title: ajweb.getValue("newApplication")});
-      var appName = new dijit.layout.ContentPane({ content: "アプリ名"});
+      this.newDialog = new dijit.Dialog({ title: ajweb.resources.newApplication});
+      var appName = new dijit.layout.ContentPane({ content: ajweb.resources.appName});
       var appNameTextbox = new dijit.form.TextBox();
       appName.domNode.appendChild(appNameTextbox.domNode);
       var createButton = new dijit.form.Button(
-	{ label: ajweb.getValue("create"),
+	{ label: ajweb.resources.create,
 	  onClick: function(){
 	    that.newApplication(appNameTextbox.value);
 	    that.newDialog.hide();
@@ -430,7 +430,7 @@ dojo.declare(
 	  }
 	});
       this.contextMenu.bindDomNode(this.projectTree.domNode);
-      this.contextMenu.addChild(new dijit.MenuItem({label: "コンテキストメニュー", disabled: true}));
+      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
 
     },
     /**
@@ -681,9 +681,10 @@ dojo.declare(
     },
     removeProjectTree: function(model){
       var store = this.projectStore;
-      this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
+      this.projectStore.fetchItemByIdentity(
+	{identity: model.id, onItem: function(item){
 					       store.deleteItem(item);
-					     }});
+      }});
     }
   }
 );

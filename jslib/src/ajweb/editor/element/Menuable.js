@@ -28,7 +28,7 @@ dojo.declare("ajweb.editor.element.Menuable", null,
     createMenu :function(){
       var that = this;
       var menu = new dijit.Menu();
-      menu.addChild(new dijit.MenuItem({label: "コンテキストメニュー"
+      menu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu
 //					+ this.model.tagName
 					+ " (" +this.model.id + ")",
 					disabled: true

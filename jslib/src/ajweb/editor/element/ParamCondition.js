@@ -44,18 +44,18 @@ dojo.declare("ajweb.editor.element.ParamCondition",
       var that = this;
       that.containerNode = that.dialog.containerNode;
       var predictName = new dijit.layout.ContentPane(
-	{ content: "条件: ",
+	{ content: ajweb.resources.conditionSelect,
 	style: {position: "absolute",top: "50px",left: "10px"}});
       var predictSelect = new dijit.form.Select(
-	{	name: "modelId", value: that.model.properties.operator ? that.model.properties.operator : "",
+	{value: that.model.properties.operator ? that.model.properties.operator : "",
 	store: ajweb.editor.conditionOperatorStore, sortByLabel: false,
 	style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	});
       var button = new dijit.form.Button(
-	{ label: that.model.properties.operator ? "変更" : "決定",
+	{ label: that.model.properties.operator ? ajweb.resources.change:ajweb.resources.enter,
 	style: {position : "absolute",top: "45px",left: "280px"},
 	onClick: function(){
-	  button.set({label: "変更"});
+	  button.set({label: ajweb.resources.change});
 	  for(var i = 0; i < that.model.children.length; i++)
 	    that.model.children[i].remove();
 

@@ -89,7 +89,7 @@
             <param id="param2" name="password" type="password">
               <value element="passwordbox" func="get" funcName="value" property="Value" type="element"/>            </param>          </login>
           <branch id="branch1" left="279px" top="32px">
-            <condition left="0px" operator="success" top="15px">
+            <condition left="279px" operator="success" top="32px">
               <success/>            </condition>
             <then id="then1" left="655px" top="16px">
               <call element="rootFrame" func="selectPanel" id="call2" left="496px" top="25px">

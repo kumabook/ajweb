@@ -35,7 +35,7 @@ dojo.declare("ajweb.editor.element.Branch",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  content : "<br/>&nbsp;drop condition",
+	  content : ajweb.resources.dropCondition,
 	  style:{ position: "absolute", width: "100px", height: "50px",
 	    top: properties.top, left: properties.left,
 	    border: "dotted 1px #769DC0"

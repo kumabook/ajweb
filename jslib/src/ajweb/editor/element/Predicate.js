@@ -5,7 +5,7 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Predicate");
-dojo.declare("ajweb.editor.element.Predicate", 
+dojo.declare("ajweb.editor.element.Predicate",
 	     [ajweb.editor.element.Element],
   /** @lends ajweb.editor.element.Predicate.prototype */
   {
@@ -33,7 +33,7 @@ dojo.declare("ajweb.editor.element.Predicate",
       var that = this;
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute", width: "300px", height: "130px",
-		   top: "100px", left: "80px"}});
+		   top: "80px", left: "0px"}});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
 	  style: { position: "absolute", height: "40px", fontSize: "20px",

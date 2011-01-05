@@ -3,7 +3,7 @@ dojo.provide("ajweb.editor.resources");
 ajweb.editor.resources = {};
 ajweb.editor.resources.locale = "ja";
 ajweb.editor.resources.setLocale = function(locale){
-  ajweb.editor.resources.locale = locale;
+ajweb.editor.resources.locale = locale;
 };
 ajweb.editor.resources.getValue = function(key){
   return ajweb.editor.resources.texts[key][ajweb.editor.resources.locale];
