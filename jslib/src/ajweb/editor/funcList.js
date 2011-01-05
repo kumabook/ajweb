@@ -1,22 +1,24 @@
 dojo.provide("ajweb.editor.funcList");
 ajweb.editor.FUNCLIST = [
+
+//基本データ型
   {
-    id: "int", name: "int",
+    id: "ajweb.int", name: "int",
     getters: [
       {id: "direct", name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
     ],
     setters: []
   },
   {
-    id: "string", name: "string",
+    id: "ajweb.string", name: "string",
     getters: [
-      {id: "direct", name: "direct", params:[{key: "value", type: "string", input:{className: "int"}}]},
+      {id: "direct", name: "direct", params:[{key: "value", type: "string", input:{className: "string"}}]},
       {id: "concat", name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
   },
   {
-    id: "date", name: "date",
+    id: "ajweb.date", name: "date",
     getters: [
       {id: "direct", name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
       {id: "now", name: "now", params:[]}
@@ -24,7 +26,7 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    id: "datetime", name: "datetime",
+    id: "ajweb.datetime", name: "datetime",
     getters: [
       {id: "direct", name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
       {id: "now", name: "now", params:[]}
@@ -32,11 +34,13 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    id: "password", name: "password",
+    id: "ajweb.password", name: "password",
     getters: [
     ],
     setters: []
   },
+
+//ウィジェット
   {
     id: "label", name: "label",
     getters: [
@@ -55,6 +59,13 @@ ajweb.editor.FUNCLIST = [
     id: "textbox", name: "textbox",
     getters: [
       {	id: "value", name: "value", func: "get", property: "Value", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+    ],
+    setters: []
+  },
+  {
+    id: "passwordbox", name: "passwordbox",
+    getters: [
+      {	id: "value", name: "value", func: "get", property: "Value", params: [], returnType: "string", description: "パスワードボックスに入力されている値を取得" }
     ],
     setters: []
   },
@@ -104,6 +115,7 @@ ajweb.editor.FUNCLIST = [
       {	id: "selectPanel", name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
     ]
   },
+//データベース
   {
     id: "database", name: "database",
     getters: [

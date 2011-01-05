@@ -23,7 +23,6 @@ dojo.require("ajweb.editor.gridCellEdit");
 
 dojo.require("ajweb.base");
 dojo.require("ajweb.editor.base");
-dojo.require("ajweb.editor.resources");
 dojo.require("ajweb.editor.model.Model");
 dojo.require("ajweb.editor.model.Application");
 dojo.require("ajweb.editor.model.Widget");
@@ -172,7 +171,7 @@ dojo.declare(
 
       this.eventTarget = new dijit.form.Button(
 	{style: {position: "absolute", top: "3px", left: "10px"},
-	 label: "エレメントが選択されていません"});
+	 label: ajweb.resources.noElement});
 
       /**
        * イベントのリストを表示するタブコンテナ
@@ -184,7 +183,7 @@ dojo.declare(
 	  tabPosition: "left-h", title: ajweb.resources.event});
       this.addEventMenu = new dijit.Menu();
       this.addEventButton = new dijit.form.DropDownButton(
-	{ label: "イベントを追加", disabled: true,
+	{ label: ajweb.resources.addEvent, disabled: true,
 	  dropDown: this.addEventMenu,
 	  style: {position: "absolute", top: "3px",
 		  left: (this.eventTarget.label.length * ajweb.editor.FONT_SIZE)
@@ -542,7 +541,7 @@ dojo.declare(
     generate:  function(applicationModel){
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
-      var applicationElement = applicationModel.toXMLElement(xml);
+      var applicationElement = applicationModel.toXMLElement(false);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
       this.sendForm(content, "war", applicationModel.properties.name);
@@ -683,8 +682,10 @@ dojo.declare(
       var store = this.projectStore;
       this.projectStore.fetchItemByIdentity(
 	{identity: model.id, onItem: function(item){
-					       store.deleteItem(item);
+	   if(item)
+	     store.deleteItem(item);
       }});
+
     }
   }
 );

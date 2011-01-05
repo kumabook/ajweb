@@ -104,6 +104,19 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
       }
       return 0;
   },
+  getSelectItemProperty: function(param){
+    var value = this.widget.getValue();
+    for(var i = 0; i <  this.items.length; i++){
+      if(this.items[i][this.label] == value){
+	if(!param || !param.property){
+	  return this.items[i];
+	}
+	else
+	  return this.items[i][param.property];
+	}
+      }
+      return 0;
+  },
 
   display :function(){
     this.widget.startup();

@@ -30,7 +30,7 @@ dojo.declare("ajweb.editor.element.Databases",
       this.widget =   new dijit.layout.ContentPane(
 	{
 //	  title: this.id,
-	  title: ajweb.getValue("databases"),
+	  title: ajweb.resources.databases,
 	  closable: true,
 	  doLayout: false,
 	  style:{

@@ -67,28 +67,28 @@ dojo.declare("ajweb.editor.element.Value",
       var that = this;
       that.containerNode = that.dialog.containerNode;
       //エレメント選択
-      var element = that.model.application.getElementByPropId(that.model.properties.element);
-      element = element ? element : (that.model.properties.element ? that.model.properties.element : "");
+      that.element = that.model.application.getElementByPropId(that.model.properties.element);
+      that.element = that.element ? that.element : (that.model.properties.element ? that.model.properties.element : "");
       that.elemName = new dijit.layout.ContentPane(
 	{ content: ajweb.resources.elementSelect,
 	  style: {position: "absolute",top: "30px",left: "10px"}});
       that.elemSelect = new dijit.form.Select(
-	{value: element.properties ? element.properties.id : element,
+	{value: that.element.properties ? that.element.properties.id : that.element,
 	store: that.model.application.getValueStore(that.model), sortByLabel: false,
 	style: {position : "absolute", width: "150px", top: "25px",left: "100px"},
 	onChange: function(value){
-	  element = that.model.application.getElementByPropId(that.elemSelect.value);
-	  if(element){
-	    that.model.properties.element = element.properties.id;
+	  that.element = that.model.application.getElementByPropId(that.elemSelect.value);
+	  if(that.element){
+	    that.model.properties.element = that.element.properties.id;
 	    that.model.properties.type = "element";
 	  }
 	  else {
-	    element = that.elemSelect.value;
-	    that.model.properties.element = element;
-	    that.model.properties.type = element;
+	    that.element = that.elemSelect.value;
+	    that.model.properties.element = that.element;
+	    that.model.properties.type = that.element;
 	}
 	ajweb.editor.getGetterStore(
-	  element.properties ? element.properties.tagName : that.elemSelect.value,
+	  that.element.properties ? that.element.properties.tagName : that.elemSelect.value,
 	  that.funcSelect.store);
 	that.funcSelect.set({value: that.model.properties.funcName ? that.model.properties.funcName : ""});
 	that.funcSelect.set({ disabled: false});
@@ -101,8 +101,8 @@ dojo.declare("ajweb.editor.element.Value",
 	    {content: ajweb.resources.methodSelect,
 	      style: { position: "absolute", top: "55px", left: "10px"}});
 
-	    var selectedElemTag = element.properties ?
-	element.properties.tagName : that.model.properties.element;
+	    var selectedElemTag = that.element.properties ?
+	that.element.properties.tagName : that.model.properties.element;
 
       var funcStore = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
 
@@ -121,12 +121,12 @@ dojo.declare("ajweb.editor.element.Value",
 	      {identity: that.funcSelect.value,
 	      onItem: function(item){
 		console.log("funcName: " + item.name);
-		that.model.properties.funcName = item.name;
-		that.model.properties.func = item.func ? item.func : null;
-		that.model.properties.property = item.property ? item.property : null;
+		that.model.properties.funcName = item.name+"";
+		that.model.properties.func = item.func ? item.func+"" : null;
+		that.model.properties.property = item.property ? item.property+"" : null;
 	      }});
-	    that.model.createParam(element.properties ? element.properties.id : element,
-	    that.model.properties.funcName, element);
+	    that.model.createParam(that.element.properties ? that.element.properties.id : that.element,
+	    that.model.properties.funcName, that.element);
 	    this.set({label: ajweb.resources.change});
 	    //ラベルを変更
 	    that.updateDom();
@@ -149,6 +149,7 @@ dojo.declare("ajweb.editor.element.Value",
       that.dialog.containerNode.appendChild(that.funcName.domNode);
 
       that.dialog.containerNode.appendChild(that.funcButton.domNode);
+      console.log(that.model.properties.funcName);
     },
     addOpenDialogEvent: function(){
       dojo.connect(this.widget, "onClick", this, this.openDialog);
@@ -157,8 +158,11 @@ dojo.declare("ajweb.editor.element.Value",
       var label = (this.model.properties.element && this.model.properties.funcName) ?
 	this.model.properties.element + ":" + this.model.properties.funcName : "no value";
       this.widget.set({label: label});
-      if(this.dialog)
+      if(this.dialog){
 	this.dialog.set({title: label});
+	this.dialog.layout();
+      }
+	
     },
     removeDom: function(){
       this.widget.destroyRecursive();

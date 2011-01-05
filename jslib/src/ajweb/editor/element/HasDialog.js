@@ -26,7 +26,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
     {
       this.childDialogElems = [];
     },
-    dialogWidth: "350px",
+    dialogWidth: "365px",
     dialogHeight: "300px",
     dialogTop: 100,
     dialogLeft: 50,

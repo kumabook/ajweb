@@ -1,16 +1,18 @@
 dojo.require("ajweb.base");
 dojo.require("ajweb.xml");
-dojo.require("ajweb.editor.modelList");
-dojo.require("ajweb.editor.funcList");
+
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.requireLocalization("ajweb.editor", "resources");
-dojo.requireLocalization("ajweb.editor", "toolboxItems");
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
 dojo.provide("ajweb.editor.base");
-//alert(dojo.toJson(dojo.i18n.getLocalization("ajweb.editor", "toolboxItems")));
+
+dojo.require("ajweb.editor.modelList");
+dojo.require("ajweb.editor.funcList");
+
 ajweb.editor.mousePosition = { left: 0, width: 0 };
 
 
-ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
+
 
 ajweb.editor.getStore =  function(id, label, items){
     return new dojo.data.ItemFileWriteStore(
@@ -142,7 +144,8 @@ ajweb.editor.getFuncStore = function(modelName, store){
   else {
     store.fetch({
 		  onItem: function(item){
-		    store.deleteItem(item);
+		    if(item)
+		      store.deleteItem(item);
 		  }});
     store.save();
   }
@@ -151,6 +154,7 @@ ajweb.editor.getFuncStore = function(modelName, store){
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].setters.length; j++){
+	//ここにフィルターを必要ならば追加
 	store.newItem(list[i].setters[j]);
       }
     }
@@ -166,7 +170,8 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
     store = ajweb.editor.getEmptyStore();
   else {
     store.fetch({onItem: function(item){
-		   store.deleteItem(item);
+		   if(item)
+		     store.deleteItem(item);
 		 }});
     store.save();
   }
@@ -179,12 +184,11 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
   }
   else{
     for(var i = 0; i < list.length; i++){
-      if(list[i].name == modelName){
+      if(list[i].id == modelName){
 	for(var j = 0; j < list[i].getters.length; j++){
 	  if(!returnType || list[i].getters[j].returnType == returnType){
 	    store.newItem(list[i].getters[j]);
 	  }
-
 	}
       }
     }

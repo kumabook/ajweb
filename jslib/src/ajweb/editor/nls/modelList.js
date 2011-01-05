@@ -1,7 +1,7 @@
 ([
   {
     name:"UI",
-    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'selectbox'},{name:'table'},{name:'th'},{name:'panel'},{name:'frame'}]
+    children: [{name:'label'},{name:'button'},{name:'textbox'},{name:'passwordbox'},{name:'selectbox'},{name:'table'},{name:'th'},{name:'panel'},{name:'frame'}]
   },
   {
     name: "DB",

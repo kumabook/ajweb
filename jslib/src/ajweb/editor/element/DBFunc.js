@@ -54,36 +54,40 @@ dojo.declare("ajweb.editor.element.DBFunc",
       that.containerNode = paramContainer.domNode;
 
       that.store = that.model.application.getDatabaseStore();
-      var tablename = new dijit.layout.ContentPane(
+      this.tablename = new dijit.layout.ContentPane(
 	{content: ajweb.resources.databaseName,
 	style: { position: "absolute", top: "30px", left: "10px"}
       });
-      var tablenameSelect = new dijit.form.Select(
+      that.tablenameSelect = new dijit.form.Select(
 	{value: that.model.properties.database ? that.model.properties.database : "",
 	store: that.store, sortByLabel: false,
 	style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
-      var button = new dijit.form.Button(
+      that.button = new dijit.form.Button(
 	{ label: ajweb.resources.enter,
 	style: {position : "absolute",width: "80px",top: "25px",left: "280px"},
 	onClick: function(){
 	  if(that.model.children.length > 0){
 	    that.model.removeParam();
 	  }
-	  var model = ajweb.getModelById(tablenameSelect.value);
+	  console.log(that.tablenameSelect.value);
+	  var model = that.model.application.getElementByPropId(that.tablenameSelect.value);
 	  that.model.properties.database = model.properties.id;
-	  that.model.createParam(tablenameSelect.value);
+	  that.model.createParam(that.tablenameSelect.value);
 	}
       });
-      that.dialog.containerNode.appendChild(tablenameSelect.domNode);
-      that.dialog.containerNode.appendChild(tablename.domNode);
-      that.dialog.containerNode.appendChild(button.domNode);
-      tablenameSelect.startup();
-      tablename.startup();
-      button.startup();
+      that.dialog.containerNode.appendChild(that.tablenameSelect.domNode);
+      that.dialog.containerNode.appendChild(that.tablename.domNode);
+      that.dialog.containerNode.appendChild(that.button.domNode);
 
       if(that.model.properties.database){
 	that.model.reCreateParamDom();
       }
+
+    },
+    dialogContentsStartup: function(){
+      this.tablenameSelect.startup();
+      this.tablename.startup();
+      this.button.startup();
     }
   }
 );

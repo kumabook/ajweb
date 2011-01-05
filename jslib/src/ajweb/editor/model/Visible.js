@@ -96,7 +96,6 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      */
     remove: function(){
       this.inherited(arguments);
-
       this.removeDom();
       this.editor.removeProjectTree(this);
     },

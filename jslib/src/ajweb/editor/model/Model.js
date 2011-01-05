@@ -131,7 +131,7 @@ dojo.declare("ajweb.editor.model.Model", null,
       var xml = ajweb.xml._xml;//createDocument("ajml");
       var node =  xml.createElement(this.tagName);
 	var propertyList = dojo.clone(this.propertyList);
-      if(!isSave){
+      if(isSave){
 	propertyList = propertyList ? propertyList : [];
 	propertyList.push("top");
 	propertyList.push("left");

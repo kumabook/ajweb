@@ -59,7 +59,7 @@
    contextMenu : "context menu",
    dropFunction: "drop area(event)",
    dropCondition: "<br/>&nbsp;drop area(condition)",
-   condition: "条件",
+   condition: "譚｡莉ｶ",
    conditionSelect: "condition: ",
    undefinedElem: "unconfigured",
    enter: "enter",
@@ -72,5 +72,10 @@
    elementSelect: "element: ",
    methodSelect: "method: ",
    login: "login",
-   param: "param"
+   param: "param",
+   noElement: "no element",
+   addEvent: "add event",
+   databases: "databases",
+   events: "events",
+   interfaces: "UI"
 })

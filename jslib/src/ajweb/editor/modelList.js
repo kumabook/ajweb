@@ -26,7 +26,7 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["widget"],
     propertyList: [],
     defaultProperties: {},
-    projLabel: "UIモデル"
+    projLabel: ajweb.resources.interfaces
   },
   {
     name:"databases",
@@ -37,7 +37,7 @@ ajweb.editor.MODELLIST =  [
     propertyList: ["tagName", "id"],
     eventList: [],
     defaultProperties: { tagName: "databases"},
-    projLabel: "データモデル"
+    projLabel: ajweb.resources.databases
   },
   {
     name:"events",
@@ -47,7 +47,7 @@ ajweb.editor.MODELLIST =  [
     propertyList: [],
     eventList: [],
     defaultProperties: {},
-    projLabel: "イベントモデル"
+    projLabel: ajweb.resources.events
   },
 
 
@@ -87,6 +87,16 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     propertyList: ["tagName", "id", "width", "top", "left", "content", "palceHolder", "candidate_list"],
+    eventList: ["onDisplay", "onFocus", "onBlur"],
+    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
+  },
+  {
+    name:'passwordbox',
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "Textbox",
+    acceptModelType: [],
+    propertyList: ["tagName", "id", "width", "top", "left", "content"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },

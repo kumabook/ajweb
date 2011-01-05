@@ -69,8 +69,10 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
      }
    },
    removeParam: function(){
-     while(this.children.length != 0)
+     while(this.children.length != 0){
        this.children[0].remove();
+     }
+
    }
  }
 );

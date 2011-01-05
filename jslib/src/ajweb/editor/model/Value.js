@@ -10,6 +10,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
    toXMLElement: function(isSave){
      if(isSave)
        return this.inherited(arguments);
+
      var name = this.properties.element;
      if(!name)
        return this.inherited(arguments);
@@ -59,9 +60,9 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      }
      else {
        var element, func;
-
+//       console.log(name + "  " + funcName);
        for(i = 0; i < ajweb.editor.FUNCLIST.length; i++){
-	 if(name == ajweb.editor.FUNCLIST[i].name)
+	 if(name == ajweb.editor.FUNCLIST[i].id)
 	   element = ajweb.editor.FUNCLIST[i];
        }
 
@@ -69,7 +70,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 	 return;
 
        for(i = 0; i < element.getters.length; i++){
-	 if(funcName == element.getters[i].name)
+	 if(funcName == element.getters[i].id)
 	   func = element.getters[i];
        }
 

@@ -30,7 +30,7 @@ dojo.declare("ajweb.editor.element.Menuable", null,
       var menu = new dijit.Menu();
       menu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu
 //					+ this.model.tagName
-					+ " (" +this.model.id + ")",
+					+ " (" +this.model.properties.id + ")",
 					disabled: true
 				       }));
       menu.addChild(new dijit.MenuItem({label: "削除",
