@@ -3,14 +3,14 @@ ajweb.editor.FUNCLIST = [
 
 //基本データ型
   {
-    id: "ajweb.int", name: "int",
+    id: "int", name: "int",
     getters: [
       {id: "direct", name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
     ],
     setters: []
   },
   {
-    id: "ajweb.string", name: "string",
+    id: "string", name: "string",
     getters: [
       {id: "direct", name: "direct", params:[{key: "value", type: "string", input:{className: "string"}}]},
       {id: "concat", name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
@@ -18,7 +18,7 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    id: "ajweb.date", name: "date",
+    id: "date", name: "date",
     getters: [
       {id: "direct", name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
       {id: "now", name: "now", params:[]}
@@ -26,7 +26,7 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    id: "ajweb.datetime", name: "datetime",
+    id: "datetime", name: "datetime",
     getters: [
       {id: "direct", name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
       {id: "now", name: "now", params:[]}
@@ -34,7 +34,7 @@ ajweb.editor.FUNCLIST = [
     setters: []
   },
   {
-    id: "ajweb.password", name: "password",
+    id: "password", name: "password",
     getters: [
     ],
     setters: []
@@ -90,7 +90,9 @@ ajweb.editor.FUNCLIST = [
   {
     id: "selectbox", name: "selectbox",
     getters: [
-      {	id: "selectItemPropety", name: "selectItemPropety", func: "get", property: "SelectItemProperty", params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}], returnType: "dataProperty", description: ""},
+      {	id: "selectItemProperty", name: "selectItemProperty", func: "get", property: "SelectItemProperty", 
+	params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}],
+	returnType: "dataProperty", description: ""},
       {	id: "selectItem", name: "selectItem", func: "get", property: "SelectItem", params: [], returnType: "object", description: "" }
     ],
     setters: [

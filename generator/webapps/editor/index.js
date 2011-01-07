@@ -1,3 +1,4 @@
+
 dojo.require("ajweb.editor.Editor");
 dojo.addOnLoad(
   function(){

@@ -114,7 +114,9 @@ dojo.declare(
       this.fileMenu.addChild(new dijit.MenuItem({label: ajweb.resources.open,
 						 onClick: function(){ that.openFile();}}));
       this.saveMenu = new dijit.Menu();
+      this.downloadMenu = new dijit.Menu();
       this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.resources.save, popup: this.saveMenu}));
+      this.fileMenu.addChild(new dijit.PopupMenuItem({label: ajweb.resources.download, popup: this.downloadMenu}));
       this.pMenuBar.addChild(new dijit.PopupMenuBarItem({label: ajweb.resources.file, popup: this.fileMenu}));
       this.generateMenu = new dijit.Menu({});
       this.generateWarMenu = new dijit.Menu();
@@ -413,7 +415,7 @@ dojo.declare(
 	      if(node == that.applications[i].properties.name){
 		var application = that.applications[i];
 		this.appSaveMenu = new dijit.MenuItem(
-		  {label: "save", onClick: function(){that.saveAjml(application);}});
+		  {label: "save", onClick: function(){that.saveProject(application);}});
 		this.addChild(this.appSaveMenu);
 		this.appGenerateMenu = new dijit.MenuItem(
 		  {label: "generateWar", onClick: function(){that.generate(application);}});
@@ -458,10 +460,18 @@ dojo.declare(
 	{
 	  label: appName,
 	  onClick: function(){
-	    that.saveAjml(application);
+	    that.saveProject(application);
 	  }
 	});
       that.saveMenu.addChild(appSaveMenu);
+      var appDownloadMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.downloadAjml(application);
+	  }
+	});
+      that.downloadMenu.addChild(appDownloadMenu);
       var appGenerateMenu = new dijit.MenuItem(
 	{
 	  label: appName,
@@ -484,7 +494,7 @@ dojo.declare(
 
       for(var i = 0; i < rootElement.childNodes.length; i++){
 	var child = rootElement.childNodes[i];
-	if(child instanceof Element && child.tagName == "application"){
+	if((child.tagName != undefined /*|| child instanceof Element*/) && child.tagName == "application"){
 	  applicationNode = child;
 	  for(var j = 0; j < applicationNode.attributes.length; j++){
 	    if(applicationNode.attributes[j].name == "name")
@@ -496,7 +506,6 @@ dojo.declare(
 
       this.application = application;
       this.applications.push(application);
-
       application.xmlToModel(applicationNode, xml);
 
       var that = this;
@@ -506,10 +515,18 @@ dojo.declare(
 	{
 	  label: appName,
 	  onClick: function(){
-	    that.saveAjml(application);
+	    that.saveProject(application);
 	  }
 	});
       that.saveMenu.addChild(appSaveMenu);
+      var appDownloadMenu = new dijit.MenuItem(
+	{
+	  label: appName,
+	  onClick: function(){
+	    that.downloadAjml(application);
+	  }
+	});
+      that.downloadMenu.addChild(appDownloadMenu);
       var appGenerateMenu = new dijit.MenuItem(
 	{
 	  label: appName,
@@ -526,10 +543,18 @@ dojo.declare(
      * アプリケーションをajmlとして一時保存
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
-    saveAjml: function(applicationModel){
+    saveProject: function(applicationModel){
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
       var applicationElement = applicationModel.toXMLElement(true);
+      rootElement.appendChild(applicationElement);
+      var content = ajweb.xml.serialize(xml);
+      this.sendForm(content, "ajml", applicationModel.properties.name);
+    },
+    downloadAjml: function(applicationModel){
+      var xml = ajweb.xml.createDocument("ajml");
+      var rootElement = xml.documentElement;
+      var applicationElement = applicationModel.toXMLElement(false);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
       this.sendForm(content, "ajml", applicationModel.properties.name);
@@ -594,6 +619,10 @@ dojo.declare(
     createModel : function(name, properties, parent, container, display){
       var modelInfo = ajweb.editor.getModelInfo(name);
       var elementClass = modelInfo.elementClass;
+//      var ElementClass = elementClass ? elementClass.substr(0,1).toLocaleUpperCase() + elementClass.substr(1)
+  //    : elementClass;
+
+//      var elementClass = modelInfo.elementClass;
       var modelClass = modelInfo.modelClass;
       var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
       var propertyList = dojo.clone(modelInfo.propertyList);
@@ -615,7 +644,6 @@ dojo.declare(
 	    defaultProperties[propertyName] = properties[propertyName];
 	}
       }
-
       var newModel =  new ajweb.editor.model[ModelClass](
 	{
 	  id: id,
@@ -631,6 +659,7 @@ dojo.declare(
 	  container: container,
 	  editor: this
 	}, display);
+
       this.addProjectTree(newModel);
       newModel.startup();
       return newModel;
@@ -660,17 +689,17 @@ dojo.declare(
 	});
       };
 
-	this.projectTreeModel.getRoot(
-	  function(item){
-	    if(model.parent)//applicationモデル
-	      addTreeModel(model, item, that.projectTreeModel);
-	    else
-	      that.projectTreeModel.newItem({name: model.projLabel, id: model.properties.id,
-				 jsId: model.id, modelType: model.tagName},item);
+      this.projectTreeModel.getRoot(
+	function(item){
+	  if(model.parent){
+	    addTreeModel(model, item, that.projectTreeModel);
 	  }
-	);
-
-
+	  else {//applicationモデル
+	    that.projectTreeModel.newItem({name: model.projLabel, id: model.properties.id,
+					   jsId: model.id, modelType: model.tagName},item);	    
+	  }
+	}
+      );
     },
     updateProjectTree: function(model){
       var store = this.projectStore;

@@ -30,7 +30,6 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
        */
       this.elementClass = opt.elementClass;
       this.element = this.createDom(opt.container, display);
-
     },
     /**
      * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。

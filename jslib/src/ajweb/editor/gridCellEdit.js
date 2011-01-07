@@ -37,6 +37,19 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		     this.widget.startup();
 		     return this.widget;
 		   }
+		   else if(property.type == "dataproperty"){
+		     var model = this.store.currentModel;
+		     if(model.properties[property.target]){
+		       var databaseModel =  model.application.getElementByPropId(model.properties[property.target]);
+		       this.selectStore = databaseModel.getSchemeStore(this.selectStore);
+		       this.widget = new dijit.form.Select(
+			 {store: this.selectStore,
+			  value: inDatum
+			 }, inNode);
+		       this.widget.startup();
+		       return this.widget;
+		     }
+		   }
 		   else {
 		     this.widget = new dijit.form.Select({store: this.selectStore, value: inDatum}, inNode);
 		     this.widget.startup();

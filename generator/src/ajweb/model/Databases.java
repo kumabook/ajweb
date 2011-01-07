@@ -47,8 +47,9 @@ public class Databases extends ArrayList<Database> implements AbstractModel{
 			GETPROPERITIES_TEMP.apply("TABLENAME", get(i).tablename);
 			GETPROPERITIES_TEMP.apply("NEXT", GETPROPERITIES);
 			GETPROPERITIES = GETPROPERITIES_TEMP.source;
-
-			if(get(i).tablename == "users"){
+			System.out.println(GETPROPERITIES);
+			
+			if(get(i).tablename.equals("users")){
 				loginable = true;
 			}
 		}

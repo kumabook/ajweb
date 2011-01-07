@@ -185,7 +185,7 @@ dojo.addOnLoad(
     //チャットルーム画面の初期化
     ajweb.addEvent(selectButton, "onClick", true, function(){
 		   rootFrame.selectPanel({panel: chatRoomPanel});
-		   nowRoomLabel.setContent(roomSelectbox.getSelectItem().name);
+		   nowRoomLabel.setContent({content:roomSelectbox.getSelectItemProperty({property:"name"})});
 		   //メッセージリストの取得
 		   message_database.selectByCondition(
 		     new ajweb.data.Condition({
@@ -201,12 +201,12 @@ dojo.addOnLoad(
 		 });
     //入室処理
     ajweb.addEvent(enterButton, "onClick", true, function(){
-		     message_database.insert({message : userNameTextbox.getValue() + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : new ajweb.date({})});
+		     message_database.insert({message : userNameTextbox.getValue() + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.datetime.now({})});
 		   contentsFrame.selectPanel({panel: messagePanel});
 		 });
     //メッセージの送信
     ajweb.addEvent(messageSubmitButton.widget, "onClick", true, function(){
-		   message_database.insert({message : messageTextbox.getValue() ,user_name : userNameTextbox.getValue() ,room : roomSelectbox.getSelectItem({property: "id"}), posted : new ajweb.date({})});
+		   message_database.insert({message : messageTextbox.getValue() ,user_name : userNameTextbox.getValue() ,room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.datetime.now({})});
 		 });
     //メッセージの変更を反映
     var insert_condition = new ajweb.data.Condition(

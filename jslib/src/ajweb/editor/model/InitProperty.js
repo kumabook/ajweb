@@ -10,7 +10,7 @@ dojo.declare("ajweb.editor.model.InitProperty", ajweb.editor.model.Visible,
 		   return this.inherited(arguments);
 		 this.tagName = "property";
 		 var node = this.inherited(arguments);
-		 this.tagName = "InitProperty";
+		 this.tagName = "initProperty";
 		 return node;
 	       }
 	     });

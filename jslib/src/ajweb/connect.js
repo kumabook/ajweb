@@ -45,6 +45,10 @@ ajweb.join = function(url){
       },
       load: function(data, ioargs){
 	ajweb.log.trace("join  response=" + data);
+	if(typeof data == 'number')
+	  ajweb.pollingInterval = data;
+	else 
+	  ajweb.pollingInterval = ajweb.DEFAULT_POLLING_INTERVAL;
 	for(var i = 0; i < ajweb.onLoad.length; i++){
 	  ajweb.onLoad[i]();//joinした後にアプリケーションコードを呼び出す
 	}
@@ -90,7 +94,10 @@ ajweb.polling = function(url){
 	    }
 	  }
 	}
-        ajweb.polling(url);
+//        ajweb.polling(url);
+	setTimeout(function(){
+		     ajweb.polling(url);
+		   }, ajweb.pollingInterval);
       },
       error:function(error, args){
 	console.log(" poll error!"+ error);

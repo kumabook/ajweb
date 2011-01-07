@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -113,8 +114,12 @@ public class GenerateServlet extends AbstractServlet {
 				
 				String filename = request.getParameter("filename");
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
+				File file = new File(filename);
+				System.out.println(file.getAbsolutePath());
+				FileOutputStream tempFile = new FileOutputStream(filename);
+				tempFile.write(ajml.getBytes("UTF-8"));
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
-
+				
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(new InputSource(in)); 

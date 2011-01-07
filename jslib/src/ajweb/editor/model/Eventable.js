@@ -33,6 +33,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
        * イベントモデルのリスト
        */
       this.events = [];//this.createEventModel();
+
       if(isDisplay)
 	this.updatePropertiesView();
     },

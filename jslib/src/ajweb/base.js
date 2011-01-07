@@ -51,7 +51,7 @@ else {
 		}
 	      )();
 }
-
+ajweb.DEFAULT_POLLING_INTERVAL = 3000;
 ajweb.databases = [];
 
 ajweb.server_databases = [];
@@ -189,3 +189,9 @@ ajweb.addEvent = function(target, type, condition, callback){
       }
     });
 };
+dojo.require("ajweb.int");
+dojo.require("ajweb.string");
+dojo.require("ajweb.date");
+dojo.require("ajweb.time");
+dojo.require("ajweb.datetime");
+dojo.require("ajweb.password");

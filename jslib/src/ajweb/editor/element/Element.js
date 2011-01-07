@@ -34,9 +34,7 @@ dojo.declare("ajweb.editor.element.Element", null,
        * DOM要素が配置される親要素
        * @type @type ajweb.editor.element.Element|dijit.layout.TabContainer
        */
-
       this.container = opt.container;
-
       /**
        * この要素のDOM要素(この要素がcontainer要素のcontainerDomの下に配置される)
        * @type HTMLElement
@@ -47,10 +45,10 @@ dojo.declare("ajweb.editor.element.Element", null,
        * @type HTMLElement
        */
       this.containerNode = this.createContainerNode();
+
       if(this.container instanceof ajweb.editor.element.Element){
 	if(this.container.containerNode)
 	  this.container.containerNode.appendChild(this.domNode);
-
       }
       else　{// centerTcの場合
 	this.container.addChild(this.widget);

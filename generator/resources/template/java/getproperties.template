@@ -1,4 +1,4 @@
 if(tablename.equals("${TABLENAME}")){
 			return ${TABLENAME}.properties;	
 		}
-		else
+		else ${NEXT}

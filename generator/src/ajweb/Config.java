@@ -20,7 +20,7 @@ public class Config {
 	//public static boolean isStandardOutput = true;
 	public static PrintStream out = System.out;
 	public static long TIMEOUT = 60000;//ポーリングのタイムアウトmillsecond
-	public static int port = 8000;
+	public static int port = 443;
 	
 	public static boolean isJar 	= false;
 	

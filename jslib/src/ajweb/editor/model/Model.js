@@ -157,7 +157,7 @@ dojo.declare("ajweb.editor.model.Model", null,
       var childNode;
       dojo.forEach(node.childNodes,
 	function(v, i ,a){
-	  if(v instanceof Element){
+	  if(v.tagName != undefined){// || v instanceof Element){
 	    var attrs = ajweb.editor.getNodeAttributes(v);
 	    var child, container = this.element;
 	    if(v.tagName == "databases" || v.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの

@@ -27,6 +27,7 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
    * @param {Object} opt.top 親パネル上端からの相対位置
    * @param {Object} opt.left 親パネル左端からの相対位置
    * @param {Object} opt.width
+   * @param {String} opt.label
    * @param {Object} opt.size 大きさ
    * @param {Object} opt.onload
    */
@@ -115,7 +116,7 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
 	  return this.items[i][param.property];
 	}
       }
-      return 0;
+      return "0";
   },
 
   display :function(){

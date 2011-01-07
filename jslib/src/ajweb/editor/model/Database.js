@@ -9,6 +9,12 @@ dojo.declare("ajweb.editor.model.Database", ajweb.editor.model.Eventable,
     getSchemeStore: function(store){
       if(!store)
 	store = ajweb.editor.getEmptyStore();
+      else {
+	store.fetch({onItem: function(item){
+		       store.deleteItem(item);
+		     }});
+	store.save();
+      }
       for(var i = 0; i < this.children.length; i++){
 	if(this.children[i].tagName == "property"){
 	  store.newItem({name: this.children[i].properties.name});

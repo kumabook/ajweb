@@ -38,9 +38,9 @@ dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
 	display: function(){
 	  this.onDisplay();
 	},
-	setContent: function(content){
-	  this.content = content;
-	  this.element.innerHTML = content;
+	setContent: function(param){
+	  this.content = param.content;
+	  this.element.innerHTML = param.content;
 	},
 	onDisplay: function(){
     	},

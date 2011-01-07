@@ -26,21 +26,23 @@ dojo.declare("ajweb.editor.element.Widget",
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
-    {},
+    {  
+    },
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
-    createDom: function(properties){
+    createDom: function(){
+      var p = this.model.properties;
       this.widget = new dijit.layout.ContentPane(
 	{
 	  style:{
 	    position: "absolute",
 	    backgroundColor: "#E1EBFB",
 	    border: "dotted 1px #000000",
-	    top: properties.top,
-	    left: properties.left,
-	    width: properties.width,
-	    height: properties.height
+	    top: p.top ? parseInt(p.top) + "px" : "",
+	    left: p.left ? parseInt(p.left) + "px": "",
+	    width: p.width ? parseInt(p.width) + "px" : "",
+	    height: p.height ? parseInt(p.height) + "px" : ""
 	  },
 	  content: this.model.tagName
 	});
@@ -48,7 +50,7 @@ dojo.declare("ajweb.editor.element.Widget",
     },
     updateDom: function(){
       this.widget.set(
-	{style:{top: this.model.properties.top, left: this.model.properties.left},
+	{style:{top: parseInt(this.model.properties.top)+"px", left: parseInt(this.model.properties.left)+"px"},
 	  label: this.model.properties.content
 	});
     },

@@ -2,62 +2,75 @@
 <ajml>
   <application name="chat">
     <interfaces>
-      <panel height="500px" id="rootPanel" left="392" tagName="panel" top="2" width="700px">
-        <label content="ﾁｬｯﾄｱﾌﾟﾘｹｰｼｮﾝ" id="label0" left="27px" tagName="label" top="22px"/>
-        <frame height="450px" id="rootFrame" left="25px" tagName="frame" top="45px" width="650px">
-          <panel height="450px" id="loginPanel" left="417" tagName="panel" top="2" width="650px">
-            <label content="ﾕｰｻﾞID" id="label1" left="29px" tagName="label" top="29px"/>
-            <textbox content="user_name" id="userIdTextbox" left="132px" tagName="textbox" top="29px" width="100px"/>
-            <label content="ﾊﾟｽﾜｰﾄﾞ" id="label2" left="29px" tagName="label" top="59px"/>
-            <textbox content="password" id="passwordbox" left="131px" tagName="textbox" top="59px" width="100px"/>
-            <button content="ﾛｸﾞｲﾝ" id="button1" left="32px" tagName="button" top="91px"/>
+      <panel height="500px" id="rootPanel" left="392" top="2" width="700px">
+        <label content="ﾁｬｯﾄｱﾌﾟﾘｹｰｼｮﾝ" id="label0" left="27px" top="22px"/>
+        <frame height="450px" id="rootFrame" left="25px" top="45px" width="650px">
+          <panel height="450px" id="loginPanel" left="417" top="2" width="650px">
+            <label content="ﾕｰｻﾞID" id="label1" left="29px" top="29px"/>
+            <textbox content="user_name" id="userIdTextbox" left="132px" top="29px" width="100px"/>
+            <label content="ﾊﾟｽﾜｰﾄﾞ" id="label2" left="29px" top="59px"/>
+            <button content="ﾛｸﾞｲﾝ" id="button1" left="32px" top="91px"/>
+            <passwordbox id="passwordbox" left="131px" top="61px" width="100px"/>
           </panel>
-          <panel height="450px" id="roomSelectPanel" left="417" tagName="panel" top="2" width="650px">
-            <label content="ﾙｰﾑ選択" id="label3" left="0px" tagName="label" top="0px"/>
-            <button content="選択" id="selectButton" left="369px" tagName="button" top="50px"/>
-            <selectbox data="room" id="roomSelect" left="100px" tagName="selectbox" top="50px"/>
+          <panel height="450px" id="roomSelectPanel" left="417" top="2" width="650px">
+            <label content="ﾙｰﾑ選択" id="label3" left="0px" top="0px"/>
+            <button content="選択" id="selectButton" left="369px" top="50px"/>
+            <selectbox data="room" id="roomSelect" label="name" left="100px" top="50px"/>
           </panel>
-          <panel height="450px" id="chatRoomPanel" left="417" tagName="panel" top="2" width="650px">
-            <label content="ﾗﾍﾞﾙ" id="nowRoomLabel" left="60px" tagName="label" top="0px"/>
-            <frame height="100px" id="contentsFrame" left="25px" tagName="frame" top="80px" width="450px">
-              <panel height="100px" id="entrancePanel" left="517" tagName="panel" top="145.5" width="450px">
-                <label content="名前" id="userNameLabel" left="40px" tagName="label" top="10px"/>
-                <textbox id="userNameTextbox" left="100px" tagName="textbox" top="10px" width="100px"/>
-                <button content="入室" id="enterButton" left="100px" tagName="button" top="50px"/>
-                <button content="ﾙｰﾑ選択画面に戻る" id="backButton" left="300px" tagName="button" top="50px"/>
+          <panel height="450px" id="chatRoomPanel" left="417" top="2" width="650px">
+            <label content="ﾗﾍﾞﾙ" id="nowRoomLabel" left="60px" top="0px"/>
+            <frame height="100px" id="contentsFrame" left="25px" top="80px" width="450px">
+              <panel height="100px" id="entrancePanel" left="517" top="157.5" width="450px">
+                <label content="名前" id="userNameLabel" left="40px" top="10px"/>
+                <textbox id="userNameTextbox" left="100px" top="10px" width="100px"/>
+                <button content="入室" id="enterButton" left="100px" top="50px"/>
+                <button content="ﾙｰﾑ選択画面に戻る" id="backButton" left="300px" top="50px"/>
               </panel>
-              <panel height="100px" id="messagePanel" left="517" tagName="panel" top="145.5" width="450px">
-                <label content="ﾒｯｾｰｼﾞ" id="messageLabel" left="20px" tagName="label" top="10px"/>
-                <textbox id="messageTextbox" left="150px" tagName="textbox" top="10px" width="100px"/>
-                <button content="送信" id="messageSubmitButton" left="100px" tagName="button" top="50px"/>
-                <button content="退出" id="exitButton" left="350px" tagName="button" top="50px"/>
+              <panel height="100px" id="messagePanel" left="517" top="157.5" width="450px">
+                <label content="ﾒｯｾｰｼﾞ" id="messageLabel" left="20px" top="10px"/>
+                <textbox id="messageTextbox" left="150px" top="10px" width="100px"/>
+                <button content="送信" id="messageSubmitButton" left="100px" top="50px"/>
+                <button content="退出" id="exitButton" left="350px" top="50px"/>
               </panel>            </frame>
-            <table height="225px" id="messageTable" left="25px" tagName="table" top="200px" width="600px">
-              <th field="user_name" id="th0" label="user_name" left="203" tagName="th" top="13" width="100px"/>
-              <th field="message" id="th1" label="message" left="343" tagName="th" top="30" width="100px"/>
-              <th field="posted" id="th2" label="posted" left="354" tagName="th" top="25" width="350px"/>
-              <th field="room" id="th3" label="room" left="350" tagName="th" top="37" width="30px"/>            </table>
+            <table height="225px" id="messageTable" left="25px" top="200px" width="600px">
+              <th field="user_name" id="th0" label="user_name" left="203" top="13" width="100px"/>
+              <th field="message" id="th1" label="message" left="343" top="30" width="100px"/>
+              <th field="posted" id="th2" label="posted" left="354" top="25" width="350px"/>
+              <th field="room" id="th3" label="room" left="350" top="37" width="30px"/>            </table>
           </panel>        </frame>
       </panel>    </interfaces>
-    <databases id="databases0" tagName="databases">	
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="84px" tablename="users" tagName="database" top="62px" type="server">
-	<init>
-	</init>        
-	<property left="164" name="user_id" top="27" type="string"/>
+    <databases id="databases0">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="84px" tablename="users" top="62px" type="server">
+        <init>
+          <item>
+            <initProperty name="user_id" type="string" value="kumamoto"/>
+            <initProperty name="password" type="password" value="kumamoto"/>
+            <initProperty name="role" type="string" value="admin"/>
+          </item>
+          <item>
+            <initProperty name="user_id" type="string" value="hiroki"/>
+            <initProperty name="password" type="password" value="hiroki"/>
+            <initProperty name="role" type="string" value="normal"/>
+          </item>
+	</init>
+        <property left="164" name="user_id" top="27" type="string"/>
         <property left="217" name="password" top="61" type="password"/>
         <property left="195" name="role" top="96" type="string"/>
       </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="413px" tablename="message" tagName="database" top="167px" type="server">
-	<init>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="413px" tablename="message" top="167px" type="server">
+        <init>
 	</init>
         <property left="212" name="message" top="33" type="string"/>
         <property left="224" name="posted" top="63" type="datetime"/>
         <property left="234" name="room_id" top="88" type="int"/>
-        <property left="228" name="user" top="120" type="string"/>      </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="534px" tablename="room" tagName="database" top="29px" type="server">
-       	<init>
-	</init>  
-	 <property left="157" name="name" top="23" type="string"/>      </database>
+        <property left="228" name="user_name" top="120" type="string"/>      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="534px" tablename="room" top="29px" type="server">
+        <init>
+          <item>
+            <initProperty name="name" type="string" value="room1"/>
+	</item>	
+	</init>
+        <property left="157" name="name" top="23" type="string"/>      </database>
     </databases>
     <events>
       <event id="event14" target="label0" type="onDisplay">
@@ -83,7 +96,7 @@
       <event id="event29" target="button1" type="onClick">
         <condition left="10px" top="25px"/>
         <action left="411px" top="43px">
-          <login id="login0" left="132px" top="36px">
+          <login id="login0" left="133px" top="37px">
             <param id="param1" name="user_id" type="string">
               <value element="userIdTextbox" func="get" funcName="value" property="Value" type="element"/>            </param>
             <param id="param2" name="password" type="password">
@@ -157,7 +170,7 @@
                 <param id="param37" name="second" type="string">
                   <value element="string" funcName="direct" type="string">
                     <param id="param38" name="value" type="string">
-                      <int>が入室しました｡</int>
+                      <string>が入室しました｡</string>
                     </param>
                   </value>
                 </param>
@@ -169,7 +182,7 @@
             <param id="param13" name="room_id" type="int">
               <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
             </param>
-            <param id="param14" name="user" type="string">
+            <param id="param14" name="user_name" type="string">
               <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
             </param>
           </insert>
@@ -203,7 +216,7 @@
             <param id="param20" name="room_id" type="int">
               <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
             </param>
-            <param id="param21" name="user" type="string">
+            <param id="param21" name="user_name" type="string">
               <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
             </param>
           </insert>
@@ -221,7 +234,7 @@
                 <param id="param40" name="second" type="string">
                   <value element="string" funcName="direct" type="string">
                     <param id="param41" name="value" type="string">
-                      <int>が退室しました｡</int>
+                      <string>が退室しました｡</string>
                     </param>
                   </value>
                 </param>
@@ -233,7 +246,7 @@
             <param id="param25" name="room_id" type="int">
               <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
             </param>
-            <param id="param26" name="user" type="string">
+            <param id="param26" name="user_name" type="string">
               <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
             </param>
           </insert>

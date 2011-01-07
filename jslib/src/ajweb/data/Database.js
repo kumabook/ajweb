@@ -148,12 +148,14 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
       return {};
     }
   },
-  selectByCondition: function(where, next){
-    if(!where)
+  selectByCondition: function(param, next){//where, next){
+/*    if(!where)
       return this._select(null, next);
     where = this.encodeRefItem(where);
     var param = where.toJSON();
-    return this._select(param, next);
+    return this._select(param, next);*/
+    if(param.condition)
+     return this._select(param.condition.toJSON(), next);
   },
   selctById: function(id, next){
     if(id instanceof Object)

@@ -58,9 +58,9 @@
 		<exec executable="cmd" dir="./work/util/buildscripts">
 			<arg line="/c build.bat profile=standard releaseDir=../../../dist loader=xdomain action=release"/>
 		</exec>
-		<exec executable="C:/cygwin/bin/sh.exe">
+		<!--		<exec executable="C:/cygwin/bin/sh.exe">
 			<arg line="bin/jslib_deploy"/>
-		</exec>
+		</exec> -->
 	</target>
 	<target name="dist_mac">
 		<copy todir="./work/" overwrite="true">

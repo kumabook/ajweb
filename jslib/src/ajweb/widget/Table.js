@@ -80,8 +80,8 @@ ajweb.widget.Widget,
 
   load : function(param){
     this.clear();
-    for(var i = 0; i < param.datum.length; i++){
-      this.store.newItem(param.datum[i]);
+    for(var i = 0; i < param.item.length; i++){
+      this.store.newItem(param.item[i]);
     }
   },
 

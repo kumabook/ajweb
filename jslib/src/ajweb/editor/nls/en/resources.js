@@ -30,9 +30,9 @@
      }
    ],
    dataTypes: [
-     {id: "ajweb.int", name: "int" }, {id: "ajweb.string", name: "string" },
-     {id: "ajweb.password", name: "password" },{id: "ajweb.date", name: "date" },
-     {id: "ajweb.time", name: "time"},{id: "ajweb.datetime", name: "datetime"}
+     {id: "int", name: "int" }, {id: "string", name: "string" },
+     {id: "password", name: "password" },{id: "date", name: "date" },
+     {id: "time", name: "time"},{id: "datetime", name: "datetime"}
    ],
    conditionOperators:  [
      {id: "true", name: "true"},{id : "and", name: "and"}, {id: "or", name: "or" },

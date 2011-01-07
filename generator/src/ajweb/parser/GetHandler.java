@@ -39,7 +39,7 @@ public class GetHandler extends AbstractHandler{
 			String element = attributes.get("element");
 			String funcName = attributes.get("funcName");
 			String func = attributes.get("func");
-			System.out.println(element + " " + funcName + " " + func + " " + property);
+//			System.out.println(element + " " + funcName + " " + func + " " + property);
 			if(property == null)
 				property = "";
 			if(func == null || func == "")

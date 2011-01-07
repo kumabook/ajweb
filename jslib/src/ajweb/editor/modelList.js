@@ -86,7 +86,7 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "Textbox",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "width", "top", "left", "content", "palceHolder", "candidate_list"],
+    propertyList: ["tagName", "id", "width", "top", "left", "content", "placeHolder", "candidate_list"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"}
   },
@@ -107,7 +107,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Table",
     acceptModelType: ["th"],
     propertyList: ["tagName", "id", "height", "width", "top", "left"],
-    eventList: ["onDisplay", "onClick", "onDbClick", "onCellEdit"],
+    eventList: ["onDisplay"],
     defaultProperties: { tagName: "table", width: "100px", height: "50px"}
   },
   {
@@ -126,7 +126,10 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Widget",
     elementClass: "widget",
     acceptModelType: [],
-    propertyList: ["tagName", "id", "top", "left", {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"}],
+    propertyList: ["tagName", "id", "top", "left", 
+		   {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"},
+		   {name: "label", input: "selectbox", type: "dataproperty", target: "data"}
+		  ],
     eventList: ["onDisplay", "onChange"],
     defaultProperties: { tagName: "selectbox"}
   },

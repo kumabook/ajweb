@@ -168,8 +168,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var childNode, eventsNode, child;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
-
-	if(childNode instanceof Element){
+	if(childNode.tagName != undefined){// || childNode instanceof Element){
 	  var attrs = ajweb.editor.getNodeAttributes(childNode);
 	  if(childNode.tagName == "events"){
 	    eventsNode = node.childNodes[i];
@@ -188,7 +187,6 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var eventsAttrs = ajweb.editor.getNodeAttributes(eventsNode);
       child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element, isDisplay);
       child.xmlToModel(eventsNode, doc, isDisplay);
-
       this.setRefProperty();
     }
   }

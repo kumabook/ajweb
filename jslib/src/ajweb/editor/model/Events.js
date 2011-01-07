@@ -8,7 +8,7 @@ dojo.declare("ajweb.editor.model.Events", ajweb.editor.model.Model,
       var childNode;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
-	if(childNode instanceof Element){
+	if(childNode.tagName != undefined){// instanceof Element){
 	  var attrs = ajweb.editor.getNodeAttributes(childNode);
 	  var child;
 	  if(childNode.tagName == "event"){

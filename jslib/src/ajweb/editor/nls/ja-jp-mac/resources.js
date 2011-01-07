@@ -30,9 +30,9 @@
      }
    ],
    dataTypes: [
-     {id: "ajweb.int", name: "整数" }, {id: "ajweb.string", name: "文字列" },
-     {id: "ajweb.password", name: "パスワード" },{id: "ajweb.date", name: "日付" },
-     {id: "ajweb.time", name: "時刻" },{id: "ajweb.datetime", name: "日付:時刻"}
+     {id: "int", name: "整数" }, {id: "string", name: "文字列" },
+     {id: "password", name: "パスワード" },{id: "date", name: "日付" },
+     {id: "time", name: "時刻" },{id: "datetime", name: "日付:時刻"}
    ],
    conditionOperators:  [
      {id: "true", name: "常に真"},{id : "and", name: "かつ"}, {id: "or", name: "または" },

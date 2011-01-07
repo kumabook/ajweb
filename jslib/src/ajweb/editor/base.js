@@ -214,11 +214,10 @@ ajweb.editor.getNodeAttributes = function(childNode){
     attrs[attributes[i].name] = attributes[i].value;
   }
   for(var j = 0; j < childNode.childNodes.length; j++){
-    if(childNode.childNodes[j] instanceof Text){
+    if(childNode.childNodes[j].data != undefined){// || childNode.childNodes[j] instanceof CharacterData){
       attrs._character = childNode.childNodes[j].data;
     }
   }
-
   return attrs;
 };
 

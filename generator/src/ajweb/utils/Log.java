@@ -52,7 +52,7 @@ public class Log {
 			e.printStackTrace();
 		}
 //app servlet logger
-		servletLogger.setUseParentHandlers(false);
+		//servletLogger.setUseParentHandlers(false);
 		try {
 			//FileHandler servletFh = new FileHandler(Config.logDir + fs + "servlet.log%u");
 			FileHandler servletFh = new FileHandler(Config.logDir + fs + "servlet.log%g", 1000000, 10, false);

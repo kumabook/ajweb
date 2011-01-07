@@ -32,6 +32,12 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        this.tagName = "value";
        return node;
      }
+     else if(name == "int" || name == "string" || name == "date" || 
+	     name == "time" || name == "datetime" || name == "password"){
+       var node = this.inherited(arguments);
+       node.setAttribute("element", "ajweb."+name);
+       return node;
+     }
      else
        return this.inherited(arguments);
    },
