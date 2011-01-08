@@ -1,18 +1,49 @@
+dojo.provide("ajweb.editor.base");
 dojo.require("ajweb.base");
 dojo.require("ajweb.xml");
-
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.requireLocalization("ajweb.editor", "resources");
 ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
-dojo.provide("ajweb.editor.base");
 
 dojo.require("ajweb.editor.modelList");
-dojo.require("ajweb.editor.funcList");
+//dojo.require("ajweb.editor.funcList");
 
 ajweb.editor.mousePosition = { left: 0, width: 0 };
 
 
-
+ajweb.editor.toolboxItems = (function(){
+			       var toolboxItemWidget = [];
+			       var toolboxItemDatabase = [];
+			       var toolboxItemEvent = [];
+			       var toolboxItemAction = [];
+			       var mlist = ajweb.editor.MODELLIST;
+			       var i = 0;
+			       for(i = 0; i < mlist.length; i++){
+				 if(mlist[i].toolboxType && mlist[i].toolboxType == "widget")
+				   toolboxItemWidget.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				 if(mlist[i].toolboxType && mlist[i].toolboxType == "database")
+				   toolboxItemDatabase.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				 if(mlist[i].toolboxType && mlist[i].toolboxType == "event")
+				   toolboxItemEvent.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				 if(mlist[i].toolboxType && mlist[i].toolboxType == "action")
+				   toolboxItemAction.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+			       }
+			       toolboxItemEvent.push({id: "action", name: "Action",children: toolboxItemAction});
+			       return [
+				 {
+				   id:"Widgets", name:"Widgets",
+				   children: toolboxItemWidget
+				 },
+				 {
+				   id: "DB",  name: "DB",
+				   children: toolboxItemDatabase
+				 },
+				 {
+				   id: "Event", name: "Event",
+				   children: toolboxItemEvent
+				 }
+			       ];
+			     })();
 
 ajweb.editor.getStore =  function(id, label, items){
     return new dojo.data.ItemFileWriteStore(
@@ -107,7 +138,7 @@ ajweb.editor.getModelName = function(label){
 },
 
 ajweb.editor.getModel = function(propValue, propName){
-  return ajweb.editor._getModel(propValue, propName, ajweb.resources.toolboxItems);
+  return ajweb.editor._getModel(propValue, propName, ajweb.editor.toolboxItems);
 },
 
 ajweb.editor._getModel = function(propValue, propName, array){
@@ -149,7 +180,8 @@ ajweb.editor.getFuncStore = function(modelName, store){
 		  }});
     store.save();
   }
-  var list =  ajweb.editor.FUNCLIST;
+
+  var list =  ajweb.editor.MODELLIST;
   var items = [];
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
@@ -175,7 +207,7 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
 		 }});
     store.save();
   }
-  var list =  ajweb.editor.FUNCLIST;
+  var list =  ajweb.editor.MODELLIST;
   var items = [];
   if(!modelName) return store;
   if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){

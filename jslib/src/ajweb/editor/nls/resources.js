@@ -1,34 +1,4 @@
 ({
-   toolboxItems:
-   [
-     {
-       id:"Widgets", name:"Widgets",
-       children: [{id:'label', name:'label'},{id:'button', name:'button'},
-		  {id:'textbox', name:'textbox'},{id:'passwordbox', name:'passwordbox'},
-		  {id:'selectbox', name:'selectbox'},
-		  {id:'table', name:'table'},{id:'th', name:'th'},
-		  {id:'panel', name:'panel'},{id:'frame', name:'frame'}]
-     },
-     {
-       id: "DB",  name: "DB",
-       children: [{id: "database", name: "database"},
-		  {id: "property", name: "property"}]
-     },
-     {
-       id: "Event", name: "Event",
-       children: [
-	 {id: "branch", name: "branch"},
-	 {id: "condition", name: "condition"},
-	 {id: "action", name: "Action",
-	   children: [
-	     {id: "login", name: "login"},{id: "insert", name: "insert"},
-	     {id: "update", name: "update"}, {id: "delete", name: "delete"},
-	     {id: "call", name: "call"}
-	     ]
-	 }
-       ]
-     }
-   ],
    dataTypes: [
      {id: "int", name: "int" }, {id: "string", name: "string" },
      {id: "password", name: "password" },{id: "date", name: "date" },
@@ -60,7 +30,7 @@
    contextMenu : "context menu",
    dropFunction: "drop area(event)",
    dropCondition: "<br/>&nbsp;drop area(condition)",
-   condition: "譚｡莉ｶ",
+   condition: "condition",
    conditionSelect: "condition: ",
    undefinedElem: "unconfigured",
    enter: "enter",

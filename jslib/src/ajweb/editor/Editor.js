@@ -227,7 +227,7 @@ dojo.declare(
 	  {
 	    identifier: "id",
 	    label : "name",
-	    items: ajweb.resources.toolboxItems
+	    items: ajweb.editor.toolboxItems
 	  }
 	}
       );

@@ -29,9 +29,10 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
        var name = model.properties.tagName;
        var element, func;
        var i = 0;
-       for(i = 0; i < ajweb.editor.FUNCLIST.length; i++){
-	 if(name == ajweb.editor.FUNCLIST[i].name)
-	   element = ajweb.editor.FUNCLIST[i];
+       var list = ajweb.editor.MODELLIST;
+       for(i = 0; i < list.length; i++){
+	 if(name == list[i].name)
+	   element = list[i];
        }
        for(i = 0; i < element.setters.length; i++){
 	 if(funcName == element.setters[i].name)

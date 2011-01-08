@@ -55,9 +55,10 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 
       for(var i = 0; i < models.length; i++){//todo filterを用意する必要あり
 	var setters = [];
-	for(var j = 0; j < ajweb.editor.FUNCLIST.length; j++){
-	  if(ajweb.editor.FUNCLIST[j].id == models[i].tagName)
-	    setters = ajweb.editor.FUNCLIST[j].setters;
+	var list = ajweb.editor.MODELLIST;
+	for(var j = 0; j < list.length; j++){
+	  if(list[j].name == models[i].tagName)
+	    setters = list[j].setters;
 	}
 	if(setters.length > 0){
 //	  console.log(models[i].properties.id);
@@ -94,7 +95,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var i;
       var widgetModels = this.getWidgetModels();
       for(i = 0; i < widgetModels.length; i++){
-	var list = ajweb.editor.FUNCLIST;
+	var list = ajweb.editor.MODELLIST;
 	for(var j = 0; j < list.length; j++){
 	  if(list[j].name == widgetModels[i].tagName){
 	    if(list[j].getters.length > 0)

@@ -1,34 +1,4 @@
 ({
-   toolboxItems :
-   [
-     {
-       id: "Widgets", name:"ウィジェット",
-       children: [{id:'label', name:'ラベル'},{id:'button', name:'ボタン'},
-		  {id:'textbox', name:'テキストボックス'},{id:'passwordbox', name:'パスワードボックス'},
-		  {id:'selectbox', name:'セレクトボックス'},
-		  {id:'table', name:'テーブル'},{id:'th', name:'テーブルヘッダ'},
-		  {id:'panel', name:'パネル'},{id:'frame', name:'フレーム'}]
-     },
-     {
-       id: "DB", name: "データベース",
-       children: [{id: "database", name: "データベース"},
-		  {id: "property", name: "プロパティ"}]
-     },
-     {
-       id: "Event", name: "イベント",
-       children: [
-	 {id: "branch", name: "分岐"},
-	 {id: "condition", name: "条件"},
-	 {id: "action", name: "アクション",
-	   children: [
-	     {id: "login", name: "ログイン"},{id: "insert", name: "挿入"},
-	     {id: "update", name: "更新"},{id: "delete", name: "削除"},
-	     {id: "call", name: "呼び出し"}
-	     ]
-	  }
-       ]
-     }
-   ],
    dataTypes: [
      {id: "int", name: "整数" }, {id: "string", name: "文字列" },
      {id: "password", name: "パスワード" },{id: "date", name: "日付" },

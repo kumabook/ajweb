@@ -75,10 +75,8 @@ dojo.declare("ajweb.editor.element.Func",
 	});
       that.dialog.containerNode.appendChild(that.paramContainer.domNode);
       that.containerNode = that.paramContainer.domNode;
-
       var element = that.model.application.getElementByPropId(that.model.properties.element);
       element = element ? element : that.model.properties.element;
-
       that.elemName = new dijit.layout.ContentPane(
 	{ content: "エレメント名: ",
 	style: {position: "absolute",top: "30px",left: "10px"}});
