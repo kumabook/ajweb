@@ -2,16 +2,19 @@ dojo.provide("ajweb.editor.base");
 dojo.require("ajweb.base");
 dojo.require("ajweb.xml");
 dojo.require("dojo.data.ItemFileReadStore");
-dojo.requireLocalization("ajweb.editor", "resources");
-ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
 
-dojo.require("ajweb.editor.modelList");
 //dojo.require("ajweb.editor.funcList");
+ajweb.locale = ajweb.locale ? ajweb.locale : "en";
+
+dojo.requireLocalization("ajweb.editor", "resources");
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources", ajweb.locale);
+dojo.require("ajweb.editor.modelList");
 
 ajweb.editor.mousePosition = { left: 0, width: 0 };
 
 
 ajweb.editor.toolboxItems = (function(){
+			       var label = ajweb.locale == "en" ? "label" : "label"+ajweb.locale;
 			       var toolboxItemWidget = [];
 			       var toolboxItemDatabase = [];
 			       var toolboxItemEvent = [];
@@ -20,13 +23,13 @@ ajweb.editor.toolboxItems = (function(){
 			       var i = 0;
 			       for(i = 0; i < mlist.length; i++){
 				 if(mlist[i].toolboxType && mlist[i].toolboxType == "widget")
-				   toolboxItemWidget.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				   toolboxItemWidget.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
 				 if(mlist[i].toolboxType && mlist[i].toolboxType == "database")
-				   toolboxItemDatabase.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				   toolboxItemDatabase.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
 				 if(mlist[i].toolboxType && mlist[i].toolboxType == "event")
-				   toolboxItemEvent.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				   toolboxItemEvent.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
 				 if(mlist[i].toolboxType && mlist[i].toolboxType == "action")
-				   toolboxItemAction.push({id: mlist[i].name,name: mlist[i].label ? mlist[i].label : mlist[i].name});
+				   toolboxItemAction.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
 			       }
 			       toolboxItemEvent.push({id: "action", name: "Action",children: toolboxItemAction});
 			       return [

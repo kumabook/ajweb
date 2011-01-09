@@ -33,6 +33,7 @@ dojo.declare("ajweb.editor.element.Event", [
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
     createDom: function(properties){
+      var that = this;
       var target = this.model.application.getElementByPropId(this.model.properties.target);
       this.widget =   new dijit.layout.ContentPane(
 	{  //content: target.properties.id + " " + this.model.properties.type,

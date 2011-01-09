@@ -12,7 +12,9 @@ dojo.provide("ajweb.editor.modelList");
  */
 ajweb.editor.MODELLIST =  [
   {
-    name:"application",
+    name: "application",
+    label: "application",
+    label_ja: "アプリケーション",
     modelType: "application",
     modelClass: "Application",
     acceptModelType: ["interfaces", "databases", "events"],
@@ -21,6 +23,8 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:"interfaces",
+    label:"interfaces",
+    label_ja:"UIモデル",
     modelType: "interfaces",
     modelClass: "Model",
     acceptModelType: ["widget"],
@@ -30,6 +34,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:"databases",
+    label:"databases", label_ja:"データモデル",
     modelType: "databases",
     modelClass: "Eventable",
     elementClass: "databases",
@@ -51,6 +56,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:"events",
+    label:"events",label_ja:"イベントモデル",
     modelType: "events",
     modelClass: "Events",
     acceptModelType: ["event"],
@@ -64,6 +70,7 @@ ajweb.editor.MODELLIST =  [
 //UIモデル
   {
     name:'label',
+    label:'label',label_ja:'ラベル',
     acceptModelType: [],
     modelType: "widget",
     modelClass: "Widget",
@@ -83,6 +90,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'button',
+    label:'button',label_ja:'ボタン',
     acceptModelType: [],
     modelType: "widget",
     modelClass: "Widget",
@@ -102,6 +110,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'textbox',
+    label:'textbox', label_ja:'テキストボックス',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Textbox",
@@ -117,6 +126,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'passwordbox',
+    label:'passwordbox', label_ja:'パスワードボックス',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Textbox",
@@ -132,6 +142,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'table',
+    label:'table', label_ja:'テーブル',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Table",
@@ -151,6 +162,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'th',
+    label:'th', label_ja:'テーブルヘッダ',
     modelType: "th",
     modelClass: "widget",
     elementClass: "th",
@@ -166,6 +178,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'selectbox',
+    label:'selectbox', label_ja:'セレクトボックス',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "widget",
@@ -191,6 +204,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'panel',
+    label:'panel', label_ja:'パネル',
     modelType: "panel",
     modelClass: "Widget",
     elementClass: "Panel",
@@ -206,6 +220,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name:'frame',
+    label:'frame', label_ja:'フレーム',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Frame",
@@ -224,6 +239,7 @@ ajweb.editor.MODELLIST =  [
   //DBモデル
   {
     name: "database",
+    label: "database", label_ja: "データベース",
     modelType: "database",
     modelClass: "Database",
     elementClass: "Database",
@@ -248,6 +264,7 @@ ajweb.editor.MODELLIST =  [
   },
   {
     name: "property",
+    label : "property", label_ja: "プロパティ",
     modelType: "property",
     modelClass: "property",
     elementClass: "property",
@@ -263,7 +280,8 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Init",
     acceptModelType: [],
     propertyList: [],
-    defaultProperties: {}
+    defaultProperties: {},
+    projLabel: ajweb.resources.initItems
   },
   {
     name: "item",
@@ -285,12 +303,12 @@ ajweb.editor.MODELLIST =  [
   },
   //Functionモデル
   {
-    name: "event",
+    name: "event", label: "event", label: "イベント",
     modelType: "event",
     modelClass: "Event",
     elementClass: "Event",
     acceptModelType: ["action", "condition"],
-    propertyList: ["tagName", "id", "type", {name: "target", type: "element", ref: true, refProp: "id"}],
+    propertyList: ["tagName", "type", {name: "target", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -316,7 +334,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "insert",
+    name: "insert", label:"insert", label_ja: "挿入",
     modelType: "func",
     modelClass: "Func",
     elementClass: "DBFunc",
@@ -327,7 +345,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "update",
+    name: "update", label: "update", label_ja: "更新",
     modelType: "func",
     modelClass: "Func",
     elementClass: "DBFunc",
@@ -338,7 +356,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "delete",
+    name: "delete", label: "delete", label: "削除",
     modelType: "func",
     modelClass: "Func",
     elementClass: "DBFunc",
@@ -349,7 +367,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "call",
+    name: "call", label: "call", label_ja: "呼び出し",
     modelType: "func",
     modelClass: "Func",
     elementClass: "Func",
@@ -360,7 +378,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   },
   {
-    name: "branch",
+    name: "branch", label: "branch", label_ja: "分岐",
     modelType: "func",
     modelClass: "Branch",
     elementClass: "Branch",
@@ -514,7 +532,7 @@ ajweb.editor.MODELLIST =  [
 
 //Condition
   {
-    name: "condition",
+    name: "condition", label: "condition", label_ja: "条件",
     modelType: "condition",
     modelClass: "Condition",
     elementClass: "Condition",

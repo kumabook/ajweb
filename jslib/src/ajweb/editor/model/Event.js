@@ -21,6 +21,9 @@ dojo.declare("ajweb.editor.model.Event", ajweb.editor.model.Visible,
       if(target)
 	target.events.push(this);
     },
+    getProjLabel: function(){
+      return this.properties.target+":"+this.properties.type;
+    },
     remove: function(){
       this.inherited(arguments);
       var target = this.application.getElementByPropId(this.properties.target);

@@ -6,7 +6,12 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
   {
     constructor: function(){
       this.application = this;
-      this.projLabel = this.properties.name;
+    },
+    /**
+     * プロジェクトエディタ上のラベル
+     */
+    getProjLabel: function(){
+      return this.properties.name;
     },
     getEventsModel: function(){
       for(var i = 0; i < this.children.length; i++){

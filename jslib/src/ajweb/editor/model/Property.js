@@ -4,4 +4,8 @@ dojo.require("ajweb.editor.element.Property");
 dojo.provide("ajweb.editor.model.Property");
 dojo.declare("ajweb.editor.model.Property", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Property.prototype */
-  {});
+  {
+    getProjLabel: function(){
+      return this.properties.name + ":" + this.properties.type;
+    }
+  });

@@ -679,7 +679,7 @@ dojo.declare(
 	function(items){
 	  for(var i = 0; i < items.length; i++){
 	    if(items[i].jsId == model.parent.id){
-	      treeModel.newItem({name: model.projLabel, id: model.properties.id,
+	      treeModel.newItem({name: model.getProjLabel(), id: model.properties.id,
 				 jsId: model.id, modelType: model.tagName},
 				items[i]);
 	      return;
@@ -695,8 +695,8 @@ dojo.declare(
 	    addTreeModel(model, item, that.projectTreeModel);
 	  }
 	  else {//applicationモデル
-	    that.projectTreeModel.newItem({name: model.projLabel, id: model.properties.id,
-					   jsId: model.id, modelType: model.tagName},item);	    
+	    that.projectTreeModel.newItem({name: model.getProjLabel(), id: model.properties.id,
+					   jsId: model.id, modelType: model.tagName},item);
 	  }
 	}
       );
@@ -704,7 +704,7 @@ dojo.declare(
     updateProjectTree: function(model){
       var store = this.projectStore;
       this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
-					       store.setValue(item, "name", model.projLabel);
+					       store.setValue(item, "name", model.getProjLabel());
 					     }});
     },
     removeProjectTree: function(model){
