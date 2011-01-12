@@ -1,17 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <!--  ウィジェットグループ   -->
-  <xsd:group name="widgetGroup">
-    <xsd:sequence>
-      <xsd:choice>
-	<!--ウィジェット追加時はここに追加する 独自の型を定義してもよい  その場合はwidgetTypeを継承するとよい?-->
-	<!--TO DO できればプログラムから自動的に変更したい -->
-	<xsd:element name="textbox" type="widgetType"/>
-	<xsd:element name="label" type="widgetType"/>
-	<xsd:element name="button" type="widgetType"/>
-	<xsd:element name="table" type="widgetType"/>
-	<xsd:element name="select" type="widgetType"/>
-      </xsd:choice>
-    </xsd:sequence>
-  </xsd:group>
+  <!--  属性グループ   -->
+  <xsd:attributeGroup name="elementAttriGroup">
+    <xsd:attribute name="id" type="xsd:string" use="optional"/>
+  </xsd:attributeGroup>
+  <!--  css属性グループ   -->
+  <xsd:attributeGroup name="cssAttriGroup">
+    <xsd:attribute name="top" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="left" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="width" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="height" type="xsd:string" use="optional" default="100px"/>
+  </xsd:attributeGroup>
+
+
+  <xsd:element name="label" type="primitiveWidgetType" substitutionGroup="widget"/>
+  <xsd:element name="button" type="primitiveWidgetType" substitutionGroup="widget"/>
+  <xsd:element name="textbox" type="primitiveWidgetType" substitutionGroup="widget"/>
+  <xsd:element name="passwordbox" type="primitiveWidgetType" substitutionGroup="widget"/>
+  <xsd:element name="selectbox" type="primitiveWidgetType" substitutionGroup="widget"/>
+  <xsd:element name="dialog" type="primitiveWidgetType" substitutionGroup="widget"/>
+
+  <xsd:complexType name="primitiveWidgetType">
+    <xsd:attributeGroup ref="cssAttriGroup" />
+    <xsd:attribute name="id" type="xsd:string" use="optional" default="id"/>
+    <xsd:attribute name="content" type="xsd:string" use="optional" default="label"/>
+    <xsd:attribute name="label" type="xsd:string" use="optional" default="label"/>
+    <xsd:attribute name="value" type="xsd:string" use="optional" default="label"/>
+    <xsd:attribute name="title" type="xsd:string" use="optional"/>
+  </xsd:complexType>
+  <xsd:element name="table" substitutionGroup="widget">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+	<xsd:element ref="th"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="optional" default="id"/>
+      <xsd:attributeGroup ref="cssAttriGroup"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="th">
+    <xsd:complexType>
+    <xsd:attribute name="width" type="xsd:string" use="optional" default="100px"/>
+    <xsd:attribute name="field" type="xsd:string" use="optional" />
+    <xsd:attribute name="name" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="frame" substitutionGroup="widget">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+	<xsd:element ref="panel"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="optional" default="id"/>
+      <xsd:attributeGroup ref="cssAttriGroup"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="panel" substitutionGroup="widget">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+	<xsd:element ref="widget"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="optional" default="id"/>
+      <xsd:attributeGroup ref="cssAttriGroup"/>
+    </xsd:complexType>
+  </xsd:element>
+
 </xsd:schema>

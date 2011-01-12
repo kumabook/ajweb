@@ -57,18 +57,22 @@ dojo.addOnLoad(
 
     var rootPanel = new ajweb.widget.Panel({id: "rootPanel", top:"0px", left: "0px",height: "100%", width: "100%"});
 
-    var titleLabel = new ajweb.widget.Label({id: "titleLabel", content: "チャットアプリケーション", "left":"30px","top":"30px"});
+//    var titleLabel = new ajweb.widget.Label({id: "titleLabel", content: "チャットアプリケーション", "left":"30px","top":"30px"});
+    var titleLabel = new ajweb.widget.Label({id: "titleLabel", content: "Chat Application", "left":"30px","top":"30px"});
     rootPanel.addChildWidget(titleLabel);
     var rootFrame = new ajweb.widget.Frame({id: "rootFrame", top:"100px", left: "100px",height: "90%", width: "90%"});
     rootPanel.addChildWidget(rootFrame);
 //ログイン画面
     var loginPanel = new ajweb.widget.Panel({id: "loginPanel", height: "100%", width: "100%"});
-    var userIdLabel = new ajweb.widget.Label({id: "userIdLabel", content: "ユーザID", left: "30px", top: "30px"});
+//    var userIdLabel = new ajweb.widget.Label({id: "userIdLabel", content: "ユーザID", left: "30px", top: "30px"});
+    var userIdLabel = new ajweb.widget.Label({id: "userIdLabel", content: "UserID", left: "30px", top: "30px"});
     var userIdTextbox = new ajweb.widget.Textbox({id: "userIdTextbox", content:"", left: "130px", top: "30px"});
-    var passwordLabel = new ajweb.widget.Label({id: "userIdLabel", content: "パスワード",left: "30px", top: "60px"});
+//    var passwordLabel = new ajweb.widget.Label({id: "userIdLabel", content: "パスワード",left: "30px", top: "60px"});
+    var passwordLabel = new ajweb.widget.Label({id: "userIdLabel", content: "Password",left: "30px", top: "60px"});
     var passwordTextbox = new ajweb.widget.Passwordbox({id: "passwordTextbox", content:"", left: "130px", top: "60px"});
 
-    var loginButton = new ajweb.widget.Button({id: "loginButton", content: "ログイン", left: "30px", top: "90px"});
+//    var loginButton = new ajweb.widget.Button({id: "loginButton", content: "ログイン", left: "30px", top: "90px"});
+    var loginButton = new ajweb.widget.Button({id: "loginButton", content: "Login", left: "30px", top: "90px"});
 
     loginPanel.addChildWidget(userIdLabel);
     loginPanel.addChildWidget(userIdTextbox);
@@ -79,20 +83,23 @@ dojo.addOnLoad(
     rootFrame.addChildWidget(loginPanel);
 
 //ログインメッセージダイアログ
-    var loginFailDialog = new ajweb.widget.Dialog({id: "loginFailDialog", title: "login failed", width: "300px", height:"100px", content: "ログインに失敗しました"});
+//    var loginFailDialog = new ajweb.widget.Dialog({id: "loginFailDialog", title: "login failed", width: "300px", height:"100px", content: "ログインに失敗しました"});
+    var loginFailDialog = new ajweb.widget.Dialog({id: "loginFailDialog", title: "login failed", width: "300px", height:"100px", content: "Login Failed"});
 
 //チャットルーム選択画面
     var roomSelectPanel = new ajweb.widget.Panel({id: "roomSelectPanel", height: "100%", width: "100%"});
     rootFrame.addChildWidget(roomSelectPanel);
 
 
-    var selectRoomLabel = new ajweb.widget.Label({"content":"ルーム選択","id":"selectRoomLabel","left":"0px","top":"0px"});
+//    var selectRoomLabel = new ajweb.widget.Label({"content":"ルーム選択","id":"selectRoomLabel","left":"0px","top":"0px"});
+    var selectRoomLabel = new ajweb.widget.Label({"content":"RoomSelection","id":"selectRoomLabel","left":"0px","top":"0px"});
     titleLabel.addChildWidget(selectRoomLabel);
 
     var roomSelectbox = new ajweb.widget.Selectbox({id: "roomSelectbox", top: "50px", left: "100px", label: "name"});
 
     roomSelectPanel.addChildWidget(roomSelectbox);
-    var selectButton = new ajweb.widget.Button({"content":"選択","id":"selectButton","left":"370px","top":"45px"});
+//    var selectButton = new ajweb.widget.Button({"content":"選択","id":"selectButton","left":"370px","top":"45px"});
+    var selectButton = new ajweb.widget.Button({"content":"Selection","id":"selectButton","left":"370px","top":"45px"});
     roomSelectPanel.addChildWidget(selectButton);
 //チャットルーム画面
     var chatRoomPanel = new ajweb.widget.Panel( {"id":"chatRoomPanel","height":"100%","width":"100%"});
@@ -108,22 +115,28 @@ dojo.addOnLoad(
     contentsFrame.selectPanel({panel:entrancePanel});
 // ユーザ名入力欄
     chatRoomPanel.addChildWidget(contentsFrame);
-    var userNameLabel = new ajweb.widget.Label({"content":"名前","id":"userNameLabel","left":"40px","top":"6px"});
+//    var userNameLabel = new ajweb.widget.Label({"content":"名前","id":"userNameLabel","left":"40px","top":"6px"});
+    var userNameLabel = new ajweb.widget.Label({"content":"Name","id":"userNameLabel","left":"40px","top":"6px"});
     entrancePanel.addChildWidget(userNameLabel);
     var userNameTextbox = new ajweb.widget.Textbox({"id":"userNameTextbox","content":"user_name","left":"100px","top":"10px", "value": ""});
     entrancePanel.addChildWidget(userNameTextbox);
 
 // メッセージ名入力欄
-    var messageLabel = new ajweb.widget.Label({"content":"メッセージ","id":"messageLabel","left":"20px","top":"10px"});
+//    var messageLabel = new ajweb.widget.Label({"content":"メッセージ","id":"messageLabel","left":"20px","top":"10px"});
+    var messageLabel = new ajweb.widget.Label({"content":"Message","id":"messageLabel","left":"20px","top":"10px"});
     messagePanel.addChildWidget(messageLabel);
     var messageTextbox = new ajweb.widget.Textbox({"content":"message","id":"messageTextbox","left":"150px","top":"10px","value": ""});
     messagePanel.addChildWidget(messageTextbox);
-    var messageSubmitButton = new ajweb.widget.Button({"content":"送信","id":"messageSubmitButton","left":"100px","top":"50px"});
+//    var messageSubmitButton = new ajweb.widget.Button({"content":"送信","id":"messageSubmitButton","left":"100px","top":"50px"});
+    var messageSubmitButton = new ajweb.widget.Button({"content":"Send","id":"messageSubmitButton","left":"100px","top":"50px"});
     messagePanel.addChildWidget(messageSubmitButton);
-    var exitButton = new ajweb.widget.Button({"content":"退室","id":"exitButton","top":"50px", "left": "350px"});
+//    var exitButton = new ajweb.widget.Button({"content":"退室","id":"exitButton","top":"50px", "left": "350px"});
+    var exitButton = new ajweb.widget.Button({"content":"Leave","id":"exitButton","top":"50px", "left": "350px"});
     messagePanel.addChildWidget(exitButton);
-    var enterButton = new ajweb.widget.Button({"content":"入室","id":"enterButton","left":"100px","top":"50px"});
-    var backButton = new ajweb.widget.Button({"content":"ルーム選択画面に戻る","id":"backButton","left":"300px","top":"50px"});
+//    var enterButton = new ajweb.widget.Button({"content":"入室","id":"enterButton","left":"100px","top":"50px"});
+    var enterButton = new ajweb.widget.Button({"content":"Entering","id":"enterButton","left":"100px","top":"50px"});
+//    var backButton = new ajweb.widget.Button({"content":"ルーム選択画面に戻る","id":"backButton","left":"300px","top":"50px"});
+    var backButton = new ajweb.widget.Button({"content":"Back to Room Selection","id":"backButton","left":"300px","top":"50px"});
     entrancePanel.addChildWidget(enterButton);
     entrancePanel.addChildWidget(backButton);
 
@@ -135,13 +148,13 @@ dojo.addOnLoad(
     var th1 = new ajweb.widget.Th({"field":"user_name","name":"user",width: "auto", editable: true});
     var th2 = new ajweb.widget.Th({"field":"message","name":"message",width: "auto"});
     var th3 = new ajweb.widget.Th({"field":"posted","name":"posted",width: "350px"});
-    var th4 = new ajweb.widget.Th({"field":"id","name":"id"});
-    var th5 = new ajweb.widget.Th({"field":"room" ,"name":"room"});
+//    var th4 = new ajweb.widget.Th({"field":"id","name":"id"});
+//    var th5 = new ajweb.widget.Th({"field":"room" ,"name":"room"});
     messageTable.addChildWidget(th1);
     messageTable.addChildWidget(th2);
     messageTable.addChildWidget(th3);
-    messageTable.addChildWidget(th4);
-    messageTable.addChildWidget(th5);
+//    messageTable.addChildWidget(th4);
+//    messageTable.addChildWidget(th5);
 
 
     chatRoomPanel.addChildWidget(messageTable);
@@ -187,13 +200,16 @@ dojo.addOnLoad(
 		   rootFrame.selectPanel({panel: chatRoomPanel});
 		   nowRoomLabel.setContent({content:roomSelectbox.getSelectItemProperty({property:"name"})});
 		   //メッセージリストの取得
-		   message_database.selectByCondition(
-		     new ajweb.data.Condition({
-						op: "eq",
-						left: function(){ return new ajweb.data.Item({property:"room"});},
-						right: function(){ return roomSelectbox.getSelectItem();}}),
+		     message_database.selectByCondition({
+							  
+							  condition: new ajweb.data.Condition({
+												op: "eq",
+												left: function(){ return new ajweb.data.Item({property:"room"});},
+												right: function(){ return roomSelectbox.getSelectItem();}})
+							},
 		     function(items){
-		       messageTable.load({datum:items});
+//		       messageTable.load({datum:items});
+		       messageTable.load({item:items});
 		     }
 		   );
 
@@ -201,7 +217,8 @@ dojo.addOnLoad(
 		 });
     //入室処理
     ajweb.addEvent(enterButton, "onClick", true, function(){
-		     message_database.insert({message : userNameTextbox.getValue() + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.datetime.now({})});
+//		     message_database.insert({message : userNameTextbox.getValue() + "が入室しました",user_name : "システム",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.datetime.now({})});
+		     message_database.insert({message : userNameTextbox.getValue() + " entered the room",user_name : "System",room : roomSelectbox.getSelectItem({property: "id"}), posted : ajweb.datetime.now({})});
 		   contentsFrame.selectPanel({panel: messagePanel});
 		 });
     //メッセージの送信
@@ -245,7 +262,7 @@ dojo.addOnLoad(
 
     //退出処理
     ajweb.addEvent(exitButton, "onClick", true, function(){
-		   message_database.insert({message : userNameTextbox.getValue() + "が退室しました",user_name : "システム",room : roomSelectbox.getSelectItem().id, posted : new ajweb.date({})});
+		   message_database.insert({message : userNameTextbox.getValue() + " left the room",user_name : "System",room : roomSelectbox.getSelectItem().id, posted : new ajweb.date({})});
 		   contentsFrame.selectPanel({panel: entrancePanel});
     });
     //ルーム選択画面に戻る

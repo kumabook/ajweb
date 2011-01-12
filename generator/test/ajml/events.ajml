@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <application name="test" id="app">
+<ajml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd">
+  <application name="test">
     <events>
       <!-- 初期画面の設定-->
       <event target="root" type="display">
@@ -53,7 +54,7 @@
 	      <get element="user_name_en" property="content"/>
 	    </param>
 	    <param name="enter_time"> 
-	      <datetime value="0" />
+	      <datetime/>
 	    </param>
 	  </insert>
 	</action>
@@ -62,7 +63,7 @@
       <!-- メッセージの送信-->
       <event target="submit" type="click">
 	<action>
-	  <insert id="insert_message" database="chatDB">
+	  <insert database="chatDB">
 	    <param name="message">
 	      <get element="message" property="value"/>
 	    </param>
@@ -73,13 +74,12 @@
 	      <get element="room_select" property="value"/>
 	    </param>
 	    <param name="posted">
-	      <datetime value="0"/>
+	      <datetime/>
 	    </param>
 	  </insert>
 	  <branch>
 	    <condition>
-	      <success func_id = "insert_message">
-	      </success>
+	      <success/>
 	    </condition>
 	    <then>
 	    </then>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--  個々のsetter   -->
+  <xsd:element name="insert" type="databaseFunctionType" substitutionGroup="setter"/>
+  <xsd:element name="update" type="databaseFunctionType" substitutionGroup="setter"/>
+  <xsd:element name="delete" type="databaseFunctionType" substitutionGroup="setter"/>
+  <xsd:element name="login" type="databaseFunctionType" substitutionGroup="setter"/>
+  <xsd:complexType name="databaseFunctionType">
+    <xsd:complexContent>
+      <xsd:extension base="setterType">
+	<xsd:attribute name="database" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:element name="call" type="funcType" substitutionGroup="flowable"/>
+  <!--  funcタイプ   -->
+  <xsd:complexType name="funcType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="param"/>
+    </xsd:choice>
+    <xsd:attribute name="element" type="xsd:string"/>
+    <xsd:attribute name="func" type="xsd:string"/>
+  </xsd:complexType>
+
+
+  <!--  value要素(getter)(ウィジェット、カスタムのgetter)  -->
+  <xsd:element name="value" type="funcType" substitutionGroup="valuable"/>
+
+  <!--  selectタイプ(データベースのgetter)   -->
+  <xsd:element name="select" substitutionGroup="valuable">
+    <xsd:complexType>
+      <xsd:attribute name="database" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="selectById"  substitutionGroup="valuable">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="1" maxOccurs="1">
+	<xsd:element ref="string"/>
+      </xsd:sequence>
+      <xsd:attribute name="database" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="selectByCondition" substitutionGroup="valuable">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="1" maxOccurs="1">
+	<xsd:element name="condition" minOccurs="0" type="conditionType"/>
+      </xsd:sequence>
+      <xsd:attribute name="database" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+
+
+  <!--  targetItem,receivedItemタイプ(特殊なデータベースのgetter)   -->
+  <xsd:element name="targetItem" type="itemType" substitutionGroup="valuable"/>
+  <xsd:element name="receivedItem" type="itemType" substitutionGroup="valuable"/>
+  <xsd:complexType name="itemType">
+    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="param"/>
+    </xsd:sequence>
+    <xsd:attribute name="property" type="xsd:string"/>
+  </xsd:complexType>
+  <!-- 基本タイプ   -->
+  <xsd:element name="int" type="xsd:int" substitutionGroup="valuable"/>
+  <xsd:element name="string" substitutionGroup="valuable" type="xsd:string"/>
+  <xsd:element name="date" substitutionGroup="valuable" type="xsd:string"/>
+  <xsd:element name="time" substitutionGroup="valuable" type="xsd:string"/>
+  <xsd:element name="datetime" substitutionGroup="valuable" type="xsd:string"/>
+  <xsd:element name="element" substitutionGroup="valuable" type="xsd:string"/>
+ <!--  get要素(getter) (むかしのなごり -->
+  <xsd:element name="get" type="getType" substitutionGroup="valuable"/>
+  <xsd:complexType name="getType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="param"/>
+    </xsd:choice>
+    <xsd:attribute name="element" type="xsd:string"/>
+    <xsd:attribute name="property" type="xsd:string"/>
+  </xsd:complexType>
+
+
+</xsd:schema>

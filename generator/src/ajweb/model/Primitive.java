@@ -65,10 +65,28 @@ public class Primitive implements Parameterable, AbstractModel{
 			return json;
 		}
 		else if(type.equals("date")){
-			return "datetime:";
+			String json ="new ajweb.date({";
+			Iterator<String>  it = properties.keySet().iterator();
+			while(it.hasNext()){
+				String _key = it.next();
+				json += _key + ": " + properties.get(_key);
+				if(it.hasNext())
+					json += ",";
+			}
+			json += "})";
+			return json;
 		}
 		else if(type.equals("time")){
-			return "datetime:";
+			String json ="new ajweb.date({";
+			Iterator<String>  it = properties.keySet().iterator();
+			while(it.hasNext()){
+				String _key = it.next();
+				json += _key + ": " + properties.get(_key);
+				if(it.hasNext())
+					json += ",";
+			}
+			json += "})";
+			return json;	
 		}
 		else if(type.equals("element")){
 			return value;

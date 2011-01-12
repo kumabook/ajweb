@@ -161,7 +161,10 @@ public class AjWebServlet extends AbstractServlet {
 		if(tablename.equals("message")){
 			return message.properties;	
 		}
-		else
+		else if(tablename.equals("room")){
+			return room.properties;	
+		}
+		else ;
 			return null;
 	}
 }

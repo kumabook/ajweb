@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ajml  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd" >
-  <application name="chat" root="chat_room">
+  <application name="chat">
 
     
     <!-- データモデル -->
@@ -179,11 +179,13 @@
 	  </call>
 	  <!-- ルーム名を表示-->
 	  <call element="nowRoomLabel" func="setContent">
-	    <get element="roomSelectbox" property="selectItem">
-	      <param name="property">
-		<string>name</string>
-	      </param>
-	    </get>
+	    <param name="content">
+	      <get element="roomSelectbox" property="selectItem">
+	        <param name="property">
+		  <string>name</string>
+	        </param>
+	      </get>
+            </param>
 	  </call>
 	  <!-- メッセージリストの取得-->
 	  <call element="messageTable" func="load">
@@ -206,14 +208,14 @@
 	<action>
 	  <insert database="message">
 	    <param name="message">
-	      <concat>
+	      <value element="string" func="concat">
 		<param name="left">
 		  <get element="userNameTextbox" property="value"/>
 		</param>
 		<param name="right">
 		  <string>が入室しました。</string>
 		</param>
-	      </concat>
+	      </value>
 	    </param>
 	    <param name="user_name">
 	      <get element="userNameTextbox" property="value"/>
@@ -236,7 +238,7 @@
       <!-- メッセージの送信-->
       <event target="messageSubmitButton" type="click">
 	<action>
-	  <insert id="insert_message" database="message">
+	  <insert database="message">
 	    <param name="message">
 	      <get element="messageTextbox" property="value"/>
 	    </param>
@@ -252,8 +254,7 @@
 	  </insert>
 	  <branch>
 	    <condition>
-	      <success func_id = "insert_message">
-	      </success>
+	      <success/>
 	    </condition>
 	    <then>
 	    </then>
@@ -292,14 +293,14 @@
 	<action>
 	  <insert database="message">
 	    <param name="message">
-	      <concat>
+	      <value element="string" func="concat">
 		<param name="left">
 		  <get element="userNameTextbox" property="value"/>
 		</param>
 		<param name="right">
 		  <string>が退室しました。</string>
 		</param>
-	      </concat>
+	      </value>
 	    </param>
 	    <param name="user_name">
 	      <get element="userNameTextbox" property="value"/>
