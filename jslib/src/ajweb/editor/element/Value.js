@@ -91,7 +91,7 @@ dojo.declare("ajweb.editor.element.Value",
 	ajweb.editor.getGetterStore(
 	  that.element.properties ? that.element.properties.tagName : that.elemSelect.value,
 	  that.funcSelect.store);
-	that.funcSelect.set({value: that.model.properties.funcName ? that.model.properties.funcName : ""});
+	that.funcSelect.set({value: that.model.properties.func ? that.model.properties.func : ""});
 	that.funcSelect.set({ disabled: false});
 	that.funcButton.set({ disabled: false});
       }
@@ -105,7 +105,7 @@ dojo.declare("ajweb.editor.element.Value",
 	    var selectedElemTag = that.element.properties ?
 	that.element.properties.tagName : that.model.properties.element;
 
-      var funcStore = new dojo.data.ItemFileWriteStore({ data: { identifier: "name", label : "name", items: []}});
+      var funcStore = new dojo.data.ItemFileWriteStore({ data: { identifier: "id", label : "name", items: []}});
       that.funcSelect = new dijit.form.Select(
 	{//value: that.model.properties.funcName ? that.model.properties.funcName : "",
 	store: funcStore,//ajweb.editor.getGetterStore(selectedElemTag),
@@ -120,13 +120,15 @@ dojo.declare("ajweb.editor.element.Value",
 	    funcStore.fetchItemByIdentity(
 	      {identity: that.funcSelect.value,
 	      onItem: function(item){
-		console.log("funcName: " + item.name);
+		console.log("funcName: " + item.name + "funcValue: " + item.id);
+		that.model.properties.func = item.id+"";
 		that.model.properties.funcName = item.name+"";
+/*		that.model.properties.funcName = item.name+"";
 		that.model.properties.func = item.func ? item.func+"" : null;
-		that.model.properties.property = item.property ? item.property+"" : null;
+		that.model.properties.property = item.property ? item.property+"" : null;*/
 	      }});
 	    that.model.createParam(that.element.properties ? that.element.properties.id : that.element,
-	    that.model.properties.funcName, that.element);
+				   that.model.properties.func, that.element);
 	    this.set({label: ajweb.resources.change});
 	    //ラベルを変更
 	    that.updateDom();

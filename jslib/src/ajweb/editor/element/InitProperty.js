@@ -33,15 +33,15 @@ dojo.declare("ajweb.editor.element.InitProperty",
      */
     createDom: function(properties){
       var that = this;
-      this.widget = dijit.layout.ContentPane(
-	{style: {position: "absolute", height: "50px", width: "400px", 
-		 top:  (this.container.containerNode.childNodes.length * 50) + "px"}
+      this.widget = new dijit.layout.ContentPane(
+	{style: {position: "absolute", height:ajweb.editor.PARAM_WIDTH+"px", width: "400px", 
+		 top:  (this.container.containerNode.childNodes.length * ajweb.editor.PARAM_WIDTH) + "px"}
 	});
-      this.nameLabel = dijit.layout.ContentPane(
+      this.nameLabel = new dijit.layout.ContentPane(
 	{style: {position: "absolute", height: "50px",  top: "5px", left: "0px"},
 	 content: this.model.properties.name});
       if(this.model.properties.type == "int"){
-	this.valueInput = dijit.form.NumberSpinner(
+	this.valueInput = new dijit.form.NumberSpinner(
 	  {style: {position: "absolute", width: "200px", top: "0px", left: "150px"},
 	   constraints: {min: 0, max: 9999},
 	   value: that.model.properties.value,
@@ -51,51 +51,62 @@ dojo.declare("ajweb.editor.element.InitProperty",
 	  });
       }
       else if(this.model.properties.type == "date"){
-	this.valueInput = dijit.form.DateTextBox(
-	  {style: {position: "absolute", width: "200px", top: "0px", left: "50px"},
-	   value: that.model.properties.value,
+	var date;
+	if(this.model.properties.value){
+	  date = ajweb.date.parse(this.model.properties.value);
+	}
+	if(!date) date = new Date();
+	console.log(date);
+	this.valueInput = new dijit.form.DateTextBox(
+	  {style: {position: "absolute", width: "200px", top: "0px", left: "150px"},
+	   value: date,
 	   onChange: function(){
-	     that.model.properties.value = this.value;
+	     that.model.properties.value = ajweb.date.format(this.value);
 	   }
 	  });
       }
       else if(this.model.properties.type == "time"){
-	this.valueInput = dijit.form.TimeTextBox(
+	var time;
+	if(this.model.properties.value){
+	  time = ajweb.time.parse(this.model.properties.value);
+	}
+	if(!time) time = new Date();
+	this.valueInput = new dijit.form.TimeTextBox(
 	  {style: {position: "absolute", width: "200px", top: "0px", left: "150px"},
-	   value: that.model.properties.value,
+	   value: time,
 	   onChange: function(){
-	     that.model.properties.value = this.value;
+	     that.model.properties.value = ajweb.time.format(this.value);
 	   }
 	  });
       }
       else if(this.model.properties.type == "datetime"){
 	var date, time;
 	if(this.model.properties.value){
-	  var dateTime = ajweb.date.parse(this.model.properties.value);
+	  var dateTime = ajweb.datetime.parse(this.model.properties.value);
 	  date = dateTime;
 	  time = dateTime;
 	}
 	if(!date) date = new Date();
 	if(!time) time = new Date();
 	
-	var dateInput = dijit.form.DateTextBox(
+	var dateInput = new dijit.form.DateTextBox(
 	  {style: {position: "absolute", width: "90px", top: "0px", left: "0px"},
 	   value: date,
 	   onChange: function(){
 	     date = this.value;
-	     that.model.properties.value = ajweb.date.format(date, time);
+	     that.model.properties.value = ajweb.datetime.format(date, time);
 	   }
 	  });
-	var timeInput = dijit.form.TimeTextBox(
+	var timeInput = new dijit.form.TimeTextBox(
 	  {style: {position: "absolute", width: "50px", top: "0px", left: "110px"},
 	   value: time,
 	   onChange: function(){
 	     time = this.value;
-	     that.model.properties.value = ajweb.date.format(date, time);
+	     that.model.properties.value = ajweb.datetime.format(date, time);
 	   }
 	  });
 
-	this.valueInput = dijit.layout.ContentPane(
+	this.valueInput = new dijit.layout.ContentPane(
 	  {style: {position: "absolute", height: "50px", width: "200px", top: "0px", left: "150px"}
 	  });
 	this.valueInput.domNode.appendChild(dateInput.domNode);

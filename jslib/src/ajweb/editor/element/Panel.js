@@ -29,6 +29,7 @@ dojo.declare("ajweb.editor.element.Panel",
      */
     createDom: function(properties){
       var that = this;
+      
       this.widget =   new dijit.layout.ContentPane(
 	{
 	  title: this.id,
@@ -41,7 +42,7 @@ dojo.declare("ajweb.editor.element.Panel",
 	    return true;
 	  }
 	});
-      this.widget.modelId = this.model.id;
+      this.widget.jsId = this.model.id;
       this.panel = new dijit.layout.ContentPane(
 	{
 	  style:{

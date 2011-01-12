@@ -12,7 +12,7 @@
    file: "File",
    "new": "New",
    open: "Open File",
-   save: "Save ProjectÅ@and Download",
+   save: "Save Project and Download",
    download: "Download Ajml",
    generate: "Generate",
    war: "Application Archive File (.war)",

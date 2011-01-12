@@ -45,7 +45,7 @@ dojo.declare("ajweb.editor.element.Databases",
 	    return true;
 	  }
 	});
-      this.widget.modelId = this.model.id;
+      this.widget.jsId = this.model.id;
       return this.widget.domNode;
     },
     onDrop: function(name){

@@ -27,7 +27,7 @@ dojo.declare("ajweb.editor.element.Item",
     constructor: function(opt)
     {},
     dialogWidth: "400px",
-    dialogHeight: "300px",
+    dialogHeight: "250px",
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */

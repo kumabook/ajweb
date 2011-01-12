@@ -61,7 +61,9 @@ dojo.declare("ajweb.editor.element.Frame",
 	name,
 	{
 	  top :  ajweb.editor.mousePosition.y - ajweb.editor.getY(this.model.element.domNode),
-	  left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(this.model.element.domNode)
+	  left :  ajweb.editor.mousePosition.x - ajweb.editor.getX(this.model.element.domNode),
+	  width: this.model.properties.width,
+	  height: this.model.properties.height
 	},
 	this.model,
 	this.model.editor.centerTc

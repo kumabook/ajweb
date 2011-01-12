@@ -44,7 +44,7 @@ dojo.declare("ajweb.editor.element.Widget",
 	    width: p.width ? parseInt(p.width) + "px" : "",
 	    height: p.height ? parseInt(p.height) + "px" : ""
 	  },
-	  content: this.model.tagName
+	  content: this.model.tagName+""
 	});
       return this.widget.domNode;
     },

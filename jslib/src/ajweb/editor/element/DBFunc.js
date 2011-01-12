@@ -30,6 +30,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
      */
     createDom: function(properties){
       var that = this;
+      var a = ajweb.editor;
       var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
       var databaseName = that.model.properties.database ? that.model.properties.database : "未設定";
       var title = actionName + "(" + databaseName+")";
@@ -38,7 +39,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	  title: title,
 	  open: false,
 	  toggleable: false,
-	  style:{ position: "absolute", width: "80px",
+	  style:{ position: "absolute", width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px",
 		  top: properties.top,left: properties.left,
 		  backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"
 	  }

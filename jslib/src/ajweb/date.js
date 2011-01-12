@@ -68,6 +68,16 @@ dojo.declare("ajweb.date", null,
  * 現在の時刻を取得
  * @methodOf ajweb.date#
  */
+if(!ajweb.date){
+  ajweb.date = {};
+}
+if(!ajweb.time){
+  ajweb.time = {};
+}
+if(!ajweb.datetime){
+  ajweb.datetime = {};
+}
+
 ajweb.date.now = function(){
 	var now = new Date();
 	var minutes = now.getMinutes();
@@ -85,17 +95,48 @@ ajweb.date.now = function(){
 		+now.getHours()+":"+ minutes+":"+ seconds;
 
 };
-ajweb.date.parse = function(str){
-    var dateTime = str.split(" ");
-    var dateArray = dateTime[0].split("-");
-    var timeArray = dateTime[1].split(":");
+ajweb.datetime.parse = function(str){
+  var dateTime = str.split(" ");
+  var dateArray = dateTime[0].split("-");
+  var timeArray = dateTime[1].split(":");
+  if(dateArray.length < 3)
+    dateArray = ajweb.date.now().split(" ")[0].split("-");
+  if(timeArray.length < 4)
+    timeArray = ajweb.date.now().split(" ")[1].split(":");
     return new Date(dateArray[0], dateArray[1], dateArray[2], 
-		    timeArray[0], timeArray[1], timeArray[2], timeArray[3]);
+		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
   };
-ajweb.date.format = function(date, time){
+ajweb.date.parse = function(str){
+  var dateArray = str.split("-");
+  if(dateArray.length < 3)
+    dateArray = ajweb.date.now().split(" ")[0].split("-");
+
+  var timeArray = ajweb.date.now().split(" ")[1].split(":");
+  console.log(dateArray);
+  console.log(timeArray);
+    return new Date(dateArray[0], dateArray[1], dateArray[2], 
+		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
+  };
+ajweb.time.parse = function(str){
+  var timeArray = str.split(":");
+  var dateArray = ajweb.date.now().split(" ")[0].split("-");
+  if(timeArray.length < 4)
+   timeArray = ajweb.date.now().split(" ")[1].split(":");
+  return new Date(dateArray[0], dateArray[1], dateArray[2], 
+		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
+  };
+ajweb.date.format = function(date){
+    return dojo.date.locale.format(date, {datePattern: "yyyy-MM-dd", selector: "date"});
+};
+
+
+
+ajweb.datetime.format = function(date, time){
     return dojo.date.locale.format(date, {datePattern: "yyyy-MM-dd", selector: "date"}) + " "
 	       + dojo.date.locale.format(time, {timePattern: "hh:mm:dd:ss", selector: "time"});
 };
 
-
+ajweb.time.format = function(time){
+    return dojo.date.locale.format(time, {timePattern: "hh:mm:dd:ss", selector: "time"});
+};
 

@@ -32,26 +32,33 @@ ajweb.widget.Widget,
 
 	},
   createWidget: function(){
+    var that = this;
     this.structure = {
       defaultCell: {
 	editable: true
       },
       cells: []
     };
-    this.store = new dojo.data.ItemFileWriteStore({ identifier: "id", data: {  items: []}});
-    this.widget= new dojox.grid.DataGrid({
-      id: this.id,
-      style:{
-	position: "absolute",
-	top: this.top,
-	left: this.left,
-	width: this.width,
-	height: this.height
-      },
-      draggable: true,
-      structure: this.structure,
-      store: this.store
-	});
+    this.store = new dojo.data.ItemFileWriteStore({identifier: "id", data: {  items: []}});
+    this.items = [];
+    this.widget= new dojox.grid.DataGrid(
+      {
+	id: this.id,
+	style:{
+	  position: "absolute",
+	  top: this.top,
+	  left: this.left,
+	  width: this.width,
+	  height: this.height
+	},
+	draggable: true,
+	rowSelector: "20px",
+	structure: this.structure,
+	store: this.store,
+	onRowClick: function(){
+	  that.onRowClick();
+	}
+      });
     this.element = this.widget.domNode;
   },
   /**
@@ -62,16 +69,42 @@ ajweb.widget.Widget,
   addChildWidget: function(th){
     this.structure.cells.push(th);
   },
-  /**
-   *
-   *
-   */
+  getItems:function(){
+   return this.items;
+  },
+  getSelectedItem: function(param){
+    var items = this.widget.selection.getSelected();
+    if(!items.length || items.length == 0) 
+      return 0;
+    var id = items[0].id;
+    for(var i = 0; i <  this.items.length; i++){
+      if(this.items[i].id == id){
+	  return this.items[i];
+      }
+    }
+    return 0;
+  },
+  getSelectedItemProperty: function(param){
+    var items = this.widget.selection.getSelected();
+    if(!items.length || items.length == 0) 
+      return 0;
+    var id = items[0].id;
+    for(var i = 0; i <  this.items.length; i++){
+	  return this.items[i][param.property];
+    }
+    return 0;
+  },
+// to do 複数選択も可能にする?
+  getSelectedItems: function(param){
+  },
+
   insert : function(items){
     if(!items) return;
     if(items.item)
       items = items.item;
     if(dojo.isArray(items)){
       for(var i = 0; i < items.length; i++){
+	this.items.push(dojo.mixin({},items[i]));
 	this.store.newItem(items[i]);
       }
     }
@@ -95,12 +128,14 @@ ajweb.widget.Widget,
 		  }
 		}
     );
+    this.items = [];
   },
 
   sort : function(){
 
   },
-
+  onRowClick: function(){
+  },
   display: function(){
     this.widget.setStructure(this.structure);
     this.widget.startup();

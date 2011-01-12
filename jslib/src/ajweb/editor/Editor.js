@@ -64,6 +64,10 @@ dojo.require("ajweb.editor.element.Value");
 
 dojo.require("ajweb.editor.element.ElementSelect");
 
+dojo.require("ajweb.editor.extension.Calendar");
+dojo.require("ajweb.editor.extension.DateTextbox");
+dojo.require("ajweb.editor.extension.TimeTextbox");
+
 
 
 dojo.provide("ajweb.editor.Editor");
@@ -440,16 +444,11 @@ dojo.declare(
      */
     newApplication : function(appName){
       var that = this;
-      var application =  new ajweb.editor.model.Application(
-	{
-	  id: "application_" + appName,
-	  tagName: "application",
-	  properties: { name: appName},
-	  propertyList: ["name"],
-	  editor: this
-	});
+      var application = this.createModel("application", {name: appName}, null, null);
+
       this.application = application;
       this.applications.push(application);
+
       var interfaces = this.newModel("interfaces", {}, application);
       var databases = this.newModel("databases", {}, application, this.centerTc);
       var events = this.newModel("events", {}, application);
@@ -619,10 +618,6 @@ dojo.declare(
     createModel : function(name, properties, parent, container, display){
       var modelInfo = ajweb.editor.getModelInfo(name);
       var elementClass = modelInfo.elementClass;
-//      var ElementClass = elementClass ? elementClass.substr(0,1).toLocaleUpperCase() + elementClass.substr(1)
-  //    : elementClass;
-
-//      var elementClass = modelInfo.elementClass;
       var modelClass = modelInfo.modelClass;
       var ModelClass = modelClass.substr(0,1).toLocaleUpperCase() + modelClass.substr(1);
       var propertyList = dojo.clone(modelInfo.propertyList);

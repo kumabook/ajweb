@@ -10,7 +10,8 @@ dojo.declare("ajweb.editor.element.Table",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.DndEnable, 
 	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Resizable
+	      ajweb.editor.element.Resizable,
+	      ajweb.editor.element.Menuable
 	     ],
   /** @lends ajweb.editor.element.Widget.prototype */
   {
@@ -34,11 +35,14 @@ dojo.declare("ajweb.editor.element.Table",
      */
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
-	{content: this.model.tagName,
-	  style: { position: "absolute",
+	{ style: { position: "absolute",
 	    top: parseInt(properties.top) + "px", left: parseInt(properties.left) + "px",
 	    width: properties.width, height: properties.height, border: "dashed 1px black"
 	  }});
+      this.label =  new dijit.layout.ContentPane(
+	{content: this.model.tagName+"",
+	  style: { position: "absolute",top: "0px", left: "0px" }});
+      this.widget.domNode.appendChild(this.label.domNode);
       return this.widget.domNode;
     },
     createContainerNode: function(){
@@ -53,7 +57,6 @@ dojo.declare("ajweb.editor.element.Table",
 	{style:{ top: properties.top, left: properties.left, 
 		 cssFloat: "left", styleFloat: "left",
 		 width: properties.width, height: properties.height, border: "dashed 1px black"}
-	// content: this.model.tagName
 	});
     },
     removeDom: function(){

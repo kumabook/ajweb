@@ -83,6 +83,7 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
     }
     );
     store.save();
+    this.items = [];
   },
 
   newItem: function(item){

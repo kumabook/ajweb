@@ -41,7 +41,7 @@ dojo.declare("ajweb.editor.element.Database",
 	  style:{
 	    position: "absolute",
 	    width: "240px",
-	    height: "40px",
+	    height: "70px",
 	    top: properties.top,
 	    left: properties.left,
 	    backgroundColor: "#E1EBFB",

@@ -1,3 +1,3 @@
 dojo.provide("ajweb.time");
 
-ajweb.time = {};
+//ajweb.time = {};
