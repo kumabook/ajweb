@@ -1,10 +1,11 @@
+dojo.provide("ajweb.editor.Editor");
+
 dojo.require("dijit.MenuBar");
 dojo.require("dijit.MenuBarItem");
 dojo.require("dijit.PopupMenuBarItem");
 dojo.require("dijit.Menu");
 dojo.require("dijit.MenuItem");
 dojo.require("dijit.PopupMenuItem");
-dojo.require("dojox.form.FileUploader");
 dojo.require("dijit.layout.BorderContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.AccordionContainer");
@@ -17,7 +18,8 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.tree.dndSource");
 dojo.require("dojox.grid.DataGrid");
-dojo.require("dojox.grid.cells.dijit");
+//dojo.require("dojox.grid.cells.dijit");
+
 dojo.require("ajweb.editor.gridCellEdit");
 
 
@@ -68,9 +70,9 @@ dojo.require("ajweb.editor.extension.Calendar");
 dojo.require("ajweb.editor.extension.DateTextbox");
 dojo.require("ajweb.editor.extension.TimeTextbox");
 
+dojo.require("ajweb.editor.modelList");
 
 
-dojo.provide("ajweb.editor.Editor");
 
 dojo.declare(
   "ajweb.editor.Editor", null,
@@ -84,6 +86,9 @@ dojo.declare(
      * @param {String} 名前
      */
     constructor: function(name, generateURL, uploadURL){
+
+      ajweb.editor.initMODELLIST();//初期化処理
+
       this.name = name;
       this.generateURL = generateURL;
       this.uploadURL = uploadURL;
@@ -661,7 +666,7 @@ dojo.declare(
     },
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
-      model.setRefProperty();
+//      model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がない
       return model;
     },
     /**

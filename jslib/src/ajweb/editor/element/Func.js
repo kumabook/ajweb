@@ -43,7 +43,7 @@ dojo.declare("ajweb.editor.element.Func",
        this.widget = new dijit.TitlePane(
 	{ title: title,
 	  open: false, toggleable: false,
-	  style:{position: "absolute", width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px",
+	  style:{position: "absolute", width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE/2+"px",
 		 top: properties.top, left: properties.left,
 		 backgroundColor: "#E1EBFB",border: "solid 1px #769DC0" }
 	});
@@ -78,7 +78,7 @@ dojo.declare("ajweb.editor.element.Func",
       var element = that.model.application.getElementByPropId(that.model.properties.element);
       element = element ? element : that.model.properties.element;
       that.elemName = new dijit.layout.ContentPane(
-	{ content: "エレメント名: ",
+	{ content: ajweb.resources.elementSelect,
 	style: {position: "absolute",top: "30px",left: "10px"}});
       that.elemSelect = new dijit.form.Select(
 	{ value: element ? element.properties.id: null,
@@ -86,7 +86,7 @@ dojo.declare("ajweb.editor.element.Func",
 	style: {position : "absolute",width: "150px",top: "25px",left: "100px"},
 	onChange: function(value){
 	  element = that.model.application.getElementByPropId(value);
-	  that.model.properties.element = element ? element.properties.id : null;
+	 // that.model.properties.element = element ? element.properties.id : null;
 	  ajweb.editor.getFuncStore(element.properties.tagName, that.funcSelect.store);
 	  that.funcSelect.set({disabled: false, value: that.model.properties.func ? that.model.properties.func : null});
 	  that.funcButton.set({disabled: false});
@@ -110,11 +110,13 @@ dojo.declare("ajweb.editor.element.Func",
 	style: {position : "absolute",width: "80px", top: "47px",left: "280px"},
 	onClick: function(){
 	  that.model.clearParam();
+	  that.model.properties.element = element ? element.properties.id : null;
 	  that.model.properties.func = that.funcSelect.value;
 	  that.model.createParam(element.properties.id, that.model.properties.func);
 	  this.set({label: ajweb.resources.change});
-	  //ラベルを変更
-	  that.updateDom();
+
+	  that.model.setRefProperty();//他のモデルの参照関係を作成
+	  that.updateDom();//ラベルを変更
 
 	  that.container.reDrawChildNode(that.domNode);
 	}});

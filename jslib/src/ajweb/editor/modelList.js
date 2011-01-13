@@ -1,4 +1,14 @@
 dojo.provide("ajweb.editor.modelList");
+dojo.requireLocalization("ajweb.editor", "resources");
+
+//dojo.addOnLoad(function(){
+//		 ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
+
+ajweb.editor.initMODELLIST = function(){
+
+ajweb.locale = ajweb.locale ? ajweb.locale : "en";
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, "ja");
+
 /**
  * 各モデルの詳細を保持する配列。<br/>
  * name: モデルの名前、XMLのタグ名。コンポーネントのリストのnameと対応。<br/>
@@ -358,7 +368,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "DBFunc",
     acceptModelType: ["param"],
     toolboxType: "action",
-    propertyList: ["tagName", "id", "database"],
+    propertyList: ["tagName", "id", {name: "database", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -369,7 +379,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "DBFunc",
     acceptModelType: ["param"],
     toolboxType: "action",
-    propertyList: ["tagName", "id", "database"],
+    propertyList: ["tagName", "id", {name: "database", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -380,7 +390,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "DBFunc",
     acceptModelType: ["param"],
     toolboxType: "action",
-    propertyList: ["tagName", "id", "database"],
+    propertyList: ["tagName", "id", {name: "database", type: "element", ref: true, refProp: "id"}],
     eventList: [],
     defaultProperties: {}
   },
@@ -631,5 +641,72 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: {}
   }
 ];
+//});
 
 
+
+
+  ajweb.editor.toolboxItems = (function(){
+				 var label = ajweb.locale == "en" ? "label" : "label"+ajweb.locale;
+				 var toolboxItemWidget = [];
+				 var toolboxItemDatabase = [];
+				 var toolboxItemEvent = [];
+				 var toolboxItemAction = [];
+				 var mlist = ajweb.editor.MODELLIST;
+				 var i = 0;
+				 for(i = 0; i < mlist.length; i++){
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "widget")
+				     toolboxItemWidget.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "database")
+				     toolboxItemDatabase.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "event")
+				     toolboxItemEvent.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "action")
+				     toolboxItemAction.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				 }
+				 toolboxItemEvent.push({id: "action", name: "Action",children: toolboxItemAction});
+				 return [
+				   {
+				     id:"Widgets", name:"Widgets",
+				     children: toolboxItemWidget
+				   },
+				   {
+				     id: "DB",  name: "DB",
+				     children: toolboxItemDatabase
+				   },
+				   {
+						    id: "Event", name: "Event",
+				     children: toolboxItemEvent
+				   }
+				 ];
+			       })();
+  
+  /**
+   * ajwebでサポートされる型を保持するdojoストア
+   */
+  ajweb.editor.dataTypeStore = ajweb.editor.getStore("id", "name", ajweb.resources.dataTypes);
+  
+  /**
+   * 条件式の演算子をアルファベットから記号表記に変換
+   */
+  ajweb.editor.conditionToOperator = function(name){
+    if(name == "eq")
+      return "=";
+    else if(name == "gt")
+    return ">";
+    else if(name == "lt")
+    return "<";
+    else if(name == "and")
+    return "AND";
+		   else if(name == "or")
+    return "OR";
+    else if(name == "not")
+    return "NOT";
+    
+    return "";
+  };
+  /**
+   * 条件式のdojoストア
+   */
+  ajweb.editor.conditionOperatorStore = ajweb.editor.getStore("id", "name", ajweb.resources.conditionOperators);
+};

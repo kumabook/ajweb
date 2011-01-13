@@ -1,5 +1,6 @@
 dojo.provide("ajweb.editor.gridCellEdit");
 dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojox.grid.cells.dijit");
 dojo.require("dijit.form.Select");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.NumberSpinner");

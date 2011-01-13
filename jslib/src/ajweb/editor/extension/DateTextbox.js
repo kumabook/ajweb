@@ -1,5 +1,5 @@
 dojo.provide("ajweb.editor.extension.DateTextbox");
-
+dojo.addOnLoad(function(){
 ajweb.editor.MODELLIST.push(
   {
     name:'dateTextbox',
@@ -18,3 +18,4 @@ ajweb.editor.MODELLIST.push(
     setters: []
   });
 
+});

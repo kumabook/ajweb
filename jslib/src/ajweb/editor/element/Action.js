@@ -45,8 +45,8 @@ dojo.declare("ajweb.editor.element.Action",
 	  content: ajweb.resources.dropFunction,//
 	  style:{
 	    position: "absolute",
-	    width: "100px",
-	    height: "50px",
+	    width: ajweb.editor.DROP_AREA_WIDTH+"px",
+	    height: ajweb.editor.DROP_AREA_HEIGHT+"px",
 	    top: properties.top,
 	    left: properties.left,
 	    border: "dotted 1px #769DC0"

@@ -47,7 +47,7 @@ dojo.declare("ajweb.editor.element.Element", null,
       this.containerNode = this.createContainerNode();
 
       if(this.container instanceof ajweb.editor.element.Element){
-	if(this.container.containerNode)
+	if(this.container.containerNode && this.domNode)
 	  this.container.containerNode.appendChild(this.domNode);
       }
       else　{// centerTcの場合

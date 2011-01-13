@@ -5,7 +5,8 @@ dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Th");
 dojo.declare("ajweb.editor.element.Th", 
-	     [ajweb.editor.element.Element],
+	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.Menuable],
   /** @lends ajweb.editor.element.Widget.prototype */
   {
     /**
@@ -27,11 +28,15 @@ dojo.declare("ajweb.editor.element.Th",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
+      var width = properties.width;
+      if(width=="auto")
+	width = "100px";//todo 自動的に計算
+//	width = parseInt(this.model.parent.properties.width) - 
       this.widget = new dijit.layout.ContentPane(
 	{
 	  style:{
 	    backgroundColor: "#E1EBFB",border: "dotted 1px #000000",
-	    width: properties.width, height: "20px",cssFloat: "left"
+	    width: width, height: "20px",cssFloat: "left"
 	  },
 	  content: this.model.properties.label
 	});

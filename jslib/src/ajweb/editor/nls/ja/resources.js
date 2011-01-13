@@ -46,7 +46,8 @@
    param: "引数",
    noElement: "エレメントが選択されていません",
    addEvent: "イベントを追加",
-   databases: "データモデル"
+   databases: "データモデル",
+   unset: "未設定"
  })
 
 

@@ -55,11 +55,11 @@ dojo.declare("ajweb.editor.element.Event", [
       this.widget.element = this;
       this.conditionContainer = new dijit.layout.ContentPane(
 	{
-	  content : "<br/>&nbsp;drop condition",
+	  content : ajweb.resources.dropCondition,
 	  style:{
 	    position: "absolute",
-	    width: "100px",
-	    height: "50px",
+	    width: ajweb.editor.DROP_AREA_WIDTH+"px",
+	    height: ajweb.editor.DROP_AREA_HEIGHT+"px",
 	    top: "25px",
 	    left: "10px",
 	    border: "dotted 1px #769DC0"

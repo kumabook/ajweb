@@ -24,12 +24,16 @@ dojo.declare("ajweb.editor.element.HasDialog",
      */
     constructor: function(opt)
     {
+      this.dialogWidth = ajweb.editor.DIALOG_WIDTH+"px";
+      this.dialogHeight = ajweb.editor.DIALOG_HEIGHT+"px";
+      this.dialogTop = ajweb.editor.DIALOG_TOP; //こっちは数値
+      this.dialogLeft = ajweb.editor.DIALOG_LEFT;
       this.childDialogElems = [];
     },
-    dialogWidth: "365px",
-    dialogHeight: "300px",
-    dialogTop: 100,
-    dialogLeft: 50,
+//    dialogWidth: "365px",
+//    dialogHeight: "300px",
+//    dialogTop: 100,
+//    dialogLeft: 50,
     createDialogContents: function(){
     },
     getDialogTitle: function(){
@@ -62,11 +66,13 @@ dojo.declare("ajweb.editor.element.HasDialog",
       }
 
       that.dialog.show();
+
       that.setDialogPosition();//that.dialogLeft, that.dialogTop);
       that.changeDialogPosition(that.dialogLeft, that.dialogTop);
 
-      that.dialog.containerNode.style.width = that.dialog.domNode.style.width;
-      that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
+      that.dialog.containerNode.style.position = "absolute";
+      that.dialog.containerNode.style.width = this.dialogWidth;
+      that.dialog.containerNode.style.height = this.dialogHeight;
 
 
     },
@@ -91,8 +97,8 @@ dojo.declare("ajweb.editor.element.HasDialog",
 	dialog = this.dialog;
 //      console.log(this.model.id + " top:" + this.dialogTop + "  left: " + this.dialogLeft);
       dialog._relativePosition = {};
-      dialog._relativePosition.x  = this.dialogLeft;//200;
-      dialog._relativePosition.y  = this.dialogTop;//parseInt(that.dialog.domNode.style.top) - 50;
+      dialog._relativePosition.x  = parseInt(this.dialogLeft);//200;
+      dialog._relativePosition.y  = parseInt(this.dialogTop);//parseInt(that.dialog.domNode.style.top) - 50;
       dialog.layout();
     },
     addOpenDialogEvent: function(){

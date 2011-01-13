@@ -28,8 +28,9 @@
    databases: "databases",
    appName : "application name",
    contextMenu : "context menu",
-   dropFunction: "drop area(event)",
-   dropCondition: "<br/>&nbsp;drop area(condition)",
+   dropFunction: "<br/>drop function",
+//   dropCondition: "<br/>&nbsp;drop area(condition)",
+   dropCondition: "<br/>drop condition",
    condition: "condition",
    conditionSelect: "condition: ",
    undefinedElem: "unconfigured",
@@ -48,5 +49,6 @@
    addEvent: "add event",
    databases: "databases",
    events: "events",
-   interfaces: "UI"
+   interfaces: "UI",
+   unset: "unset"
 })

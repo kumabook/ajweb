@@ -40,8 +40,8 @@ dojo.declare("ajweb.editor.element.Database",
 	{
 	  style:{
 	    position: "absolute",
-	    width: "240px",
-	    height: "70px",
+	    width: ajweb.editor.DATABASE_WIDTH+"px",
+	    height: ajweb.editor.DATABASE_INIT_HEIGHT+"px",
 	    top: properties.top,
 	    left: properties.left,
 	    backgroundColor: "#E1EBFB",
@@ -62,7 +62,7 @@ dojo.declare("ajweb.editor.element.Database",
 	  }
 	});
       this.tablename.innerHTML  = this.model.properties.tablename;
-      this.domNode.style.height = (this.model.children.length) * 30 + 35 + "px";
+      this.domNode.style.height = (this.model.children.length) * ajweb.editor.DATABASE_PROP_HEIGHT + 35 + "px";
     },
     removeDom: function(){
       this.widget.destroyRecursive();

@@ -123,6 +123,7 @@ dojo.declare("ajweb.editor.element.Value",
 		console.log("funcName: " + item.name + "funcValue: " + item.id);
 		that.model.properties.func = item.id+"";
 		that.model.properties.funcName = item.name+"";
+		that.model.setRefProperty();
 /*		that.model.properties.funcName = item.name+"";
 		that.model.properties.func = item.func ? item.func+"" : null;
 		that.model.properties.property = item.property ? item.property+"" : null;*/
@@ -136,7 +137,7 @@ dojo.declare("ajweb.editor.element.Value",
       //引数
 
       that.paramContainer = new dijit.layout.ContentPane(
-	{ content: "引数",
+	{ content: ajweb.resources.param,
       style: {position: "absolute",top: "80px", left: "10px",width: "350px", height: "300px"}});
       that.dialog.containerNode.appendChild(that.paramContainer.domNode);
       that.containerNode = that.paramContainer.domNode;
@@ -152,7 +153,7 @@ dojo.declare("ajweb.editor.element.Value",
       that.dialog.containerNode.appendChild(that.funcName.domNode);
 
       that.dialog.containerNode.appendChild(that.funcButton.domNode);
-      console.log(that.model.properties.funcName);
+//      console.log(that.model.properties.funcName);
     },
     addOpenDialogEvent: function(){
       dojo.connect(this.widget, "onClick", this, this.openDialog);

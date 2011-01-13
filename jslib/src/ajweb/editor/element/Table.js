@@ -33,11 +33,12 @@ dojo.declare("ajweb.editor.element.Table",
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
-    createDom: function(properties){
+    createDom: function(){
+      var properties = this.model.properties;
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute",
 	    top: parseInt(properties.top) + "px", left: parseInt(properties.left) + "px",
-	    width: properties.width, height: properties.height, border: "dashed 1px black"
+	    width: parseInt(properties.width)+6+"px", height: properties.height, border: "dashed 1px black"
 	  }});
       this.label =  new dijit.layout.ContentPane(
 	{content: this.model.tagName+"",
@@ -56,7 +57,7 @@ dojo.declare("ajweb.editor.element.Table",
       this.widget.set(
 	{style:{ top: properties.top, left: properties.left, 
 		 cssFloat: "left", styleFloat: "left",
-		 width: properties.width, height: properties.height, border: "dashed 1px black"}
+		 width: parseInt(properties.width)+5+"px", height: properties.height, border: "dashed 1px black"}
 	});
     },
     removeDom: function(){

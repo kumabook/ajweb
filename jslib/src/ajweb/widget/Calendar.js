@@ -10,12 +10,12 @@ dojo.declare("ajweb.widget.Calendar",ajweb.widget.Widget,
 	 value: new Date(),
 	 onChange: function(date){
 	   that.selectedDate = ajweb.date.format(date);
-	   that.onSelectedDateChange();
+	   that.onDateClickChange();
 	 }
        });
      this.element = this.widget.domNode;
    },
-   onSelectedDateChange: function(){
+   onDateClick: function(){
    },
    display: function(){
      this.widget.startup();

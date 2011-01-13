@@ -32,7 +32,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
       var that = this;
       var a = ajweb.editor;
       var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
-      var databaseName = that.model.properties.database ? that.model.properties.database : "未設定";
+      var databaseName = that.model.properties.database ? that.model.properties.database : ajweb.resources.unset;
       var title = actionName + "(" + databaseName+")";
        this.widget = new dijit.TitlePane(
 	{
@@ -70,9 +70,11 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	  if(that.model.children.length > 0){
 	    that.model.removeParam();
 	  }
-	  console.log(that.tablenameSelect.value);
+//	  console.log(that.tablenameSelect.value);
 	  var model = that.model.application.getElementByPropId(that.tablenameSelect.value);
 	  that.model.properties.database = model.properties.id;
+	  that.model.setRefProperty();//他のモデルの参照関係を作成
+	  that.updateDom();//
 	  that.model.createParam(that.tablenameSelect.value);
 	}
       });
@@ -84,6 +86,22 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	that.model.reCreateParamDom();
       }
 
+    },
+    updateDom: function(){
+      var a = ajweb.editor;
+      var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
+      var databaseName = that.model.properties.database ? that.model.properties.database : ajweb.resources.unset;
+      var title = actionName + "(" + databaseName+")";
+      this.widget.set({
+	title: title,
+	style:{
+	  top: this.model.properties.top,
+	  left: this.model.properties.left,
+	  width: title.length*a.FONT_SIZE+a.REMOVE_ICON_SIZE+"px"
+	  }
+	});
+      if(this.dialog)
+	this.dialog.set({title: title});      
     },
     dialogContentsStartup: function(){
       this.tablenameSelect.startup();

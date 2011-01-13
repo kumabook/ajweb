@@ -1,5 +1,5 @@
 dojo.provide("ajweb.editor.extension.Calendar");
-
+dojo.addOnLoad(function(){
 ajweb.editor.MODELLIST.push(
   {
     name:'calendar',
@@ -10,7 +10,7 @@ ajweb.editor.MODELLIST.push(
     acceptModelType: [],
     toolboxType: "widget",
     propertyList: ["tagName", "id", "width", "top", "left"],
-    eventList: ["onDisplay", "onSelectedDateChange"],
+    eventList: ["onDisplay", "onDateClick"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
       {	id: "getSelectedDate", name: "getSelectedDate", params: [], returnType: "date", description: ""}
@@ -49,3 +49,4 @@ dojo.declare("ajweb.editor.element.Calendar",
     }
   }
 );
+});

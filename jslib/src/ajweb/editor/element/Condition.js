@@ -43,8 +43,11 @@ dojo.declare("ajweb.editor.element.Condition",
       var a = ajweb.editor;
       this.widget = new dijit.TitlePane(
 	{title: ajweb.resources.condition, toggleable: false, open: false,
-	  style:{position: "absolute",width: "80px",top: properties.top,left: properties.left,
-	    backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"}
+	  style:{position: "absolute",
+		 width: ajweb.resources.condition.length*ajweb.editor.FONT_SIZE
+		 +ajweb.editor.REMOVE_ICON_SIZE/2+"px",
+		 top: properties.top,left: properties.left,
+		 backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"}
 	});
 
       this.isDisplay = true;

@@ -122,7 +122,7 @@ dojo.declare("ajweb.editor.model.Model", null,
 	    if(this._ref[refProp] == model){
 	      this.properties[v.name] = model.properties[refProp];
 	      this.updateDom();
-	   //console.log("update  " + this.id + "  " +  this.propertyList[i].name + "   " + refProp);
+//	      console.log("update  " + this.id + "  " +  this.propertyList[i].name + "   " + refProp);
 	    }
 	  }
 	}, this);
