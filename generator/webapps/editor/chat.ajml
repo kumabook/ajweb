@@ -82,7 +82,6 @@
             </param>          </call>        </action>
       </event>
       <event target="button1" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="411px" top="43px">
           <login id="login0" left="133px" top="37px">
             <param id="param1" name="user_id" type="string">
@@ -100,7 +99,6 @@
             <else id="else1" left="522px" top="86px"/>          </branch>        </action>
       </event>
       <event target="roomSelectPanel" type="onDisplay">
-        <condition left="10px" top="25px"/>
         <action left="428px" top="28px">
           <call element="roomSelect" func="load" id="call2" left="185px" top="25px">
             <param id="param13" name="datum" type="objects">
@@ -110,7 +108,6 @@
         </action>
       </event>
       <event target="selectButton" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="889px" top="32px">
           <call element="rootFrame" func="selectPanel" id="call3" left="138px" top="39px">
             <param id="param14" name="panel" type="element">
@@ -147,7 +144,6 @@
         </action>
       </event>
       <event target="enterButton" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="716px" top="41px">
           <insert database="message" id="insert0" left="181px" top="48px">
             <param id="param11" name="message" type="string">
@@ -182,7 +178,6 @@
         </action>
       </event>
       <event target="backButton" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="264px" top="19px">
           <call element="rootFrame" func="selectPanel" id="call8" left="237px" top="48px">
             <param id="param32" name="panel" type="element">
@@ -192,7 +187,6 @@
         </action>
       </event>
       <event target="messageSubmitButton" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="203px" top="25px">
           <insert database="message" id="insert1" left="239px" top="40px">
             <param id="param18" name="message" type="string">
@@ -213,12 +207,12 @@
       <event target="message" type="onInsert">
         <condition left="10px" operator="eq" top="25px">
           <eq>
-            <value element="message:receivedItem" funcName="property" type="message:receivedItem">
+            <value element="message:receivedItem" funcName="property" type="message:receivedItem" left="70px" top="0px">
               <param id="param33" name="property" type="string">
                 <stringSelect target="message" type="data">room_id</stringSelect>
               </param>
             </value>
-            <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
+            <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element" left="70px" top="70px"/>
           </eq>
         </condition>
         <action left="457px" top="11px">
@@ -230,7 +224,6 @@
         </action>
       </event>
       <event target="exitButton" type="onClick">
-        <condition left="10px" top="25px"/>
         <action left="633px" top="30px">
           <insert database="message" id="insert3" left="206px" top="36px">
             <param id="param23" name="message" type="string">

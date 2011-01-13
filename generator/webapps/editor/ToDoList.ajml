@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml>
+  <application name="ToDoList">
+    <interfaces>
+      <panel height="309px" id="rootPanel" left="405.5" top="53.5" width="673px">
+        <label content="To Do List" id="label0" left="14px" top="1px"/>
+        <frame height="270px" id="mainFrame" left="11px" top="38px" width="650px">
+          <panel height="270px" id="listTaskPanel" left="417" top="73" width="650px">
+            <calendar id="calendar1" left="3px" top="29px" width="100px"/>
+            <table height="190px" id="taskList" left="238px" top="34px" width="350px">
+              <th field="title" id="titleTh" label="title" left="123" top="30" width="150px"/>
+              <th field="time" id="timeTh" label="time" left="172" top="30" width="100px"/>
+              <th field="place" id="placeTh" label="place" left="278" top="28" width="100px"/>            </table>
+            <button content="新規作成" id="button0" left="307px" top="237px"/>
+            <button content="削除" id="button1" left="444px" top="237px"/>          </panel>
+          <panel height="270px" id="addTaskPanel" left="417" top="73" width="650px">
+            <label content="日付" id="label1" left="49px" top="9px"/>
+            <button content="作成" id="addTaskButton" left="119px" top="211px"/>
+            <label content="タイトル" id="label2" left="35px" top="52px"/>
+            <label content="時刻" id="label3" left="41px" top="86px"/>
+            <label content="場所" id="label4" left="39px" top="124px"/>
+            <textbox id="textbox0" left="146px" top="51px" width="100px"/>
+            <textbox id="textbox1" left="145px" top="121px" width="100px"/>
+            <timeTextbox id="timeTextbox0" left="145px" top="86px" width="100px"/>
+            <button content="リストに戻る" id="button3" left="385px" top="25px"/>          </panel>
+          <panel height="270px" id="loginPanel" left="417" top="73" width="650px">
+            <textbox id="textbox2" left="119px" top="49px" width="100px"/>
+            <label content="user name" id="label5" left="39px" top="52px"/>
+            <label content="password" id="label6" left="39px" top="92px"/>
+            <passwordbox id="passwordbox0" left="118px" top="91px" width="100px"/>
+            <button content="login" id="button4" left="109px" top="186px"/>
+          </panel>        </frame>      </panel>    </interfaces>
+    <databases id="databases0">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="task" left="676px" tablename="task" top="102px" type="server">
+        <init>
+          <item>
+            <initProperty name="title" type="string"/>
+            <initProperty name="date" type="date" value="2011-01-13"/>
+            <initProperty name="time" type="time" value="03:49:01:00"/>
+            <initProperty name="place" type="string"/>
+          </item>
+        </init>
+        <property left="211" name="title" top="59" type="string"/>
+        <property left="193" name="date" top="89" type="date"/>
+        <property left="227" name="time" top="125" type="time"/>
+        <property left="215" name="place" top="153" type="string"/>      </database>
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="192px" tablename="users" top="126px" type="server">
+        <init/>
+        <property left="128" name="user_id" top="57" type="string"/>
+        <property left="174" name="password" top="88" type="password"/>
+      </database>    </databases>
+    <events/>
+  </application>
+</ajml>
