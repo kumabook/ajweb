@@ -2,6 +2,7 @@ dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.DndEnable");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
+dojo.require("ajweb.editor.element.Menuable");
 dojo.require("dijit.layout.ContentPane");
 
 dojo.provide("ajweb.editor.element.Condition");
@@ -10,7 +11,9 @@ dojo.declare("ajweb.editor.element.Condition",
 	      ajweb.editor.element.Movable,
 	      ajweb.editor.element.Removable,
 	      ajweb.editor.element.DndEnable,
-	      ajweb.editor.element.HasDialog],
+	      ajweb.editor.element.HasDialog,
+	      ajweb.editor.element.Menuable
+	     ],
   /** @lends ajweb.editor.element.Condition.prototype */
   {
     /**

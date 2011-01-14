@@ -30,16 +30,17 @@ dojo.declare("ajweb.editor.element.Param",
       var keyName = new dijit.layout.ContentPane(
 	{
 	  content: properties.name + ":",
-	  style: { position: "absolute", top: "5px", left: "10px"}
+	  style: { position: "absolute", top: ajweb.editor.PARAM_NAME_TOP+"px", left: "10px", 
+		   width: ajweb.editor.PARAM_NAME_WIDTH+"px"}
 	});
 
       this.widget = new dijit.layout.ContentPane(
 	{
 	  style: {
 	   position: "absolute",
-	   top: (this.container.containerNode.childNodes.length * 35) + "px",
-	   left: "0px",//	   left: "10px",
-	   width: "350px", height: "35px",
+	   top: (this.container.containerNode.childNodes.length * ajweb.editor.PARAM_HEIGHT) + "px",
+	   left: "0px",
+	   width: ajweb.editor.CONDITION_DIALOG_WIDTH, height: ajweb.editor.PARAM_HEIGHT+"px",
 	   overflow : "visible"
 	 }});
       this.widget.domNode.appendChild(keyName.domNode);
@@ -49,8 +50,8 @@ dojo.declare("ajweb.editor.element.Param",
       var value = new dijit.layout.ContentPane(
 	{style: {
 	   position: "absolute",
-	   top: "0px", left: "100px",
-	   width: "200px", height: "30px",
+	   top: "0px", left: ajweb.editor.PARAM_NAME_WIDTH+"px",
+	   width: ajweb.editor.VALUE_WIDTH+"px", height: ajweb.editor.VALIUE_HEIGHT+"px",
 	   overflow : "visible"
 	 }});
       this.domNode.appendChild(value.domNode);

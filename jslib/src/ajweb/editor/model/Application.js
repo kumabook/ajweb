@@ -31,6 +31,18 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       var databases = this.getDatabasesModel();
       return databases.children;
     },
+    getDataTypeStore: function(){
+//      if(this.dataTypeStore)
+//	return this.dataTypeStore;
+      
+      var dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
+      var databaseModels = this.getDatabaseModels();
+      for(var i = 0; i < databaseModels.length; i++){
+	dataTypeStore.newItem({name: databaseModels[i].properties.id, label: databaseModels[i].properties.id, database: databaseModels[i]});
+      }
+	dataTypeStore.save();
+      return dataTypeStore;
+    },
     getDatabaseStore: function(){
       var databases = this.getDatabasesModel();
       return databases.getChildrenStore();
@@ -55,7 +67,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
     },
     getWidgetStore: function(store){
       if(!store)
-	store = ajweb.editor.getEmptyStore("id", "name");
+	store = ajweb.editor.getEmptyStore("name", "label");
       var models = this.getWidgetModels();
 
       for(var i = 0; i < models.length; i++){//todo filterを用意する必要あり
@@ -67,7 +79,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	}
 	if(setters.length > 0){
 //	  console.log(models[i].properties.id);
-	  store.newItem({name: models[i].properties.id, jsId: models[i].id, id: models[i].properties.id});
+	  store.newItem({label: models[i].properties.id, jsId: models[i].id, name: models[i].properties.id});
 	}
 	  
       }
@@ -80,21 +92,21 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       while(parentModel.tagName != "events"){
 	if(parentModel.tagName == "paramCondition"){      //databaseのselect系の内部の場合は,targetItemを追加
 	  var targetElement = this.getElementByPropId(parentModel.parent.parent.properties.element);
-	  items.push({id:  targetElement.properties.id + ":targetItem", name: "targetItem(" + targetElement.properties.id + ")"});
+	  items.push({name:  targetElement.properties.id + ":targetItem", label: "targetItem(" + targetElement.properties.id + ")"});
 	}
 	else if(parentModel.tagName == "event"){
 	  var targetElement = that.application.getElementByPropId(parentModel.properties.target);
 	  if(targetElement.tagName == "database"){//databaseイベントの場合はreceivedItemを追加
-	    items.push({id:  targetElement.properties.id + ":receivedItem", name: "receivedItem(" + targetElement.properties.id + ")"});
+	    items.push({name:  targetElement.properties.id + ":receivedItem", label: "receivedItem(" + targetElement.properties.id + ")"});
 	  }
 	}
 	parentModel = parentModel.parent;
       }
-      items.push({id: "separator0"});
-      items.push({id: "primitive", name: "基本型"});
+      items.push({name: "separator0"});
+      items.push({name: "primitive", label: "基本型"});
       items = items.concat(ajweb.resources.dataTypes);
-      items.push({id: "separator1"});
-      items.push({id: "element", name: "ウィジェット"});
+      items.push({name: "separator1"});
+      items.push({name: "element", label: "ウィジェット"});
 
       var widget_children = [];
       var i;
@@ -104,25 +116,25 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	for(var j = 0; j < list.length; j++){
 	  if(list[j].name == widgetModels[i].tagName){
 	    if(list[j].getters.length > 0)
-	      items.push({name: widgetModels[i].properties.id, jsId: widgetModels[i].id, id: widgetModels[i].properties.id});
+	      items.push({label: widgetModels[i].properties.id, jsId: widgetModels[i].id, name: widgetModels[i].properties.id});
 	  }
 	}
       }
 
-      items.push({id: "separator2"});
-      items.push({id: "database", name: "データベース"});
+      items.push({name: "separator2"});
+      items.push({name: "database", label: "データベース"});
 
       var databases_children = [];
 
       var databases = this.getDatabasesModel();
       for(i = 0; i < databases.children.length; i++){
-	items.push({name: databases.children[i].properties.id, jsId: databases.children[i].id, id: databases.children[i].properties.id});
+	items.push({label: databases.children[i].properties.id, jsId: databases.children[i].id, name: databases.children[i].properties.id});
       }
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
-	    identifier: "id",
-	    label : "name",
+	    identifier: "name",
+	    label : "label",
 	    items: items
 	  }
 	}
@@ -181,12 +193,14 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	    continue;
 	  }
 	  else if(childNode.tagName == "databases"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc, true);
+	    child.xmlToModel(childNode, doc, true);
 	  }
 	  else {//interfaces
 	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, isDisplay);
+	    child.xmlToModel(childNode, doc, isDisplay);
 	  }
-	  child.xmlToModel(childNode, doc, isDisplay);
+
 	}
       }
       //eventsモデル
@@ -194,6 +208,8 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element, isDisplay);
       child.xmlToModel(eventsNode, doc, isDisplay);
       this.setRefProperty();
+
+      this.projectRestore();
     }
   }
 );

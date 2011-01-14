@@ -39,9 +39,13 @@ dojo.declare("ajweb.editor.element.Panel",
 	    that.model.clearPropertiesView();
 	    that.model.clearEventView();
 	    that.model.removeDomDescendants();
+
+	    that.model.properties._isDisplay = "false";
 	    return true;
 	  }
 	});
+      that.model.properties._isDisplay = "true";
+
       this.widget.jsId = this.model.id;
       this.panel = new dijit.layout.ContentPane(
 	{

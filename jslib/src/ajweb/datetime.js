@@ -1,6 +1,7 @@
 dojo.provide("ajweb.datetime");
 
-ajweb.datetime = {};
+//ajweb.datetime = {};
+
 ajweb.datetime.now = function(){
   	var now = new Date();
 	var minutes = now.getMinutes();

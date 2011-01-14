@@ -24,18 +24,13 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		     for(var j = 0; j < databases.children.length; j++){
 		       store.newItem({name: databases.children[j].properties.id});
 		     }
-		     var model = this.store.currentModel;
-		     var grid = model.editor.propertyDataGrid;
-		     this.widget = new dijit.form.Select(
-		       {store: this.selectStore,
-			value: inDatum,
-			onChange: function(newValue){
-//			  console.log(property.name + "  " + newValue);
-		//	  model.properties[property.name] = newValue;
-		//	  grid.onApplyCellEdit(newValue, inRowIndex, "value");
-			}},
-		       inNode);
+
+		     this.widget = new dijit.form.Select({store: this.selectStore, value: inDatum}, inNode);
 		     this.widget.startup();
+
+		     this.widget.property = property.name;//selectbox場合，プロパティビューの値が保存されない場合のためにgridにwidgetを登録
+		     this.store.currentModel.editor.propertyDataGrid.widget = this.widget;
+
 		     return this.widget;
 		   }
 		   else if(property.type == "dataproperty"){
@@ -48,12 +43,20 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 			  value: inDatum
 			 }, inNode);
 		       this.widget.startup();
+
+		     this.widget.property = property.name;//selectbox場合，プロパティビューの値が保存されない場合のためにgridにwidgetを登録
+		     this.store.currentModel.editor.propertyDataGrid.widget = this.widget;
+
 		       return this.widget;
 		     }
 		   }
 		   else {
 		     this.widget = new dijit.form.Select({store: this.selectStore, value: inDatum}, inNode);
 		     this.widget.startup();
+
+		     this.widget.property = property.name;//selectbox場合，プロパティビューの値が保存されない場合のためにgridにwidgetを登録
+		     this.store.currentModel.editor.propertyDataGrid.widget = this.widget;
+
 		     return this.widget;
 		   }
 		 }

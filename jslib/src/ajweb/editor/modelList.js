@@ -4,10 +4,11 @@ dojo.requireLocalization("ajweb.editor", "resources");
 //dojo.addOnLoad(function(){
 //		 ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
 
+ajweb.editor.MODELLIST =  [];
 ajweb.editor.initMODELLIST = function(){
 
-ajweb.locale = ajweb.locale ? ajweb.locale : "en";
-ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, "ja");
+
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, ajweb.locale);//, "ja");
 
 /**
  * 各モデルの詳細を保持する配列。<br/>
@@ -20,7 +21,7 @@ ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, "ja
  * eventList: イベントを持つ場合、取り得るイベントのリスト。optional。<br/>
  * acceptModelType: 子要素に持てるコンポーネントのリスト。<br/>
  */
-ajweb.editor.MODELLIST =  [
+ajweb.editor._MODELLIST =  [
   {
     name: "application",
     label: "application",
@@ -49,17 +50,17 @@ ajweb.editor.MODELLIST =  [
     modelClass: "Eventable",
     elementClass: "databases",
     acceptModelType: ["database"],
-    propertyList: ["tagName", "id"],
+    propertyList: ["tagName", "id", "_isDisplay"],
     eventList: [],
     getters: [
-      { id: "selectById", name: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
-      { id: "selectByCondition", name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
-      { id: "select", name: "select", params: [], returnType: "objects"}
+      { name: "selectById", label: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "selectByCondition", label: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
+      { name: "select", label: "select", params: [], returnType: "objects"}
     ],
     setters: [
-      { id: "insert", name: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
-      { id: "update", name: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
-      { id: "delete", name: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
+      { name: "insert", label: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "update", label: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
+      { name: "delete", label: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
     ],
     defaultProperties: { tagName: "databases"},
     projLabel: ajweb.resources.databases
@@ -94,9 +95,9 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "label", content: "ラベル" },
     getters: [
-      {	id: "getContent", name: "content",  params: [{key: "value", type: "string"}]}
+      {	name: "getContent", label: "getContent",  params: [{key: "value", type: "string"}]}
     ],
-    setters: [{id: "setContent", name: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
+    setters: [{name: "setContent", label: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
   },
   {
     name:'button',
@@ -114,7 +115,7 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay", "onClick"],
     defaultProperties: { tagName: "button", width: "100px", height: "50px",content: "ボタン"},
     getters: [
-      {id: "getLabel", name: "label",params: []}
+      {name: "getLabel", label: "label",params: []}
     ],
     setters: []
   },
@@ -130,7 +131,7 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
-      {	id: "getValue", name: "value", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+      {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
     setters: []
   },
@@ -146,7 +147,7 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
-      {	id: "getValue", name: "value", params: [], returnType: "string", description: "パスワードボックスに入力されている値を取得" }
+      {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "パスワードボックスに入力されている値を取得" }
     ],
     setters: []
   },
@@ -158,20 +159,22 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Table",
     acceptModelType: ["th"],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "height", "width", "top", "left"],
+    propertyList: ["tagName", "id", "height", "width", "top", "left",
+		   {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"}],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "table", width: "100px", height: "50px"},
     getters: [
-      {	id: "getSelectedItem", name: "value", params: [], returnType: "string", description: "選択されている値を取得" },
-      {	id: "getSelectedItem", name: "value", params: [], returnType: "string", description: "選択されている値を取得" },
-      {	id: "getSelectedItemProperty", name: "value", params: [], returnType: "string", description: "選択されている値を取得" }
+      {	name: "getSelectedItem", label: "getSelectedItem", params: [], returnType: "string", description: "選択されている値を取得" },
+      {	name: "getSelectItemProperty", label: "selectItemProperty", 
+	params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}],
+	returnType: "dataProperty", description: ""}
     ],
     setters: [
-      {id: "load", name: "load",params: [{key: "item", type: "object"}], description: "" },
-      {id: "clear", name: "clear",params: [], description: "" },
-      {id: "insert", name: "insert",params: [ {key: "item", type: "object"}], description: "" },
-      {id: "delete", name: "delete",params: [ {key: "item", type: "object"}], description: "" },
-      {id: "update", name: "update",params: [ {key: "item", type: "object"}], description: "" }
+      {name: "load", label: "load",params: [{key: "item", type: "object"}], description: "" },
+      {name: "clear", label: "clear",params: [], description: "" },
+      {name: "insert", label: "insert",params: [ {key: "item", type: "object"}], description: "" },
+      {name: "delete", label: "delete",params: [ {key: "item", type: "object"}], description: "" },
+      {name: "update", label: "update",params: [ {key: "item", type: "object"}], description: "" }
     ]
   },
   {
@@ -182,7 +185,10 @@ ajweb.editor.MODELLIST =  [
     elementClass: "th",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "label", "field"],
+    propertyList: ["tagName", "id", "width", "label", 
+		   {name: "field", input: "selectbox", type: "dataproperty", target: "_data"},// "field",//elementの中でdataプロパティに
+		   {name: "_data", input: "hidden", type: "data", ref: true, refProp: "id"}
+		  ],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "th", width: "50px", field: "th", label: "th"},
     getters: [],
@@ -203,15 +209,15 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay", "onChange"],
     defaultProperties: { tagName: "selectbox"},
     getters: [
-      {	id: "getSelectItemProperty", name: "selectItemProperty", 
+      {	name: "getSelectItemProperty", label: "getSelectItemProperty", 
 	params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}],
 	returnType: "dataProperty", description: ""},
-      {	id: "getSelectItem", name: "selectItem",  params: [], returnType: "object", description: "" }
+      {	name: "getSelectItem", label: "getSelectItem",  params: [], returnType: "object", description: "" }
     ],
     setters: [
-      {	id: "newItem", name: "newItem", params: [{key: "item", type: "object"}], description: ""},
-      { id: "clear", name: "clear",params: [], description: "" },
-      {	id: "load", name: "load", params: [{key: "datum", type: "objects"}], description: ""}
+      {	name: "newItem", label: "newItem", params: [{key: "item", type: "object"}], description: ""},
+      { name: "clear", label: "clear",params: [], description: "" },
+      {	name: "load", label: "load", params: [{key: "datum", type: "objects"}], description: ""}
     ]
   },
   {
@@ -222,11 +228,11 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Panel",
     acceptModelType: ["widget"],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "height", "width"],
+    propertyList: ["tagName", "id", "height", "width", "_isDisplay"],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "panel", width: "300px", height: "300px"},
     getters: [
-      { id: "self", name: "self", params: [], returnType: "element"}
+      { name: "self", label: "self", params: [], returnType: "element"}
     ],
     setters: []
   },
@@ -242,10 +248,10 @@ ajweb.editor.MODELLIST =  [
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "frame", width: "100px", height: "100px"},
     getters: [
-      {	id: "getSelectPanel", name: "selectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
+      {	name: "getSelectPanel", label: "getSelectPanel", params: [], returnType: "string", description: "現在選択されているpanelのidを返す"}
     ],
     setters: [
-      {	id: "selectPanel", name: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
+      {	name: "selectPanel", label: "selectPanel", params: [{key: "panel", type: "element", input: { className: "element", type: "child"}}], description: "idのpanelを選択する"}
     ]
   },
   {
@@ -261,7 +267,7 @@ ajweb.editor.MODELLIST =  [
     defaultProperties: { tagName: "dialog", width: "100px", height: "100px"},
     getters: [],
     setters: [
-      {	id: "show", name: "show", params: [], description: "idのpanelを選択する"}
+      {	name: "show", label: "show", params: [], description: "idのpanelを選択する"}
     ]
   },
   //DBモデル
@@ -280,14 +286,14 @@ ajweb.editor.MODELLIST =  [
 			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
 		       },
     getters: [
-      { id: "selectById", name: "selectById", params: [{key: "id", type: "int"}], returnType: "object"},
-      { id: "selectByCondition", name: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
-      { id: "select", name: "select", params: [], returnType: "objects"}
+      { name: "selectById", label: "selectById", params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "selectByCondition", label: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
+      { name: "select", label: "select", params: [], returnType: "objects"}
     ],
     setters: [
-      { id: "insert", name: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
-      { id: "update", name: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
-      { id: "delete", name: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
+      { name: "insert", label: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "update", label: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
+      { name: "delete", label: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
     ]
   },
   {
@@ -298,7 +304,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "property",
     acceptModelType: [],
     toolboxType: "database",
-    propertyList: ["name", "type"],
+    propertyList: ["name", "type","multiplicity",{name: "ref", type: "element", ref: true, refProp: "id"}],
     defaultProperties: {name:"propertyName", type: "int"}
   },
   {
@@ -451,13 +457,13 @@ ajweb.editor.MODELLIST =  [
     name: "int",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "Primitive",
+    elementClass: "Int",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
     defaultProperties: {},
     getters: [
-      {id: "direct", name: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
+      {name: "direct", label: "direct", params:[{key: "value", type: "int", input:{className: "int"}}]}
     ],
     setters: []
   },
@@ -465,14 +471,14 @@ ajweb.editor.MODELLIST =  [
     name: "string",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "Primitive",
+    elementClass: "String",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
     defaultProperties: {},
     getters: [
-      {id: "direct", name: "direct", params:[{key: "value", type: "string", input:{className: "string"}}]},
-      {id: "concat", name: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
+      {name: "direct", label: "direct", params:[{key: "value", type: "string", input:{className: "string"}}]},
+      {name: "concat", label: "concat", func: "concat", property: "", params: [{key: "first", type: "string"},{key: "second", type: "string"}], returnType: "string" }
     ],
     setters: []
   },
@@ -480,14 +486,29 @@ ajweb.editor.MODELLIST =  [
     name: "date",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "Primitive",
+    elementClass: "Date",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
     defaultProperties: {},
     getters: [
-      {id: "direct", name: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
-      {id: "now", name: "now", params:[]}
+      {name: "direct", label: "direct", params:[{key: "base", type: "date", input:{className: "date"}}]},
+      {name: "now", label: "now", params:[]}
+    ],
+    setters: []
+  },
+  {
+    name: "time",
+    modelType: "value",
+    modelClass: "Visible",
+    elementClass: "Time",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {},
+    getters: [
+      {name: "direct", label: "direct", params:[{key: "base", type: "time", input:{className: "time"}}]},
+      {name: "now", label: "now", params:[]}
     ],
     setters: []
   },
@@ -495,14 +516,14 @@ ajweb.editor.MODELLIST =  [
     name: "datetime",
     modelType: "value",
     modelClass: "Visible",
-    elementClass: "value",
+    elementClass: "Datetime",
     acceptModelType: [],
     propertyList: [],
     eventList: [],
     defaultProperties: {},
     getters: [
-      {id: "direct", name: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
-      {id: "now", name: "now", params:[]}
+      {name: "direct", label: "direct", params:[{key: "base", type: "datetime", input:{className: "datetime"}}]},
+      {name: "now", label: "now", params:[]}
     ],
     setters: []
   },
@@ -643,7 +664,7 @@ ajweb.editor.MODELLIST =  [
 ];
 //});
 
-
+ajweb.editor.MODELLIST = ajweb.editor._MODELLIST.concat(ajweb.editor.MODELLIST);
 
 
   ajweb.editor.toolboxItems = (function(){

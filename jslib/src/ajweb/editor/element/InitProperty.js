@@ -56,7 +56,7 @@ dojo.declare("ajweb.editor.element.InitProperty",
 	  date = ajweb.date.parse(this.model.properties.value);
 	}
 	if(!date) date = new Date();
-	console.log(date);
+//	console.log(date);
 	this.valueInput = new dijit.form.DateTextBox(
 	  {style: {position: "absolute", width: "200px", top: "0px", left: "150px"},
 	   value: date,

@@ -33,7 +33,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
       var a = ajweb.editor;
       var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
       var databaseName = that.model.properties.database ? that.model.properties.database : ajweb.resources.unset;
-      var title = actionName + "(" + databaseName+")";
+      var title = actionName + "&nbsp;(" + databaseName+")";
        this.widget = new dijit.TitlePane(
 	{
 	  title: title,
@@ -50,18 +50,20 @@ dojo.declare("ajweb.editor.element.DBFunc",
       var that = this;
       var paramContainer = new dijit.layout.ContentPane(
 	      {content: "params",
-	       style: {position: "absolute",top: "70px", left: "10px",width: "95%", height: "70%"}});
+	       style: {position: "absolute",top: "70px", left: "10px",
+		       width: this.dialog.style.width, height: this.dialog.style.height,  overflow: "scroll"}});
+
       that.dialog.containerNode.appendChild(paramContainer.domNode);
       that.containerNode = paramContainer.domNode;
 
-      that.store = that.model.application.getDatabaseStore();
       this.tablename = new dijit.layout.ContentPane(
-	{content: ajweb.resources.databaseName,
+	{content: ajweb.resources.databaseSelect,
 	style: { position: "absolute", top: "30px", left: "10px"}
       });
+
       that.tablenameSelect = new dijit.form.Select(
 	{value: that.model.properties.database ? that.model.properties.database : "",
-	store: that.store, sortByLabel: false,
+	store: that.model.application.getDatabaseStore(), sortByLabel: false,
 	style: {position : "absolute", width: "150px",top: "25px",left: "100px"}});
       that.button = new dijit.form.Button(
 	{ label: ajweb.resources.enter,
@@ -70,7 +72,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
 	  if(that.model.children.length > 0){
 	    that.model.removeParam();
 	  }
-//	  console.log(that.tablenameSelect.value);
+
 	  var model = that.model.application.getElementByPropId(that.tablenameSelect.value);
 	  that.model.properties.database = model.properties.id;
 	  that.model.setRefProperty();//他のモデルの参照関係を作成
@@ -90,8 +92,8 @@ dojo.declare("ajweb.editor.element.DBFunc",
     updateDom: function(){
       var a = ajweb.editor;
       var actionName = 	ajweb.editor.getModel(this.model.tagName, "id").name;
-      var databaseName = that.model.properties.database ? that.model.properties.database : ajweb.resources.unset;
-      var title = actionName + "(" + databaseName+")";
+      var databaseName = this.model.properties.database ? this.model.properties.database : ajweb.resources.unset;
+      var title = actionName + "&nbsp;(" + databaseName+")";
       this.widget.set({
 	title: title,
 	style:{

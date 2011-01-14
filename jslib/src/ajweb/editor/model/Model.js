@@ -80,6 +80,18 @@ dojo.declare("ajweb.editor.model.Model", null,
       //親から自分への参照を消す
       ajweb.remove(this, this.parent.children);
     },
+    projectRestore: function(){
+      if(this.properties._isDisplay){
+	this.reCreateDom();
+	this.startup();
+      }
+      else {
+	dojo.forEach(this.children,
+		     function(v, i ,a){
+		       v.projectRestore();
+		     }, this);
+      }
+    },
     /**
      * モデルを表すDOMノードを削除する。モデルを削除するタイミングでよびだされる。
      * サブクラスでオーバライドする。
@@ -143,9 +155,9 @@ dojo.declare("ajweb.editor.model.Model", null,
       dojo.forEach(propertyList,
 	function(v, i ,a){
 	  var propertyName = typeof v == "string" ? v : v.name;
-	  if(propertyName != "tagName" && propertyName.charAt(0) != "_")
-	  if(this.properties[propertyName])
-	    node.setAttribute(propertyName, this.properties[propertyName]);
+	  if(propertyName != "tagName" && (isSave || propertyName.charAt(0) != "_"))
+	    if(this.properties[propertyName])
+	      node.setAttribute(propertyName, this.properties[propertyName]);
 	}, this);
       dojo.forEach(this.children,
 	function(v, i ,a){
@@ -166,8 +178,12 @@ dojo.declare("ajweb.editor.model.Model", null,
 	    var child, container = this.element;
 	    if(v.tagName == "databases" || v.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	      container = this.editor.centerTc;
+//	      child = this.editor.createModel(v.tagName, attrs, this, container, isDisplay);
+//	      child.xmlToModel(v, doc, isDisplay);
+	      child = this.editor.createModel(v.tagName, attrs, this, container, true);
+	      child.xmlToModel(v, doc, true);
 	    }
-	    if(v.tagName == "item"){
+	    else if(v.tagName == "item"){
 	      //	    console.log("item" + isDisplay + "  " + container);
 	      child = this.editor.createModel(v.tagName, attrs, this, container, true);
 	      child.xmlToModel(v, doc, true);

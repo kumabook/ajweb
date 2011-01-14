@@ -96,7 +96,7 @@ ajweb.editor.getModelInfo = function(name){
 
 ajweb.editor.getFuncStore = function(modelName, store){
   if(!store)
-    store = ajweb.editor.getEmptyStore();
+    store = ajweb.editor.getEmptyStore("name", "label");
   else {
     store.fetch({
 		  onItem: function(item){
@@ -111,7 +111,7 @@ ajweb.editor.getFuncStore = function(modelName, store){
   for(var i = 0; i < list.length; i++){
     if(list[i].name == modelName){
       for(var j = 0; j < list[i].setters.length; j++){
-	//ここにフィルターを必要ならば追加
+	//ここにフィルターを必要ならば追加 いまのところいらない
 	store.newItem(list[i].setters[j]);
       }
 		     }
@@ -124,7 +124,7 @@ ajweb.editor.getFuncStore = function(modelName, store){
  */
 ajweb.editor.getGetterStore = function(modelName, store, returnType){
   if(!store)
-    store = ajweb.editor.getEmptyStore("id", "name");
+    store = ajweb.editor.getEmptyStore("name", "label");
   else {
     store.fetch({onItem: function(item){
 		   if(item)
@@ -136,14 +136,15 @@ ajweb.editor.getGetterStore = function(modelName, store, returnType){
   var items = [];
   if(!modelName) return store;
   if(modelName.match("([0-9a-z]+):(targetItem|receivedItem)")){
-    store.newItem({id: "self", name: "self"});
-    store.newItem({id: "property", name: "property"});
+    store.newItem({name: "self", label: "self"});
+    store.newItem({name: "property", label: "property"});
   }
   else{
     for(var i = 0; i < list.length; i++){
       if(list[i].name == modelName){
 	for(var j = 0; j < list[i].getters.length; j++){
-	  if(!returnType || list[i].getters[j].returnType == returnType){
+	  if(!returnType || list[i].getters[j].returnType == returnType 
+	     || !list[i].getters[j].returnType){
 	    store.newItem(list[i].getters[j]);
 	  }
 	}
@@ -178,6 +179,14 @@ ajweb.editor.getNodeAttributes = function(childNode){
   return attrs;
 };
 
+ajweb.editor.getQuery = function(){
+  var url = new String(window.location);
+  var urlArray = url.split("?");
+  var query_str = !!urlArray[1] ? urlArray[1] : "";
+  return dojo.queryToObject(query_str);  
+};
+
+
 dojo.addOnLoad(function(){//resourcesなどを読み込んだ後に設定する．
 //		 ajweb.locale = ajweb.locale ? ajweb.locale : "en";
 
@@ -196,6 +205,7 @@ ajweb.editor.FONT_SIZE = 10.8;
 ajweb.editor.REMOVE_ICON_SIZE = 30;
 ajweb.editor.ADD_EVENT_BUTTON_LEFT = 40;
 ajweb.editor.ADD_EVENT_BUTTON_LEFT_NOELEMENT = 110;
+
 ajweb.editor.CONDITION_DIALOG_HEIGHT = 200;
 ajweb.editor.CONDITION_DIALOG_WIDTH = 300;
 
@@ -206,7 +216,7 @@ ajweb.editor.DATABASE_INIT_HEIGHT = 70;
 ajweb.editor.DATABASE_PROP_HEIGHT = 30;
 ajweb.editor.DATABASE_PROPNAME_WIDTH  = 110;
 
-ajweb.editor.DIALOG_WIDTH = 365;
+ajweb.editor.DIALOG_WIDTH = 420;
 ajweb.editor.DIALOG_HEIGHT = 300;
 ajweb.editor.DIALOG_TOP = 100;
 ajweb.editor.DIALOG_LEFT = 50;
@@ -214,11 +224,15 @@ ajweb.editor.DIALOG_LEFT = 50;
 ajweb.editor.DROP_AREA_WIDTH = 120;
 ajweb.editor.DROP_AREA_HEIGHT = 50;
 
+ajweb.editor.PARAM_NAME_TOP = 7;
+ajweb.editor.PARAM_NAME_WIDTH = 110;
+ajweb.editor.PARAM_HEIGHT = 35;
 
+ajweb.editor.VALUE_WIDTH = 200;
+ajweb.editor.VALUE_HEIGHT = 30;
 
-
-
-
+ajweb.editor.METHOD_SEPARATOR = ".";
+ajweb.editor.PARAM_SEPARATOR = ": ";
 
 
 

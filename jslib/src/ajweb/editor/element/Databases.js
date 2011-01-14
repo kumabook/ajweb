@@ -42,9 +42,12 @@ dojo.declare("ajweb.editor.element.Databases",
 	    for(var i = 0; i < that.model.children.length; i++){
 	      that.model.children[i].removeDom();
 	    }
+
+	    that.model.properties._isDisplay = "false";
 	    return true;
 	  }
 	});
+      this.model.properties._isDisplay = "true";
       this.widget.jsId = this.model.id;
       return this.widget.domNode;
     },

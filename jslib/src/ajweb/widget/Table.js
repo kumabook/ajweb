@@ -52,7 +52,7 @@ ajweb.widget.Widget,
 	  height: this.height
 	},
 	draggable: true,
-	rowSelector: "20px",
+//	rowSelector: "20px",
 	structure: this.structure,
 	store: this.store,
 	onRowClick: function(){

@@ -57,14 +57,33 @@ dojo.declare("ajweb.editor.element.Property",
 	  }
 
 	});
+      
+      var value = that.model.properties.type ? that.model.properties.type : "int";
+      if(value == "ref")
+	value = that.model.properties.ref;
+
       this.select = new dijit.form.Select(
 	{
-	  name: "state", value: that.model.properties.type ? that.model.properties.type : "int",
-	  store: ajweb.editor.dataTypeStore, sortByLabel: false,
-//	  style: {position : "absolute",width: "80px",top: "0px",right: "25px"},
+	  value: value,
+	  store: this.model.application.getDataTypeStore(), sortByLabel: false,
 	  style: {position : "absolute",top: "0px", left: ajweb.editor.DATABASE_PROPNAME_WIDTH+10+"px"},
 	  onChange: function(){
-	    that.model.properties.type = this.value;
+	    this.store.fetchItemByIdentity(
+	      {identity: this.value,
+	      onItem: function(item){
+		if(item.database){
+		  that.model.properties.type = "ref";
+		  that.model.properties.multiplicity = "1";
+		  that.model.properties.ref = that.select.store.getValue(item, "database").properties.id;
+		  that.model.setRefProperty();
+		}
+		else {
+		  that.model.properties.type = that.select.store.getValue(item, "name");
+		  that.model.properties.multiplicity = null;
+		  that.model.properties.ref = null;
+		}
+	      }});
+	    
 	  }
 	});
 
@@ -85,6 +104,8 @@ dojo.declare("ajweb.editor.element.Property",
 	  this.widget.domNode.style.top = (i+1) * 30 + "px";
 	}
       }
+
+      this.model.parent.refleshDom();
     },
     startup: function(){
       this.inherited(arguments);

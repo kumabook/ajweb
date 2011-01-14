@@ -29,12 +29,18 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
        * @type ajweb.editor.element.ModelElement
        */
       this.elementClass = opt.elementClass;
+      this.container = opt.container;
       this.element = this.createDom(opt.container, display);
     },
     /**
      * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
      */
     createDom: function(container, display){
+      if(!container)
+	container = this.container;
+      else　
+	this.container = container;
+
       if(display)
 	return null;
       this.isDisplay = true;
@@ -60,7 +66,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
 //      }
     },
     /**
-     * タブを閉じたあとに再びDOM要素表示する。modelができた状態でDOMを生成。
+     * modelができた状態でDOMを生成。タブを閉じたあとなど再び開いたときなど。
      */
     reCreateDom: function(container){
 //      console.log(this.id);
@@ -70,6 +76,12 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
 	  if(this.children[i].reCreateDom)
 	    this.children[i].reCreateDom(this.element);
 	}
+    },
+    refleshDom: function(){
+      var container = this.element.container;
+      this.removeDom();
+      this.reCreateDom(container);
+      this.startup();
     },
     removeDom: function(){
       if(this.isDisplay){

@@ -33,9 +33,13 @@ dojo.declare("ajweb.editor.element.Menuable", null,
 					+ " (" +this.model.properties.id + ")",
 					disabled: true
 				       }));
-      menu.addChild(new dijit.MenuItem({label: "削除",
+      menu.addChild(new dijit.MenuItem({label: ajweb.resources.remove,
 	onClick: function(){
 	  that.model.remove();
+	}}));
+      menu.addChild(new dijit.MenuItem({label: ajweb.resources.reflesh,
+	onClick: function(){
+	  that.model.refleshDom();
 	}}));
       return menu;
     },

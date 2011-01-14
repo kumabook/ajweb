@@ -1,5 +1,5 @@
 dojo.provide("ajweb.editor.extension.Calendar");
-dojo.addOnLoad(function(){
+
 ajweb.editor.MODELLIST.push(
   {
     name:'calendar',
@@ -49,4 +49,3 @@ dojo.declare("ajweb.editor.element.Calendar",
     }
   }
 );
-});

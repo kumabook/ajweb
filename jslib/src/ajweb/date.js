@@ -103,7 +103,7 @@ ajweb.datetime.parse = function(str){
     dateArray = ajweb.date.now().split(" ")[0].split("-");
   if(timeArray.length < 4)
     timeArray = ajweb.date.now().split(" ")[1].split(":");
-    return new Date(dateArray[0], dateArray[1], dateArray[2], 
+    return new Date(dateArray[0], parseInt(dateArray[1])-1, dateArray[2], 
 		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
   };
 ajweb.date.parse = function(str){
@@ -112,17 +112,16 @@ ajweb.date.parse = function(str){
     dateArray = ajweb.date.now().split(" ")[0].split("-");
 
   var timeArray = ajweb.date.now().split(" ")[1].split(":");
-  console.log(dateArray);
-  console.log(timeArray);
-    return new Date(dateArray[0], dateArray[1], dateArray[2], 
+    return new Date(dateArray[0], parseInt(dateArray[1])-1, dateArray[2], 
 		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
   };
 ajweb.time.parse = function(str){
+  console.log(str);
   var timeArray = str.split(":");
   var dateArray = ajweb.date.now().split(" ")[0].split("-");
   if(timeArray.length < 4)
    timeArray = ajweb.date.now().split(" ")[1].split(":");
-  return new Date(dateArray[0], dateArray[1], dateArray[2], 
+  return new Date(dateArray[0], parseInt(dateArray[1])-1, dateArray[2], 
 		    timeArray[0], timeArray[1], timeArray[2]);//, timeArray[3]);
   };
 ajweb.date.format = function(date){
@@ -133,10 +132,10 @@ ajweb.date.format = function(date){
 
 ajweb.datetime.format = function(date, time){
     return dojo.date.locale.format(date, {datePattern: "yyyy-MM-dd", selector: "date"}) + " "
-	       + dojo.date.locale.format(time, {timePattern: "hh:mm:dd:ss", selector: "time"});
+	       + dojo.date.locale.format(time, {timePattern: "HH:mm:dd:ss", selector: "time"});
 };
 
 ajweb.time.format = function(time){
-    return dojo.date.locale.format(time, {timePattern: "hh:mm:dd:ss", selector: "time"});
+    return dojo.date.locale.format(time, {timePattern: "HH:mm:dd:ss", selector: "time"});
 };
 

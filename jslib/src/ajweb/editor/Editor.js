@@ -63,16 +63,19 @@ dojo.require("ajweb.editor.element.Th");
 dojo.require("ajweb.editor.element.Textbox");
 dojo.require("ajweb.editor.element.Frame");
 dojo.require("ajweb.editor.element.Value");
+dojo.require("ajweb.editor.element.String");
+dojo.require("ajweb.editor.element.Int");
+dojo.require("ajweb.editor.element.Date");
+dojo.require("ajweb.editor.element.Time");
+dojo.require("ajweb.editor.element.Datetime");
 
 dojo.require("ajweb.editor.element.ElementSelect");
+
+dojo.require("ajweb.editor.modelList");
 
 dojo.require("ajweb.editor.extension.Calendar");
 dojo.require("ajweb.editor.extension.DateTextbox");
 dojo.require("ajweb.editor.extension.TimeTextbox");
-
-dojo.require("ajweb.editor.modelList");
-
-
 
 dojo.declare(
   "ajweb.editor.Editor", null,
@@ -343,16 +346,25 @@ dojo.declare(
 	      }
 	    }
 	    var model = ajweb.getModelById(id);
-	    if(model.element)
-	      if(model.element.container == that.centerTc){
-		model.reCreateDom(that.centerTc);
-		model.startup();
-		that.centerTc.selectChild(model.element.widget);
-	      }
+
+	    if(model.container == that.centerTc){
+	      model.reCreateDom(that.centerTc);
+	      model.startup();
+	      that.centerTc.selectChild(model.element.widget);
+	    }
 	},
 //todo アイコンをそれっぽいのに
 	getIconClass: function(item, opened){
-	  return (!item || this.model.mayHaveChildren(item)) ?
+//console.log()
+//	  return (!item || this.model.mayHaveChildren(item)) ?
+	  return (!item || (item.modelType && (
+			      that.projectStore.getValue(item, "modelType") == "frame" ||
+				that.projectStore.getValue(item, "modelType") == "application" ||
+				that.projectStore.getValue(item, "modelType") == "interfaces"
+			    )
+			   )
+		 ) ?
+	  
 	    (opened ? "dijitFolderOpened" : "dijitFolderClosed") : "dijitLeaf";
 	}
 	}
@@ -659,8 +671,11 @@ dojo.declare(
 	  container: container,
 	  editor: this
 	}, display);
-
-      this.addProjectTree(newModel);
+      
+      if(name == "application"  || name == "interfaces" || name == "panel" || name == "databases" || name == "frame"){
+	this.addProjectTree(newModel);
+      }
+	
       newModel.startup();
       return newModel;
     },

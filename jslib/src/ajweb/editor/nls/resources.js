@@ -1,8 +1,8 @@
 ({
    dataTypes: [
-     {id: "int", name: "int" }, {id: "string", name: "string" },
-     {id: "password", name: "password" },{id: "date", name: "date" },
-     {id: "time", name: "time"},{id: "datetime", name: "datetime"}
+     {name: "int", label: "int" }, {name: "string", label: "string" },
+     {name: "password", label: "password" },{name: "date", label: "date" },
+     {name: "time", label: "time"},{name: "datetime", label: "datetime"}
    ],
    conditionOperators:  [
      {id: "true", name: "true"},{id : "and", name: "and"}, {id: "or", name: "or" },
@@ -35,7 +35,7 @@
    conditionSelect: "condition: ",
    undefinedElem: "unconfigured",
    enter: "enter",
-   databaseName: "database name: ",
+   databaseSelect: "database: ",
    initItems: "init items",
    initItem: "init item",
    add: "add",
@@ -50,5 +50,8 @@
    databases: "databases",
    events: "events",
    interfaces: "UI",
-   unset: "unset"
+   unset: "unset",
+   noFunc : "no func",
+   remove: "remove",
+   reflesh: "reflesh"
 })

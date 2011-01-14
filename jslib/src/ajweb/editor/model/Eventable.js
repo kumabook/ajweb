@@ -49,18 +49,28 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      */
     updatePropertiesView : function(e){
 
-      this.editor.propertyDataStore.currentModel = this;
+
       this.clearPropertiesView();
+      this.editor.propertyDataStore.currentModel = this;
 
       for(var i = 0; i < this.propertyList.length; i++){
 	var propertyName, propertyType;
 	if(typeof this.propertyList[i] == "string"){
+	  if(this.propertyList[i].match("_.*")){
+//	    console.log("hidden property " + this.propertyList[i]);
+	    continue;
+	  }
+
 	  propertyName = this.propertyList[i];
 	  propertyType = "text";
 	}
 	else {
+	  if(this.propertyList[i].input == "hidden"){
+//	    console.log("hidden property " + this.propertyList[i].name);
+	    continue;
+	  }
 	  propertyName = this.propertyList[i].name;
-	  propertyType = this.propertyList[i].type;
+	  propertyType = this.propertyList[i].type;	    
 	}
 
 	var value = this.properties[propertyName];
@@ -80,6 +90,17 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
     },
     clearPropertiesView: function(){
       var that = this;
+      var grid =this.editor.propertyDataGrid;
+      if(grid.edit.info.cell){//edit情報をキャンセル
+	grid.edit.save();
+      }
+      if(grid.widget){//プロパティビューの値が保存されてないなら保存する．
+	this.editor.propertyDataStore.currentModel.properties[grid.widget.property] = grid.widget.value;
+	grid.widget = null;
+      }
+	
+
+	
       this.editor.propertyDataStore.fetch({
 	onComplete: function(items, request){
 	  for(var i = 0; i < items.length; i++){
@@ -87,6 +108,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	  }
 	}
       });
+      this.editor.propertyDataStore.save();
     },
     /**
      * イベントモデルエディター上にこの要素のイベントリスト

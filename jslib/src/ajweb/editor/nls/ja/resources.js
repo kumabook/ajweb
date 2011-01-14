@@ -1,8 +1,8 @@
 ({
    dataTypes: [
-     {id: "int", name: "整数" }, {id: "string", name: "文字列" },
-     {id: "password", name: "パスワード" },{id: "date", name: "日付" },
-     {id: "time", name: "時刻" },{id: "datetime", name: "日付:時刻"}
+     {name: "int", label: "整数" }, {name: "string", label: "文字列" },
+     {name: "password", label: "パスワード" },{name: "date", label: "日付" },
+     {name: "time", label: "時刻" },{name: "datetime", label: "日付:時刻"}
    ],
    conditionOperators:  [
      {id: "true", name: "常に真"},{id : "and", name: "かつ"}, {id: "or", name: "または" },
@@ -47,7 +47,11 @@
    noElement: "エレメントが選択されていません",
    addEvent: "イベントを追加",
    databases: "データモデル",
-   unset: "未設定"
+   unset: "未設定",
+   noFunc: "no func",
+   remove: "削除",
+   reflesh: "リフレッシュ"
+
  })
 
 

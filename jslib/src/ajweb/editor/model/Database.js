@@ -5,7 +5,9 @@ dojo.provide("ajweb.editor.model.Database");
 dojo.declare("ajweb.editor.model.Database", ajweb.editor.model.Eventable,
   /** @lends ajweb.editor.model.Databases.prototype */
   {
-    constructor: function(opt){},
+    constructor: function(opt){
+//      this.application.getDataTypeStore().newItem({name: this.properties.id, label: this.properties.id, database: this});
+    },
     getSchemeStore: function(store){
       if(!store)
 	store = ajweb.editor.getEmptyStore();

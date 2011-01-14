@@ -66,18 +66,17 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      }
      else {
        var element, func;
-//       console.log(name + "  " + funcName);
+       //console.log(name + "  " + funcName);
        var list = ajweb.editor.MODELLIST;
        for(i = 0; i < list.length; i++){
-	 if(name == list[i].id)
+	 if(name == list[i].name)
 	   element = list[i];
        }
-
        if(!element)
 	 return;
 
        for(i = 0; i < element.getters.length; i++){
-	 if(funcName == element.getters[i].id)
+	 if(funcName == element.getters[i].name)
 	   func = element.getters[i];
        }
 

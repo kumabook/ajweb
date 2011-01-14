@@ -71,6 +71,7 @@ dojo.declare("ajweb.editor.element.HasDialog",
       that.changeDialogPosition(that.dialogLeft, that.dialogTop);
 
       that.dialog.containerNode.style.position = "absolute";
+//      that.dialog.containerNode.style.overflow = "scroll";
       that.dialog.containerNode.style.width = this.dialogWidth;
       that.dialog.containerNode.style.height = this.dialogHeight;
 
