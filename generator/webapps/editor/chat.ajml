@@ -20,26 +20,26 @@
           <panel height="450px" id="chatRoomPanel" left="417" top="2" width="650px">
             <label content="room name" id="nowRoomLabel" left="60px" top="0px"/>
             <frame height="100px" id="contentsFrame" left="25px" top="80px" width="450px">
-              <panel height="100px" id="entrancePanel" left="517" top="157.5" width="450px">
+              <panel height="100px" id="entrancePanel" left="517" top="158" width="450px">
                 <label content="Name" id="userNameLabel" left="25px" top="12px"/>
                 <textbox id="userNameTextbox" left="100px" top="10px" width="100px"/>
                 <button content="Entering" id="enterButton" left="100px" top="50px"/>
                 <button content="Back to Room Selection " id="backButton" left="263px" top="51px"/>
               </panel>
-              <panel height="100px" id="messagePanel" left="517" top="157.5" width="450px">
+              <panel height="100px" id="messagePanel" left="517" top="158" width="450px">
                 <label content="Message" id="messageLabel" left="20px" top="10px"/>
                 <textbox id="messageTextbox" left="150px" top="10px" width="100px"/>
-                <button content="Send" id="messageSubmitButton" left="100px" top="50px"/>
+                <button content="Send" id="messageSubmitButton" left="99px" top="49px"/>
                 <button content="Leave" id="exitButton" left="350px" top="50px"/>
               </panel>            </frame>
-            <table height="225px" id="messageTable" left="25px" top="200px" width="600px">
+            <table data="message" height="225px" id="messageTable" left="25px" top="200px" width="600px">
               <th field="user_name" id="th0" label="user_name" left="203" top="13" width="100px"/>
               <th field="message" id="th1" label="message" left="343" top="30" width="100px"/>
               <th field="posted" id="th2" label="posted" left="354" top="25" width="350px"/>
               <th field="room" id="th3" label="room" left="350" top="37" width="30px"/>            </table>
           </panel>        </frame>
       </panel>    </interfaces>
-    <databases id="databases0">
+    <databases id="databases0" _isDisplay="true">
       <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="users" left="84px" tablename="users" top="62px" type="server">
         <init>
           <item>
@@ -57,12 +57,12 @@
         <property left="217" name="password" top="61" type="password"/>
         <property left="195" name="role" top="96" type="string"/>
       </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="424px" tablename="message" top="169px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="424px" tablename="message" top="173px" type="server">
         <init>
 	</init>
         <property left="212" name="message" top="33" type="string"/>
         <property left="224" name="posted" top="63" type="datetime"/>
-        <property left="234" name="room_id" top="88" type="int"/>
+        <property left="234" multiplicity="1" name="room" ref="room" top="88" type="ref"/>
         <property left="228" name="user_name" top="120" type="string"/>      </database>
       <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="room" left="565px" tablename="room" top="40px" type="server">
         <init>
@@ -116,7 +116,7 @@
           </call>
           <call element="nowRoomLabel" func="setContent" id="call4" left="399px" top="36px">
             <param id="param15" name="content" type="string">
-              <value element="roomSelect" func="getSelectItemProperty" funcName="selectItemPropety" property="SelectItemProperty" type="element">
+              <value element="roomSelect" func="getSelectItemProperty" funcName="selectItemPropety" type="element">
                 <param id="param35" name="property" type="string">
                   <stringSelect target="room" type="data">name</stringSelect>
                 </param>
@@ -187,19 +187,19 @@
         </action>
       </event>
       <event target="messageSubmitButton" type="onClick">
-        <action left="203px" top="25px">
-          <insert database="message" id="insert1" left="239px" top="40px">
+        <action left="539px" top="39px">
+          <insert database="message" id="insert1" left="240px" top="41px">
             <param id="param18" name="message" type="string">
-              <value element="messageTextbox" func="get" funcName="value" property="Value" type="element"/>
+              <value element="messageTextbox" func="get" funcName="value" type="element"/>
             </param>
             <param id="param19" name="posted" type="datetime">
               <value element="datetime" funcName="now" type="datetime"/>
             </param>
             <param id="param20" name="room_id" type="int">
-              <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
+              <value element="roomSelect" func="get" funcName="selectItem" type="element"/>
             </param>
             <param id="param21" name="user_name" type="string">
-              <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
+              <value element="userNameTextbox" func="get" funcName="value" type="element"/>
             </param>
           </insert>
         </action>
@@ -207,16 +207,16 @@
       <event target="message" type="onInsert">
         <condition left="10px" operator="eq" top="25px">
           <eq>
-            <value element="message:receivedItem" funcName="property" type="message:receivedItem" left="70px" top="0px">
+            <value element="message:receivedItem" funcName="property" left="70px" top="0px" type="message:receivedItem">
               <param id="param33" name="property" type="string">
                 <stringSelect target="message" type="data">room_id</stringSelect>
               </param>
             </value>
-            <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element" left="70px" top="70px"/>
+            <value element="roomSelect" func="get" funcName="selectItem" left="70px" top="70px" type="element"/>
           </eq>
         </condition>
         <action left="457px" top="11px">
-          <call element="messageTable" func="insert" id="call6" left="188px" top="39px">
+          <call element="messageTable" func="insert" id="call6" left="189px" top="40px">
             <param id="param22" name="item" type="object">
               <value element="message:receivedItem" funcName="self" type="message:receivedItem"/>
             </param>
@@ -229,7 +229,7 @@
             <param id="param23" name="message" type="string">
               <value element="string" func="concat" funcName="concat" type="string">
                 <param id="param39" name="first" type="string">
-                  <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
+                  <value element="userNameTextbox" func="get" funcName="value" type="element"/>
                 </param>
                 <param id="param40" name="second" type="string">
                   <value element="string" funcName="direct" type="string">
@@ -244,10 +244,10 @@
               <value element="datetime" funcName="now" type="datetime"/>
             </param>
             <param id="param25" name="room_id" type="int">
-              <value element="roomSelect" func="get" funcName="selectItem" property="SelectItem" type="element"/>
+              <value element="roomSelect" func="get" funcName="selectItem" type="element"/>
             </param>
             <param id="param26" name="user_name" type="string">
-              <value element="userNameTextbox" func="get" funcName="value" property="Value" type="element"/>
+              <value element="userNameTextbox" func="get" funcName="value" type="element"/>
             </param>
           </insert>
           <call element="contentsFrame" func="selectPanel" id="call7" left="357px" top="37px">

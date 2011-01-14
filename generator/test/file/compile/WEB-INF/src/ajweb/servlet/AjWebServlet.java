@@ -72,7 +72,7 @@ public class AjWebServlet extends AbstractServlet {
 				poll(req, resp, session.getId(), relatedDatum);
 			}
 			else if(action.equals("repoll")){
-				repoll();
+				repoll(req);
 			}
 			else if(action.equals("select")){
 

@@ -19,7 +19,9 @@ public class Config {
 	public static boolean isOverWrite = true;
 	//public static boolean isStandardOutput = true;
 	public static PrintStream out = System.out;
-	public static long TIMEOUT = 60000;//ポーリングのタイムアウトmillsecond
+	public static long TIMEOUT = 60000;//ロングポーリングのタイムアウトmillsecond
+	public static long LONGPOLLING_INTERVAL = 1;//ロングポーリングのタイムアウトmillsecond
+	public static long POLLING_INTERVAL = 3000;//ポーリングのインターバル
 	public static int port = 443;
 	
 	public static boolean isJar 	= false;
