@@ -113,20 +113,15 @@ dojo.declare("ajweb.editor.element.Func",
 	       //		console.log("funcName: " + item.name + "funcValue: " + item.id);
 	       that.model.properties.func = that.funcSelect.store.getValue(item, "name");
 	       that.model.properties.funcName = that.funcSelect.store.getValue(item, "label");
-	       that.model.setRefProperty();
 	     }});
 
 	  that.model.createParam(that.element.properties ? that.element.properties.id : that.element,
 				 that.model.properties.func, that.element);
 	  this.set({label: ajweb.resources.change});
-	  //ラベルを変更
-	  that.updateDom();
 
-
-
-	  that.model.setRefProperty();//他のモデルの参照関係を作成
-	  that.updateDom();//ラベルを変更
-
+//	  that.model.setRefProperty();//他のモデルの参照関係を作成
+//	  that.updateDom();//ラベルを変更
+	  that.model.update();
 	  that.container.reDrawChildNode(that.domNode);
 	}});
 

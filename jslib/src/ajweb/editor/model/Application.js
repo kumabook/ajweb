@@ -32,16 +32,20 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       return databases.children;
     },
     getDataTypeStore: function(){
-//      if(this.dataTypeStore)
-//	return this.dataTypeStore;
+      if(this.dataTypeStore)
+	return this.dataTypeStore;
       
-      var dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
+      else {
+      this.dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
+     /*var dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
       var databaseModels = this.getDatabaseModels();
-      for(var i = 0; i < databaseModels.length; i++){
-	dataTypeStore.newItem({name: databaseModels[i].properties.id, label: databaseModels[i].properties.id, database: databaseModels[i]});
+      var databaseModels = this.getDatabaseModels();
+      for(var i = 0; i < var databaseModels.length; i++){
+	this.dataTypeStore.newItem({name: databaseModels[i].properties.id, label: databaseModels[i].properties.id, database: databaseModels[i]});
       }
-	dataTypeStore.save();
-      return dataTypeStore;
+      this.dataTypeStore.save();*/
+      return this.dataTypeStore;
+      }
     },
     getDatabaseStore: function(){
       var databases = this.getDatabasesModel();
@@ -182,7 +186,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	this._setRefProperty(child.children[i]);
       }
     },
-    xmlToModel: function(node, doc, isDisplay){
+    xmlToModel: function(node, doc){
       var childNode, eventsNode, child;
       for(var i = 0; i < node.childNodes.length; i++){
 	childNode = node.childNodes[i];
@@ -193,20 +197,20 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	    continue;
 	  }
 	  else if(childNode.tagName == "databases"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc, true);
-	    child.xmlToModel(childNode, doc, true);
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.editor.centerTc);
+	    child.xmlToModel(childNode, doc);
 	  }
 	  else {//interfaces
-	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element, isDisplay);
-	    child.xmlToModel(childNode, doc, isDisplay);
+	    child = this.editor.createModel(childNode.tagName, attrs, this, this.element);
+	    child.xmlToModel(childNode, doc);
 	  }
 
 	}
       }
       //eventsモデル
       var eventsAttrs = ajweb.editor.getNodeAttributes(eventsNode);
-      child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element, isDisplay);
-      child.xmlToModel(eventsNode, doc, isDisplay);
+      child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element);
+      child.xmlToModel(eventsNode, doc);
       this.setRefProperty();
 
       this.projectRestore();

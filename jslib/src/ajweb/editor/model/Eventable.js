@@ -22,7 +22,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
      * @param {DOM} opt.parent 親モデル
      *
      */
-    constructor: function(opt, isDisplay)
+    constructor: function(opt)
     {
       /**
        * イベント名のリスト
@@ -34,8 +34,6 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
        */
       this.events = [];//this.createEventModel();
 
-      if(isDisplay)
-	this.updatePropertiesView();
     },
     remove: function(){
       this.inherited(arguments);
@@ -146,7 +144,7 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 
       //eventModelを追加
       for(i = 0; i < this.events.length; i++){
-	this.events[i].reCreateDom(this.editor.eventTc);
+	this.events[i].createDomRecursive(this.editor.eventTc);
 	this.events[i].startup();
       }
       this.editor.eventTc.currentModel = this;

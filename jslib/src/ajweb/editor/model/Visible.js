@@ -30,22 +30,27 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
        */
       this.elementClass = opt.elementClass;
       this.container = opt.container;
-      this.element = this.createDom(opt.container, display);
+    },
+
+
+    /**
+    * propertiesの値を、モデルエディター上のDOM要素のプロパティに反映
+    */
+    updateDom: function(){
+      if(this.element){
+	this.element.updateDom();
+      }
     },
     /**
-     * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成して返すメソッド。
+     * this.elementClassに応じて、ajweb.editor.elmenet.[]を作成してthis.elementに設定するメソッド。
      */
-    createDom: function(container, display){
+    createDom: function(container){
       if(!container)
 	container = this.container;
       else　
 	this.container = container;
-
-      if(display)
-	return null;
-      this.isDisplay = true;
       var Element = this.elementClass.substr(0,1).toLocaleUpperCase() + this.elementClass.substr(1);
-      return new ajweb.editor.element[Element](
+      this.element = new ajweb.editor.element[Element](
 	{
 	  id: this.id,
 	  properties: this.properties,
@@ -56,25 +61,22 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       );
     },
     /**
-    * propertiesの値を、モデルエディター上のDOM要素のプロパティに反映
-    */
-    updateDom: function(){
-      if(this.element)
-	this.element.updateDom();
-//      for(var i = 0; i < this.children.length; i++){
-	//this.children[i].updateDom();
-//      }
-    },
-    /**
      * modelができた状態でDOMを生成。タブを閉じたあとなど再び開いたときなど。
      */
-    reCreateDom: function(container){
-//      console.log(this.id);
-      this.element = this.createDom(container);
-      if(!(this.element.openDialog) && this.tagName != "frame")
+    createDomRecursive: function(container){
+      this.createDom(container);
+      this.createDomDescendants();
+    },
+    /**
+     * 
+     */
+    createDomDescendants: function(container){
+      if(!container)
+	container = this.element;
+      if(!(container.openDialog) && this.tagName != "frame")
 	for(var i = 0; i < this.children.length; i++){
-	  if(this.children[i].reCreateDom)
-	    this.children[i].reCreateDom(this.element);
+	  if(this.children[i].createDomRecursive)
+	    this.children[i].createDomRecursive(container);
 	}
     },
     refleshDom: function(){
@@ -84,13 +86,9 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
       this.startup();
     },
     removeDom: function(){
-      if(this.isDisplay){
-	if(this.element)
+      if(this.element)
 	  this.element.removeDom();
-      }
-
       delete this.element;
-      this.isDisplay = false;
     },
     removeDomRecursive: function(){
       this.removeDomDescendants();

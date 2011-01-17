@@ -79,13 +79,13 @@ dojo.declare("ajweb.editor.element.Condition",
 	  var tagName = that.predictSelect.value;
 	  that.model.properties.operator = that.predictSelect.value;
 	  if(tagName != "true"){
-	    var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+	    var newModel = that.model.editor.newModel(tagName, {}, that.model, that);
 	    newModel.properties.name = tagName;
 //	    var left = (parseInt(that.dialog.style.width) / 2) + "px";
 	    var left = "70px";
 	    if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-	      that.model.editor.createModel("value", {top: "0px", left: left}, newModel, newModel.element);
-	      that.model.editor.createModel("value", {top: "70px", left: left}, newModel, newModel.element);
+	      that.model.editor.newModel("value", {top: "0px", left: left}, newModel, newModel.element);
+	      that.model.editor.newModel("value", {top: "70px", left: left}, newModel, newModel.element);
 	    }
 	  }
 	}

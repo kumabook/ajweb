@@ -52,6 +52,7 @@ dojo.declare("ajweb.editor.element.Databases",
       return this.widget.domNode;
     },
     onDrop: function(name){
+      console.log(this);
       var databaseModel = this.model.editor.newModel(
 	name,
 	{

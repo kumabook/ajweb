@@ -8,11 +8,9 @@ dojo.declare("ajweb.editor.model.Action", ajweb.editor.model.Visible,
    /**
     * アクション以下のcontainerはevent要素
     */
-   reCreateDom: function(container){
-     this.element = this.createDom(container);
-     for(var i = 0; i < this.children.length; i++){
-       this.children[i].reCreateDom(container);
-     }
+   createDomRecursive: function(container){
+     this.createDom(container);
+     this.createDomDescendants(container);
    }
  }
 );

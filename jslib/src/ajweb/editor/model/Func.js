@@ -11,12 +11,12 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
      if(model instanceof ajweb.editor.model.Database){//データベースのスキーマからparamModelを追加
        for(var i = 0; i < model.children.length; i++){
 	 if(model.children[i].tagName == "property"){
-	   var param = this.editor.createModel("param", 
+	   var param = this.editor.newModel("param", 
 				   {name: model.children[i].properties.name, 
 				    type: model.children[i].properties.type},
 				   this,
 				   this.element);
-	   var value = this.editor.createModel("value",
+	   var value = this.editor.newModel("value",
 				   {},
 				   param,
 				   param.element
@@ -39,13 +39,13 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
 	   func  = element.setters[i];
        }
        for(i = 0; i < func.params.length; i++){
-	 var param = this.editor.createModel("param", 
+	 var param = this.editor.newModel("param", 
 					     {name: func.params[i].key,
 					      type: func.params[i].type},
 					     this,
 					     this.element);
 	 var input = func.params[i].input;
-	 var value= this.editor.createModel(input ? input.className : "value",
+	 var value= this.editor.newModel(input ? input.className : "value",
 					    input ? {type: input.type, target: model.properties.id} : {},
 					    param,
 					    param.element

@@ -70,20 +70,20 @@ dojo.declare("ajweb.editor.element.Property",
 	  onChange: function(){
 	    this.store.fetchItemByIdentity(
 	      {identity: this.value,
-	      onItem: function(item){
-		if(item.database){
-		  that.model.properties.type = "ref";
-		  that.model.properties.multiplicity = "1";
-		  that.model.properties.ref = that.select.store.getValue(item, "database").properties.id;
-		  that.model.setRefProperty();
-		}
-		else {
-		  that.model.properties.type = that.select.store.getValue(item, "name");
-		  that.model.properties.multiplicity = null;
-		  that.model.properties.ref = null;
-		}
-	      }});
-	    
+	       onItem: function(item){
+		 if(item.database){
+		   that.model.properties.type = "ref";
+		   that.model.properties.multiplicity = "1";
+		   that.model.properties.ref = that.select.store.getValue(item, "database").properties.id;
+		   that.model.setRefProperty();
+		 }
+		 else {
+		   that.model.properties.type = that.select.store.getValue(item, "name");
+		   that.model.properties.multiplicity = null;
+		   that.model.properties.ref = null;
+		   that.model.setRefProperty();
+		 }
+	       }});
 	  }
 	});
 

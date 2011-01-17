@@ -52,7 +52,7 @@ dojo.declare("ajweb.editor.element.Branch",
 
     },
     onDrop: function(name){
-      var conditionModel = this.model.editor.createModel(
+      var conditionModel = this.model.editor.newModel(
 	  "condition",
 	  {
 	    top: ajweb.editor.mousePosition.y - ajweb.editor.getY(this.container.domNode),

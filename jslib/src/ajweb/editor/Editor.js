@@ -297,9 +297,8 @@ dojo.declare(
 	      var model = propertyDataStore.currentModel;
 	      if(item.property != "tagName"){//タグ名は変更不可
 		model.properties[item.property] = item.value;
-		model.application.updateRefProperty(model);
+		model.update();
 	      }
-	      model.updateDom();//変更されたプロパティをもとにDOMを更新
 	      model.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
 	}, dojo.doc.createElement('div'));
@@ -348,7 +347,7 @@ dojo.declare(
 	    var model = ajweb.getModelById(id);
 
 	    if(model.container == that.centerTc){
-	      model.reCreateDom(that.centerTc);
+	      model.createDomRecursive(that.centerTc);
 	      model.startup();
 	      that.centerTc.selectChild(model.element.widget);
 	    }
@@ -681,7 +680,9 @@ dojo.declare(
     },
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
-//      model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がない
+      model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がない
+      model.createDom(container);
+      model.startup();
       return model;
     },
     /**

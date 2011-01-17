@@ -61,11 +61,11 @@ dojo.declare("ajweb.editor.element.ParamCondition",
 
 	  var tagName = predictSelect.value;
 	  that.model.properties.operator = predictSelect.value;
-	  var newModel = that.model.editor.createModel(tagName, {}, that.model, that);
+	  var newModel = that.model.editor.newModel(tagName, {}, that.model, that);
 	  newModel.properties.name = tagName;
 	  if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-	    that.model.editor.createModel("value", {}, newModel, newModel.element);
-	    that.model.editor.createModel("value", {}, newModel, newModel.element);
+	    that.model.editor.newModel("value", {}, newModel, newModel.element);
+	    that.model.editor.newModel("value", {}, newModel, newModel.element);
 	    }
 	  }
 	}

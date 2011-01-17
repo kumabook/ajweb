@@ -75,8 +75,9 @@ dojo.declare("ajweb.editor.element.DBFunc",
 
 	  var model = that.model.application.getElementByPropId(that.tablenameSelect.value);
 	  that.model.properties.database = model.properties.id;
-	  that.model.setRefProperty();//他のモデルの参照関係を作成
-	  that.updateDom();//
+//	  that.model.setRefProperty();//他のモデルの参照関係を作成
+//	  that.updateDom();//
+	  that.model.update();
 	  that.model.createParam(that.tablenameSelect.value);
 	}
       });

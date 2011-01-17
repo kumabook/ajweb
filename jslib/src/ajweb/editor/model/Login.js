@@ -6,22 +6,22 @@ dojo.declare("ajweb.editor.model.Login", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Func.prototype */
  {
    createParam: function(elemName, funcName){
-     var paramUser = this.editor.createModel("param",
+     var paramUser = this.editor.newModel("param",
 					     {name: "user_id",
 					      type: "string"},
 					     this,
 					     this.element);
-     var valueUser = this.editor.createModel("value",
+     var valueUser = this.editor.newModel("value",
 					     {},
 					     paramUser,
 					     paramUser.element
 					    );
-     var paramPass = this.editor.createModel("param",
+     var paramPass = this.editor.newModel("param",
 					     {name: "password",
 					      type: "password"},
 					     this,
 					     this.element);
-     var valuePass = this.editor.createModel("value",
+     var valuePass = this.editor.newModel("value",
 					     {},
 					     paramPass,
 					     paramPass.element

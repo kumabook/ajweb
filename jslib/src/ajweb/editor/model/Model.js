@@ -82,15 +82,15 @@ dojo.declare("ajweb.editor.model.Model", null,
     },
     projectRestore: function(){
       if(this.properties._isDisplay){
-	this.reCreateDom();
+	this.createDomRecursive();
 	this.startup();
       }
-      else {
+  //    else {
 	dojo.forEach(this.children,
 		     function(v, i ,a){
 		       v.projectRestore();
 		     }, this);
-      }
+//      }
     },
     /**
      * モデルを表すDOMノードを削除する。モデルを削除するタイミングでよびだされる。
@@ -110,14 +110,22 @@ dojo.declare("ajweb.editor.model.Model", null,
      */
     startup: function(){
     },
+    update: function(){
+      this.setRefProperty();//参照関係を更新
+      if(this.updateDom){
+	this.updateDom();
+      }
+      this.application.updateRefProperty(this);//自分のpropertyを参照しているものがあれば，それも更新
+    },
     /**
      * propertyListから外部のモデルを参照しているpropertyのリスト取得してthis._refにセットする
+     * newModelの中と，
      */
     setRefProperty: function(){
       this._ref = {};
       dojo.forEach(this.propertyList,
 	function(v, i ,a){
-	  if(v.ref && this._ref){
+	  if(v.ref){
 	    var refProp = v.refProp;
 	    this._ref[refProp] = this.application.getElementByPropId(this.properties[v.name]);
 	  }
@@ -169,7 +177,7 @@ dojo.declare("ajweb.editor.model.Model", null,
 	node.appendChild(document.createTextNode(this.properties._character));
       return node;
     },
-    xmlToModel: function(node, doc, isDisplay){
+    xmlToModel: function(node, doc){
       var childNode;
       dojo.forEach(node.childNodes,
 	function(v, i ,a){
@@ -178,19 +186,17 @@ dojo.declare("ajweb.editor.model.Model", null,
 	    var child, container = this.element;
 	    if(v.tagName == "databases" || v.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
 	      container = this.editor.centerTc;
-//	      child = this.editor.createModel(v.tagName, attrs, this, container, isDisplay);
-//	      child.xmlToModel(v, doc, isDisplay);
-	      child = this.editor.createModel(v.tagName, attrs, this, container, true);
-	      child.xmlToModel(v, doc, true);
+	      child = this.editor.createModel(v.tagName, attrs, this, container);
+	      child.xmlToModel(v, doc);
 	    }
 	    else if(v.tagName == "item"){
 	      //	    console.log("item" + isDisplay + "  " + container);
-	      child = this.editor.createModel(v.tagName, attrs, this, container, true);
+	      child = this.editor.createModel(v.tagName, attrs, this, container);
 	      child.xmlToModel(v, doc, true);
 	    }
 	    else {
-	      child = this.editor.createModel(v.tagName, attrs, this, container, isDisplay);
-	      child.xmlToModel(v, doc, isDisplay);
+	      child = this.editor.createModel(v.tagName, attrs, this, container);
+	      child.xmlToModel(v, doc);
 	    }
 	  }
 	}, this);

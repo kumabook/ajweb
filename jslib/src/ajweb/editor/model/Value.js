@@ -51,13 +51,13 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        var database = name.match("([0-9a-z]+):(targetItem|receivedItem)")[1];
 
        if(funcName == "property"){
-	 var param = this.editor.createModel("param",
+	 var param = this.editor.newModel("param",
 					     {name: "property",
 					      type: "string"},
 					     this,
 					     this.element);
 
-	 var value = this.editor.createModel("stringSelect",
+	 var value = this.editor.newModel("stringSelect",
 					     {type: "data", target: database},
 					     param,
 					     param.element
@@ -81,7 +81,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        }
 
        for(i = 0; i < func.params.length; i++){
-	 var param = this.editor.createModel("param",
+	 var param = this.editor.newModel("param",
 					     {name: func.params[i].key,
 					      type: func.params[i].type},
 					     this,
@@ -90,7 +90,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
 	 if(input && model){
 	   var target = model.properties[func.params[i].input.targetProperty];
 	 }
-	 var value = this.editor.createModel(input ? input.className : "value",
+	 var value = this.editor.newModel(input ? input.className : "value",
 					     input ?  {type: input.type,target: target ? target
 						       : model ? model.properties.id : null} : {},
 					     param,
