@@ -14,7 +14,7 @@ public class users {
 		properties.put("password", "string");
 		properties.put("role", "string");
 		
-		idProperties.add("userid");
+		idProperties.add("user_id");
 	}
 	
 	static String dbName = "jdbc:derby:" + Config.workDir + "/chat/derby";
@@ -51,8 +51,9 @@ public class users {
 	public static HashMap<String, String> update(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		return sql.update(tableName, properties, param);
 	}
-	public static boolean check(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-		return sql.check(tableName, properties, param);
+	
+	public static boolean check(AbstractCondition con) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		return sql.check(tableName, properties, con);
 	}
 	
 	public static boolean login(String user_id, String password) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -60,6 +61,12 @@ public class users {
 		param.put("user_id", user_id);
 		param.put("password", password);
 		param.put("idProperty", "user_id");
-		return sql.check(tableName, properties, param);
+		//return sql.check(tableName, properties, param);
+		Conditions and = new Conditions("and");
+		and.add(new Condition("eq", "user_id", user_id));
+		and.add(new Condition("eq", "password", password));
+		return sql.check(tableName, properties, and); 
+				
+				
 	}
 }

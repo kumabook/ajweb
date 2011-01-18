@@ -35,10 +35,7 @@ public class SqlTest{
 		userProperties.put("password", "string");
 		userProperties.put("role", "string");
 		userProperties.put("mail", "string");
-
 	}
-	
-	
 	
 	@Before
 	public void setUp() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{

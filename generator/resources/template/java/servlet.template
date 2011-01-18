@@ -62,6 +62,13 @@ public class AjWebServlet extends AbstractServlet {
 			}
 			return;
 		}
+		else if(action.equals("quit")){
+			try {
+				quit(req, resp, session.getId());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		else if(session == null){
 			resp.sendError(403);
 		}
@@ -123,6 +130,7 @@ ${DELETE}
 				}
 			}
 			else if(action.equals("check")){
+				AbstractCondition con = (AbstractCondition) Condition.parseCondition(param_json);
 				boolean _result = false;
 				try {
 ${CHECK}			

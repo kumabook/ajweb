@@ -50,15 +50,14 @@ public class AjWebListener implements ServletContextListener{
 			System.out.println("users create chat");
 			
 			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumabook\", \"password\": \""+Sql.encryption("password")+"\"}"));
+			System.out.println(Sql.encryption("password")+"\"}");
 			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"kumamoto\", \"password\": \""+Sql.encryption("kumamoto")+"\"}"));
 			users.insert((HashMap<String, String>) JSON.parse("{\"user_id\": \"hiroki\", \"password\": \""+Sql.encryption("hiroki")+"\"}"));
 			
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("room table is already exists");
-			
 		}
-
 	}
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {

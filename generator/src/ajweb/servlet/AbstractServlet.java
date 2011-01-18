@@ -64,7 +64,14 @@ public abstract class AbstractServlet extends HttpServlet{
 			out.print(ajweb.Config.POLLING_INTERVAL);
 		}
 	}
-
+	
+	protected synchronized void quit(HttpServletRequest req, HttpServletResponse resp,
+			 String sessionid) throws InterruptedException, IOException {
+		Member member = members.remove(sessionid);
+		if(member != null)
+		Log.servletLogger.fine("quit sessionid: " + member._sessionid);
+	}
+	
 	protected
 	synchronized void poll(HttpServletRequest req, HttpServletResponse resp, 
 			String sessionid, HashMap<String, ArrayList<AbstractCondition>> relatedDBDatum) throws IOException {

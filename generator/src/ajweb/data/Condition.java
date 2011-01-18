@@ -54,8 +54,8 @@ public class Condition extends AbstractCondition {
 	 */
 	
 	public boolean related(HashMap<String, String> item, HashMap<String,String> properties) throws Exception{
-		System.out.println(this.property);
-		System.out.println(properties);
+//		System.out.println(this.property);
+//		System.out.println(properties);
 		String propertyType = properties.get(this.property);
 		long value = 0;
 		long item_value = 0;
@@ -198,6 +198,11 @@ public class Condition extends AbstractCondition {
 	}
 
 	static protected AbstractCondition _parse(String json){
+		HashMap<?, ?> obj = (HashMap<?, ?>) org.eclipse.jetty.util.ajax.JSON.parse(json);
+		return _parse(obj);
+	}
+	
+	static public  AbstractCondition parseCondition(String json){
 		HashMap<?, ?> obj = (HashMap<?, ?>) org.eclipse.jetty.util.ajax.JSON.parse(json);
 		return _parse(obj);
 	}

@@ -209,7 +209,7 @@ dojo.addOnLoad(
 							},
 		     function(items){
 //		       messageTable.load({datum:items});
-		       messageTable.load({item:items});
+		       messageTable.load({items:items});
 		     }
 		   );
 
@@ -262,7 +262,7 @@ dojo.addOnLoad(
 
     //退出処理
     ajweb.addEvent(exitButton, "onClick", true, function(){
-		   message_database.insert({message : userNameTextbox.getValue() + " left the room",user_name : "System",room : roomSelectbox.getSelectItem().id, posted : new ajweb.date({})});
+		   message_database.insert({message : userNameTextbox.getValue() + " left the room",user_name : "System",room : roomSelectbox.getSelectItem().id, posted : ajweb.datetime.now({})});
 		   contentsFrame.selectPanel({panel: entrancePanel});
     });
     //ルーム選択画面に戻る
@@ -284,6 +284,8 @@ dojo.addOnLoad(
 
 });
 
-
-
-
+dojo.addOnUnload(
+  function(){
+    ajweb.quit("dbservlet");
+    alert("unLoad11");
+  });

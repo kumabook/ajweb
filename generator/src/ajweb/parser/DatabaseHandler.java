@@ -90,6 +90,10 @@ public class DatabaseHandler extends AbstractHandler{
 			else if(attributes.containsKey("primary") && attributes.get("primary").equals("true")){
 				idProperties.add(attributes.get("name"));
 			}
+			else if(attributes.containsKey("unique") && attributes.get("unique").equals("true")){
+				idProperties.add(attributes.get("name"));
+			}
+			
 		}
 	}
 	

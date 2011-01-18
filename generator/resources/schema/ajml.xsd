@@ -5,6 +5,8 @@
  <xsd:include schemaLocation="widget.xsd" />
 <!-- funcのインクルード-->
  <xsd:include schemaLocation="func.xsd" />
+<!-- conditionのインクルード-->
+ <xsd:include schemaLocation="condition.xsd" />
 <!-- ルート要素 -->
 <xsd:element name="ajml">
   <xsd:complexType>

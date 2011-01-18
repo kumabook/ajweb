@@ -36,7 +36,7 @@ public class AjWebServlet extends AbstractServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 
-		//System.out.println("request doPost  action: " + req.getParameter("action") + ", table: " + req.getParameter("table") + ", param: " + req.getParameter("param"));
+		System.out.println("request doPost  action: " + req.getParameter("action") + ", table: " + req.getParameter("table") + ", param: " + req.getParameter("param"));
 		Log.serverLogger.fine("chat app doPost:  {" + "action: " + req.getParameter("action") + ", table: " + req.getParameter("table") + ", param: " + req.getParameter("param") + "}");
 		Log.servletLogger.fine("doPost   action: " + req.getParameter("action") + ", table: " + req.getParameter("table") + ", param: " + req.getParameter("param"));
 		String action = req.getParameter("action");//join(login) , poll , insert, delete, update repoll
@@ -58,6 +58,13 @@ public class AjWebServlet extends AbstractServlet {
 			}
 			return;
 		}
+		else if(action.equals("quit")){
+			try {
+				quit(req, resp, session.getId());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		else if(session == null){
 			resp.sendError(403);
 		}
@@ -72,10 +79,11 @@ public class AjWebServlet extends AbstractServlet {
 			}
 			else if(action.equals("select")){
 
-				Condition condition = null;
+				AbstractCondition condition = null;
 				result = new ArrayList<HashMap<String, String>>();
 				if(param != null)
-					condition = new Condition((String)param.get("op"),(String)param.get("property"), (String)param.get("value"));
+					//condition = new Condition((String)param.get("op"),(String)param.get("property"), (String)param.get("value"));
+					condition = (AbstractCondition) Condition.parseCondition(param_json);
 				try {
 					if(tablename.equals("message"))
 						result = message.select(condition);
@@ -139,14 +147,15 @@ public class AjWebServlet extends AbstractServlet {
 				}
 			}
 			else if(action.equals("check")){
+				AbstractCondition con = (AbstractCondition) Condition.parseCondition(param_json);
 				boolean _result = false;
 				try {
 					if(tablename.equals("message"))
-						_result = message.check(param);
+						_result = message.check(con);
 					else if(tablename.equals("room"))
-						_result = room.check(param);
+						_result = room.check(con);
 					else if(tablename.equals("users"))
-						_result = users.check(param);
+						_result = users.check(con);
 				} catch(Exception e){
 					_result = false;
 				}

@@ -54,7 +54,7 @@ public class room {
 		return sql.update(tableName, properties, param);
 	}
 
-	public static boolean check(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-		return sql.check(tableName, properties, param);
+	public static boolean check(AbstractCondition con) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		return sql.check(tableName, properties, con);
 	}
 }

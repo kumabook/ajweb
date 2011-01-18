@@ -192,10 +192,12 @@ public class Sql {
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
 //		sql += "id int NOT NULL GENERATED ALWAYS AS IDENTITY primary key, ";
 		sql += "id int NOT NULL primary key, ";
+		//sql += "id int NOT NULL , ";
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			if(idProperties.contains(e.getKey()))
-				sql += e.getKey() + " " + getType(e.getValue()) + " NOT NULL primary key"; 
+			if(idProperties.contains(e.getKey())){
+				sql += e.getKey() + " " + getType(e.getValue()) + " NOT NULL UNIQUE";
+			}
 			else 
 				sql += e.getKey() + " " + getType(e.getValue());
 			if(ite.hasNext()) 
@@ -440,7 +442,8 @@ public class Sql {
 			return result;
 		}
 	/**
-	 * idをもつレコードがのcheckdPropertyの値がcheckedValueと等しいかチェック
+	 * param中のidPropertyのキーの値で検索をかけ，
+	 * その結果が残りのparamのキーに対応する値とすべて等しければtrue,でなければfalseを返す．
 	 * @param tableName
 	 * @param idProperty
 	 * @param id
@@ -466,6 +469,14 @@ public class Sql {
 				if(!result.get(0).get(key).equals(clone.get(key)))
 						return false;
 			}
+			return true;
+		}
+		else 
+			return false;
+	}
+	public boolean check(String tableName, HashMap<String, String> properties, AbstractCondition condition) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		ArrayList<HashMap<String, String>> result = select(tableName, properties, condition);
+		if(result.size() >= 1){
 			return true;
 		}
 		else 

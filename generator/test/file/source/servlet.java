@@ -62,6 +62,13 @@ public class AjWebServlet extends AbstractServlet {
 			}
 			return;
 		}
+		else if(action.equals("quit")){
+			try {
+				quit(req, resp, session.getId());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		else if(session == null){
 			resp.sendError(403);
 		}
@@ -139,12 +146,13 @@ public class AjWebServlet extends AbstractServlet {
 				}
 			}
 			else if(action.equals("check")){
+				AbstractCondition con = (AbstractCondition) Condition.parseCondition(param_json);
 				boolean _result = false;
 				try {
 					if(tablename.equals("message"))
-						_result = message.check(param);
+						_result = message.check(con);
 					else if(tablename.equals("room"))
-						_result = room.check(param);
+						_result = room.check(con);
 					else ;			
 					;
 				} catch(Exception e){
