@@ -1,9 +1,9 @@
 dojo.provide("ajweb.editor.extension.DateTextbox");
 dojo.addOnLoad(function(){
-ajweb.editor.MODELLIST.push(
+/*ajweb.editor.MODELLIST.push(
   {
     name:'dateTextbox',
-    label:'dateTextbox', label_ja:'譌･莉倥ユ繧ｭ繧ｹ繝医�懊ャ繧ｯ繧ｹ',
+    label:'dateTextbox', label_ja:'日付用テキストボックス',
     modelType: "widget",
     modelClass: "Widget",
     elementClass: "Textbox",
@@ -17,5 +17,5 @@ ajweb.editor.MODELLIST.push(
     ],
     setters: []
   });
-
+*/
 });

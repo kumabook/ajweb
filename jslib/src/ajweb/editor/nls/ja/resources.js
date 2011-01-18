@@ -50,7 +50,7 @@
    unset: "未設定",
    noFunc: "no func",
    remove: "削除",
-   reflesh: "リフレッシュ"
+   refresh: "リフレッシュ"
 
  })
 

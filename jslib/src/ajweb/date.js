@@ -39,7 +39,7 @@ dojo.declare("ajweb.date", null,
     this.isRelative = opt.isRelative;
   },
   toJSON: function(){
-      return this.toDateString(this.date.getFullYear())+"-"+ this.toDateString(this.date.getMonth()) +"-"+
+      return this.toDateString(this.date.getFullYear())+"-"+ this.toDateString(this.date.getMonth()+1) +"-"+
 	this.toDateString(this.date.getDate())+" "+this.toDateString(this.date.getHours())+":" +
 	  this.toDateString(this.date.getMinutes())+":"+ this.toDateString(this.date.getSeconds());
   },

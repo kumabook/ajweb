@@ -37,9 +37,9 @@ dojo.declare("ajweb.editor.element.Menuable", null,
 	onClick: function(){
 	  that.model.remove();
 	}}));
-      menu.addChild(new dijit.MenuItem({label: ajweb.resources.reflesh,
+      menu.addChild(new dijit.MenuItem({label: ajweb.resources.refresh,
 	onClick: function(){
-	  that.model.refleshDom();
+	  that.model.refreshDom();
 	}}));
       return menu;
     },

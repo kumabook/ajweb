@@ -60,6 +60,26 @@ ajweb.join = function(url){
     }
   );
 };
+
+
+ajweb.quit = function(url){
+  dojo.xhrPost(
+    {
+      url: url,
+      handleAs: "json",
+      content: {
+	"action": "quit",
+	"param" : dojo.toJson({})
+      },
+      load: function(data, ioargs){
+	ajweb.log.trace("quit  response=" + data);
+      },
+      error:function(error, args){
+	ajweb.log.trace("quit error! : "+ error);
+      }
+    }
+  );
+};
 /** methodOf ajweb.connect# */
 // 監視する対象 table 名とcondition(param)の配列   //グローバル変数を参照する
 ajweb.polling = function(url){

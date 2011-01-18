@@ -60,7 +60,7 @@ dojo.declare("ajweb.editor.element.Item",
       that.dialog.containerNode.appendChild(that.itemContainer.domNode);
       that.containerNode = that.itemContainer.domNode;
       for(var i = 0; i < that.model.children.length; i++){
-	that.model.children[i].reCreateDom(that);
+	that.model.children[i].createDomRecursive(that);
       }
     },
     updateDom: function(){

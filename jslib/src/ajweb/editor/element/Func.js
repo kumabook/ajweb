@@ -51,14 +51,6 @@ dojo.declare("ajweb.editor.element.Func",
 	});
 
       this.widget.element = this;
-      //ドロップ要素を更新
-      if(this.model.parent.element)
-	this.model.parent.element.widget.set(
-	  { style: {
-	      top: this.model.parent.properties.top,
-	      left: parseInt(this.model.parent.properties.left) + 250 + "px"
-	    }
-	  });
       return this.widget.domNode;
     },
     dialogContentsStartup: function(){
@@ -128,9 +120,14 @@ dojo.declare("ajweb.editor.element.Func",
       //引数
       that.paramContainer = new dijit.layout.ContentPane(
 	{ content: ajweb.resources.param,
-	  style: {position: "absolute",top: "80px", left: "10px",
-		  width: this.dialog.style.width, height: this.dialog.style.height,  overflow: "scroll"}
-	});
+	  style: {position: "absolute", overflow: "visible",
+		  top: ajweb.editor.PARAM_CONTAINER_TOP+"px", left: ajweb.editor.PARAM_CONTAINER_LEFT+"px",
+		  width: parseInt(this.dialog.style.width)-ajweb.editor.PRAM_CONTAINER_LEFT+"px", 
+		  height: parseInt(this.dialog.style.height)-ajweb.editor.PRAM_CONTAINER_TOP+"px"}});
+      that.dialog.containerNode.appendChild(that.paramContainer.domNode);// overflow: "scroll",
+      //width: parseInt(this.dialog.style.width)-ajweb.editor.PARAM_CONTAINER_LEFT+"px", 
+//		  height: parseInt(this.dialog.style.height)-ajweb.editor.PARAM_CONTAINER_TOP+"px" }});
+
       that.dialog.containerNode.appendChild(that.paramContainer.domNode);
       that.containerNode = that.paramContainer.domNode;      
 

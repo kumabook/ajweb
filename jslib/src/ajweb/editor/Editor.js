@@ -291,15 +291,16 @@ dojo.declare(
 //	      console.log("inValue:"+inValue+" inRowIndex"+inRowIndex+" inFiledIndex :"+inFieldIndex);
 	      var _item = this.getItem(inRowIndex);
 	      var item = {};
-	      for(var i = 0; i < this.structure.cells.length; i++){
+	      var i;
+	      for(i = 0; i < this.structure.cells.length; i++){
 		item[this.structure.cells[i].field] = _item[this.structure.cells[i].field][0];
 	      }
 	      var model = propertyDataStore.currentModel;
-	      if(item.property != "tagName"){//タグ名は変更不可
-		model.properties[item.property] = item.value;
-		model.update();
+	      model.properties[item.property] = inValue;//item.value;
+	      model.update();
+	      if(item.property == "id"){//eventTargetラベルを更新
+		that.eventTarget.set({label: inValue});
 	      }
-	      model.updatePropertiesView();//変更不可のものをもとに戻す
 	    }
 	}, dojo.doc.createElement('div'));
 
@@ -335,9 +336,9 @@ dojo.declare(
 	{
 	  showRoot: false,
 	  model: this.projectTreeModel,
-	  onDblClick : function(item, node, evt){
+	  onDblClick : function(item, node, evt){ that.openModel(item);},/*function(item, node, evt){
 	    var children = that.centerTc.getChildren();
-	    var id = item.jsId;
+	    var id = that.projectStore.getValue(item, "jsId");
 	    for(var i = 0; i < children.length ; i++){
 	      if(children[i].jsId == id){
 		that.centerTc.selectChild(children[i]);
@@ -345,15 +346,18 @@ dojo.declare(
 	      }
 	    }
 	    var model = ajweb.getModelById(id);
-
+	    
 	    if(model.container == that.centerTc){
 	      model.createDomRecursive(that.centerTc);
 	      model.startup();
 	      that.centerTc.selectChild(model.element.widget);
 	    }
-	},
-//todo アイコンをそれっぽいのに
-	getIconClass: function(item, opened){
+	  },*/
+/*	  onClick: function(item, node, evt){
+//	    console.log(that.projectStore.getValue(item, "model"));
+	    that.selectedModelAtProjectTree = that.projectStore.getValue(item, "model");
+	  },*/
+	getIconClass: function(item, opened){//todo アイコンをそれっぽいのに
 //console.log()
 //	  return (!item || this.model.mayHaveChildren(item)) ?
 	  return (!item || (item.modelType && (
@@ -429,31 +433,51 @@ dojo.declare(
       this.contextMenu = new dijit.Menu(
 	{
 	  onOpen: function(){
-	    var node =  that.projectTree.lastFocused.domNode.childNodes[0].childNodes[2].childNodes[2].innerHTML;
-	    if(!node) return;
-	    for(var i = 0; i < that.applications.length; i++){//applicationの場合
-	      if(node == that.applications[i].properties.name){
-		var application = that.applications[i];
-		this.appSaveMenu = new dijit.MenuItem(
-		  {label: "save", onClick: function(){that.saveProject(application);}});
-		this.addChild(this.appSaveMenu);
-		this.appGenerateMenu = new dijit.MenuItem(
-		  {label: "generateWar", onClick: function(){that.generate(application);}});
-		this.addChild(this.appGenerateMenu);
-	      }
+
+
+	    var item = that.projectTree.lastFocused.item;
+	    var model = that.projectStore.getValue(item, "model");
+
+	    if(!model)
+	      return;
+
+	    var titleMenuItemTitle = new dijit.MenuItem({label: ajweb.resources.contextMenu + "(" +model.getProjLabel()+ ")", disabled: true});
+	    that.contextMenuItems.push(titleMenuItemTitle);
+	    that.contextMenu.addChild(titleMenuItemTitle);
+
+	    if(model.tagName == "application"){
+	      var appSaveMenuItem = new dijit.MenuItem(
+		{label: "save", onClick: function(){that.saveProject(model);}});
+	      that.contextMenuItems.push(appSaveMenuItem);
+	      this.addChild(appSaveMenuItem);
+	      var generateMenuItem = new dijit.MenuItem(
+		{label: "generateWar", onClick: function(){that.generate(model);}});	      
+	      that.contextMenuItems.push(generateMenuItem);
+	      this.addChild(generateMenuItem);
+	    }
+	    else if(model.tagName == "panel" || model.tagName == "databases"){
+	      var openMenuItem = new dijit.MenuItem(
+		{label: "open", onClick: function(){that.openModel(item);}});
+	      that.contextMenuItems.push(openMenuItem);
+	      this.addChild(openMenuItem);
+
+	      var refreshMenuItem = new dijit.MenuItem(
+		{label: "refresh", onClick: function(){model.refreshDom();}});
+	      that.contextMenuItems.push(refreshMenuItem);
+	      this.addChild(refreshMenuItem);
 	    }
 	  },
 	  onClose: function(){
-	    if(this.appGenerateMenu){
-	      this.appSaveMenu.destroy();
-	      this.appGenerateMenu.destroy();
+	    for(var i = 0; i < that.contextMenuItems.length; i++){
+	      that.contextMenuItems[i].destroy();
 	    }
 	  }
 	});
+      this.contextMenuItems = [];
       this.contextMenu.bindDomNode(this.projectTree.domNode);
-      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
-
+//      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
     },
+
     /**
      *新しいアプリケーションプロジェクトを作成。
      * @param {String}  appName アプリケーション名
@@ -550,8 +574,6 @@ dojo.declare(
 	  }
 	});
       that.generateWarMenu.addChild(appGenerateMenu);
-
-
       return application;
     },
     /**
@@ -643,7 +665,7 @@ dojo.declare(
       propertyList.push("_character");
 
       if(properties){
-	if(!properties.id)
+	if(!properties.id && !defaultProperties.id)
 	  properties.id = id;
 	propertyList.push("id");
 	propertyList.push("top");
@@ -681,8 +703,11 @@ dojo.declare(
     newModel: function(name, properties, parent, container){
       var model = this.createModel(name, properties, parent, container);
       model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がない
-      model.createDom(container);
-      model.startup();
+      if(model.createDom){
+	model.createDom(container);
+	model.startup();	
+      }
+
       return model;
     },
     /**
@@ -696,6 +721,7 @@ dojo.declare(
 	  for(var i = 0; i < items.length; i++){
 	    if(items[i].jsId == model.parent.id){
 	      treeModel.newItem({name: model.getProjLabel(), id: model.properties.id,
+				 model: model,
 				 jsId: model.id, modelType: model.tagName},
 				items[i]);
 	      return;
@@ -712,6 +738,7 @@ dojo.declare(
 	  }
 	  else {//applicationモデル
 	    that.projectTreeModel.newItem({name: model.getProjLabel(), id: model.properties.id,
+					   model: model,
 					   jsId: model.id, modelType: model.tagName},item);
 	  }
 	}
@@ -719,7 +746,9 @@ dojo.declare(
     },
     updateProjectTree: function(model){
       var store = this.projectStore;
-      this.projectStore.fetchItemByIdentity({identity: model.id, onItem: function(item){
+//      console.log("updateProjectTree");
+      store.fetchItemByIdentity({identity: model.id, onItem: function(item){
+	//			   console.log(model.getProjLabel());
 					       store.setValue(item, "name", model.getProjLabel());
 					     }});
     },
@@ -731,6 +760,31 @@ dojo.declare(
 	     store.deleteItem(item);
       }});
 
+    },
+    getApplicationByName: function(name){
+      for(var i = 0; i < this.applications.length; i++){//applicationの場合
+	if(name == this.applications[i].properties.name){
+	  return this.applications[i];
+	}
+      }
+      return null;
+    },
+    openModel: function(item){
+      var children = this.centerTc.getChildren();
+      var id = this.projectStore.getValue(item, "jsId");
+      for(var i = 0; i < children.length ; i++){
+	if(children[i].jsId == id){
+	  this.centerTc.selectChild(children[i]);
+	  return;
+	}
+      }
+      var model = ajweb.getModelById(id);
+      
+      if(model.container == this.centerTc){
+	model.createDomRecursive(this.centerTc);
+	model.startup();
+	this.centerTc.selectChild(model.element.widget);
+      }
     }
   }
 );

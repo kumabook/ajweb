@@ -39,6 +39,7 @@ dojo.declare("ajweb.editor.element.Panel",
 	    that.model.clearPropertiesView();
 	    that.model.clearEventView();
 	    that.model.removeDomDescendants();
+//	    that.model.removeDom();
 
 	    that.model.properties._isDisplay = "false";
 	    return true;

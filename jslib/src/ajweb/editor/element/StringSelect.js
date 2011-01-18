@@ -35,7 +35,7 @@ dojo.declare("ajweb.editor.element.StringSelect",
       if(that.model.properties.type == "data"){//databaseのスキーマを参照
 	if(that.model.properties.target){
 	  var databaseModel = this.model.application.getElementByPropId(that.model.properties.target);
-	  store = databaseModel.getSchemeStore();
+	  store = databaseModel.getSchemeStore(null, that.model.properties._isSetter);
 	}
       }
 

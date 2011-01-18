@@ -46,7 +46,7 @@ dojo.declare("ajweb.editor.element.Button",
     updateDom: function(){
       var properties = this.model.properties;
       this.widget.set(
-	{style:{top: parseInt(properties.top)-3 + "px",left: parseInt(properties.left)-3+ "px"},
+	{style:{top: parseInt(properties.top)-2 + "px",left: parseInt(properties.left)-2+ "px"},
 	  label: properties.content});
     },
     removeDom: function(){

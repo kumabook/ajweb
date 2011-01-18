@@ -1,6 +1,6 @@
 dojo.provide("ajweb.editor.extension.TimeTextbox");
 dojo.addOnLoad(function(){
-ajweb.editor.MODELLIST.push(
+/*ajweb.editor.MODELLIST.push(
   {
     name:'timeTextbox',
     label:'timeTextbox', label_ja:'時刻テキストボックス',
@@ -17,5 +17,5 @@ ajweb.editor.MODELLIST.push(
     ],
     setters: []
   });
-
+*/
 });

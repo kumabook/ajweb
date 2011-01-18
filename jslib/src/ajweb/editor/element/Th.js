@@ -28,6 +28,7 @@ dojo.declare("ajweb.editor.element.Th",
      * DOM要素を作成し、作成したDOMノードを返す。
      */
     createDom: function(properties){
+      this.model.properties._data = this.model.parent.properties.data;
       var width = properties.width;
       if(width=="auto")
 	width = "100px";//todo 自動的に計算

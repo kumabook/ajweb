@@ -1,7 +1,8 @@
 ({
    dataTypes: [
      {name: "int", label: "int" }, {name: "string", label: "string" },
-     {name: "password", label: "password" },{name: "date", label: "date" },
+     {name: "password", label: "password"},
+     {name: "date", label: "date" },
      {name: "time", label: "time"},{name: "datetime", label: "datetime"}
    ],
    conditionOperators:  [
@@ -53,5 +54,5 @@
    unset: "unset",
    noFunc : "no func",
    remove: "remove",
-   reflesh: "reflesh"
+   refresh: "refresh"
 })

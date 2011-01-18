@@ -52,7 +52,6 @@ dojo.declare("ajweb.editor.element.Databases",
       return this.widget.domNode;
     },
     onDrop: function(name){
-      console.log(this);
       var databaseModel = this.model.editor.newModel(
 	name,
 	{
@@ -65,6 +64,12 @@ dojo.declare("ajweb.editor.element.Databases",
       var initModel = this.model.editor.newModel(
 	"init",	{}, databaseModel, databaseModel.element
       );
+      if(name == "users"){//usersテーブルなら， user_id , passwordを追加
+	this.model.editor.newModel( "property",{name: "user_id", type: "string", unique: "true"},
+				    databaseModel,databaseModel.element);
+	this.model.editor.newModel( "property",{name: "password", type: "password", unique: "false"},
+				    databaseModel, databaseModel.element);
+      }
     },
     updateDom: function(){
 //      this.widget.set({ title: this.model.properties.id});

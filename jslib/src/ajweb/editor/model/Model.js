@@ -66,7 +66,8 @@ dojo.declare("ajweb.editor.model.Model", null,
       if(this.parent!=undefined)
 	this.parent.children.push(this);
 
-      this.projLabel = opt.projLabel ? opt.projLabel : this.properties.id;
+//      this.projLabel = opt.projLabel ? opt.projLabel : this.properties.id;
+      this.projLabel = opt.projLabel;// ? opt.projLabel : this.properties.id;
 
       ajweb.addModel(this);
     },
@@ -103,7 +104,7 @@ dojo.declare("ajweb.editor.model.Model", null,
      * プロジェクトエディタ上のラベル
      */
     getProjLabel: function(){
-      return this.projLabel;
+      return this.projLabel ? this.projLabel : this.properties.id;;
     },
     /**
      * DOM要素のイベント登録や、スタイルの調整を行う。サブクラスでオーバーライドする。

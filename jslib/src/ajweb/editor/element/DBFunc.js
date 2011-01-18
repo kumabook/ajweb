@@ -50,8 +50,10 @@ dojo.declare("ajweb.editor.element.DBFunc",
       var that = this;
       var paramContainer = new dijit.layout.ContentPane(
 	      {content: "params",
-	       style: {position: "absolute",top: "70px", left: "10px",
-		       width: this.dialog.style.width, height: this.dialog.style.height,  overflow: "scroll"}});
+	       style: {position: "absolute", overflow: "visible",
+		       top: ajweb.editor.PARAM_CONTAINER_TOP+"px", left: ajweb.editor.PARAM_CONTAINER_LEFT+"px",
+		       width: parseInt(this.dialog.style.width)-ajweb.editor.PARAM_CONTAINER_LEFT-30+"px", 
+		       height: parseInt(this.dialog.style.height)-ajweb.editor.PARAM_CONTAINER_TOP-30+"px" }});
 
       that.dialog.containerNode.appendChild(paramContainer.domNode);
       that.containerNode = paramContainer.domNode;
@@ -78,7 +80,7 @@ dojo.declare("ajweb.editor.element.DBFunc",
 //	  that.model.setRefProperty();//他のモデルの参照関係を作成
 //	  that.updateDom();//
 	  that.model.update();
-	  that.model.createParam(that.tablenameSelect.value);
+	  that.model.createParam(that.tablenameSelect.value, that.model.tagName);
 	}
       });
       that.dialog.containerNode.appendChild(that.tablenameSelect.domNode);

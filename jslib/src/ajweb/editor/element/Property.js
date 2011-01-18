@@ -42,32 +42,51 @@ dojo.declare("ajweb.editor.element.Property",
 	    left: "10px"
 	  }
 	});
-      this.propName = new dijit.form.TextBox(
-	{
-	  name: this.id + "propName",
-	  value: properties.name /* no or empty value! */,
+      var disabled = false;
+      if(this.model.parent.properties.tablename == "users" && 
+	 (this.model.properties.name == "user_id" || this.model.properties.name == "password"))
+	disabled = true;
+      
+      if(disabled){
+	this.propName = new dijit.layout.ContentPane(
+	{ name: this.id + "propName", content: properties.name,
 	  style: {
 	    position : "absolute",
 	    width: ajweb.editor.DATABASE_PROPNAME_WIDTH+"px",
 	    top: "4px",
-	    left: "0px"
-	  },
-	  onChange: function(){
-	    that.model.properties.name = this.value;
+	    left: "3px"
 	  }
-
 	});
+      }
+      else {
+	this.propName = new dijit.form.TextBox(
+	  {
+	    name: this.id + "propName", disabled: disabled,
+	    value: properties.name /* no or empty value! */,
+	    style: {
+	      position : "absolute",
+	      width: ajweb.editor.DATABASE_PROPNAME_WIDTH+"px",
+	      top: "4px",
+	      left: "0px"
+	    },
+	    onChange: function(){
+	      that.model.properties.name = this.value;
+	    }
+	  });
+      }
       
       var value = that.model.properties.type ? that.model.properties.type : "int";
-      if(value == "ref")
-	value = that.model.properties.ref;
+      if(value == "ref"){
+	value = that.model.application.getElementByPropId(that.model.properties.ref).id;
+      }
+	
 
       this.select = new dijit.form.Select(
 	{
-	  value: value,
+	  value: value,  disabled: disabled,
 	  store: this.model.application.getDataTypeStore(), sortByLabel: false,
 	  style: {position : "absolute",top: "0px", left: ajweb.editor.DATABASE_PROPNAME_WIDTH+10+"px"},
-	  onChange: function(){
+	  onChange: function(value){
 	    this.store.fetchItemByIdentity(
 	      {identity: this.value,
 	       onItem: function(item){
@@ -87,8 +106,25 @@ dojo.declare("ajweb.editor.element.Property",
 	  }
 	});
 
+ 
+
+      this.isUnique =  new dijit.form.ToggleButton(
+	{
+          showLabel: true, disabled: disabled, 
+	  label: this.model.properties.unique == "true" ? "uniq" : "ununiq",
+	  style: {position : "absolute",top: "0px", right: ajweb.editor.REMOVE_ICON_SIZE+"px"},
+          onChange: function(val) {
+	    that.model.properties.unique = val.toString();
+	    if(val)
+              this.attr('label', "uniq");	      
+            else
+	      this.attr('label', "ununiq");
+	  }
+        });
+
       this.widget.domNode.appendChild(this.propName.domNode);
       this.widget.domNode.appendChild(this.select.domNode);
+      this.widget.domNode.appendChild(this.isUnique.domNode);
       this.container.domNode.style.height = (this.model.parent.children.length) * ajweb.editor.DATABASE_PROP_HEIGHT + 35 + "px";
 
       return this.widget.domNode;
@@ -111,6 +147,7 @@ dojo.declare("ajweb.editor.element.Property",
       this.inherited(arguments);
       this.widget.startup();
       this.select.startup();
+      this.isUnique.startup();
       this.propName.startup();
     }
   }

@@ -30,22 +30,22 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
      */
     createDom: function(properties){
       var that = this;
-      var operandLeft = "70px";
+
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute", width: "300px", height: "130px",
 		   top: "100px", left: "0px" }});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
 	  style: { position: "absolute", height: "40px", fontSize: "15px",
-		   top: "35px", left: "75px" }});
+		   top: a.CONDITION_OPERATOR_TOP+"px", left: a.CONDITION_OPERATOR_LEFT+"px" }});
       this.leftButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute",top: "0px",left: operandLeft}
+	  style: {position : "absolute",top: "0px",left: ajweb.editor.CONDITION_LEFT+"px"}
 	});
 
       this.rightButton = new dijit.form.Button(
 	{ label: "condition",
-	  style: {position : "absolute", top: "70px", left: operandLeft}
+	  style: {position : "absolute", top: ajweb.editor.CONDITION_TOP, left: ajweb.editor.CONDITION_LEFT+"px"}
 	});
 
       this.widget.domNode.appendChild(operator.domNode);

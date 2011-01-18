@@ -33,7 +33,7 @@ dojo.declare("ajweb.editor.model.Login", ajweb.editor.model.Visible,
    },
    reCreateParamDom: function(){
      for(var i = 0; i < this.children.length; i++){
-       this.children[i].reCreateDom(this.element);
+       this.children[i].createDomRecursive(this.element);
        this.children[i].startup();
      }
    },

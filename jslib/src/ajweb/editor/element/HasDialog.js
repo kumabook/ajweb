@@ -24,16 +24,12 @@ dojo.declare("ajweb.editor.element.HasDialog",
      */
     constructor: function(opt)
     {
-      this.dialogWidth = ajweb.editor.DIALOG_WIDTH+"px";
-      this.dialogHeight = ajweb.editor.DIALOG_HEIGHT+"px";
+      this.dialogWidth = ajweb.editor.DIALOG_WIDTH;//+"px";
+      this.dialogHeight = ajweb.editor.DIALOG_HEIGHT;//+"px";
       this.dialogTop = ajweb.editor.DIALOG_TOP; //こっちは数値
       this.dialogLeft = ajweb.editor.DIALOG_LEFT;
       this.childDialogElems = [];
     },
-//    dialogWidth: "365px",
-//    dialogHeight: "300px",
-//    dialogTop: 100,
-//    dialogLeft: 50,
     createDialogContents: function(){
     },
     getDialogTitle: function(){
@@ -47,7 +43,10 @@ dojo.declare("ajweb.editor.element.HasDialog",
       if(!that.dialog){
 	that.dialog = new dijit.Dialog(
 	  {title: this.getDialogTitle(),
-	  style: {position: "absolute",height: this.dialogHeight, width: this.dialogWidth},
+	  style: {position: "absolute",height: this.dialogHeight+"px", width: this.dialogWidth+"px", 
+		  backgroundColor: "white",
+		  overflow: "visible"
+		 },
 	  onHide: function(){
 	    if(that.getParentDialogElem() == null){//トップダイアログなら子ダイアログをすべて削除
 	      that.removeDialog();
@@ -71,9 +70,9 @@ dojo.declare("ajweb.editor.element.HasDialog",
       that.changeDialogPosition(that.dialogLeft, that.dialogTop);
 
       that.dialog.containerNode.style.position = "absolute";
-//      that.dialog.containerNode.style.overflow = "scroll";
-      that.dialog.containerNode.style.width = this.dialogWidth;
-      that.dialog.containerNode.style.height = this.dialogHeight;
+      that.dialog.containerNode.style.overflow = "auto";
+      that.dialog.containerNode.style.width = this.dialogWidth-20+"px";
+      that.dialog.containerNode.style.height = this.dialogHeight-50+"px";
 
 
     },

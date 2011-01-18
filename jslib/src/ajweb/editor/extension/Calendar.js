@@ -11,12 +11,12 @@ ajweb.editor.MODELLIST.push(
     toolboxType: "widget",
     propertyList: ["tagName", "id", "width", "top", "left"],
     eventList: ["onDisplay", "onDateClick"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "calendar", width: "100px", height: "100px"},
     getters: [
-      {	id: "getSelectedDate", name: "getSelectedDate", params: [], returnType: "date", description: ""}
+      {	name: "getSelectedDate", label: "getSelectedDate", params: [], returnType: "date", description: ""}
     ],
     setters: [
-      {	id: "goToToday", name: "goToToday", params: [], description: "" }
+      {	name: "goToToday", label: "goToToday", params: [], description: "" }
     ]
   });
 

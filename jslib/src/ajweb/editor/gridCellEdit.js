@@ -43,10 +43,8 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 			  value: inDatum
 			 }, inNode);
 		       this.widget.startup();
-
-		     this.widget.property = property.name;//selectbox場合，プロパティビューの値が保存されない場合のためにgridにwidgetを登録
-		     this.store.currentModel.editor.propertyDataGrid.widget = this.widget;
-
+		       this.widget.property = property.name;//selectbox場合，プロパティビューの値が保存されない場合のためにgridにwidgetを登録
+		       this.store.currentModel.editor.propertyDataGrid.widget = this.widget;
 		       return this.widget;
 		     }
 		   }
@@ -67,10 +65,21 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 /*		 else if(property.input == "date"){
 		   return this.widget;
 		 }*/
+		 else if(property.name == "tagName" || property.input == "unEdit"){
+		   var prop = this.getWidgetProps(inDatum);
+		   prop.content = inDatum;
+		   this.widget = new dijit.layout.ContentPane(prop, inNode);
+		   return this.widget;
+		 }
 		 else {// if(property.input == "textbox"
 		   this.widget = new dijit.form.TextBox(this.getWidgetProps(inDatum), inNode);
+		   this.widget.focus();
 		   return this.widget;
 		  }
+
+		 this.widget = new dijit.form.TextBox(this.getWidgetProps(inDatum), inNode);
+		 this.widget.focus();
+		 return this.widget;
 		},
 	       getProperty: function(inRowIndex){
 		 var property = this.store.currentModel.propertyList[inRowIndex];

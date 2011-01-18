@@ -34,7 +34,7 @@ dojo.declare("ajweb.editor.element.Init",
       var that = this;
       this.widget =  new dijit.form.Button(
 	{ label: ajweb.resources.initItems,
-	  style: {position: "absolute", top: "30px", left: "10px"
+	  style: {position: "absolute", top: ajweb.editor.INIT_TOP+"px", left: ajweb.editor.INIT_LEFT+"px"
 	  }
 	});
       return this.widget.domNode;
@@ -65,7 +65,7 @@ dojo.declare("ajweb.editor.element.Init",
       that.dialog.containerNode.appendChild(that.itemContainer.domNode);
       that.containerNode = that.itemContainer.domNode;
       for(var i = 0; i < that.model.children.length; i++){
-	that.model.children[i].reCreateDom(that);
+	that.model.children[i].createDomRecursive(that);
 	that.model.children[i].startup();
       }
       that.dialog.containerNode.appendChild(that.addButton.domNode);

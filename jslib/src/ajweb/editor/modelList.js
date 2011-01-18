@@ -52,16 +52,8 @@ ajweb.editor._MODELLIST =  [
     acceptModelType: ["database"],
     propertyList: ["tagName", "id", "_isDisplay"],
     eventList: [],
-    getters: [
-      { name: "selectById", label: "selectById", property: "Content", params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "selectByCondition", label: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
-      { name: "select", label: "select", params: [], returnType: "objects"}
-    ],
-    setters: [
-      { name: "insert", label: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "update", label: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
-      { name: "delete", label: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
-    ],
+    getters: [],
+    setters: [],
     defaultProperties: { tagName: "databases"},
     projLabel: ajweb.resources.databases
   },
@@ -127,13 +119,14 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "top", "left", "content", "placeHolder", "candidateList"],
+    propertyList: ["tagName", "id", "width", "top", "left", "value", "placeHolder", "candidateList"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
-    setters: []
+    setters: [
+      {name: "setValue", label: "setValue", params: [{key: "value", type: "string"}], description: "表示されている内容を変更" }]
   },
   {
     name:'passwordbox',
@@ -150,6 +143,42 @@ ajweb.editor._MODELLIST =  [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "パスワードボックスに入力されている値を取得" }
     ],
     setters: []
+  },
+  {
+    name:'dateTextbox',
+    label:'dateTextbox', label_ja:'日付用テキストボックス',
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "Textbox",
+    acceptModelType: [],
+    toolboxType: "widget",
+    propertyList: ["tagName", "id", "width", "top", "left", "value"],
+    eventList: ["onDisplay", "onFocus", "onBlur"],
+    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    getters: [
+      {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
+    ],
+    setters: [
+      {name: "setValue", label: "setValue", params: [{key: "value", type: "date"}], description: "表示されている内容を変更" }
+    ]
+  },
+  {
+    name:'timeTextbox',
+    label:'timeTextbox', label_ja:'時刻テキストボックス',
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "Textbox",
+    acceptModelType: [],
+    toolboxType: "widget",
+    propertyList: ["tagName", "id", "width", "top", "left", "content"],
+    eventList: ["onDisplay", "onFocus", "onBlur"],
+    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    getters: [
+      {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
+    ],
+    setters: [
+      {name: "setValue", label: "setValue", params: [{key: "value", type: "time"}], description: "表示されている内容を変更" }
+    ]
   },
   {
     name:'table',
@@ -170,11 +199,11 @@ ajweb.editor._MODELLIST =  [
 	returnType: "dataProperty", description: ""}
     ],
     setters: [
-      {name: "load", label: "load",params: [{key: "item", type: "object"}], description: "" },
-      {name: "clear", label: "clear",params: [], description: "" },
-      {name: "insert", label: "insert",params: [ {key: "item", type: "object"}], description: "" },
-      {name: "delete", label: "delete",params: [ {key: "item", type: "object"}], description: "" },
-      {name: "update", label: "update",params: [ {key: "item", type: "object"}], description: "" }
+      {name: "load", label: "load", params: [{key: "items", type: "object"}], description: "" },
+      {name: "clear", label: "clear", params: [], description: "" },
+      {name: "insert", label: "insert", params: [ {key: "item", type: "object"}], description: "" },
+      {name: "delete", label: "delete", params: [ {key: "item", type: "object"}], description: "" },
+      {name: "update", label: "update", params: [ {key: "item", type: "object"}], description: "" }
     ]
   },
   {
@@ -217,7 +246,7 @@ ajweb.editor._MODELLIST =  [
     setters: [
       {	name: "newItem", label: "newItem", params: [{key: "item", type: "object"}], description: ""},
       { name: "clear", label: "clear",params: [], description: "" },
-      {	name: "load", label: "load", params: [{key: "datum", type: "objects"}], description: ""}
+      {	name: "load", label: "load", params: [{key: "items", type: "objects"}], description: ""}
     ]
   },
   {
@@ -279,22 +308,54 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Database",
     acceptModelType: ["property"],
     toolboxType: "database",
-    propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver"],
+    propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver",  "_unEdit"],
     eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
     defaultProperties: { tagName: "database", type: "server",
 			dbName: "jdbc:derby:work/appName",
 			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
 		       },
     getters: [
-      { name: "selectById", label: "selectById", params: [{key: "id", type: "int"}], returnType: "object"},
+      { name: "selectById", label: "selectById", 
+	params: [
+	  {key: "idProperty", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
+	  {key: "idValue", type: "any"}], returnType: "object"},
+      { name: "selectByIdProperty", label: "selectByIdProperty", 
+	params: [
+	  {key: "idProperty", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
+	  {key: "idValue", type: "any"}, 
+	  {key: "property", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
+	  {key: "property", type: "string"}
+	], 
+	returnType: "object"},
       { name: "selectByCondition", label: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
+      { name: "selectByConditionFirst", label: "selectByConditionFirst", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "object"},
       { name: "select", label: "select", params: [], returnType: "objects"}
     ],
     setters: [
-      { name: "insert", label: "insert",params: [{key: "id", type: "int"}], returnType: "object"},
-      { name: "update", label: "update", params: [{key: "condition", type: "condition", returnType: "object"}]},
-      { name: "delete", label: "delete", params: [{key: "condition", type: "condition", returnType: "object"}]}
+//      ajweb.model.Funcのなかで定義
+//      { name: "insert", label: "insert",params: [{key: "id", type: "int"}], returnType: "object"}, 
+//      { name: "update", label: "update", params: [ {key: "item", type: ""}]},
+      { name: "delete", label: "delete", params: [
+	  {key: "item", type: ""}]}
     ]
+  },
+  {
+    name: "users",
+    label: "users database", label_ja: "ユーザデータベース",
+    modelType: "database",
+    modelClass: "Database",
+    elementClass: "Database",
+    acceptModelType: ["property"],
+    toolboxType: "database",
+    propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver", "_unEdit"],
+    eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
+    defaultProperties: { tagName: "database", type: "server",
+			 id: "users",
+			 tablename: "users", 
+			 dbName: "jdbc:derby:work/appName",
+			 dbDriver: "org.apache.derby.jdbc.EmbeddedDriver",
+			 _unEdit: ["id", "tablename"]
+		       }
   },
   {
     name: "property",
@@ -304,8 +365,8 @@ ajweb.editor._MODELLIST =  [
     elementClass: "property",
     acceptModelType: [],
     toolboxType: "database",
-    propertyList: ["name", "type","multiplicity",{name: "ref", type: "element", ref: true, refProp: "id"}],
-    defaultProperties: {name:"propertyName", type: "int"}
+    propertyList: ["name", "type","multiplicity",{name: "ref", type: "element", ref: true, refProp: "id"}, "unique"],
+    defaultProperties: {name:"propertyName", type: "int", unique: "false"}
   },
   {
     name: "init",
@@ -407,7 +468,9 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Func",
     acceptModelType: ["param"],
     toolboxType: "action",
-    propertyList: ["tagName", "id", {name: "element", type: "element", ref: true, refProp: "id"}, "func"],
+    propertyList: ["tagName", "id", 
+		   {name: "element", type: "element", ref: true, refProp: "id"},
+		   "func"],
     eventList: [],
     defaultProperties: {}
   },
@@ -533,7 +596,7 @@ ajweb.editor._MODELLIST =  [
     modelClass: "StringSelect",
     elementClass: "StringSelect",
     acceptModelType: [],
-    propertyList: ["type", "target"],
+    propertyList: ["type", "target", "_isSetter"],
     eventList: [],
     defaultProperties: {}
   },
@@ -660,6 +723,28 @@ ajweb.editor._MODELLIST =  [
     propertyList: [],
     eventList: [],
     defaultProperties: {}
+  },
+/*  {todo 拡張可能なjavaScriptの関数を条件として
+    name: "valueIsTrue",
+    modelType: "predicate",
+    modelClass: "Model",
+    elementClass: "Predicate",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    defaultProperties: {}
+  },*/
+//Functionしかないもの
+  {
+    name: "user state",
+    getters: [
+      { name: "user_data", label: "user_data", 
+	params: [
+	  {key: "user_id", type: "string"}, 
+	  {key: "password", type: "password"}
+	], returnType: "users"}
+    ],
+    setters: []
   }
 ];
 //});

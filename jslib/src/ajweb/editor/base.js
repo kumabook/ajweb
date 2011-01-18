@@ -2,10 +2,6 @@ dojo.provide("ajweb.editor.base");
 dojo.require("ajweb.base");
 dojo.require("ajweb.xml");
 dojo.require("dojo.data.ItemFileWriteStore");
-//dojo.requireLocalization("ajweb.editor", "resources");
-//ajweb.locale = ajweb.locale ? ajweb.locale : "en";
-//ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources", ajweb.locale);
-
 
 ajweb.editor.mousePosition = { left: 0, width: 0 };
 
@@ -211,8 +207,12 @@ ajweb.editor.CONDITION_DIALOG_WIDTH = 300;
 
 ajweb.editor.PARAM_WIDTH = 30;
 
-ajweb.editor.DATABASE_WIDTH = 280;
-ajweb.editor.DATABASE_INIT_HEIGHT = 70;
+ajweb.editor.PARAM_CONTAINER_TOP = 80;
+ajweb.editor.PARAM_CONTAINER_LEFT = 10;
+
+
+ajweb.editor.DATABASE_WIDTH = 320;
+ajweb.editor.DATABASE_INIT_HEIGHT = 100;
 ajweb.editor.DATABASE_PROP_HEIGHT = 30;
 ajweb.editor.DATABASE_PROPNAME_WIDTH  = 110;
 
@@ -223,6 +223,10 @@ ajweb.editor.DIALOG_LEFT = 50;
 
 ajweb.editor.DROP_AREA_WIDTH = 120;
 ajweb.editor.DROP_AREA_HEIGHT = 50;
+ajweb.editor.CONDITION_DROP_AREA_TOP = 50;
+ajweb.editor.CONDITION_DROP_AREA_LEFT = 25;
+ajweb.editor.FUNCTION_DROP_AREA_TOP = 50;
+ajweb.editor.FUNCTION_DROP_AREA_LEFT = 200;
 
 ajweb.editor.PARAM_NAME_TOP = 7;
 ajweb.editor.PARAM_NAME_WIDTH = 110;
@@ -234,7 +238,11 @@ ajweb.editor.VALUE_HEIGHT = 30;
 ajweb.editor.METHOD_SEPARATOR = ".";
 ajweb.editor.PARAM_SEPARATOR = ": ";
 
+ajweb.editor.INIT_TOP = 30;
+ajweb.editor.INIT_LEFT = 10;
 
+ajweb.editor.CONDITION_TOP = 70;
+ajweb.editor.CONDITION_LEFT = 70;
 
-
-
+ajweb.editor.CONDITION_OPERATOR_TOP = 35;
+ajweb.editor.CONDITION_OPERATOR_LEFT = 95;

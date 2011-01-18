@@ -63,9 +63,10 @@ dojo.declare("ajweb.editor.element.ParamCondition",
 	  that.model.properties.operator = predictSelect.value;
 	  var newModel = that.model.editor.newModel(tagName, {}, that.model, that);
 	  newModel.properties.name = tagName;
+	  var a = ajweb.editor;
 	  if(tagName == "eq" || tagName == "gt" || tagName == "lt"){
-	    that.model.editor.newModel("value", {}, newModel, newModel.element);
-	    that.model.editor.newModel("value", {}, newModel, newModel.element);
+	    that.model.editor.newModel("value", {top:"0px", left:a.CONDITION_LEFT+"px"}, newModel, newModel.element);
+	    that.model.editor.newModel("value", {top:a.CONDITION_TOP+"px", left:a.CONDITION_LEFT+"px"}, newModel, newModel.element);
 	    }
 	  }
 	}
@@ -73,7 +74,7 @@ dojo.declare("ajweb.editor.element.ParamCondition",
 
       if(that.model.properties.operator){
 	for(var i = 0; i < that.model.children.length; i++){
-	  that.model.children[i].reCreateDom(that);
+	  that.model.children[i].createDomRecursive(that);
 	}
       }
 

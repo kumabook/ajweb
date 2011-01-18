@@ -61,8 +61,8 @@ dojo.declare("ajweb.widget.Selectbox", ajweb.widget.Widget,
    */
   load: function(param){
     var newItems;
-    if(param.datum!=null)
-      newItems= param.datum;
+    if(param.items!=null)
+      newItems= param.items;
     else
       newItems= param;
     var that = this;

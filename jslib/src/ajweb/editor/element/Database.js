@@ -55,6 +55,7 @@ dojo.declare("ajweb.editor.element.Database",
       this.tablename.className = "dijitDialogTitleBar";
       this.tablename.innerHTML  = properties.tablename;
       this.widget.domNode.appendChild(this.tablename);
+
       return this.widget.domNode;
     },
     updateDom: function(){

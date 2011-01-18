@@ -90,7 +90,10 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
       var that = this;
       var grid =this.editor.propertyDataGrid;
       if(grid.edit.info.cell){//edit情報をキャンセル
+//	console.log("cancel " +grid.edit.info.cell  + "  " + this.properties.id);
+//		console.log(grid.edit.info.cell);
 	grid.edit.save();
+	grid.edit.info = {};
       }
       if(grid.widget){//プロパティビューの値が保存されてないなら保存する．
 	this.editor.propertyDataStore.currentModel.properties[grid.widget.property] = grid.widget.value;
@@ -132,11 +135,17 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	   label: eventName,
 	   onClick: function(eventName) {
 	     return function(){
-	       var event = that.editor.newModel("event",
-			{ title: eventName, target: that.properties.id, type: eventName},
-			that.application.getEventsModel(), that.editor.eventTc);
-//	     that.editor.newModel("condition", {top: "25px", left: "10px"}, event, event.element);
-	     that.editor.newModel("action", {top: "50px", left: "150px"}, event, event.element);
+	       var event = that.editor.newModel(
+		 "event",
+		 { title: eventName, target: that.properties.id, type: eventName,
+		   top: ajweb.editor.CONDITION_DROP_AREA_TOP+"px", 
+		   left: ajweb.editor.CONDITION_DROP_AREA_LEFT+"px"
+		 },
+		 that.application.getEventsModel(), that.editor.eventTc);
+	       that.editor.newModel("action", 
+				    {top: ajweb.editor.FUNCTION_DROP_AREA_TOP+"px", 
+				     left: ajweb.editor.FUNCTION_DROP_AREA_LEFT+"px"}, 
+				    event, event.element);
 	     };
 	   }(eventName)
 	 }));

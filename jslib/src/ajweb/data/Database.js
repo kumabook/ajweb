@@ -157,10 +157,25 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
     if(param.condition)
      return this._select(param.condition.toJSON(), next);
   },
-  selctById: function(id, next){
-    if(id instanceof Object)
-      id = id.id;
-    return this._select({op: "eq", property: "id", value: id}, next);
+  selectByConditionFirst: function(param, next){
+    if(param.condition)
+     return this._select(param.condition.toJSON(), function(items){
+			   next(items[0]);
+			 });
+  },
+  selctById: function(param, next){
+    return this._select({op: "eq", property: param.idProperty, value: param.idValue}, 
+			function(items){
+			  if(items.length > 0)
+			    next(items[0]);
+			});
+  },
+  selctByIdProperty: function(param, next){
+    return this._select({op: "eq", property: param.idProperty, value: param.idValue}, 
+			function(items){
+			  if(items.length > 0)
+			    next(items[0][param.property]);
+			});
   },
   check: function(params, next){
     if(navigator.onLine){//onlineならサーバに送信

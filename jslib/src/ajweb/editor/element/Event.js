@@ -27,7 +27,6 @@ dojo.declare("ajweb.editor.element.Event", [
      */
     constructor: function(opt)
     {
-      this.isDisplay = false;
     },
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
@@ -47,11 +46,6 @@ dojo.declare("ajweb.editor.element.Event", [
 	  },
 	  onClose: function(){ that.model.remove();}
 	});
-/*      this.title = new dijit.form.Button(
-	{label: target.properties.id + " " + this.model.properties.type,
-	 style: {position: "absolute", top: "0px", left:}
-	});*/
-      this.isDisplay = true;
       this.widget.element = this;
       this.conditionContainer = new dijit.layout.ContentPane(
 	{
@@ -60,15 +54,15 @@ dojo.declare("ajweb.editor.element.Event", [
 	    position: "absolute",
 	    width: ajweb.editor.DROP_AREA_WIDTH+"px",
 	    height: ajweb.editor.DROP_AREA_HEIGHT+"px",
-	    top: "25px",
-	    left: "10px",
+	    top: this.model.properties.top,
+	    left: this.model.properties.left,
 	    border: "dotted 1px #769DC0"
 	  }
 	});
       //すでに存在する場合は表示しない。
-/*      if(this.model.getCondition()){
+      if(this.model.getCondition()){
 	this.conditionContainer.domNode.style.display = "none";
-      }*/
+      }
 
       this.widget.domNode.appendChild(this.conditionContainer.domNode);
       return this.widget.domNode;
@@ -95,14 +89,16 @@ dojo.declare("ajweb.editor.element.Event", [
       this.reDrawLine(this.lines[0]);
     },
     updateDom: function(){
-//      var target = this.model.application.getElementByPropId(this.model.properties.target);
-//      this.title.set({label: target.properties.id + " " + this.model.properties.type});
+      this.conditionContainer.set(
+	{
+	  style: {
+	    top: this.model.properties.top,
+	    left: this.model.properties.left
+	  }});
     },
     removeDom: function(){
       this.container.removeChild(this.widget);
       this.widget.destroyRecursive();
-
-      this.isDisplay = false;
     },
     startup: function(){
       this.inherited(arguments);

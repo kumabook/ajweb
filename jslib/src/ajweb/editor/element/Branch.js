@@ -32,22 +32,16 @@ dojo.declare("ajweb.editor.element.Branch",
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
-    createDom: function(properties){
+    createDom: function(){
       this.widget = new dijit.layout.ContentPane(
 	{
 	  content : ajweb.resources.dropCondition,
 	  style:{ position: "absolute", width: "100px", height: "50px",
-	    top: properties.top, left: properties.left,
-	    border: "dotted 1px #769DC0"
-	  }
+		  top: this.model.properties.top, left: this.model.properties.left,
+		  border: "dotted 1px #769DC0"
+		}
 	});
-
-            //すでに存在する場合は表示しない。
-//      if(this.model.children.length > 0){
-//	this.model.parent.element.domNode.style.display = "none";
-	//this.conditionContainer.domNode.style.display = "none";
-//      }
-
+      
       return this.widget.domNode;
 
     },
@@ -61,9 +55,8 @@ dojo.declare("ajweb.editor.element.Branch",
 	  this.model,
 	  this.container
 	);
-//      this.domNode.style.display = "none";
       //ドロップ用の要素をconditionで置き換え
-//      this.container.replaceNode(this.domNode, conditionModel.element.domNode);
+      this.domNode.style.display = "none";
     },
     updateDom: function(){
       this.widget.set({

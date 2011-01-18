@@ -34,7 +34,6 @@ dojo.declare("ajweb.editor.element.Condition",
      */
     constructor: function(opt)
     {
-      this.isDisplay = false;
     },
     dialogWidth: ajweb.editor.CONDITION_DIALOG_WIDTH+"px",
     dialogHeight: ajweb.editor.CONDITION_DIALOG_HEIGHT+"px",
@@ -53,7 +52,6 @@ dojo.declare("ajweb.editor.element.Condition",
 		 backgroundColor: "#E1EBFB", border: "solid 1px #769DC0"}
 	});
 
-      this.isDisplay = true;
       return this.widget.domNode;
     },
     createDialogContents: function(){
@@ -93,8 +91,8 @@ dojo.declare("ajweb.editor.element.Condition",
 
       if(that.model.properties.operator){
 	for(var i = 0; i < that.model.children.length; i++){
-	  if(that.model.children[i].reCreateDom)
-	    that.model.children[i].reCreateDom(that);
+	  if(that.model.children[i].createDomRecursive)
+	    that.model.children[i].createDomRecursive(that);
 	    that.model.children[i].startup();
 	    }
       }
@@ -112,15 +110,19 @@ dojo.declare("ajweb.editor.element.Condition",
       var i;
       //eventの子要素の場合
       var initLine = this.container.lines[0];
+      if(!initLine) return;
+
+      //明示的な削除のときのみ
       if(initLine.start == this.domNode){
 	initLine.start = this.container.conditionContainer.domNode;//線のつなぎかえ
+	this.container.conditionContainer.domNode.style.display = "";
 	this.container.reDrawLine(initLine);
-	this.container.conditionContainer.domNode.style.display = "";//ドロップ要素を表示
       }
       //brachの子要素の場合
       else if(this.model.parent.tagName == "branch"){
-	this.container.replaceNode(this.domNode, this.model.parent.element.domNode);//線のつなぎかえ
-	this.model.parent.element.domNode.style.display = "";//ドロップ要素を表示(branch)
+	this.container.replaceNode(this.domNode, this.model.parent.parent.element.domNode);//線のつなぎかえ
+	this.model.parent.parent.properties._display = "";//Action系のドロップ要素を表示(branch)
+	this.model.parent.parent.updateDom();
       }
     },
     checkAcceptance: function(){
@@ -136,6 +138,7 @@ dojo.declare("ajweb.editor.element.Condition",
       if(parent.tagName == "branch" && parent.children.length > 0){
 	this.container.replaceNode(this.model.parent.element.domNode, this.domNode);
 	parent.element.domNode.style.display = "none";
+	parent.parent.element.domNode.style.display = "none";
       }
       else if(parent.tagName == "event" && parent.getCondition()){
 	this.container.replaceNode(parent.element.dndDomNode, this.domNode);

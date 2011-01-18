@@ -27,7 +27,6 @@ dojo.declare("ajweb.editor.element.Action",
     constructor: function(opt)
     {
       this.createInitLine();
-      this.isDisplay = false;
     },
     createInitLine: function(){
       var startDom =  this.model.parent.element.dndDomNode;
@@ -39,7 +38,8 @@ dojo.declare("ajweb.editor.element.Action",
     /**
      * DOM要素を作成し、作成したDOMノードを返す。
      */
-    createDom: function(properties){
+    createDom: function(){
+//      console.log(this.model.properties.top + ",  " + this.model.properties.left );
       this.widget = new dijit.layout.ContentPane(
 	{
 	  content: ajweb.resources.dropFunction,//
@@ -47,12 +47,12 @@ dojo.declare("ajweb.editor.element.Action",
 	    position: "absolute",
 	    width: ajweb.editor.DROP_AREA_WIDTH+"px",
 	    height: ajweb.editor.DROP_AREA_HEIGHT+"px",
-	    top: properties.top,
-	    left: properties.left,
+	    top: parseInt(this.model.properties.top)+"px",
+	    left: parseInt(this.model.properties.left)+"px",
 	    border: "dotted 1px #769DC0"
 	  }
 	});
-      this.isDisplay = true;
+
       return this.widget.domNode;
     },
     createContainerNode: function(){
@@ -61,10 +61,12 @@ dojo.declare("ajweb.editor.element.Action",
     updateDom: function(){
       this.widget.set({
 	style:{
-	    top: this.model.properties.top,
-	    left: this.model.properties.left
+	  top: parseInt(this.model.properties.top)+"px",
+	  left: parseInt(this.model.properties.left)+"px"
 	  }
 	});
+      this.container.reDraw();
+      
     },
     removeDom: function(){
       var lines = this.container.lines;
@@ -76,7 +78,6 @@ dojo.declare("ajweb.editor.element.Action",
       }
       this.widget.destroyRecursive();
 
-      this.isDisplay = false;
     },
     createMoveTriggerDomNode: function(){
       return this.domNode;
@@ -96,17 +97,7 @@ dojo.declare("ajweb.editor.element.Action",
 	  this.container.reDrawLine(this.container.lines[i]);
 	}
       }
-      if(isBranch){//ドロップ要素を隠す
-	this.widget.domNode.style.display = "none";
-      }
-      else {//ドロップ要素を更新
-	this.widget.set(
-	  { style: {
-	      top: parseInt(newNode.style.top) + "px",
-	      left: parseInt(newNode.style.left) + 250 + "px"
-	    }
-	  });
-
+      if(!isBranch){
 	this.line = this.container.draw(newNode, this.domNode);
 	this.container.lines.push(this.line);
 	this.container.domNode.appendChild(this.line.domNode);
@@ -125,6 +116,7 @@ dojo.declare("ajweb.editor.element.Action",
 	this.container
       );
       if(name == "branch"){
+
 	var thenModel = newModel.editor.newModel(
 	  "then",
 	  {
@@ -149,7 +141,16 @@ dojo.declare("ajweb.editor.element.Action",
 	  newModel,
 	  this.container//	  model.element
 	);
+	//branch要素をconditionと置き換え
 	this.container.replaceNode(newModel.element.domNode, conditionModel.element.domNode);
+	newModel.element.domNode.style.display = "none";
+	//drop要素をかくす　
+	this.domNode.style.display = "none";
+      }
+      else {
+      //ドロップ要素を更新
+	this.model.properties.left = parseInt(this.model.properties.left) + 250 + "px";
+	this.updateDom();
       }
     },
     startup: function(){

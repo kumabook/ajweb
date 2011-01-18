@@ -31,13 +31,14 @@ dojo.declare("ajweb.editor.element.Predicate",
      */
     createDom: function(properties){
       var that = this;
+      var a = ajweb.editor;
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute", width: "300px", height: "130px",
-		   top: "80px", left: "0px"}});
+		   top: a.PARAM_CONTAINER_TOP+30+"px", left: a.PARAM_CONTAINER_LEFT+"px"}});
       var operator = new dijit.layout.ContentPane(
 	{ content: ajweb.editor.conditionToOperator(that.model.tagName),
 	  style: { position: "absolute", height: "40px", fontSize: "20px",
-		   top: "35px", left: "75px" }});
+		   top: a.CONDITION_OPERATOR_TOP+"px", left: a.CONDITION_OPERATOR_LEFT+"px" }});
       this.widget.domNode.appendChild(operator.domNode);
 
       return this.widget.domNode;
