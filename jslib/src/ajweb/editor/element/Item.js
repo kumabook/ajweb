@@ -25,7 +25,8 @@ dojo.declare("ajweb.editor.element.Item",
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
-    {},
+    {
+    },
     dialogWidth: "400px",
     dialogHeight: "250px",
     /**

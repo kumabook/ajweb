@@ -214,6 +214,9 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       this.setRefProperty();
 
       this.projectRestore();
+    },
+    getPath: function(){
+      return this.properties.name;
     }
   }
 );

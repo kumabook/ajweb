@@ -40,7 +40,7 @@ dojo.declare("ajweb.editor.element.InitProperty",
       this.nameLabel = new dijit.layout.ContentPane(
 	{style: {position: "absolute", height: "50px",  top: "5px", left: "0px"},
 	 content: this.model.properties.name});
-      if(this.model.properties.type == "int"){
+      if(this.model.properties.type == "int" || this.model.properties.type == "ref"){
 	this.valueInput = new dijit.form.NumberSpinner(
 	  {style: {position: "absolute", width: "200px", top: "0px", left: "150px"},
 	   constraints: {min: 0, max: 9999},

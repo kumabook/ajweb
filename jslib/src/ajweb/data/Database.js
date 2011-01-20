@@ -132,6 +132,7 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
 		 "select",
 		 json,
 		 function(data){
+		   console.log(data.items);
 		   next(data.items);
 		   //キャッシュとして保存
 		     //		 items = data.items;
@@ -163,7 +164,7 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
 			   next(items[0]);
 			 });
   },
-  selctById: function(param, next){
+  selectById: function(param, next){
     return this._select({op: "eq", property: param.idProperty, value: param.idValue}, 
 			function(items){
 			  if(items.length > 0)
@@ -251,13 +252,13 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
     ajweb.log.trace("onInsert: " + dojo.toJson(item));
     ajweb.log.info("onInsert: " + dojo.toJson(item));
   },
-  onDelete: function(){
+  onDelete: function(item){
     ajweb.log.trace("onDelete: "  + dojo.toJson(item));
   },
-  onUpdate: function(){
+  onUpdate: function(item){
     ajweb.log.trace("onUpdate: "  + dojo.toJson(item));
   },
-  onChange: function(){
+  onChange: function(item){
     ajweb.log.trace("onChange: "  + dojo.toJson(item));
   },
   encodeRefItem: function(params){

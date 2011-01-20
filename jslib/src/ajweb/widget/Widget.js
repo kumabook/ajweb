@@ -34,7 +34,7 @@ dojo.declare("ajweb.widget.Widget", null,
       * @field */
       this.children =[];
       this.createWidget();
-      ajweb.addElement(this);
+//      ajweb.addElement(this);
   },
     /**
      * このメソッドをオーバーライドし、オブジェクトを作成、frameやpanelの子要素となる場合は,

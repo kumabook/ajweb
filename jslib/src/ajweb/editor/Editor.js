@@ -302,10 +302,30 @@ dojo.declare(
 		that.eventTarget.set({label: inValue});
 	      }
 	    }
+	  /*,
+	  onSelected:  function(inRowIndex){
+	    alert(that.propertyDataGrid.selection.getSelected());
+	  }*/
 	}, dojo.doc.createElement('div'));
 
       this.propertyDataGrid.placeAt(this.propertyCp.domNode);
       this.propertyDataGrid.startup();
+
+
+     this.logDataStore = new dojo.data.ItemFileWriteStore({identifier: "message",  data: { items: []}});
+      var logDataGridStructure =  {
+	cells:  [{name: "app", field: "app", width: "100px"},
+		 {name: "path", field: "path", width: "200px"},
+		 {name: "message", field: "message", width: "auto"}]};
+      var logStore = this.logDataStore;
+      this.logDataGrid = new dojox.grid.DataGrid(
+	{
+	  store: this.logDataStore,
+	  structure: logDataGridStructure
+	}, dojo.doc.createElement('div'));
+
+      this.logDataGrid.placeAt(this.logCp.domNode);
+      this.logDataGrid.startup();
 
       /**
        * プロジェクトエクスプローラー用のペイン
@@ -601,6 +621,10 @@ dojo.declare(
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
     generate:  function(applicationModel){
+      if(!applicationModel.validate()){
+	alert("Error! please confirm log message.");
+	return;
+      }
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
       var applicationElement = applicationModel.toXMLElement(false);

@@ -140,8 +140,8 @@ dojo.declare("ajweb.editor.element.Property",
 	  this.widget.domNode.style.top = (i+1) * 30 + "px";
 	}
       }
-
-      this.model.parent.refleshDom();
+      
+      this.model.parent.refreshDom();
     },
     startup: function(){
       this.inherited(arguments);

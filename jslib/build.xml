@@ -69,7 +69,7 @@
 		<exec executable="sh" dir="./work/util/buildscripts/">
 			<arg line="build.sh profile=standard releaseDir=../../../dist loader=xdomain action=release"/>
 		</exec>
-		<exec executable="./bin/jslib_deploy"/> 
+		<exec executable="./bin/deploy"/> 
 	</target>
 
 

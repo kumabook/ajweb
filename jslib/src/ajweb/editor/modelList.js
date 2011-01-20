@@ -153,7 +153,7 @@ ajweb.editor._MODELLIST =  [
     acceptModelType: [],
     toolboxType: "widget",
     propertyList: ["tagName", "id", "width", "top", "left", "value"],
-    eventList: ["onDisplay", "onFocus", "onBlur"],
+    eventList: ["onDisplay", "onChange"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
       {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
@@ -171,7 +171,7 @@ ajweb.editor._MODELLIST =  [
     acceptModelType: [],
     toolboxType: "widget",
     propertyList: ["tagName", "id", "width", "top", "left", "content"],
-    eventList: ["onDisplay", "onFocus", "onBlur"],
+    eventList: ["onDisplay", "onChange"],//onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
       {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
@@ -194,16 +194,16 @@ ajweb.editor._MODELLIST =  [
     defaultProperties: { tagName: "table", width: "100px", height: "50px"},
     getters: [
       {	name: "getSelectedItem", label: "getSelectedItem", params: [], returnType: "string", description: "選択されている値を取得" },
-      {	name: "getSelectItemProperty", label: "selectItemProperty", 
+      {	name: "getSelectedItemProperty", label: "selectedItemProperty", 
 	params: [{key: "property", type: "string", input:{className:  "stringSelect", type: "data", targetProperty: "data"}}],
 	returnType: "dataProperty", description: ""}
     ],
     setters: [
       {name: "load", label: "load", params: [{key: "items", type: "object"}], description: "" },
       {name: "clear", label: "clear", params: [], description: "" },
-      {name: "insert", label: "insert", params: [ {key: "item", type: "object"}], description: "" },
-      {name: "delete", label: "delete", params: [ {key: "item", type: "object"}], description: "" },
-      {name: "update", label: "update", params: [ {key: "item", type: "object"}], description: "" }
+      {name: "insert", label: "insert", params: [ ], description: "" },//引数はスキーマから
+      {name: "remove", label: "delete", params: [ {key: "id", type: "object"}], description: "" },//deleteは予約語なので
+      {name: "update", label: "update", params: [ ], description: "" }//引数はスキーマから
     ]
   },
   {
@@ -319,17 +319,17 @@ ajweb.editor._MODELLIST =  [
 	params: [
 	  {key: "idProperty", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
 	  {key: "idValue", type: "any"}], returnType: "object"},
-      { name: "selectByIdProperty", label: "selectByIdProperty", 
+      { name: "selectByIdProperty", label: "selectProperty", 
 	params: [
 	  {key: "idProperty", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
 	  {key: "idValue", type: "any"}, 
-	  {key: "property", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}}, 
+	  {key: "property", type: "string", input: {className: "stringSelect", type: "data", targetProperty: "id"}},
 	  {key: "property", type: "string"}
 	], 
 	returnType: "object"},
       { name: "selectByCondition", label: "selectByCondition", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "objects"},
       { name: "selectByConditionFirst", label: "selectByConditionFirst", params: [{key: "condition", type: "condition", input:{className: "paramCondition"}}], returnType: "object"},
-      { name: "select", label: "select", params: [], returnType: "objects"}
+      { name: "select", label: "selectAll", params: [], returnType: "objects"}
     ],
     setters: [
 //      ajweb.model.Funcのなかで定義

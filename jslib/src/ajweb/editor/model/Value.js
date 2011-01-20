@@ -118,6 +118,15 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
    removeParam: function(){
      while(this.children.length != 0)
        this.children[0].remove();
+   },
+   validate: function(){
+     if(this.properties.element == null || this.properties.func == null){
+       this.log("no value");
+       return false;
+     }
+       
+     else
+       return true;
    }
  }
 );

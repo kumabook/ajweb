@@ -34,31 +34,33 @@ ajweb.widget.Widget,
   createWidget: function(){
     var that = this;
     this.structure = {
-      defaultCell: {
-	editable: true
-      },
       cells: []
     };
     this.store = new dojo.data.ItemFileWriteStore({identifier: "id", data: {  items: []}});
     this.items = [];
     this.widget= new dojox.grid.DataGrid(
       {
-	id: this.id,
-	style:{
-	  position: "absolute",
-	  top: this.top,
-	  left: this.left,
-	  width: this.width,
-	  height: this.height
+//	id: this.id,
+	style:{ position: "absolute", top: this.top, left: this.left, width: this.width, height: this.height
 	},
-	draggable: true,
-//	rowSelector: "20px",
+	selectionMode: "single",
 	structure: this.structure,
 	store: this.store,
-	onRowClick: function(){
-	  that.onRowClick();
+//	canSort: function(){return false;},
+/*	onSelected: function(){
+	  console.log("selected");
+	},*/
+	onCellClick:function(e){
+	 var index = e.rowIndex;
+	 that.widget.selection.select(index);
 	}
-      });
+/*	,onRowClick: function(e){なぜか使えない to do
+	  console.log("onRowClick");
+	  console.log(e);
+	  that.onRowClick();
+	}*/
+      }, dojo.doc.createElement('div'));
+
     this.element = this.widget.domNode;
   },
   /**
@@ -76,7 +78,8 @@ ajweb.widget.Widget,
     var items = this.widget.selection.getSelected();
     if(!items.length || items.length == 0) 
       return 0;
-    var id = items[0].id;
+    var id = this.store.getValue(items[0], "id");
+    return id;
     for(var i = 0; i <  this.items.length; i++){
       if(this.items[i].id == id){
 	  return this.items[i];
@@ -89,6 +92,7 @@ ajweb.widget.Widget,
     if(!items.length || items.length == 0) 
       return 0;
     var id = items[0].id;
+    return this.store.getValue(items[0], param.property);
     for(var i = 0; i <  this.items.length; i++){
 	  return this.items[i][param.property];
     }
@@ -109,6 +113,7 @@ ajweb.widget.Widget,
       }
     }
     this.store.newItem(items);
+    this.store.save();
   },
 
   load : function(param){
@@ -116,6 +121,7 @@ ajweb.widget.Widget,
     for(var i = 0; i < param.items.length; i++){
       this.store.newItem(param.items[i]);
     }
+    this.store.save();
   },
 
   clear : function(){
@@ -128,6 +134,7 @@ ajweb.widget.Widget,
 		  }
 		}
     );
+    this.store.save();
     this.items = [];
   },
 

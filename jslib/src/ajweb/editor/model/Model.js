@@ -210,6 +210,29 @@ dojo.declare("ajweb.editor.model.Model", null,
 	store.newItem({name: this.children[i].properties.id, id: this.children[i].properties.id, jsId: this.children[i].id});
       }
       return store;
+    },
+    validate: function(){
+      for(var i = 0; i < this.children.length; i++){
+//      console.log(this.id+ "  " + this.children[i].validate());
+	if(!this.children[i].validate())
+	  return false;
+      }
+
+      return true;
+    },
+    getName: function(){
+      return this.properties.id ? this.properties.id : this.id;
+    },
+    getPath: function(){
+      return this.parent.getPath() + "->" + this.getName();
+    },
+    log: function(message){
+      this.editor.logDataStore.newItem(
+	{
+	  app: this.application.properties.name,
+	  path: this.getPath(),
+	  message: message
+	});
     }
   }
 );

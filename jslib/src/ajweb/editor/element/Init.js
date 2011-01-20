@@ -53,8 +53,8 @@ dojo.declare("ajweb.editor.element.Init",
 	style: {position : "absolute", top: "45px",left: "25px"},
 	onClick: function(){
 	  that.model.createItem();
-	  that.dialog.set({style: {height: 130 + that.model.children.length * 30 + "px"}});
-	  that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
+//	  that.dialog.set({style: {height: 130 + that.model.children.length * 30 + "px"}});
+	//  that.dialog.containerNode.style.height = that.dialog.domNode.style.height;
 	  //ラベルを変更
 	  //		    that.updateDom();
 	}});
