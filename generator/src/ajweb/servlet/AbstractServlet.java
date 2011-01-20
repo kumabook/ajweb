@@ -58,7 +58,7 @@ public abstract class AbstractServlet extends HttpServlet{
 		if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
 			//System.out.println("LONGPOLLING");
 			out.print(ajweb.Config.LONGPOLLING_INTERVAL);
-		}	
+		}
 		else {
 			//System.out.println("AJAX POLLING");
 			out.print(ajweb.Config.POLLING_INTERVAL);
@@ -191,6 +191,9 @@ public abstract class AbstractServlet extends HttpServlet{
 	 */
 	protected synchronized void change(HttpServletRequest req, HttpServletResponse resp,
 			String sessionid, String tablename, String action, HashMap<String, String> item) throws Exception {
+		System.out.println(item);
+		if(item == null)
+			return;
 		Log.servletLogger.fine(  "sessionid:"+ sessionid +"  change action:"  + " " + action);
 		//サーバーのデータをクライアントに伝搬させる
 		Log.servletLogger.fine("send modification to clients  clients.size:" + members.size());
@@ -203,13 +206,13 @@ public abstract class AbstractServlet extends HttpServlet{
 					ArrayList<AbstractCondition> conditions = m.relatedDBDatum.get(tablename);
 					if(conditions != null){
 						for(int j = 0; j < conditions.size(); j++){
-							if(conditions.get(j).related(modification.item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
+							if(/*応急処置*/modification.type == "delete" || conditions.get(j).related(modification.item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
 								m._queue.add(modification); //modicationをキューに入れる
 						}
 					}
 					if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
 						if (m._continuation!=null){
-							Log.servletLogger.fine("クライアントに変更を伝搬　　　　　session_id: " + m._sessionid + "   resume continuation "); 
+							Log.servletLogger.fine("クライアントに変更を伝搬　　session_id: " + m._sessionid + "   resume continuation "); 
 							m._continuation.resume();
 							m._continuation = null;
 						}

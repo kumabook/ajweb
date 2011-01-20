@@ -27,20 +27,36 @@
 			<delete file="${basedir}/dist/ajweb.jar"/> 
 			<mkdir dir="dist"/>
 			<jar destfile="${basedir}/dist/ajweb.jar" 
-					update="true">
-					<fileset dir="classes/">
-							<include name="**/*.class"/>
-					</fileset>
-					<fileset dir="./">
-							<include name="lib/**/*.jar"/>
-					</fileset>
-					<fileset dir="./">
-							<include name="resources/**/*.template"/>
-					</fileset>
-					<manifest>
-							<attribute name="Main-Class" value="ajweb.Launcher"/>
-					</manifest>
+				update="true">
+				<fileset dir="classes/">
+					<include name="**/*.class"/>
+				</fileset>
+				<fileset dir="./">
+					<include name="dist/ajweb.jar"/>
+					<include name="lib/**/*.jar"/>
+				</fileset>
+				<fileset dir="./">
+					<include name="resources/**/*.template"/>
+				</fileset>
+				<manifest>
+					<attribute name="Main-Class" value="ajweb.Launcher"/>
+				</manifest>
 			</jar>
+			<jar destfile="${basedir}/dist/start.jar" 
+				update="true">
+				<fileset dir="classes/">
+					<include name="ajweb/Launcher.class"/>
+				</fileset>
+				<fileset dir="./">
+					<include name="dist/ajweb.jar"/>
+					<include name="lib/**/*.jar"/>
+				</fileset>
+				<manifest>
+					<attribute name="Main-Class" value="ajweb.Launcher"/>
+				</manifest>
+			</jar>
+	
+
 	</target>
 
 
@@ -97,6 +113,7 @@
 							<pathelement location="${basedir}/classes/"/>
 							<!--<pathelement location="./dist/ajweb.jar"/>--> 
 					</classpath>
-			</java>
-	</target>
+				</java>
+		</target>
+
 </project>

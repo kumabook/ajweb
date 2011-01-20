@@ -9,7 +9,7 @@ public class Date {
 	private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 	
 	public Date(String str) throws ParseException{
-		this.date = df.parse(str);
+		this.date = df.parse(str + " 00:00:00");
 	}
 	public Date(long timestamp) {
 		this.date = new java.util.Date(timestamp);

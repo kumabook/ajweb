@@ -53,6 +53,8 @@ public class Application implements AbstractModel{
 			String lib_servletDir = "lib/servlet/";
 			String web_inf_libDir = outDir + "/WEB-INF/lib/";
 			
+			FileUtils.copyJar(getClass().getClassLoader().getResource("dist/ajweb.jar"),   web_inf_libDir + "ajweb.jar");
+			
 			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "servlet-api.jar"),   web_inf_libDir + "servlet-api.jar");
 			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "servlet-api-2.5.jar"),   web_inf_libDir + "servlet-api-2.5.jar");
 			FileUtils.copyJar(getClass().getClassLoader().getResource(lib_servletDir + "derby.jar"),   web_inf_libDir + "derby.jar");
@@ -60,6 +62,7 @@ public class Application implements AbstractModel{
 		}
 		else{
 			FileUtils.copyDir(Config.libDir + "/servlet",  outDir + "/WEB-INF/lib/","jar");
+			FileUtils.copyDir(Config.libDir + "../dist",  outDir + "/WEB-INF/lib/","jar");
 		}
 				
 	}
@@ -89,6 +92,12 @@ public class Application implements AbstractModel{
 		String DATABASES = "";
 		String INTERFACES = "";
 		String EVENTS = "";
+		//require extension
+		REQUIRE += "dojo.require(\"ajweb.widget.Calendar\");\n";
+		REQUIRE += "dojo.require(\"ajweb.widget.DateTextbox\");\n";
+		REQUIRE += "dojo.require(\"ajweb.widget.TimeTextbox\");\n";
+		
+		
 
 		//databases generate
 		DATABASES = databases.toJsSource();

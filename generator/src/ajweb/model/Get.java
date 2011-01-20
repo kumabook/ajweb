@@ -95,6 +95,8 @@ public class Get implements Parameterable, AbstractModel{
 				
 		}
 		else {//select系だったらコールバックにfunc({key:items ....};  rest  を追加する
+			//System.out.println(element + ":" + getter);
+			//System.out.println(key);
 			Template select_template = new Template("js/select");
 			select_template.apply("DATABASE", element);
 			select_template.apply("SELECT", getter);

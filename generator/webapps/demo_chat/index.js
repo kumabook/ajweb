@@ -287,5 +287,4 @@ dojo.addOnLoad(
 dojo.addOnUnload(
   function(){
     ajweb.quit("dbservlet");
-    alert("unLoad11");
   });

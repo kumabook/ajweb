@@ -53,6 +53,10 @@ public class AjWebServlet extends AbstractServlet {
 		
 		if(action.equals("join")){
 			session = req.getSession(true);//create new session
+			if(!session.isNew()){
+				session.invalidate();
+				session = req.getSession(true);
+			}
 			if(session.isNew()){
 				try {
 					join(req, resp, session.getId());
@@ -65,6 +69,8 @@ public class AjWebServlet extends AbstractServlet {
 		else if(action.equals("quit")){
 			try {
 				quit(req, resp, session.getId());
+				session = req.getSession(true);
+				session.invalidate();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -97,33 +103,45 @@ ${SELECT}
 				}
 			}
 			else if (action.equals("insert")) {
+				HashMap<String, String> item = null;
 				try {
 ${INSERT}
 					;
 					
-					out.print("{ result : true}");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
 			else if(action.equals("update")){
+				HashMap<String, String> item = null;
 				try {
 ${UPDATE}
 					;
 					
-					out.print("{ result : true}");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
 			else if(action.equals("delete")){
+				HashMap<String, String> item = null;
 				try {
 ${DELETE}
 					;
 					
-					out.print("{ result : true }");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false }");
 					e.printStackTrace();

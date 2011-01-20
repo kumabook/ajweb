@@ -42,3 +42,8 @@ ${EVENTS}
     );
 
 });
+
+dojo.addOnUnload(
+  function(){
+    ajweb.quit("dbservlet");
+});

@@ -249,7 +249,7 @@ public class Sql {
 	 * @throws InstantiationException 
 	 */
 	
-	public HashMap<String, String> insert(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public HashMap<String, String> insert(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException,SQLException{
 
 		
 		String sql = "INSERT INTO " + tableName + "(";
@@ -257,19 +257,25 @@ public class Sql {
 		Iterator<Entry<String, String>> ite = param.entrySet().iterator();//properties.entrySet().iterator(); paramならnullをゆるす、propertiesならゆるさない
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			sql += e.getKey();
-//			_sql =  "'" + getType(e.getValue()) + "'";
-			_sql +=  "?";
-			if(ite.hasNext()){ 
-				sql += ", ";
-				_sql += ", ";
+			if(!e.getKey().equals("id")){
+				sql += e.getKey();
+//				_sql =  "'" + getType(e.getValue()) + "'";
+				_sql +=  "?";
+				if(ite.hasNext()){ 
+					sql += ", ";
+					_sql += ", ";
+				}
 			}
 		}
 //		sql += ") values(";
 		sql += ", id) values(";
 		
-		Random random = new Random();  
-		int ran = random.nextInt(100000);//  
+		Random random = new Random();
+		int ran;
+		if(properties.containsKey("id"))
+			ran = Integer.parseInt(properties.get("id"));
+		else 
+			ran = random.nextInt(100000);//  
 		
 //		_sql += "  )";
 		_sql += ", ?)";
@@ -287,24 +293,32 @@ public class Sql {
 		int index = 1;
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-//			System.out.println(index + "   " + e.getValue());
-			st.setString(index, e.getValue());
-			index++;
+			if(!e.getKey().equals("id")){
+//				System.out.println(index + "   " + e.getValue());
+				st.setString(index, e.getValue());
+				index++;
+			}
 		}
 		
 		st.setInt(index, ran);
-		
-		st.execute();
-		st.close();
-		conn.commit();
-		close();
-		
-		
-		@SuppressWarnings("unchecked")
-		HashMap<String, String>result  = (HashMap<String, String>) param.clone();
-		result.put("id" , ran+"");
-		return result;
-			
+		try {
+			int result = st.executeUpdate();
+			//System.out.println(result);
+			if(result == 0)
+				return null;
+			st.close();
+			conn.commit();
+			close();
+
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> item  = (HashMap<String, String>) param.clone();
+			item.put("id" , ran+"");
+			return item;
+		} catch (SQLException e){
+			st.close();
+			close();
+			return null;
+		}
 	}	
 			
 	
@@ -319,80 +333,111 @@ public class Sql {
 	 * @throws SQLException
 	 */
 	public HashMap<String, String> update(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-
+System.out.println(param);
 		String sql = "UPDATE " + tableName + " SET ";
 			
+		
+						
+		Connection conn = getConnection();
+		Log.finer(sql);
+	
+
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
+			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
 			sql += e.getKey() + "=?";
 				
 			if(ite.hasNext()){ 
 				sql += ", ";
 			}
+			else {
+				sql += " WHERE id=?";
+			}
+		
 		}
-		//where節でid指定
-						
-		Connection conn = getConnection();
-		Log.finer(sql);
-
-		PreparedStatement st = conn.prepareStatement(sql);
-			
-		ite = param.entrySet().iterator();
+		
+		PreparedStatement st = conn.prepareStatement(sql);		//where節でid指定
+		//ite = param.entrySet().iterator();
+		ite = properties.entrySet().iterator();
 		int index = 1;
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			st.setString(index, e.getValue());
+			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
+			st.setString(index, param.get(e.getKey()));
+			//st.setString(index, e.getValue());
 			index++;
 		}
-			
-		st.execute();
-		st.close();
-		conn.commit();
-		close();
+		st.setString(index, param.get("id"));
 		
-		Log.finer("update " );
-		return param;
+		try{
+			int result = st.executeUpdate();
+			//System.out.println(result);
+			if(result == 0)
+				return null;
+			
+			st.close();
+			conn.commit();
+			close();
+		
+			Log.finer("update " );
+			return param;
+		} catch (SQLException e){
+			st.close();
+			close();
+			return null;
+		}
 	}
-
-	public HashMap<String, String> delete(String tableName, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+	public HashMap<String, String> delete(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		Condition where = new Condition("eq", "id", param.get("id"));
+		ArrayList<HashMap<String, String>> items = select(tableName, properties, where); //
+		if(items.size() != 1)
+			return null;
+				
 		Connection conn = getConnection();
 		
 		PreparedStatement st;
-				
+	
 		Log.finer("DELETE  FROM " + tableName + " WHERE " + where.toPreparedSQL());
 		st = conn.prepareStatement("DELETE  FROM " + tableName + " WHERE " + where.toPreparedSQL());
 		where.setPreparedSQL(st);
-				
-		st.execute();
 		
-		st.close();
-		conn.commit();
-		close();
-		Log.finest("delete " + tableName + " " + where.toPreparedSQL());
-		return param;
-	}		
-		
+		try{
+			int result = st.executeUpdate();
+			System.out.println(result);
+			if(result == 0)
+				return null;
+			st.close();
+			conn.commit();
+			close();
+			Log.finest("delete " + tableName + " " + where.toPreparedSQL());
+			return items.get(0);
+		} catch (SQLException e){
+			st.close();
+			close();
+			return null;
+		}
+	}
+	
 	public Boolean delete(String tableName, AbstractCondition where) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		Connection conn = getConnection();
 		
 		PreparedStatement st;
-		Boolean rs = false;
-		
 		
 		Log.finer("DELETE  FROM " + tableName + " WHERE " + where.toPreparedSQL());
 		st = conn.prepareStatement("DELETE  FROM " + tableName + " WHERE " + where.toPreparedSQL());
 		where.setPreparedSQL(st);
-				
-		rs = st.execute();
 		
+		int result = st.executeUpdate();
 		
 		st.close();
 		conn.commit();
 		close();
 		Log.finest("delete " + tableName + " " + where.toPreparedSQL());
-		return rs;
+		if(result == 0)
+			return false;
+		else 
+			return true;
 	}
 	/**
 	 * select文を実行

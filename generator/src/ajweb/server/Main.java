@@ -45,7 +45,7 @@ public class Main extends Thread{
             else if ("-war".equals(args[i])) {
                 isWar = true;
                 File targetFile = new File(args[++i]);
-                appName = targetFile.getName();
+                appName = targetFile.getName().replaceAll("\\..*", "");;
                 target = targetFile.getPath();
                 
             } 
@@ -69,16 +69,18 @@ public class Main extends Thread{
 			File targetFile = new File(args[0]);
 			if(targetFile.isDirectory())
 				appName = targetFile.getName();
-			else 
+			else {
 				appName = targetFile.getName().replaceAll("\\..*", "");
+			}
 		}
 		
 		if(target==null){
 			target = new File(args[0]).getPath();
 		}
-		
-		System.out.println("ajweb launch application: " + target +" appName " +  appName + ":" + port);
-		
+		if(isWar)
+			System.out.println("ajweb launch application by War File: " + target +" appName " +  appName + ":" + port);
+		else 
+			System.out.println("ajweb launch application by Source Folder: " + target +" appName " +  appName + ":" + port);
 		if(isWar)
 			ajweb.server.Server.runWar(target, appName, port);
 		else

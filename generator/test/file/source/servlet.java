@@ -53,6 +53,10 @@ public class AjWebServlet extends AbstractServlet {
 		
 		if(action.equals("join")){
 			session = req.getSession(true);//create new session
+			if(!session.isNew()){
+				session.invalidate();
+				session = req.getSession(true);
+			}
 			if(session.isNew()){
 				try {
 					join(req, resp, session.getId());
@@ -65,6 +69,8 @@ public class AjWebServlet extends AbstractServlet {
 		else if(action.equals("quit")){
 			try {
 				quit(req, resp, session.getId());
+				session = req.getSession(true);
+				session.invalidate();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -101,45 +107,69 @@ public class AjWebServlet extends AbstractServlet {
 				}
 			}
 			else if (action.equals("insert")) {
+				HashMap<String, String> item = null;
 				try {
-					if(tablename.equals("message"))
-						change(req, resp,  session.getId(), tablename, "insert", message.insert(param));
-					else if(tablename.equals("room"))
-						change(req, resp,  session.getId(), tablename, "insert", room.insert(param));
+					if(tablename.equals("message")){
+						item = message.insert(param);
+						change(req, resp,  session.getId(), tablename, "insert", item);
+					}
+					else if(tablename.equals("room")){
+						item = room.insert(param);
+						change(req, resp,  session.getId(), tablename, "insert", item);
+					}
 					else ;
 					;
 					
-					out.print("{ result : true}");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
 			else if(action.equals("update")){
+				HashMap<String, String> item = null;
 				try {
-					if(tablename.equals("message"))
-						change(req, resp,  session.getId(), tablename, "update", message.update(param));
-					else if(tablename.equals("room"))
-						change(req, resp,  session.getId(), tablename, "update", room.update(param));
+					if(tablename.equals("message")){
+						item = message.update(param);
+						change(req, resp,  session.getId(), tablename, "update", item);
+					}
+					else if(tablename.equals("room")){
+						item = room.update(param);
+						change(req, resp,  session.getId(), tablename, "update", item);
+					}
 					else ;
 					;
 					
-					out.print("{ result : true}");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false}");
 					e.printStackTrace();
 				}
 			}
 			else if(action.equals("delete")){
+				HashMap<String, String> item = null;
 				try {
-					if(tablename.equals("message"))
-						change(req, resp,  session.getId(), tablename, "delete", message.delete(param));
-					else if(tablename.equals("room"))
-						change(req, resp,  session.getId(), tablename, "delete", room.delete(param));
+					if(tablename.equals("message")){
+						item = message.delete(param);
+						change(req, resp,  session.getId(), tablename, "delete", item);
+					}
+					else if(tablename.equals("room")){
+						item = room.delete(param);
+						change(req, resp,  session.getId(), tablename, "delete", item);
+					}
 					else ;
 					;
 					
-					out.print("{ result : true }");
+					if(item != null)
+						out.print("{ result : true }");
+					else
+						out.print("{ result : false }");
 				} catch (Exception e){
 					out.print("{ result : false }");
 					e.printStackTrace();

@@ -145,8 +145,8 @@ public class SqlTest{
 		param.put("thread", "test_thread");
 		param.put("message", "hello ajweb!");
 		param.put("user_name", "åFñ{ç_ãI");
-		//param.put("posted", new Timestamp(System.currentTimeMillis()).toString());
-		param.put("posted", "2010-11-13 17:25:25");
+		param.put("posted", new Timestamp(System.currentTimeMillis()).toString());
+		//param.put("posted", "2010-11-13 17:25:25");
 		
 		HashMap<String, String> result = da.insert("test", properties, param);
 		da.delete("test", new Condition("eq", "id", result.get("id")));
@@ -216,6 +216,21 @@ public class SqlTest{
 			//OK
 		}
 			
+	}
+	@Test
+	public void testDate() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		HashMap<String, String> properties = new HashMap<String,String>();
+		{
+			properties.put("date", "date");
+			properties.put("time", "time");
+		}
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put("date", "2010-06-25");
+		param.put("time", "06:34:20:11");//11:11:11:11");
+		
+		da.create("date_time", properties);
+		da.insert("date_time", properties, param);
+		da.drop("date_time");
 	}
 	
 }

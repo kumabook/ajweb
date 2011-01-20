@@ -61,7 +61,17 @@ public class Condition extends AbstractCondition {
 		long item_value = 0;
 		boolean long_flag = false;
 		
-		if(propertyType.equals("datetime") || propertyType.equals("date") || propertyType.equals("time")){//文字列を数値に変換
+		if(propertyType.equals("datetime")){//文字列を数値に変換
+			//System.out.println(item.get(this.property));
+			Datetime datetime = new Datetime(this.value);
+			value = datetime.getTime();
+			Datetime item_datetime = new Datetime(item.get(this.property));
+			item_value = item_datetime.getTime();
+			
+			long_flag = true;
+		}
+		
+		if(propertyType.equals("date")){//文字列を数値に変換
 			//System.out.println(item.get(this.property));
 			Date date = new Date(this.value);
 			value = date.getTime();
@@ -70,6 +80,16 @@ public class Condition extends AbstractCondition {
 			
 			long_flag = true;
 		}
+		if(propertyType.equals("time")){//文字列を数値に変換
+			//System.out.println(item.get(this.property));
+			Time time = new Time(this.value);
+			value = time.getTime();
+			Time item_time = new Time(item.get(this.property));
+			item_value = item_time.getTime();
+			
+			long_flag = true;
+		}
+		
 		
 		if(propertyType.equals("int")){
 			value = Long.parseLong(this.value);

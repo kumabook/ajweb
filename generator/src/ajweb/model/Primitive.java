@@ -150,11 +150,17 @@ public class Primitive implements Parameterable, AbstractModel{
 	
 	public String toJavaSource(String type) {
 
-	if(type.equals(("string")) || (type.equals(("text")))){
+	if(type == null)//id
+		return  "\\\\\\\\\"" + value + "\\\\\\\\\""; 
+	else if(type.equals(("string")) || (type.equals(("text"))) || 
+				type.equals("date") || type.equals("time") || 
+				type.equals("datetime") 
+				){
 		return "\\\\\\\\\"" + value + "\\\\\\\\\""; 
 	}
-	else if(type.equals(("int")) || type.equals(("boolean"))){
-		return  "\"" + value + "\""; 
+	else 
+		if(type.equals(("int")) || type.equals(("boolean")) || type.equals("ref")){
+			return  "\\\\\\\\\"" + value + "\\\\\\\\\""; 
 	}
 	else if(type.equals("datetime")){
 	

@@ -49,7 +49,7 @@ public class message {
 	}
 	
 	public static HashMap<String, String> delete(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-		return sql.delete(tableName, param);
+		return sql.delete(tableName, properties, param);
 	}
 	
 	public static boolean delete(AbstractCondition where) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{

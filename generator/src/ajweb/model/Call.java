@@ -47,7 +47,9 @@ public class Call implements AbstractModel, Flowable{
 	public String paramToJsSource(Flowable func, String key, Action rest) throws IOException{
 		String json = "{";
 		for(int i = 0; i < params.size(); i++){
+//			System.out.println(params.get(i).key);
 			json += params.get(i).key + ":" + ""+ params.get(i).value.toJsSource(func, key, rest) + "";
+			//json += params.get(i).key + ":" + ""+ params.get(i).value.toJsSource(this, params.get(i).key, rest) + "";
 			if(i != params.size()-1)
 				json += ", ";
 		}
@@ -60,12 +62,30 @@ public class Call implements AbstractModel, Flowable{
 				//ajweb.utils.JSON.toString(params));
 		
 		if(isCallback) {//データベースのメソッドだったらコールバックに  rest  を追加する
+			for(int i = 0; i < params.size(); i++){
+				if(params.get(i).value.isContainCallback()){//select系のコールバックで値を受け取るものがあれば、残りの処理をコールバックで渡す
+					Param param = params.remove(i);
+					String _key = param.key;
+					Get select = (Get) param.value;
+					Param callback_param = new Param();
+					callback_param.key = _key;
+					callback_param.value = new CallBackItems();
+					params.add(callback_param);
+				
+					return select.toJsSource(this, ((CallBackItems) callback_param.value).str, rest);
+				}
+			}
+			
+			
 			Template call_template = new Template("js/select");
 			if(func.equals("login"))
 				call_template.apply("DATABASE", "ajweb.data");//ajweb.data.loginを使う
 			else 
 				call_template.apply("DATABASE", element);
-			call_template.apply("SELECT", func);
+			if(func.equals("delete"))
+				call_template.apply("SELECT", "remove");
+			else
+				call_template.apply("SELECT", func);
 			call_template.apply("PARAMS", paramToJsSource(function, key, rest));
 			call_template.apply("COUNT", "item");
 			call_template.apply("FUNC", "");

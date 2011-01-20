@@ -22,11 +22,10 @@ public class AjWebListener implements ServletContextListener{
 		try {
 			message.create();
 			System.out.println("message create");
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			System.out.println(e);
 			System.out.println("message table is already exists");
 		}	
-		
 		
 		
 		try {

@@ -12,6 +12,7 @@ public class Config {
 	public static String workDir = baseDir + fs + "/work/";
 	public static String derbyDir = "work/derby";
 	public static String libDir = baseDir + fs + "lib" + fs;
+	public static String distDir = baseDir + fs + "dist" + fs;
 	public static String templateFolder = baseDir + fs + "resources" + fs + "template" + fs;
 	public static String logDir = baseDir + "logs" + fs;
 	public static String serverLogDir = logDir + fs + "";

@@ -38,7 +38,7 @@ public class Server {
 		File appDir = new File("webapps/");
 		File[] apps = appDir.listFiles();
 
-		for(int i = 0; i < apps.length; i++){//webappディレクトリがあれば、追加
+		for(int i = 0; i < apps.length; i++){//ディレクトリwebappとしてがあれば、追加
 			if(apps[i].isDirectory() && !apps[i].getName().matches("\\..*|log")){
 				WebAppContext webapp = new WebAppContext();
 				webapp.setContextPath("/" + apps[i].getName());
@@ -53,9 +53,7 @@ public class Server {
 						System.out.println(libFiles[j].getAbsolutePath());
 					}
 				}
-				
-				
-				
+							
 				webapp.setParentLoaderPriority(true);
 				handlers.addHandler(webapp);
 			}
@@ -92,12 +90,16 @@ public class Server {
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 
 		WebAppContext webapp = new WebAppContext();
-		webapp.setResourceBase(appName);
 		webapp.setContextPath("/"+appName);
 		webapp.setWar(war);
+		//webapp.setParentLoaderPriority(true);
 		
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { new LogHandler(), webapp, /*resource_handler,*/  new DefaultHandler() });
+		handlers.addHandler(new LogHandler());
+		handlers.addHandler(webapp);
+		handlers.addHandler(new DefaultHandler());
+		
+		//handlers.setHandlers(new Handler[] { new LogHandler(), webapp, /*resource_handler,*/  new DefaultHandler() });
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		server.start();
