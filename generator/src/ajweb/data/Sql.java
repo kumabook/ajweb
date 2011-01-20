@@ -272,8 +272,8 @@ public class Sql {
 		
 		Random random = new Random();
 		int ran;
-		if(properties.containsKey("id"))
-			ran = Integer.parseInt(properties.get("id"));
+		if(param.containsKey("id"))
+			ran = Integer.parseInt(param.get("id"));
 		else 
 			ran = random.nextInt(100000);//  
 		
@@ -299,7 +299,7 @@ public class Sql {
 				index++;
 			}
 		}
-		
+		//System.out.println("setId:" + ran);
 		st.setInt(index, ran);
 		try {
 			int result = st.executeUpdate();
@@ -333,7 +333,7 @@ public class Sql {
 	 * @throws SQLException
 	 */
 	public HashMap<String, String> update(String tableName, HashMap<String, String> properties, HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-System.out.println(param);
+//System.out.println(param);
 		String sql = "UPDATE " + tableName + " SET ";
 			
 		
@@ -345,7 +345,7 @@ System.out.println(param);
 		Iterator<Entry<String, String>> ite = properties.entrySet().iterator();
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
+//			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
 			sql += e.getKey() + "=?";
 				
 			if(ite.hasNext()){ 
@@ -363,7 +363,7 @@ System.out.println(param);
 		int index = 1;
 		while(ite.hasNext()){
 			Entry<String, String> e = ite.next();
-			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
+//			System.out.println(e.getKey() + "  " +e.getValue() + " " + param.get(e.getKey()));
 			st.setString(index, param.get(e.getKey()));
 			//st.setString(index, e.getValue());
 			index++;
@@ -404,7 +404,7 @@ System.out.println(param);
 		
 		try{
 			int result = st.executeUpdate();
-			System.out.println(result);
+			//System.out.println(result);
 			if(result == 0)
 				return null;
 			st.close();

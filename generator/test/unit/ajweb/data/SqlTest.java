@@ -159,11 +159,11 @@ public class SqlTest{
 	@Test
 	public void testUpdate() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		HashMap<String, String> param = new HashMap<String, String>();
+		param.put("id", "1");
 		param.put("thread", "test_thread");
 		param.put("message", "hello ajweb!");
 		param.put("user_name", "åFñ{ç_ãI");
 		param.put("posted", new Timestamp(System.currentTimeMillis()).toString());
-		
 		da.insert("test", properties, param);
 		
 		param.put("message", "update_test!");
