@@ -61,6 +61,7 @@ dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
 dojo.require("ajweb.editor.element.Th");
 dojo.require("ajweb.editor.element.Textbox");
+dojo.require("ajweb.editor.element.Textarea");
 dojo.require("ajweb.editor.element.Frame");
 dojo.require("ajweb.editor.element.Value");
 dojo.require("ajweb.editor.element.String");
@@ -357,25 +358,6 @@ dojo.declare(
 	  showRoot: false,
 	  model: this.projectTreeModel,
 	  onDblClick : function(item, node, evt){ that.openModel(item);},/*function(item, node, evt){
-	    var children = that.centerTc.getChildren();
-	    var id = that.projectStore.getValue(item, "jsId");
-	    for(var i = 0; i < children.length ; i++){
-	      if(children[i].jsId == id){
-		that.centerTc.selectChild(children[i]);
-		return;
-	      }
-	    }
-	    var model = ajweb.getModelById(id);
-	    
-	    if(model.container == that.centerTc){
-	      model.createDomRecursive(that.centerTc);
-	      model.startup();
-	      that.centerTc.selectChild(model.element.widget);
-	    }
-	  },*/
-/*	  onClick: function(item, node, evt){
-//	    console.log(that.projectStore.getValue(item, "model"));
-	    that.selectedModelAtProjectTree = that.projectStore.getValue(item, "model");
 	  },*/
 	getIconClass: function(item, opened){//todo アイコンをそれっぽいのに
 //console.log()
@@ -486,6 +468,10 @@ dojo.declare(
 	      that.contextMenuItems.push(refreshMenuItem);
 	      this.addChild(refreshMenuItem);
 	    }
+	    var deleteMenuItem = new dijit.MenuItem(
+	      {label: "delete", onClick: function(){model.remove();}});
+	    that.contextMenuItems.push(deleteMenuItem);
+	    this.addChild(deleteMenuItem);
 	  },
 	  onClose: function(){
 	    for(var i = 0; i < that.contextMenuItems.length; i++){
@@ -495,6 +481,10 @@ dojo.declare(
 	});
       this.contextMenuItems = [];
       this.contextMenu.bindDomNode(this.projectTree.domNode);
+      ajweb.editor.isPreventUnload = true;
+      window.onbeforeunload = function(){
+	return ajweb.editor.isPreventUnload;
+      };
 //      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
     },
 
@@ -601,6 +591,7 @@ dojo.declare(
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
     saveProject: function(applicationModel){
+      ajweb.editor.isPreventUnload = null;
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
       var applicationElement = applicationModel.toXMLElement(true);
@@ -609,6 +600,7 @@ dojo.declare(
       this.sendForm(content, "ajml", applicationModel.properties.name);
     },
     downloadAjml: function(applicationModel){
+      ajweb.editor.isPreventUnload = null;
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
       var applicationElement = applicationModel.toXMLElement(false);
@@ -621,6 +613,7 @@ dojo.declare(
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
     generate:  function(applicationModel){
+      ajweb.editor.isPreventUnload = null;
       if(!applicationModel.validate()){
 	alert("Error! please confirm log message.");
 	return;
@@ -655,6 +648,7 @@ dojo.declare(
       outputTypeTextBox.setValue(type);
       generateForm.submit();
       generateForm.destroyRecursive();
+      ajweb.editor.isPreventUnload = true;
     },
     /**
      * 保存してあるファイルからプロジェクトを復元

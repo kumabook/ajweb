@@ -55,9 +55,10 @@ dojo.declare("ajweb.editor.element.Value",
 	return this.model.parent.parent.element;
     },
     dialogContentsStartup: function(){
+
       this.elemName.startup();
       this.funcName.startup();
-
+      alert("startup");
       this.elemSelect.startup();
       this.funcSelect.startup();
       this.funcButton.startup();

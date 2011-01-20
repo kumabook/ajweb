@@ -102,20 +102,50 @@ ajweb.widget.Widget,
   getSelectedItems: function(param){
   },
 
-  insert : function(items){
-    if(!items) return;
-    if(items.item)
-      items = items.item;
+  insert : function(param){
+    var items;
+    if(!param) return;
+    if(param.item)
+      items = param.item;
     if(dojo.isArray(items)){
       for(var i = 0; i < items.length; i++){
 	this.items.push(dojo.mixin({},items[i]));
 	this.store.newItem(items[i]);
       }
     }
-    this.store.newItem(items);
+    this.store.newItem(param.item);
     this.store.save();
   },
-
+  remove: function(param){
+    var that = this;
+    this.store.fetch(
+      { onItem: function(item){
+	  var id = that.store.getValue(item, "id");
+	  if(id == param.item.id)
+	    that.store.deleteItem(item);
+	}
+      }
+   );
+  },
+  update: function(param){
+  console.log("update");
+  console.log(param);
+    var that = this;
+    this.store.fetch(
+      { onItem: function(item){
+	  var id = that.store.getValue(item, "id");
+//	  console.log(id  + "  " + param.item.id);
+	  if(id == param.item.id){
+	    for(var i = 0; i < that.structure.cells.length; i++){
+	      var key = that.structure.cells[i].field;
+	//      console.log(key);
+	      that.store.setValue(item, key, param.item[key]);
+	    }
+	  }
+	}
+      }
+    );
+  },
   load : function(param){
     this.clear();
     for(var i = 0; i < param.items.length; i++){

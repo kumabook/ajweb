@@ -233,6 +233,17 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  path: this.getPath(),
 	  message: message
 	});
+    },
+    isIdUsed: function(id, currentModel){
+      if(this.properties && this.properties.id == id && this != currentModel){
+	return true;	
+      }
+      for(var i = 0; i < this.children.length; i++){
+	if(this.children[i].isIdUsed(id, currentModel))
+	  return true;
+      }
+      
+      return false;
     }
   }
 );

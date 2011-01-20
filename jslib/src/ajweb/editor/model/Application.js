@@ -90,6 +90,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       return store;
     },
     getValueStore: function(that, returnType){
+
       var items = [];
 //イベントから受け取るエレメントがある場合は追加
       var parentModel = that.parent;
@@ -134,6 +135,7 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       for(i = 0; i < databases.children.length; i++){
 	items.push({label: databases.children[i].properties.id, jsId: databases.children[i].id, name: databases.children[i].properties.id});
       }
+      
       var store = new dojo.data.ItemFileWriteStore(
 	{
 	  data: {
@@ -217,6 +219,12 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
     },
     getPath: function(){
       return this.properties.name;
+    },
+    remove: function(){
+      while(this.children.length != 0){//childrenをremove
+	this.children[0].remove();
+      }
+      this.editor.removeProjectTree(this);
     }
   }
 );

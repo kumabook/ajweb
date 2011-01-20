@@ -30,7 +30,7 @@ dojo.declare("ajweb.editor.element.PredicateOperator",
      */
     createDom: function(properties){
       var that = this;
-
+      var a = ajweb.editor;
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute", width: "300px", height: "130px",
 		   top: "100px", left: "0px" }});

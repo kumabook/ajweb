@@ -81,6 +81,10 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * @return
    */
   remove: function(params, next){
+    if(params.item){//todo
+      params.id = params.item;
+      params.item = null;
+    }
     if(navigator.onLine){
       ajweb.send("dbservlet",
 		 this.tablename,
@@ -99,7 +103,10 @@ dojo.declare("ajweb.data.Database", ajweb.data.AbstractDatabase,
    * @return
    */
   update: function(params, next){
-    var json = ajweb.toJSON(params);
+    if(params.item){//todo
+      params.id = params.item;
+      params.item = null;
+    }
     if(navigator.onLine){
       ajweb.send("dbservlet",
 		 this.tablename,

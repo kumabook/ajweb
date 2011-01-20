@@ -119,9 +119,35 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "top", "left", "value", "placeHolder", "candidateList"],
+    propertyList: ["tagName", "id", 
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   "value", "placeHolder", "candidateList"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "textbox", width: "100px", height: "20px"},
+    getters: [
+      {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
+    ],
+    setters: [
+      {name: "setValue", label: "setValue", params: [{key: "value", type: "string"}], description: "表示されている内容を変更" }]
+  },
+  {
+    name:'textarea',
+    label:'textarea', label_ja:'テキストエリア',
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "Textarea",
+    acceptModelType: [],
+    toolboxType: "widget",
+    propertyList: ["tagName", "id", 
+		   {name: "height", input: "number", type: "int"},
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		    "value"],
+    eventList: ["onDisplay", "onFocus", "onBlur"],
+    defaultProperties: {tagName: "textarea", width: "100px", height: "100px"},
     getters: [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
@@ -136,7 +162,11 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "top", "left", "content"],
+    propertyList: ["tagName", "id",
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   "content"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
@@ -152,7 +182,11 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "top", "left", "value"],
+    propertyList: ["tagName", "id",
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   "value"],
     eventList: ["onDisplay", "onChange"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
@@ -170,7 +204,11 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Textbox",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "top", "left", "content"],
+    propertyList: ["tagName", "id",
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"}
+		  ],
     eventList: ["onDisplay", "onChange"],//onFocus", "onBlur"],
     defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
     getters: [
@@ -188,7 +226,11 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Table",
     acceptModelType: ["th"],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "height", "width", "top", "left",
+    propertyList: ["tagName", "id", 
+		   {name: "height", input: "number", type: "int"},
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
 		   {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"}],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "table", width: "100px", height: "50px"},
@@ -201,9 +243,9 @@ ajweb.editor._MODELLIST =  [
     setters: [
       {name: "load", label: "load", params: [{key: "items", type: "object"}], description: "" },
       {name: "clear", label: "clear", params: [], description: "" },
-      {name: "insert", label: "insert", params: [ ], description: "" },//引数はスキーマから
-      {name: "remove", label: "delete", params: [ {key: "id", type: "object"}], description: "" },//deleteは予約語なので
-      {name: "update", label: "update", params: [ ], description: "" }//引数はスキーマから
+      {name: "insert", label: "insert", params: [{key: "item", type: "object"} ], description: "" },//引数はスキーマから
+      {name: "remove", label: "delete", params: [ {key: "item", type: "object"}], description: "" },//deleteは予約語なので
+      {name: "update", label: "update", params: [{key: "item"}], description: "" }//引数はスキーマから
     ]
   },
   {
@@ -214,7 +256,7 @@ ajweb.editor._MODELLIST =  [
     elementClass: "th",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "width", "label", 
+    propertyList: ["tagName", "id", "label", {name: "width", input: "number", type: "int"},
 		   {name: "field", input: "selectbox", type: "dataproperty", target: "_data"},// "field",//elementの中でdataプロパティに
 		   {name: "_data", input: "hidden", type: "data", ref: true, refProp: "id"}
 		  ],
@@ -231,7 +273,9 @@ ajweb.editor._MODELLIST =  [
     elementClass: "widget",
     acceptModelType: [],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "top", "left", 
+    propertyList: ["tagName", "id", 
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
 		   {name: "data", input: "selectbox", type: "data", ref: true, refProp: "id"},
 		   {name: "label", input: "selectbox", type: "dataproperty", target: "data"}
 		  ],
@@ -257,7 +301,10 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Panel",
     acceptModelType: ["widget"],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "height", "width", "_isDisplay"],
+    propertyList: ["tagName", "id",
+		   {name: "width", input: "number", type: "int"},
+		   {name: "top", input: "number", type: "int"},
+		   "_isDisplay"],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "panel", width: "300px", height: "300px"},
     getters: [
@@ -273,7 +320,12 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Frame",
     acceptModelType: ["panel"],
     toolboxType: "widget",
-    propertyList: ["tagName", "id", "content", "top", "left", "height", "width"],
+    propertyList: ["tagName", "id", "content", 
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   {name: "width", input: "number", type: "int"},
+		   {name: "height", input: "number", type: "int"}
+		  ],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "frame", width: "100px", height: "100px"},
     getters: [

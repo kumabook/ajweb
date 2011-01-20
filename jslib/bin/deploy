@@ -1,0 +1,16 @@
+#!/bin/sh 
+#[]の中を個々の環境に応じて設定
+cd ./dist/dojo
+tar zcvf ajweb_jslib.tar.gz ./ajweb #./dojo/ ./dijit/ ./dojox 
+
+ftp -ivn 192.168.96.2 << _EOF_
+user kumamoto ahoahoman2
+bin 
+cd public_html/ajweb/jslib
+put ajweb_jslib.tar.gz
+quit
+_EOF_
+
+ssh kumamoto@192.168.96.2 tar zxvf ./public_html/ajweb/jslib/ajweb_jslib.tar.gz -C ./public_html/ajweb/jslib/
+
+# tar zxvf ajweb_jslib.tar.gz

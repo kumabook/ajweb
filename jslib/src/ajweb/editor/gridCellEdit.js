@@ -3,6 +3,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dojox.grid.cells.dijit");
 dojo.require("dijit.form.Select");
 dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.ValidationTextBox");
 dojo.require("dijit.form.NumberSpinner");
 var dgc = dojox.grid.cells;
 
@@ -69,6 +70,28 @@ dojo.declare("ajweb.editor.gridCellEdit", dgc._Widget, {
 		   var prop = this.getWidgetProps(inDatum);
 		   prop.content = inDatum;
 		   this.widget = new dijit.layout.ContentPane(prop, inNode);
+		   return this.widget;
+		 }
+		 else if(property.name == "id"){
+/*		   var prop = this.getWidgetProps(inDatum);
+		   prop.isValid = function(){
+		     return this.store.currentModel.editor.application.isIdUsed();
+
+		   };
+		   prop.getErrorMessage = function(){
+		     return "sorry! this id is already used.";
+		   };*/
+		   var that = this;
+		   this.widget = new dijit.form.ValidationTextBox(
+		     {
+		       isValid: function(){
+			 return !that.store.currentModel.editor.application.isIdUsed(this.textbox.value, that.store.currentModel);
+		       },
+		       getErrorMessage: function(){
+			 return "sorry! this id is already used.";
+		       },
+		       value: inDatum
+		     }, inNode);
 		   return this.widget;
 		 }
 		 else {// if(property.input == "textbox"

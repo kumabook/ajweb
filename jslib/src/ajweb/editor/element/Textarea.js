@@ -1,15 +1,17 @@
 dojo.require("ajweb.editor.element.Element");
 dojo.require("ajweb.editor.element.Movable");
 dojo.require("ajweb.editor.element.Removable");
+dojo.require("ajweb.editor.element.Resizable");
 dojo.require("ajweb.editor.element.Menuable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Textbox");
-dojo.declare("ajweb.editor.element.Textbox",
+dojo.provide("ajweb.editor.element.Textarea");
+dojo.declare("ajweb.editor.element.Textarea",
 	     [ajweb.editor.element.Element,
 	      ajweb.editor.element.Movable,
+	      ajweb.editor.element.Resizable,
 	      ajweb.editor.element.Menuable],
-  /** @lends ajweb.editor.element.Textbox.prototype */
+  /** @lends ajweb.editor.element.Textarea.prototype */
   {
     /**
      * Constructor
@@ -32,8 +34,8 @@ dojo.declare("ajweb.editor.element.Textbox",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  content: this.model.tagName,
-	  style:{position: "absolute",width: properties.width, height: "20px",
+	  content: "textarea",
+	  style:{position: "absolute",width: properties.width, height: properties.height,
 		 top: properties.top, left: properties.left, border: "solid 1px"
 	  }
 	});
@@ -41,8 +43,8 @@ dojo.declare("ajweb.editor.element.Textbox",
     },
     updateDom: function(){
       this.widget.set(
-	{style:{top: this.model.properties.top, left: this.model.properties.left, width: this.model.properties.width}
-//	  content: this.model.properties.content
+	{style:{top: this.model.properties.top, left: this.model.properties.left, 
+		width: this.model.properties.width, height: this.model.properties.height}
 	});
     },
     removeDom: function(){
