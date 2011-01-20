@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <!--  個々の条件要素、タイプ   -->
+ <!--  and   -->
+  <xsd:element name="and" substitutionGroup="baseCondition"/>
+  <!--  or   -->
+  <xsd:element name="or" type="andType" substitutionGroup="baseCondition"/>
+  <xsd:complexType name="andType">
+    <xsd:sequence minOccurs="2" maxOccurs="2">
+      <xsd:element ref="baseCondition"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  not   -->
+  <xsd:element name="not" substitutionGroup="baseCondition"/>
+  <xsd:complexType name="notType">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element ref="baseCondition"/>
+    </xsd:sequence>
+  </xsd:complexType>  
+  <xsd:element name="eq" type="eqType" substitutionGroup="baseCondition"/>
+  <xsd:element name="gt" type="eqType" substitutionGroup="baseCondition"/>
+  <xsd:element name="lt" type="eqType" substitutionGroup="baseCondition"/>
+  <xsd:element name="success" substitutionGroup="baseCondition">
+    <xsd:complexType/>
+  </xsd:element>
+  <xsd:complexType name="eqType">
+    <xsd:sequence minOccurs="2" maxOccurs="2">
+      <xsd:element ref="valuable"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

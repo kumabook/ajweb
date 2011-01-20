@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml>
+  <application name="GuestBook">
+    <interfaces>
+      <panel _isDisplay="true" height="358px" id="rootPanel" left="456.5" top="29" width="571px">
+        <label content="ゲストブック" id="label0" left="4px" top="5px"/>
+        <frame height="273px" id="mainFrame" left="45px" top="68px" width="459px">
+          <panel _isDisplay="true" height="273px" id="indexPanel" left="512.5" top="71.5" width="459px">
+            <table data="message" height="199px" id="messageList" left="14px" top="26px" width="425px">
+              <th _data="message" field="user_name" id="th0" label="なまえ" left="52" top="23" width="124px"/>
+              <th _data="message" field="message" id="th1" label="ひとこと" left="283" top="55" width="300px"/>
+            </table>
+            <label content="メッセージ一覧" id="label1" left="22px" top="5px"/>
+            <button content="新規作成" id="toCreatePanelButton" left="54px" top="241px"/>
+            <button content="編集" id="toEditPanelButton" left="268px" top="239px"/>
+          </panel>
+          <panel _isDisplay="true" height="273px" id="createPanel" left="512.5" top="71.5" width="459px">
+            <label content="なまえ" id="label2" left="41px" top="44px"/>
+            <textbox id="createNameTextbox" left="143px" top="40px" width="125px"/>
+            <label content="ひとこと" id="label3" left="42px" top="94px"/>
+            <button content="作成" id="createButton" left="59px" top="231px"/>
+            <button content="一覧に戻る" id="backIndexFromCreate" left="264px" top="235px"/>
+            <textarea height="127px" id="createMessageTextbox" left="142px" top="90px" width="196px"/>
+          </panel>
+          <panel _isDisplay="true" height="272px" id="updatePanel" left="512.5" top="72" width="459px">
+            <label content="なまえ" id="label4" left="49px" top="50px"/>
+            <label content="ひとこと" id="label5" left="50px" top="112px"/>
+            <textbox id="updateNameTextbox" left="140px" top="50px" width="125px"/>
+            <button content="更新" id="updateButton" left="59px" top="225px"/>
+            <button content="一覧に戻る" id="backIndexFromUpdateButton" left="268px" top="230px"/>
+            <button content="削除" id="deleteButton" left="154px" top="224px"/>
+            <textarea height="102px" id="updateMessageTextbox" left="142px" top="110px" width="174px"/>
+          </panel>
+        </frame>
+      </panel>
+    </interfaces>
+    <databases _isDisplay="true" id="databases0">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/guest_book" id="message" left="248px" tablename="message" top="123px" type="server">
+        <init/>
+        <property left="198" name="user_name" top="53" type="string" unique="false"/>
+        <property left="216" name="message" top="86" type="string" unique="false"/>
+      </database>
+    </databases>
+    <events>
+      <event left="25px" target="mainFrame" top="50px" type="onDisplay">
+        <action left="740px" top="39px">
+          <call element="mainFrame" func="selectPanel" id="call0" left="186px" top="57px">
+            <param id="param0" name="panel" type="element">
+              <element target="mainFrame" type="child">indexPanel</element>
+            </param>
+          </call>
+          <call element="messageList" func="load" id="call1" left="509px" top="54px">
+            <param id="param1" name="items" type="object">
+              <value element="message" func="select" funcName="selectAll"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="toCreatePanelButton" top="50px" type="onClick">
+        <action left="473px" top="47px">
+          <call element="mainFrame" func="selectPanel" id="call2" left="180px" top="37px">
+            <param id="param2" name="panel" type="element">
+              <element target="mainFrame" type="child">createPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="toEditPanelButton" top="50px" type="onClick">
+        <action left="849px" top="31px">
+          <call element="mainFrame" func="selectPanel" id="call3" left="165px" top="10px">
+            <param id="param3" name="panel" type="element">
+              <element target="mainFrame" type="child">updatePanel</element>
+            </param>
+          </call>
+          <call element="updateNameTextbox" func="setValue" id="call6" left="273px" top="60px">
+            <param id="param8" name="value" type="string">
+              <value element="messageList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+                <param id="param9" name="property" type="string">
+                  <stringSelect target="message" type="data">user_name</stringSelect>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="updateMessageTextbox" func="setValue" id="call7" left="640px" top="60px">
+            <param id="param10" name="value" type="string">
+              <value element="messageList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+                <param id="param20" name="property" type="string">
+                  <stringSelect target="message" type="data">message</stringSelect>
+                </param>
+              </value>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="createButton" top="50px" type="onClick">
+        <action left="761px" top="34px">
+          <insert database="message" id="insert0" left="196px" top="54px">
+            <param id="param4" name="user_name" type="string">
+              <value element="createNameTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param5" name="message" type="string">
+              <value element="createMessageTextbox" func="getValue" funcName="getValue"/>
+            </param>
+          </insert>
+          <call element="mainFrame" func="selectPanel" id="call4" left="524px" top="51px">
+            <param id="param6" name="panel" type="element">
+              <element target="mainFrame" type="child">indexPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="backIndexFromCreate" top="50px" type="onClick">
+        <action left="561px" top="32px">
+          <call element="mainFrame" func="selectPanel" id="call5" left="261px" top="73px">
+            <param id="param7" name="panel" type="element">
+              <element target="mainFrame" type="child">indexPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="updateButton" top="50px" type="onClick">
+        <action left="506px" top="45px">
+          <update database="message" id="update0" left="201px" top="63px">
+            <param id="param11" name="item" type="object">
+              <value element="messageList" func="getSelectedItem" funcName="getSelectedItem"/>
+            </param>
+            <param id="param12" name="user_name" type="string">
+              <value element="updateNameTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param13" name="message" type="string">
+              <value element="updateMessageTextbox" func="getValue" funcName="getValue"/>
+            </param>
+          </update>
+        </action>
+      </event>
+      <event left="25px" target="message" top="50px" type="onInsert">
+        <action left="462px" top="37px">
+          <call element="messageList" func="insert" id="call8" left="190px" top="47px">
+            <param id="param14" name="item" type="object">
+              <value element="message:receivedItem" func="self" funcName="self"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="6px" target="message" top="34px" type="onUpdate">
+        <action left="433px" top="26px">
+          <call element="messageList" func="update" id="call9" left="190px" top="40px">
+            <param id="param15" name="item">
+              <value element="message:receivedItem" func="self" funcName="self"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="deleteButton" top="50px" type="onClick">
+        <action left="471px" top="46px">
+          <delete database="message" id="delete0" left="186px" top="46px">
+            <param id="param16" name="item" type="object">
+              <value element="messageList" func="getSelectedItem" funcName="getSelectedItem"/>
+            </param>
+          </delete>
+        </action>
+      </event>
+      <event left="25px" target="message" top="50px" type="onDelete">
+        <action left="450px" top="50px">
+          <call element="messageList" func="remove" id="call10" left="194px" top="55px">
+            <param id="param18" name="item" type="object">
+              <value element="message:receivedItem" func="self" funcName="self"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="backIndexFromUpdateButton" top="50px" type="onClick">
+        <action left="502px" top="28px">
+          <call element="mainFrame" func="selectPanel" id="call11" left="202px" top="44px">
+            <param id="param19" name="panel" type="element">
+              <element target="mainFrame" type="child">indexPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+    </events>
+  </application>
+</ajml>

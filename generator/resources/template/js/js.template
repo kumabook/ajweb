@@ -6,6 +6,7 @@ dojo.require("ajweb.widget.Panel");
 dojo.require("ajweb.widget.Dialog");
 dojo.require("ajweb.widget.Button");
 dojo.require("ajweb.widget.Textbox");
+dojo.require("ajweb.widget.Textarea");
 dojo.require("ajweb.widget.Table");
 dojo.require("ajweb.widget.Th");
 dojo.require("ajweb.data.Database");

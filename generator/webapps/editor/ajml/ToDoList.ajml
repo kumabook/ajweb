@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ajml>
+  <application name="ToDoList">
+    <interfaces>
+      <panel _isDisplay="true" height="309px" id="rootPanel" left="405.5" top="53.5" width="673px">
+        <label content="To Do List" id="label0" left="14px" top="1px"/>
+        <frame height="270px" id="mainFrame" left="11px" top="38px" width="650px">
+          <panel _isDisplay="true" height="270px" id="listTaskPanel" left="417" top="73" width="650px">
+            <calendar id="calendar" left="3px" top="29px" width="100px"/>
+            <table data="task" height="190px" id="taskList" left="211px" top="30px" width="350px">
+              <th _data="task" field="title" id="titleTh" label="title" left="123" top="30" width="150px"/>
+              <th _data="task" field="time" id="timeTh" label="time" left="172" top="30" width="100px"/>
+              <th _data="task" field="place" id="placeTh" label="place" left="278" top="28" width="100px"/>            </table>
+            <button content="新規作成" id="addTaskButton" left="225" top="230"/>
+            <button content="削除" id="deleteButton" left="445" top="230px"/>
+            <button content="ログアウト" id="logoutButton" left="545" top="230px"/>
+            <label content="now" id="now" left="215px" top="4px"/>
+            <button content="変更" id="updateTaskButton" left="343px" top="228px"/>          </panel>
+          <panel _isDisplay="true" height="270px" id="addTaskPanel" left="417" top="73" width="650px">
+            <label content="日付" id="label1" left="49px" top="9px"/>
+            <button content="作成" id="addButton" left="111px" top="203px"/>
+            <label content="タイトル" id="label2" left="35px" top="52px"/>
+            <label content="時刻" id="label3" left="41px" top="86px"/>
+            <label content="場所" id="label4" left="39px" top="124px"/>
+            <textbox id="titleTextbox" left="146px" top="51px" width="100px"/>
+            <textbox id="placeTextbox" left="145px" top="121px" width="100px"/>
+            <timeTextbox id="timeTextbox" left="145px" top="86px" width="100px"/>
+            <button content="リストに戻る" id="backButton" left="383px" top="23px"/>          </panel>
+          <panel _isDisplay="true" height="270px" id="loginPanel" left="417" top="73" width="650px">
+            <textbox id="userIdTextbox" left="119px" top="49px" width="100px"/>
+            <label content="user name" id="label5" left="39px" top="52px"/>
+            <label content="password" id="label6" left="39px" top="92px"/>
+            <passwordbox id="passwordbox" left="118px" top="91px" width="100px"/>
+            <button content="login" id="loginButton" left="103px" top="179px"/>
+          </panel>
+          <panel _isDisplay="true" height="270px" id="updatePanel" left="417" top="73" width="650px">
+            <label content="日付" id="label8" left="48px" top="12px"/>
+            <label content="タイトル" id="label9" left="22px" top="57px"/>
+            <label content="時刻" id="label10" left="25px" top="97px"/>
+            <label content="場所" id="label11" left="35px" top="146px"/>
+            <textbox id="updateTitleTextbox" left="127px" top="54px" width="100px"/>
+            <timeTextbox id="updateTimeTextbox" left="125px" top="96px" width="100px"/>
+            <textbox id="updatePlaceTextbox" left="128px" top="140px" width="100px"/>
+            <button content="変更" id="updateButton" left="75px" top="210px"/>
+            <button content="リストに戻る" id="updateBackButton" left="490px" top="214px"/>
+          </panel>        </frame>      </panel>    </interfaces>
+    <databases _isDisplay="true" id="databases0">
+      <database _unEdit="id,tablename" dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/ToDoList" id="task" left="681px" tablename="task" top="107px" type="server">
+        <init>
+          <item>
+            <initProperty name="id" type="int" value="1"/>
+            <initProperty name="title" type="string" value="title"/>
+            <initProperty name="date" type="date" value="2011-01-20"/>
+            <initProperty name="time" type="time" value="01:51:01:00"/>
+            <initProperty name="place" type="string" value="place"/>
+            <initProperty name="user_data" type="ref" value="1"/>
+          </item>
+        </init>
+        <property left="211" name="title" top="59" type="string" unique="false"/>
+        <property left="193" name="date" top="89" type="date" unique="false"/>
+        <property left="227" name="time" top="125" type="time" unique="false"/>
+        <property left="215" name="place" top="153" type="string" unique="false"/>
+        <property left="171" multiplicity="1" name="user_data" ref="users" top="178" type="ref" unique="false"/>      </database>
+      <database _unEdit="id,tablename" dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/ToDoList" id="users" left="197px" tablename="users" top="131px" type="server">
+        <init>
+          <item>
+            <initProperty name="id" type="int" value="1"/>
+            <initProperty name="user_id" type="string" value="hiroki"/>
+            <initProperty name="password" type="password" value="hiroki"/>
+          </item>
+        </init>
+        <property left="128" name="user_id" top="57" type="string" unique="true"/>
+        <property left="174" name="password" top="88" type="password" unique="false"/>
+      </database>    </databases>
+    <events>
+      <event left="25px" target="loginButton" top="50px" type="onClick">
+        <action left="1002px" top="38px">
+          <login id="login0" left="255px" top="50px">
+            <param id="param0" name="user_id" type="string">
+              <value element="userIdTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param1" name="password" type="password">
+              <value element="passwordbox" func="getValue" funcName="getValue"/>
+            </param>
+          </login>
+          <call element="mainFrame" func="selectPanel" id="call0" left="425px" top="57px">
+            <param id="param2" name="panel" type="element">
+              <element target="mainFrame" type="child">listTaskPanel</element>
+            </param>
+          </call>
+          <call element="taskList" func="load" id="call1" left="775px" top="60px">
+            <param id="param3" name="items" type="object">
+              <value element="task" func="selectByCondition" funcName="selectByCondition">
+                <param id="param15" name="condition" type="condition">
+                  <paramCondition operator="eq">
+                    <eq>
+                      <value element="task:targetItem" func="property" funcName="property" left="70px" top="0px">
+                        <param id="param16" name="property" type="string">
+                          <stringSelect target="task" type="data">date</stringSelect>
+                        </param>
+                      </value>
+                      <value element="calendar" func="getSelectedDate" funcName="getSelectedDate" left="70px" top="70px"/>
+                    </eq>
+                  </paramCondition>
+                </param>
+              </value>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="addTaskButton" top="50px" type="onClick">
+        <action left="577px" top="37px">
+          <call element="mainFrame" func="selectPanel" id="call2" left="264px" top="58px">
+            <param id="param4" name="panel" type="element">
+              <element target="mainFrame" type="child">addTaskPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="addButton" top="50px" type="onClick">
+        <action left="908px" top="51px">
+          <insert database="task" id="insert1" left="270px" top="76px">
+            <param id="param18" name="title" type="string">
+              <value element="titleTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param19" name="date" type="date">
+              <value element="calendar" func="getSelectedDate" funcName="getSelectedDate"/>
+            </param>
+            <param id="param20" name="time" type="time">
+              <value element="timeTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param21" name="place" type="string">
+              <value element="placeTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param22" name="user_data" type="ref">
+              <value element="users" func="selectById" funcName="selectById">
+                <param id="param37" name="idProperty" type="string">
+                  <stringSelect target="users" type="data">user_id</stringSelect>
+                </param>
+                <param id="param38" name="idValue" type="any">
+                  <value element="userIdTextbox" func="getValue" funcName="getValue"/>
+                </param>
+              </value>
+            </param>
+          </insert>
+          <call element="mainFrame" func="selectPanel" id="call4" left="560px" top="56px">
+            <param id="param13" name="panel" type="element">
+              <element target="mainFrame" type="child">listTaskPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="backButton" top="50px" type="onClick">
+        <action left="567px" top="44px">
+          <call element="mainFrame" func="selectPanel" id="call5" left="253px" top="93px">
+            <param id="param14" name="panel" type="element">
+              <element target="mainFrame" type="child">listTaskPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="updateBackButton" top="50px" type="onClick">
+        <action left="567px" top="44px">
+          <call element="mainFrame" func="selectPanel" id="call5" left="253px" top="93px">
+            <param id="param" name="panel" type="element">
+              <element target="mainFrame" type="child">listTaskPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="task" top="50px" type="onInsert">
+        <action left="534px" top="39px">
+          <call element="taskList" func="insert" id="call6" left="279px" top="58px">
+            <param id="param15" name="item" type="object">
+              <value element="task:receivedItem" func="self" funcName="self"/>
+            </param>
+          </call>
+        </action>
+        <condition left="62px" operator="eq" top="56px">
+          <eq>
+            <value element="task:receivedItem" func="property" funcName="property" left="70px" top="0px">
+              <param id="param16" name="property" type="string">
+                <stringSelect target="task" type="data">date</stringSelect>
+              </param>
+            </value>
+            <value element="calendar" func="getSelectedDate" funcName="getSelectedDate" left="70px" top="70px"/>
+          </eq>
+        </condition>
+      </event>
+      <event left="25px" target="calendar" top="50px" type="onDateClick">
+        <action left="997px" top="48px">
+          <call element="taskList" func="clear" id="call6" left="223px" top="52px"/>
+          <call element="taskList" func="load" id="call7" left="464px" top="61px">
+            <param id="param13" name="items" type="object">
+              <value element="task" func="selectByCondition" funcName="selectByCondition">
+                <param id="param14" name="condition" type="condition">
+                  <paramCondition operator="eq">
+                    <eq>
+                      <value element="task:targetItem" func="property" funcName="property" left="70px" top="0px">
+                        <param id="param17" name="property" type="string">
+                          <stringSelect target="task" type="data">date</stringSelect>
+                        </param>
+                      </value>
+                      <value element="calendar" func="getSelectedDate" funcName="getSelectedDate" left="70px" top="70px"/>
+                    </eq>
+                  </paramCondition>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="now" func="setContent" id="call8" left="767px" top="66px">
+            <param id="param22" name="content" type="string">
+              <value element="calendar" func="getSelectedDate" funcName="getSelectedDate"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="deleteButton" top="50px" type="onClick">
+        <action left="479px" top="49px">
+          <delete database="task" id="delete0" left="194px" top="64px">
+            <param id="param21" name="id">
+              <value element="taskList" func="getSelectedItem" funcName="getSelectedItem"/>
+            </param>
+          </delete>
+        </action>
+      </event>
+      <event left="4px" target="updateTaskButton" top="23px" type="onClick">
+        <action left="1001px" top="34px">
+          <call element="mainFrame" func="selectPanel" id="call9" left="11px" top="96px">
+            <param id="param23" name="panel" type="element">
+              <element target="mainFrame" type="child">updatePanel</element>
+            </param>
+          </call>
+          <call element="updateTitleTextbox" func="setValue" id="call10" left="203px" top="29px">
+            <param id="param26" name="value" type="string">
+              <value element="taskList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+                <param id="param27" name="property" type="string">
+                  <stringSelect target="task" type="data">title</stringSelect>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="updatePlaceTextbox" func="setValue" id="call11" left="407px" top="80px">
+            <param id="param28" name="value" type="string">
+              <value element="taskList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+                <param id="param29" name="property" type="string">
+                  <stringSelect target="task" type="data">place</stringSelect>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="updateTimeTextbox" func="setValue" id="call12" left="616px" top="23px">
+            <param id="param28" name="value" type="string">
+              <value element="calendar" func="getSelectedDate" funcName="getSelectedDate"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25px" target="updateButton" top="50px" type="onClick">
+        <action left="450px" top="50px">
+          <update database="task" id="update1" left="205px" top="71px">
+            <param id="param29" name="id" type="object">
+              <value element="taskList" func="getSelectedItem" funcName="getSelectedItem"/>
+            </param>
+            <param id="param30" name="title" type="string">
+              <value element="updateTitleTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param31" name="date" type="date">
+              <value element="calendar" func="getSelectedDate" funcName="getSelectedDate"/>
+            </param>
+            <param id="param32" name="time" type="time">
+              <value element="updateTimeTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param33" name="place" type="string">
+              <value element="updatePlaceTextbox" func="getValue" funcName="getValue"/>
+            </param>
+            <param id="param34" name="user_data" type="ref">
+              <value element="users" func="selectById" funcName="selectById">
+                <param id="param39" name="idProperty" type="string">
+                  <stringSelect target="users" type="data">user_id</stringSelect>
+                </param>
+                <param id="param40" name="idValue" type="any">
+                  <value element="userIdTextbox" func="getValue" funcName="getValue"/>
+                </param>
+              </value>
+            </param>
+          </update>
+        </action>
+      </event>
+      <event left="25px" target="mainFrame" top="50px" type="onDisplay">
+        <action left="450px" top="50px">
+          <call element="mainFrame" func="selectPanel" id="call13" left="240px" top="60px">
+            <param id="param37" name="panel" type="element">
+              <element target="mainFrame" type="child">loginPanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+    </events>
+  </application>
+</ajml>

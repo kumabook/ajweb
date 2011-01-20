@@ -20,6 +20,7 @@ public class Widget implements AbstractModel{
 		widgets.add("th");
 		widgets.add("label");
 		widgets.add("textbox");
+		widgets.add("textarea");
 		widgets.add("dateTextbox");
 		widgets.add("timeTextbox");
 		widgets.add("selectbox");

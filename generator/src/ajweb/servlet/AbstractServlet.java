@@ -201,17 +201,27 @@ public abstract class AbstractServlet extends HttpServlet{
 			for (Member m:members.values()){
 				synchronized (m) {
 					Log.servletLogger.fine("現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
+					System.out.println("現在のコネクションを貼っているクライアントと関係あるか判定 sessionid: " + sessionid );
 					//クライアントに関係あるか判定
 					Modification modification = new Modification(tablename, action , item);
 					ArrayList<AbstractCondition> conditions = m.relatedDBDatum.get(tablename);
+					if(conditions != null && conditions.size() == 0){//to do 常にtrueの指定を加える.
+						System.out.println("キューに追加");
+						m._queue.add(modification);//追加!				
+					}
+					
 					if(conditions != null){
 						for(int j = 0; j < conditions.size(); j++){
 							if(/*応急処置*/modification.type == "delete" || conditions.get(j).related(modification.item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
 								m._queue.add(modification); //modicationをキューに入れる
 						}
 					}
+					
+					System.out.println(isContinuationSupport(req));
 					if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
+						System.out.println(m._continuation!=null);
 						if (m._continuation!=null){
+							System.out.println("クライアントに変更を伝搬　　session_id: " + m._sessionid + "   resume continuation "); 
 							Log.servletLogger.fine("クライアントに変更を伝搬　　session_id: " + m._sessionid + "   resume continuation "); 
 							m._continuation.resume();
 							m._continuation = null;
@@ -245,13 +255,16 @@ public abstract class AbstractServlet extends HttpServlet{
 						String tablename = modifications.get(i).tablename;
 						ArrayList<AbstractCondition> conditions = m.relatedDBDatum.get(tablename);
 						//if(m.relatedDBDatum.containsKey(tablename) && m.relatedDBDatum.get(tablename).related(modifications.get(i).item)){
-						if(conditions != null){
+						if(conditions != null || conditions.size() != 0){
 							for(int j = 0; j < conditions.size(); j++){
 								if(conditions.get(j).related(modifications.get(i).item, getDatabaseProperties(tablename)))//ひとつでも関係あれば
 									m._queue.add(modifications.get(i));//追加!
 									//m_modifications.add(modifications.get(i));//追加!
 							}
-						}	
+						}
+						else {//to do 常にtrueの指定を加える.
+							m._queue.add(modifications.get(i));//追加!
+						}
 					//modicationをキューに入れる
 						//m._queue.addAll((m_modifications));
 						if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
