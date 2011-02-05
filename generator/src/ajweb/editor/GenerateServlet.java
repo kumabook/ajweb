@@ -113,11 +113,7 @@ public class GenerateServlet extends AbstractServlet {
 //					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
 				
 				String filename = request.getParameter("filename");
-				StreamResult result = new StreamResult(new File(filename + ".ajml"));
-				File file = new File(filename);
-				System.out.println(file.getAbsolutePath());
-				FileOutputStream tempFile = new FileOutputStream(filename);
-				tempFile.write(ajml.getBytes("UTF-8"));
+				StreamResult result = new StreamResult(new File("work/editor/"+filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes("UTF-8"));
 				
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -140,11 +136,11 @@ public class GenerateServlet extends AbstractServlet {
 					Config.setBaseDir(basedir);
 				}
 				else 
-					Config.templateFolder = "../generator/resources/template";
-				System.out.println(Config.templateFolder);
-				ajweb.generator.Compiler.generateWar(new File(filename+".ajml"), new File(filename+".war"));
+					Config.templateFolder = "resources/template";
+//				System.out.println(Config.templateFolder);
+				ajweb.generator.Compiler.generateWar(new File("work/editor/"+filename+".ajml"), new File("work/editor/"+filename+".war"));
 				
-				InputStream warIn = new FileInputStream(filename + ".war");
+				InputStream warIn = new FileInputStream("work/editor/"+filename + ".war");
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition", "filename=\""+ filename + ".war\"");
 				 byte[] buff = new byte[1024];

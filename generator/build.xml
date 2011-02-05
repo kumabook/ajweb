@@ -164,7 +164,19 @@
 			<fileset dir="work/">
 				<include name="jetty/**/*"/>
 				<include name="sqlite/*"/>
+				<include name="editor/*"/>
+				<include name="generator/*"/>
 			</fileset>
 		</delete>
 	</target>
+	<target name="clean_webapps">
+		<delete includeEmptyDirs="true" verbose="true">
+			<fileset dir="webapps/">
+				<include name="**/*"/>
+				<exclude name="editor/**/*"/>
+				<exclude name="demo_chat/**/*"/>
+			</fileset>
+		</delete>
+	</target>
+
 </project>
