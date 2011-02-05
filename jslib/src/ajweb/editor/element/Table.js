@@ -38,7 +38,8 @@ dojo.declare("ajweb.editor.element.Table",
       this.widget = new dijit.layout.ContentPane(
 	{ style: { position: "absolute",
 	    top: parseInt(properties.top) + "px", left: parseInt(properties.left) + "px",
-	    width: parseInt(properties.width)+6+"px", height: properties.height, border: "dashed 1px black"
+	    width: parseInt(properties.width)+this.model.children.length*2+"px", 
+		   height: properties.height, border: "solid 1px black"
 	  }});
       this.label =  new dijit.layout.ContentPane(
 	{content: this.model.tagName+"",
@@ -57,7 +58,9 @@ dojo.declare("ajweb.editor.element.Table",
       this.widget.set(
 	{style:{ top: properties.top, left: properties.left, 
 		 cssFloat: "left", styleFloat: "left",
-		 width: parseInt(properties.width)+5+"px", height: properties.height, border: "dashed 1px black"}
+		 scroll: "auto",
+		 width: parseInt(properties.width)+
+		 this.model.children.length*2+"px", height: properties.height}
 	});
     },
     removeDom: function(){

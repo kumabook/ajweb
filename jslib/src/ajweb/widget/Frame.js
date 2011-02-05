@@ -11,10 +11,11 @@ dojo.declare("ajweb.widget.Frame", ajweb.widget.Widget, {
        id : this.id,
        style: {
 	 position: "absolute",
-	 top: this.top,
-	 left: this.left,
-	 width: this.width,
-	 height: this.height,
+	 top: parseInt(this.top)+"px",
+	 left: parseInt(this.left)+"px",
+	 width: parseInt(this.width)+"px",
+	 height: parseInt(this.height)+"px",
+	 scroll: "auto",
 	 backgroundColor: this.color
        }
        });

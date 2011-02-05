@@ -1,6 +1,7 @@
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Form");
 dojo.require("dijit.form.Textarea");
+dojo.require("dijit.form.NumberSpinner");
 dojo.require("dijit.form.Select");
 dojo.require("dijit.layout.ContentPane");
 

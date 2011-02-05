@@ -4,12 +4,14 @@ dojo.require("ajweb.editor.element.Removable");
 dojo.require("ajweb.editor.element.Menuable");
 dojo.require("dijit.layout.ContentPane");
 
-dojo.provide("ajweb.editor.element.Textbox");
-dojo.declare("ajweb.editor.element.Textbox",
+dojo.provide("ajweb.editor.element.Text");
+dojo.declare("ajweb.editor.element.Text",
 	     [ajweb.editor.element.Element,
+	      ajweb.editor.element.Menuable,
 	      ajweb.editor.element.Movable,
-	      ajweb.editor.element.Menuable],
-  /** @lends ajweb.editor.element.Textbox.prototype */
+	      ajweb.editor.element.Resizable
+	     ],
+  /** @lends ajweb.editor.element.Button.prototype */
   {
     /**
      * Constructor
@@ -32,16 +34,25 @@ dojo.declare("ajweb.editor.element.Textbox",
     createDom: function(properties){
       this.widget = new dijit.layout.ContentPane(
 	{
-	  content: this.model.properties.tagName,
-	  style:{position: "absolute",width: properties.width, height: "20px",
-		 top: properties.top, left: properties.left, border: "solid 1px"
-	  }
+	  style:{
+	    position: "absolute",
+	    backgroundColor: "#E1EBFB",
+	    border: "solid 1px #000000",
+	    top: parseInt(this.model.properties.top)+"px", left: parseInt(this.model.properties.left)+"px",
+	    width: parseInt(this.model.properties.width)+"px", height: parseInt(this.model.properties.height)+"px"
+//	    top: properties.top,
+//	    left: properties.left
+	  },
+	  content: properties.content
 	});
       return this.widget.domNode;
     },
     updateDom: function(){
       this.widget.set(
-	{style:{top: this.model.properties.top, left: this.model.properties.left, width: this.model.properties.width}
+	{style:{
+	   top: parseInt(this.model.properties.top)+"px", left: parseInt(this.model.properties.left)+"px",
+	   width: parseInt(this.model.properties.width)+"px", height: parseInt(this.model.properties.height)+"px"
+	 }
 //	  content: this.model.properties.content
 	});
     },

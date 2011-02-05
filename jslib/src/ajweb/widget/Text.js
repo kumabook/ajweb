@@ -6,10 +6,10 @@
  */
 
 
-dojo.provide("ajweb.widget.Label");
+dojo.provide("ajweb.widget.Text");
 dojo.require("ajweb.widget.Widget");
-dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
-/** @lends ajweb.widget.Label */
+dojo.declare("ajweb.widget.Text", ajweb.widget.Widget,
+/** @lends ajweb.widget.Text */
 {
     /** テキストを作成します
      *
@@ -27,11 +27,13 @@ dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
 	constructor : function(opt){
 	},
 	createWidget: function(){
-	  this.widget= document.createElement("label");
+	  this.widget= document.createElement("div");
 	  this.widget.innerHTML = this.content;
 	  this.widget.style.position = "absolute";
 	  this.widget.style.top = parseInt(this.top)+"px";
 	  this.widget.style.left = parseInt(this.left)+"px";
+	  this.widget.style.height = parseInt(this.height)+"px";
+	  this.widget.style.width = parseInt(this.width)+"px";
 
 	  this.element = this.widget;
 	},
@@ -53,6 +55,6 @@ dojo.declare("ajweb.widget.Label", ajweb.widget.Widget,
 	 *  button.inspect();
 	 */
 	inspect : function(){
-		return "LabelWidget" + this.id;
+		return "TextWidget" + this.id;
 	}
 });

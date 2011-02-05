@@ -4,6 +4,9 @@ dojo.provide("ajweb.editor.model.Widget");
 dojo.declare("ajweb.editor.model.Widget", ajweb.editor.model.Eventable,
   /** @lends ajweb.model.Widget.prototype */
 {
+  getProjLabel: function(){
+    return this.properties.id;;
+  }
 /* todo valueStore wdigetStoreをapplicationにひとつだけ持たせるようにする　dataTypeStoreを参考に
   constructor: function(){
     this.application.getDataTypeStore().newItem({name: this.id, 

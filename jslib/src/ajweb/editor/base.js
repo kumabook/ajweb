@@ -211,7 +211,7 @@ ajweb.editor.PARAM_CONTAINER_TOP = 80;
 ajweb.editor.PARAM_CONTAINER_LEFT = 10;
 
 
-ajweb.editor.DATABASE_WIDTH = 320;
+ajweb.editor.DATABASE_WIDTH = 280;
 ajweb.editor.DATABASE_INIT_HEIGHT = 100;
 ajweb.editor.DATABASE_PROP_HEIGHT = 30;
 ajweb.editor.DATABASE_PROPNAME_WIDTH  = 110;
@@ -246,3 +246,74 @@ ajweb.editor.CONDITION_LEFT = 70;
 
 ajweb.editor.CONDITION_OPERATOR_TOP = 35;
 ajweb.editor.CONDITION_OPERATOR_LEFT = 95;
+
+
+ajweb.editor.initResource = function(){
+
+
+ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, ajweb.locale);//, "ja");
+
+  ajweb.editor.toolboxItems = (function(){
+				 var label = ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
+				 var toolboxItemWidget = [];
+				 var toolboxItemDatabase = [];
+				 var toolboxItemEvent = [];
+				 var toolboxItemAction = [];
+				 var mlist = ajweb.editor.MODELLIST;
+				 var i = 0;
+				 for(i = 0; i < mlist.length; i++){
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "widget")
+				     toolboxItemWidget.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "database")
+				     toolboxItemDatabase.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "event")
+				     toolboxItemEvent.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				   if(mlist[i].toolboxType && mlist[i].toolboxType == "action")
+				     toolboxItemAction.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
+				 }
+				 toolboxItemEvent.push({id: "action", name: "Action",children: toolboxItemAction});
+				 return [
+				   {
+				     id:"Widgets", name:"Widgets",
+				     children: toolboxItemWidget
+				   },
+				   {
+				     id: "DB",  name: "DB",
+				     children: toolboxItemDatabase
+				   },
+				   {
+						    id: "Event", name: "Event",
+				     children: toolboxItemEvent
+				   }
+				 ];
+			       })();
+  
+  /**
+   * ajwebでサポートされる型を保持するdojoストア
+   */
+  ajweb.editor.dataTypeStore = ajweb.editor.getStore("id", "name", ajweb.resources.dataTypes);
+  
+  /**
+   * 条件式の演算子をアルファベットから記号表記に変換
+   */
+  ajweb.editor.conditionToOperator = function(name){
+    if(name == "eq")
+      return "=";
+    else if(name == "gt")
+    return ">";
+    else if(name == "lt")
+    return "<";
+    else if(name == "and")
+    return "AND";
+		   else if(name == "or")
+    return "OR";
+    else if(name == "not")
+    return "NOT";
+    
+    return "";
+  };
+  /**
+   * 条件式のdojoストア
+   */
+  ajweb.editor.conditionOperatorStore = ajweb.editor.getStore("id", "name", ajweb.resources.conditionOperators);
+};

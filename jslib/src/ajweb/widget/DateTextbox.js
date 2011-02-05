@@ -26,7 +26,12 @@ dojo.declare("ajweb.widget.DateTextbox",ajweb.widget.Widget,
      return ajweb.date.format(this.widget.value);
    },
    setValue: function(param){
-     this.widget.set({value: ajweb.date.parse(param.value)});
+     var date;
+     if(!param.date)
+       date = new Date();
+     else 
+       ajweb.date.parse(param.value);
+     this.widget.set({value: date});
    },
    onChange: function(){
    },

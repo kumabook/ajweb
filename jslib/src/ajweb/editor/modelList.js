@@ -1,14 +1,7 @@
 dojo.provide("ajweb.editor.modelList");
 dojo.requireLocalization("ajweb.editor", "resources");
 
-//dojo.addOnLoad(function(){
-//		 ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");
 
-ajweb.editor.MODELLIST =  [];
-ajweb.editor.initMODELLIST = function(){
-
-
-ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, ajweb.locale);//, "ja");
 
 /**
  * 各モデルの詳細を保持する配列。<br/>
@@ -21,16 +14,21 @@ ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, ajw
  * eventList: イベントを持つ場合、取り得るイベントのリスト。optional。<br/>
  * acceptModelType: 子要素に持てるコンポーネントのリスト。<br/>
  */
-ajweb.editor._MODELLIST =  [
+ajweb.editor.MODELLIST =  [
   {
     name: "application",
     label: "application",
     label_ja: "アプリケーション",
     modelType: "application",
     modelClass: "Application",
+    elementClass: "Application",
     acceptModelType: ["interfaces", "databases", "events"],
-    propertyList: ["name"],
-    defaultProperties: {}
+    propertyList: ["name", "isComet", "sessionTimeout",
+		   "longPollingTimeout", "longPollingInterval",
+		   "pollingInterval", "_isDisplay"],
+    container: "layout",
+    defaultProperties: {isComet: "true", sessionTimeout: 30, longPollingTimeout: 60000, longPollingInterval: 1,
+		       pollingInterval: 3000 }
   },
   {
     name:"interfaces",
@@ -40,8 +38,7 @@ ajweb.editor._MODELLIST =  [
     modelClass: "Model",
     acceptModelType: ["widget"],
     propertyList: [],
-    defaultProperties: {},
-    projLabel: ajweb.resources.interfaces
+    defaultProperties: {}
   },
   {
     name:"databases",
@@ -50,12 +47,12 @@ ajweb.editor._MODELLIST =  [
     modelClass: "Eventable",
     elementClass: "databases",
     acceptModelType: ["database"],
+    container: "layout",
     propertyList: ["tagName", "id", "_isDisplay"],
     eventList: [],
     getters: [],
     setters: [],
-    defaultProperties: { tagName: "databases"},
-    projLabel: ajweb.resources.databases
+    defaultProperties: { tagName: "databases"}
   },
   {
     name:"events",
@@ -65,8 +62,7 @@ ajweb.editor._MODELLIST =  [
     acceptModelType: ["event"],
     propertyList: [],
     eventList: [],
-    defaultProperties: {},
-    projLabel: ajweb.resources.events
+    defaultProperties: {}
   },
 
 
@@ -91,6 +87,28 @@ ajweb.editor._MODELLIST =  [
     ],
     setters: [{name: "setContent", label: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
   },
+/*  {
+    name:'text',
+    label:'text',label_ja:'ラベル',
+    acceptModelType: [],
+    modelType: "widget",
+    modelClass: "Widget",
+    elementClass: "Text",
+    acceptModelType: [],
+    toolboxType: "widget",
+    propertyList: ["tagName", "id",
+		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
+		   {name: "width", input: "number", type: "int"},
+		   {name: "height", input: "number", type: "int"},
+		   "content"],
+    eventList: ["onDisplay", "onClick"],
+    defaultProperties: { tagName: "text", content: "テキスト" , width: "100px", height: "100px"},
+    getters: [
+      {	name: "getContent", label: "getContent",  params: [{key: "value", type: "string"}]}
+    ],
+    setters: [{name: "setContent", label: "setContent", params: [{key: "content", type: "string"}], description: "表示されている内容を変更" }]
+  },*/
   {
     name:'button',
     label:'button',label_ja:'ボタン',
@@ -125,7 +143,7 @@ ajweb.editor._MODELLIST =  [
 		   {name: "left", input: "number", type: "int"},
 		   "value", "placeHolder", "candidateList"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "20px"},
+    defaultProperties: {tagName: "textbox", width: "150px", height: "20px"},
     getters: [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
@@ -147,7 +165,7 @@ ajweb.editor._MODELLIST =  [
 		   {name: "left", input: "number", type: "int"},
 		    "value"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
-    defaultProperties: {tagName: "textarea", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "textarea", width: "150px", height: "100px"},
     getters: [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "テキストボックスに入力されている値を取得" }
     ],
@@ -168,7 +186,7 @@ ajweb.editor._MODELLIST =  [
 		   {name: "left", input: "number", type: "int"},
 		   "content"],
     eventList: ["onDisplay", "onFocus", "onBlur"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "passwordbox", width: "150px", height: "100px"},
     getters: [
       {	name: "getValue", label: "getValue", params: [], returnType: "string", description: "パスワードボックスに入力されている値を取得" }
     ],
@@ -188,7 +206,7 @@ ajweb.editor._MODELLIST =  [
 		   {name: "left", input: "number", type: "int"},
 		   "value"],
     eventList: ["onDisplay", "onChange"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "dateTextbox", width: "100px", height: "100px"},
     getters: [
       {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
     ],
@@ -210,7 +228,7 @@ ajweb.editor._MODELLIST =  [
 		   {name: "left", input: "number", type: "int"}
 		  ],
     eventList: ["onDisplay", "onChange"],//onFocus", "onBlur"],
-    defaultProperties: {tagName: "textbox", width: "100px", height: "100px"},
+    defaultProperties: {tagName: "timeTextbox", width: "100px", height: "100px"},
     getters: [
       {	id: "getValue", name: "value", params: [], returnType: "string", description: "入力されている値を取得" }
     ],
@@ -301,9 +319,12 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Panel",
     acceptModelType: ["widget"],
     toolboxType: "widget",
+    container: "layout",
     propertyList: ["tagName", "id",
+		   {name: "height", input: "number", type: "int"},
 		   {name: "width", input: "number", type: "int"},
 		   {name: "top", input: "number", type: "int"},
+		   {name: "left", input: "number", type: "int"},
 		   "_isDisplay"],
     eventList: ["onDisplay"],
     defaultProperties: { tagName: "panel", width: "300px", height: "300px"},
@@ -363,8 +384,8 @@ ajweb.editor._MODELLIST =  [
     propertyList: ["tagName", "id", "tablename", "type", "dbName", "dbDriver",  "_unEdit"],
     eventList: ["onChange", "onInsert", "onDelete", "onUpdate"],
     defaultProperties: { tagName: "database", type: "server",
-			dbName: "jdbc:derby:work/appName",
-			dbDriver: "org.apache.derby.jdbc.EmbeddedDriver"
+			dbName: "jdbc:derby:work/sqlite/appName",
+			dbDriver: "org.sqlite.JDBC"
 		       },
     getters: [
       { name: "selectById", label: "selectById", 
@@ -427,8 +448,7 @@ ajweb.editor._MODELLIST =  [
     elementClass: "Init",
     acceptModelType: [],
     propertyList: [],
-    defaultProperties: {},
-    projLabel: ajweb.resources.initItems
+    defaultProperties: {}
   },
   {
     name: "item",
@@ -668,7 +688,9 @@ ajweb.editor._MODELLIST =  [
     modelClass: "Value",
     elementClass: "value",
     acceptModelType: [],
-    propertyList: [{name: "element", type: "element", ref: true, refProp: "id"}, "funcName", "func", "type"],
+    propertyList: [
+      {name: "element", type: "element", ref: true, refProp: "id"}, 
+      "func", "type", "elemType", "database"],
     eventList: [],
     defaultProperties: {}
   },
@@ -776,6 +798,32 @@ ajweb.editor._MODELLIST =  [
     eventList: [],
     defaultProperties: {}
   },
+  {
+    name: "targetItem",
+    modelType: "",
+    elementType: "",
+    acceptModelType: [],
+    propertyList: [],
+    eventList: [],
+    getters : [
+      {name: "self", label: "self", params: []},
+      {name: "property", label: "property", params: [{key: "name", type: "", input:{className:  "stringSelect", type: "data", targetProperty: "database"}}]}
+    ],
+    defaultProperties: {}
+  },
+  {
+    name: "receivedItem",
+    modelType: "",
+    elementType: "",
+    acceptModelType: [],
+    propertyList: ["receivedDatabase"],
+    eventList: [],
+    getters : [
+      {name: "self", label: "self", params: []},
+      {name: "property", label: "property", params: [{key: "name", type: "", input:{className:  "stringSelect", type: "data", targetProperty: "database"}}]}
+    ],
+    defaultProperties: {}
+  },
 /*  {todo 拡張可能なjavaScriptの関数を条件として
     name: "valueIsTrue",
     modelType: "predicate",
@@ -801,70 +849,4 @@ ajweb.editor._MODELLIST =  [
 ];
 //});
 
-ajweb.editor.MODELLIST = ajweb.editor._MODELLIST.concat(ajweb.editor.MODELLIST);
 
-
-  ajweb.editor.toolboxItems = (function(){
-				 var label = ajweb.locale == "en" ? "label" : "label"+ajweb.locale;
-				 var toolboxItemWidget = [];
-				 var toolboxItemDatabase = [];
-				 var toolboxItemEvent = [];
-				 var toolboxItemAction = [];
-				 var mlist = ajweb.editor.MODELLIST;
-				 var i = 0;
-				 for(i = 0; i < mlist.length; i++){
-				   if(mlist[i].toolboxType && mlist[i].toolboxType == "widget")
-				     toolboxItemWidget.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
-				   if(mlist[i].toolboxType && mlist[i].toolboxType == "database")
-				     toolboxItemDatabase.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
-				   if(mlist[i].toolboxType && mlist[i].toolboxType == "event")
-				     toolboxItemEvent.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
-				   if(mlist[i].toolboxType && mlist[i].toolboxType == "action")
-				     toolboxItemAction.push({id: mlist[i].name, name: mlist[i][label] ? mlist[i][label] : mlist[i].name});
-				 }
-				 toolboxItemEvent.push({id: "action", name: "Action",children: toolboxItemAction});
-				 return [
-				   {
-				     id:"Widgets", name:"Widgets",
-				     children: toolboxItemWidget
-				   },
-				   {
-				     id: "DB",  name: "DB",
-				     children: toolboxItemDatabase
-				   },
-				   {
-						    id: "Event", name: "Event",
-				     children: toolboxItemEvent
-				   }
-				 ];
-			       })();
-  
-  /**
-   * ajwebでサポートされる型を保持するdojoストア
-   */
-  ajweb.editor.dataTypeStore = ajweb.editor.getStore("id", "name", ajweb.resources.dataTypes);
-  
-  /**
-   * 条件式の演算子をアルファベットから記号表記に変換
-   */
-  ajweb.editor.conditionToOperator = function(name){
-    if(name == "eq")
-      return "=";
-    else if(name == "gt")
-    return ">";
-    else if(name == "lt")
-    return "<";
-    else if(name == "and")
-    return "AND";
-		   else if(name == "or")
-    return "OR";
-    else if(name == "not")
-    return "NOT";
-    
-    return "";
-  };
-  /**
-   * 条件式のdojoストア
-   */
-  ajweb.editor.conditionOperatorStore = ajweb.editor.getStore("id", "name", ajweb.resources.conditionOperators);
-};

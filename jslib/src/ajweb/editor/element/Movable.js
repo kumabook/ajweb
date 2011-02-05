@@ -72,18 +72,16 @@ dojo.declare("ajweb.editor.element.Movable", null,
 	      parseInt(this.moveContainerDomNode.style.width) - parseInt(width);//ここにスクロールバーも計算にいれるとよい?
 	  var container_height = this.moveContainerDomNode.scrollHeight ? this.moveContainerDomNode.scrollHeight :
 	      parseInt(this.moveContainerDomNode.style.height) - parseInt(height);
-/*	  console.log(this.moveContainerDomNode.scrollWidth);
-	  console.log(this.moveContainerDomNode.scrollLeft);
-	  console.log(this.moveContainerDomNode.offsetWidth);
-	  console.log(this.moveContainerDomNode.offsetLeft);*/
 
 	  var move = function(e){
 	    var _x = e.clientX + left;
 	    var _y = e.clientY + top;
 	    if(_x < container_width-1 &&  _x > 0){
-	      this.moveDomNode.style.left = _x + "px";
+	      if(_x % 5 == 0)
+		this.moveDomNode.style.left = _x + "px";
 	    }
 	    if(_y < container_height-1 &&  _y > 0){
+	      if(_y % 5 == 0)
 	      this.moveDomNode.style.top = _y + "px";
 	    }
 

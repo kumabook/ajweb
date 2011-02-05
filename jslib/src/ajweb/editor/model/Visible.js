@@ -22,7 +22,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
      * @param {ajweb.editor.model.Model} opt.parent 親モデル
      * @param {ajweb.editor.element.Element} opt.container 配置されるDOM要素
      */
-    constructor: function(opt, display)
+    constructor: function(opt)
     {
       /**
        * このモデルを表すDOMを管理するクラスの名前
@@ -73,7 +73,7 @@ dojo.declare("ajweb.editor.model.Visible", ajweb.editor.model.Model,
     createDomDescendants: function(container){
       if(!container)
 	container = this.element;
-      if(!(container.openDialog) && this.tagName != "frame")
+      if(!(container.openDialog) && this.tagName != "frame" && this.tagName != "application")
 	for(var i = 0; i < this.children.length; i++){
 	  if(this.children[i].createDomRecursive)
 	    this.children[i].createDomRecursive(container);

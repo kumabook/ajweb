@@ -14,24 +14,6 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      var name = this.properties.element;
      if(!name)
        return this.inherited(arguments);
-     if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){
-       this.tagName = name.match("([0-9a-z]+):(targetItem|receivedItem)")[2];
-
-       var node = this.inherited(arguments);
-       for(var i = 0; i < node.childNodes.length; i++){
-	 node.removeChild(node.childNodes[i]);
-       }
-       node.removeAttribute("type");
-       node.removeAttribute("element");
-       node.removeAttribute("func");
-       var property;
-       if(this.properties.funcName == "property" && this.children[0].children[0]){
-	 property = this.children[0].children[0].properties._character;
-	 node.setAttribute("property", property);
-       }
-       this.tagName = "value";
-       return node;
-     }
      else if(name == "int" || name == "string" || name == "date" || 
 	     name == "time" || name == "datetime" || name == "password"){
        var node = this.inherited(arguments);
@@ -42,13 +24,13 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
        return this.inherited(arguments);
    },
 
-   createParam: function(elemName, funcName){
+   createParam: function(elemName, funcName, database){
      var i = 0;
      var model = this.application.getElementByPropId(elemName);
      var name = model ? model.properties.tagName : elemName;
 
-     if(name.match("([0-9a-z]+):(targetItem|receivedItem)")){
-       var database = name.match("([0-9a-z]+):(targetItem|receivedItem)")[1];
+     if(name == "receivedItem" || name == "targetItem"){
+//       var database = this.application.getElementByPropId(databaseId);
 
        if(funcName == "property"){
 	 var param = this.editor.newModel("param",
@@ -119,6 +101,7 @@ dojo.declare("ajweb.editor.model.Value", ajweb.editor.model.Visible,
      while(this.children.length != 0)
        this.children[0].remove();
    },
+   
    validate: function(){
      if(this.properties.element == null || this.properties.func == null){
        this.log("no value");

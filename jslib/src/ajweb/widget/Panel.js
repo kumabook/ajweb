@@ -38,8 +38,9 @@ dojo.declare("ajweb.widget.Panel",
 		     id : this.id,
 		     content: "",
 		     style: {
-		       width: this.width,
-		       height: this.height,
+		       width: parseInt(this.width)+"px",
+		       height: parseInt(this.height)+"px",
+		       scroll: "auto",
 		       backgroundColor: this.color
 		     }
      });

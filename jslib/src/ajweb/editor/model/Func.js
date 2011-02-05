@@ -9,7 +9,7 @@ dojo.declare("ajweb.editor.model.Func", ajweb.editor.model.Visible,
    createParam: function(elemName, funcName){
      var model = this.application.getElementByPropId(elemName);
      if(model instanceof ajweb.editor.model.Database){//データベースのスキーマからparamModelを追加
-       if(funcName=="delete"){
+       if(funcName=="delete" || funcName == "update"){
 	 var param = this.editor.newModel("param", {name: "item", type: "object"}, this, this.element);
 	 var value = this.editor.newModel("value",{}, param, param.element);
        }

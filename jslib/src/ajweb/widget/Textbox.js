@@ -45,6 +45,8 @@ dojo.declare("ajweb.widget.Textbox",ajweb.widget.Widget,
     return this.widget.value;
   },
   setValue: function(param){
+    if(!param.value)
+      param.value = "";
     this.widget.set({value: param.value});
   },
   display: function(){

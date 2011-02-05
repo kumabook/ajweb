@@ -21,6 +21,14 @@ dojo.declare("ajweb.widget.Widget", null,
      */
     constructor: function(opt){
       dojo.mixin(this, opt);
+      if(this.top)
+	this.top = parseInt(this.top) + "px";
+      if(this.left)
+	this.left = parseInt(this.left) + "px";
+      if(this.width)
+	this.width = parseInt(this.width) + "px";
+      if(this.height)
+	this.height = parseInt(this.height) + "px";
       /** {int} ウィジェットID
        * @field */
       this.id = opt.id;

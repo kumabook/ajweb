@@ -26,7 +26,9 @@ dojo.declare("ajweb.editor.element.Property",
      * @param {DOM} opt.container コンテナ要素
      */
     constructor: function(opt)
-    {},
+    {
+      this.model.properties.dbName = "jdbc:derby:work/sqlite/" + this.model.application.properties.name;
+    },
     /**
      * DOM要素を作成し、this.domNodeにDOMノードを設定する。
      */
@@ -124,7 +126,7 @@ dojo.declare("ajweb.editor.element.Property",
 
       this.widget.domNode.appendChild(this.propName.domNode);
       this.widget.domNode.appendChild(this.select.domNode);
-      this.widget.domNode.appendChild(this.isUnique.domNode);
+//      this.widget.domNode.appendChild(this.isUnique.domNode);
       this.container.domNode.style.height = (this.model.parent.children.length) * ajweb.editor.DATABASE_PROP_HEIGHT + 35 + "px";
 
       return this.widget.domNode;

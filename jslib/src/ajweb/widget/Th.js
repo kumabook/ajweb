@@ -29,6 +29,7 @@ dojo.declare("ajweb.widget.Th",
 	 */
 
 	constructor : function(opt){
+
 	},
 	createWidget :function(){
 

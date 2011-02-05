@@ -33,8 +33,8 @@ dojo.declare("ajweb.editor.element.Value",
       var that = this;
       var top = that.model.properties.top ? that.model.properties.top : "0px";
       var left = that.model.properties.left ? that.model.properties.left : "0px";
-      var label = (that.model.properties.element && that.model.properties.funcName) ?
-	that.model.properties.element + a.METHOD_SEPARATOR + that.model.properties.funcName : "no value";
+      var label = (that.model.properties.element && that.model.properties.func) ?
+	that.model.properties.element + a.METHOD_SEPARATOR + that.model.properties.func : "no value";
       this.widget =  new dijit.form.Button(
 	{ label: label,
 	  style: {position: "absolute", top: top, left: left
@@ -58,7 +58,6 @@ dojo.declare("ajweb.editor.element.Value",
 
       this.elemName.startup();
       this.funcName.startup();
-      alert("startup");
       this.elemSelect.startup();
       this.funcSelect.startup();
       this.funcButton.startup();
@@ -78,12 +77,18 @@ dojo.declare("ajweb.editor.element.Value",
 	 style: {position : "absolute", width: "150px", top: "25px",left: "100px"},
 	 onChange: function(value){
 	   that.element = that.model.application.getElementByPropId(that.elemSelect.value);
-	   ajweb.editor.getGetterStore(
-	     that.element ? that.element.properties.tagName : that.elemSelect.value,
-	     that.funcSelect.store);
-	   that.funcSelect.set({value: that.model.properties.func ? that.model.properties.func : ""});
-	   that.funcSelect.set({ disabled: false});
-	   that.funcButton.set({ disabled: false});
+	   that.elemSelect.store.fetchItemByIdentity(
+	     {identity: that.elemSelect.value,
+	      onItem: function(item){
+		that.database = that.elemSelect.store.getValue(item, "database");
+
+		ajweb.editor.getGetterStore(
+		  that.element ? that.element.properties.tagName : that.elemSelect.value,
+		  that.funcSelect.store);
+		that.funcSelect.set({value: that.model.properties.func ? that.model.properties.func : ""});
+		that.funcSelect.set({ disabled: false});
+		that.funcButton.set({ disabled: false});
+	      }});
 	 }
 	});
 
@@ -99,28 +104,32 @@ dojo.declare("ajweb.editor.element.Value",
 	style: {position : "absolute",width: "150px",top: "50px",left: "100px"}
 	  });
       that.funcButton = new dijit.form.Button(
-	{ label: that.model.properties.funcName ? ajweb.resources.change : ajweb.resources.enter,
+	{ label: that.model.properties.func ? ajweb.resources.change : ajweb.resources.enter,
 	  disabled: that.model.properties.element ? false : true,
 	  style: {position : "absolute",width: "80px", top: "47px",left: "280px"},
 	  onClick: function(){
 	    that.model.clearParam();
-	    that.model.properties.element = that.element ? that.element.properties.id : that.elemSelect.value;
+	    that.elemSelect.store.fetchItemByIdentity(
+	      {identity: that.elemSelect.value,
+	       onItem: function(item){
+		 //		console.log("funcName: " + item.name + "funcValue: " + item.label);
+		 that.model.properties.element = that.element ? that.element.properties.id : that.elemSelect.value;
+		 that.model.properties.elemType = that.elemSelect.store.getValue(item, "type");
+	      }});
+
 
 	    that.funcSelect.store.fetchItemByIdentity(
 	      {identity: that.funcSelect.value,
 	      onItem: function(item){
 //		console.log("funcName: " + item.name + "funcValue: " + item.label);
 		that.model.properties.func = that.funcSelect.store.getValue(item, "name");
-		that.model.properties.funcName = that.funcSelect.store.getValue(item, "label");
 
 	      }});
 	    that.model.createParam(that.element ? that.element.properties.id : that.elemSelect.value,
-				   that.model.properties.func, that.element);
+				   that.model.properties.func, that.database);
 	    this.set({label: ajweb.resources.change});
-	    //ラベルを変更
-//	    that.model.setRefProperty();
-//	    that.model.updateDom();
-	    that.model.update();
+
+	    that.model.update();	    //ラベルを変更
 	  }});
       //引数
       that.paramContainer = new dijit.layout.ContentPane(
@@ -133,7 +142,7 @@ dojo.declare("ajweb.editor.element.Value",
       that.containerNode = that.paramContainer.domNode;
 
 
-      if(that.model.properties.element && that.model.properties.funcName)
+      if(that.model.properties.element && that.model.properties.func)
 	that.model.reCreateParamDom();
 
       that.dialog.containerNode.appendChild(that.elemSelect.domNode);
@@ -151,8 +160,8 @@ dojo.declare("ajweb.editor.element.Value",
     },
     updateDom: function(){
       var a = ajweb.editor;
-      var label = (this.model.properties.element && this.model.properties.funcName) ?
-	this.model.properties.element + a.METHOD_SEPARATOR + this.model.properties.funcName : "no value";
+      var label = (this.model.properties.element && this.model.properties.func) ?
+	this.model.properties.element + a.METHOD_SEPARATOR + this.model.properties.func : "no value";
       this.widget.set({label: label});
       if(this.model.parent.tagName == "param")
 	label = this.model.parent.properties.name + a.PARAM_SEPARATOR + label;

@@ -1,7 +1,7 @@
-dojo.require("ajweb.editor.model.Model");
+dojo.require("ajweb.editor.model.Visible");
 
 dojo.provide("ajweb.editor.model.Application");
-dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
+dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Visible,
   /** @lends ajweb.editor.model.Application.prototype */
   {
     constructor: function(){
@@ -34,17 +34,9 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
     getDataTypeStore: function(){
       if(this.dataTypeStore)
 	return this.dataTypeStore;
-      
       else {
-      this.dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
-     /*var dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
-      var databaseModels = this.getDatabaseModels();
-      var databaseModels = this.getDatabaseModels();
-      for(var i = 0; i < var databaseModels.length; i++){
-	this.dataTypeStore.newItem({name: databaseModels[i].properties.id, label: databaseModels[i].properties.id, database: databaseModels[i]});
-      }
-      this.dataTypeStore.save();*/
-      return this.dataTypeStore;
+	this.dataTypeStore = ajweb.editor.getStore("name", "label", dojo.clone(ajweb.resources.dataTypes));
+	return this.dataTypeStore;
       }
     },
     getDatabaseStore: function(){
@@ -97,19 +89,27 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
       while(parentModel.tagName != "events"){
 	if(parentModel.tagName == "paramCondition"){      //databaseのselect系の内部の場合は,targetItemを追加
 	  var targetElement = this.getElementByPropId(parentModel.parent.parent.properties.element);
-	  items.push({name:  targetElement.properties.id + ":targetItem", label: "targetItem(" + targetElement.properties.id + ")"});
+	  items.push({name:  "targetItem", label: "targetItem(" + targetElement.properties.id + ")",
+		     database: targetElement.properties.id});
 	}
 	else if(parentModel.tagName == "event"){
 	  var targetElement = that.application.getElementByPropId(parentModel.properties.target);
 	  if(targetElement.tagName == "database"){//databaseイベントの場合はreceivedItemを追加
-	    items.push({name:  targetElement.properties.id + ":receivedItem", label: "receivedItem(" + targetElement.properties.id + ")"});
+	    items.push({name:  "receivedItem", label: "receivedItem(" + targetElement.properties.id + ")", 
+			database: targetElement.properties.id});
 	  }
 	}
 	parentModel = parentModel.parent;
       }
       items.push({name: "separator0"});
-      items.push({name: "primitive", label: "基本型"});
-      items = items.concat(ajweb.resources.dataTypes);
+      items.push({name: "primitive", label: "基本型", type: "data"});
+      items.push({name: "int", label: "int", type: "data"});
+      items.push({name: "string", label: "string", type: "data"});
+      items.push({name: "date", label: "date", type: "data"});
+      items.push({name: "time", label: "time", type: "data"});
+      items.push({name: "datetime", label: "datetime", type: "data"});
+
+//      items = items.concat(ajweb.resources.dataTypes);
       items.push({name: "separator1"});
       items.push({name: "element", label: "ウィジェット"});
 
@@ -121,7 +121,11 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 	for(var j = 0; j < list.length; j++){
 	  if(list[j].name == widgetModels[i].tagName){
 	    if(list[j].getters.length > 0)
-	      items.push({label: widgetModels[i].properties.id, jsId: widgetModels[i].id, name: widgetModels[i].properties.id});
+	      items.push({ name: widgetModels[i].properties.id, 
+			   label: widgetModels[i].properties.id, 
+			   jsId: widgetModels[i].id,
+			   type: "widget"
+			 });
 	  }
 	}
       }
@@ -133,7 +137,11 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Model,
 
       var databases = this.getDatabasesModel();
       for(i = 0; i < databases.children.length; i++){
-	items.push({label: databases.children[i].properties.id, jsId: databases.children[i].id, name: databases.children[i].properties.id});
+	items.push({ name: databases.children[i].properties.id,
+		     label: databases.children[i].properties.id,
+		     jsId: databases.children[i].id, 
+		     type: "database"
+		   });
       }
       
       var store = new dojo.data.ItemFileWriteStore(

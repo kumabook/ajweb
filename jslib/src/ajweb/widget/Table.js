@@ -41,7 +41,7 @@ ajweb.widget.Widget,
     this.widget= new dojox.grid.DataGrid(
       {
 //	id: this.id,
-	style:{ position: "absolute", top: this.top, left: this.left, width: this.width, height: this.height
+	style:{ position: "absolute", top: this.top, left: this.left, width: parseInt(this.width)+25, height: this.height
 	},
 	selectionMode: "single",
 	structure: this.structure,
@@ -176,6 +176,7 @@ ajweb.widget.Widget,
   display: function(){
     this.widget.setStructure(this.structure);
     this.widget.startup();
+    this.onDisplay();
   },
   onDisplay: function(){
   },

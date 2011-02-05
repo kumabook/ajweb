@@ -18,7 +18,6 @@ dojo.require("dojo.data.ItemFileWriteStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.tree.dndSource");
 dojo.require("dojox.grid.DataGrid");
-//dojo.require("dojox.grid.cells.dijit");
 
 dojo.require("ajweb.editor.gridCellEdit");
 
@@ -44,6 +43,7 @@ dojo.require("ajweb.editor.model.Value");
 dojo.require("ajweb.editor.model.Param");
 dojo.require("ajweb.editor.model.ParamCondition");
 dojo.require("ajweb.editor.model.StringSelect");
+dojo.require("ajweb.editor.element.Application");
 dojo.require("ajweb.editor.element.Widget");
 dojo.require("ajweb.editor.element.Table");
 dojo.require("ajweb.editor.element.Databases");
@@ -59,6 +59,7 @@ dojo.require("ajweb.editor.element.PredicateOperator");
 dojo.require("ajweb.editor.element.Panel");
 dojo.require("ajweb.editor.element.Button");
 dojo.require("ajweb.editor.element.Label");
+dojo.require("ajweb.editor.element.Text");
 dojo.require("ajweb.editor.element.Th");
 dojo.require("ajweb.editor.element.Textbox");
 dojo.require("ajweb.editor.element.Textarea");
@@ -91,7 +92,7 @@ dojo.declare(
      */
     constructor: function(name, generateURL, uploadURL){
 
-      ajweb.editor.initMODELLIST();//初期化処理
+      ajweb.editor.initResource();//初期化処理
 
       this.name = name;
       this.generateURL = generateURL;
@@ -482,9 +483,14 @@ dojo.declare(
       this.contextMenuItems = [];
       this.contextMenu.bindDomNode(this.projectTree.domNode);
       ajweb.editor.isPreventUnload = true;
-      window.onbeforeunload = function(){
-	return ajweb.editor.isPreventUnload;
-      };
+      window.onbeforeunload = function(event){
+	event = event || window.event;
+
+	if(ajweb.editor.isPreventUnload){
+	 return event.returnValue = "プロジェクトはまだ保存されていません";
+	}
+      }
+//	return ajweb.editor.isPreventUnload;
 //      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
     },
 
@@ -494,7 +500,7 @@ dojo.declare(
      */
     newApplication : function(appName){
       var that = this;
-      var application = this.createModel("application", {name: appName}, null, null);
+      var application = this.createModel("application", {name: appName}, null);
 
       this.application = application;
       this.applications.push(application);
@@ -503,7 +509,7 @@ dojo.declare(
       var databases = this.newModel("databases", {}, application, this.centerTc);
       var events = this.newModel("events", {}, application);
       this.eventTc.currentModel = events;
-      var rootPanel = this.newModel("panel", {id: "rootPanel"}, interfaces, this.centerTc);
+      var rootPanel = this.newModel("panel", {id: "rootPanel"}, interfaces);
       //メニューに追加
       var appSaveMenu = new dijit.MenuItem(
 	{
@@ -539,19 +545,19 @@ dojo.declare(
     openAjml: function(ajml){
       var xml =  ajweb.xml.parse(ajml);
       var rootElement = xml.documentElement;
-      var applicationNode, appName;
+      var applicationNode, properties = {};
 
       for(var i = 0; i < rootElement.childNodes.length; i++){
 	var child = rootElement.childNodes[i];
 	if((child.tagName != undefined /*|| child instanceof Element*/) && child.tagName == "application"){
 	  applicationNode = child;
 	  for(var j = 0; j < applicationNode.attributes.length; j++){
-	    if(applicationNode.attributes[j].name == "name")
-	      appName = applicationNode.attributes[j].value;
+	      properties[applicationNode.attributes[j].name] = applicationNode.attributes[j].value;
 	  }
 	}
       }
-      var application = this.createModel("application", {name: appName}, null, null);
+      var appName = properties.name;
+      var application = this.createModel("application", properties, null);
 
       this.application = application;
       this.applications.push(application);
@@ -590,7 +596,7 @@ dojo.declare(
      * アプリケーションをajmlとして一時保存
      * @param {ajweb.editor.model.Application} applicationModel 保存するアプリケーションのモデル
      */
-    saveProject: function(applicationModel){
+    saveProject: function(applicationModel){      
       ajweb.editor.isPreventUnload = null;
       var xml = ajweb.xml.createDocument("ajml");
       var rootElement = xml.documentElement;
@@ -648,7 +654,9 @@ dojo.declare(
       outputTypeTextBox.setValue(type);
       generateForm.submit();
       generateForm.destroyRecursive();
-      ajweb.editor.isPreventUnload = true;
+      window.setTimeout(function(){//webKitだとスタックに積まないとフォームの送信より先にこっちが実行されちゃう
+			  ajweb.editor.isPreventUnload = true;
+			}, 1000);
     },
     /**
      * 保存してあるファイルからプロジェクトを復元
@@ -671,7 +679,7 @@ dojo.declare(
  * @param {dojo.data.ItemFileReadStore} propertyDataStore 表示するプロパティを保持するdojoストア
  * @param {dijit.layout.TabContainer} eventTc イベントリストを保持するcenterTc
  */
-    createModel : function(name, properties, parent, container, display){
+    createModel : function(name, properties, parent){
       var modelInfo = ajweb.editor.getModelInfo(name);
       var elementClass = modelInfo.elementClass;
       var modelClass = modelInfo.modelClass;
@@ -679,7 +687,7 @@ dojo.declare(
       var propertyList = dojo.clone(modelInfo.propertyList);
       var defaultProperties = dojo.clone(modelInfo.defaultProperties ? modelInfo.defaultProperties : {});
       var id = name + ajweb.editor.modelCount(name);
-
+      var container = modelInfo.container == "layout" ? this.centerTc : parent.element;
       propertyList.push("_character");
 
       if(properties){
@@ -695,6 +703,8 @@ dojo.declare(
 	    defaultProperties[propertyName] = properties[propertyName];
 	}
       }
+      var label = ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
+
       var newModel =  new ajweb.editor.model[ModelClass](
 	{
 	  id: id,
@@ -704,12 +714,12 @@ dojo.declare(
 	  properties: defaultProperties,
 	  propertyList: modelInfo.propertyList,
 	  eventList: modelInfo.eventList,
-	  projLabel: modelInfo.projLabel,
+	  label: modelInfo[label],
 	  parent: parent,
 	  application: parent ? parent.application : null,
 	  container: container,
 	  editor: this
-	}, display);
+	});
       
       if(name == "application"  || name == "interfaces" || name == "panel" || name == "databases" || name == "frame"){
 	this.addProjectTree(newModel);
@@ -718,14 +728,13 @@ dojo.declare(
       newModel.startup();
       return newModel;
     },
-    newModel: function(name, properties, parent, container){
-      var model = this.createModel(name, properties, parent, container);
-      model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がない
+    newModel: function(name, properties, parent){
+      var model = this.createModel(name, properties, parent);
+      model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がないので
       if(model.createDom){
 	model.createDom(container);
 	model.startup();	
       }
-
       return model;
     },
     /**

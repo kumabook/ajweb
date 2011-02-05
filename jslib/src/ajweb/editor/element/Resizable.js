@@ -51,10 +51,14 @@ dojo.declare("ajweb.editor.element.Resizable", null,
 	    var newHeight = height + e.clientY - y;
 	    newWidth = newWidth > minSize ? newWidth : minSize;
 	    newHeight = newHeight > minSize ? newHeight : minSize;
-	    domNode.style.width = newWidth + "px";
-	    domNode.style.height = newHeight + "px";
-	    properties.width = newWidth + "px";
-	    properties.height = newHeight + "px";
+	    if(newWidth % 5 == 0){
+	      domNode.style.width = newWidth + "px";
+	      properties.width = newWidth + "px";	      
+	    }
+	    if(newHeight % 5 == 0){
+	      domNode.style.height = newHeight + "px";
+	      properties.height = newHeight + "px";
+	    }
 	  };
 
 	  var move_connection = dojo.connect(document, "onmousemove", null, resize);

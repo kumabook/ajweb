@@ -46,6 +46,8 @@ dojo.declare("ajweb.widget.Textarea",ajweb.widget.Widget,
     return this.widget.value;
   },
   setValue: function(param){
+    if(!param.value)
+      param.value = "";
     this.widget.set({value: param.value});
   },
   display: function(){
