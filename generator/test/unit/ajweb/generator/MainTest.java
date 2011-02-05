@@ -38,7 +38,7 @@ public class MainTest {
 	
 	@Test
 	public void testSourceOption() throws Exception{
-		String[] args  = {"test/ajml/chat.ajml", "-source", "test/temp/main_test_chat"};
+		String[] args  = {"test/ajml/chat.ajml", "-src", "test/temp/main_test_chat"};
 		
 		Main.main(args);
 		File source = new File("test/temp/main_test_chat");

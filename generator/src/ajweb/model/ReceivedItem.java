@@ -14,7 +14,7 @@ public class ReceivedItem implements Parameterable, AbstractModel {
 	}
 	@Override
 	public String toJsSource(Flowable func, String key, Action rest) {
-		if(this.property==null){
+		if(this.property==null || this.property.equals("")){
 			if(params == null)
 				return "receivedItem" ;
 			else {

@@ -21,7 +21,8 @@ public class PrimitiveHandler extends AbstractHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		if(elementName.equals("int") || elementName.equals("string") || elementName.equals("text")
+		if(elementName.equals("int") || elementName.equals("string") 
+				|| elementName.equals("text") || elementName.equals("stringSelect") 
 				|| elementName.equals("boolean")){
 			primitive = new Primitive(elementName, character);
 		}

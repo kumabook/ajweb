@@ -31,7 +31,13 @@ public class ApplicationHandler extends AbstractHandler {
 	@Override
 	public void endElement(
 		String uri, String localName, String qName) throws SAXException{
-		Application application = new Application(attributes.get("name"), widget, databases, events);
+		//Application application = new Application(attributes.get("name"), widget, databases, events);
+		Application application = 
+			new Application(attributes.get("name"), attributes.get("sessionTimeout"),
+					attributes.get("isComet"), attributes.get("longPollingTimeout"),
+					attributes.get("longPollingInterval"), attributes.get("pollingInterval"),
+					widget, databases, events);
+		
 		setModel(application);
 		super.endElement(uri, localName, qName);
 	}

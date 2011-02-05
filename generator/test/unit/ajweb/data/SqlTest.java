@@ -2,6 +2,8 @@ package ajweb.data;
 
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -9,10 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import ajweb.data.Condition;
 import ajweb.data.Sql;
+import ajweb.utils.FileUtils;
 
 public class SqlTest{
 	
@@ -26,8 +30,9 @@ public class SqlTest{
 		properties.put("user_name", "string");
 		properties.put("posted", "datetime");
 	}
-	static Sql da = new Sql("org.apache.derby.jdbc.EmbeddedDriver",
-				"jdbc:derby:" + derby_dir + appName);
+
+	static Sql da = new Sql("org.sqlite.JDBC",
+	"jdbc:sqlite:test/sqlite");
 	
 	static HashMap<String, String> userProperties = new HashMap<String, String>();
 	static {
@@ -65,11 +70,10 @@ public class SqlTest{
 	public void tearDown() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		da.drop("test");
 	}
-	/*@AfterClass
+	@AfterClass
 	static public void AfterClass(){
-		FileUtils.delete(new File(derby_dir + "/test"));
-		FileUtils.delete(new File("derby.log"));
-	}*/
+		FileUtils.delete(new File("test/sqlite"));
+	}
 	@Test
 	public void testCreate() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 						

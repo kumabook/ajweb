@@ -25,8 +25,11 @@ public class message {
 		properties.put("room", "int");
 	}
 	
-	static String dbName = "jdbc:derby:" + Config.workDir + "/chat/derby/";
-	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
+//	static String dbName = "jdbc:derby:" + Config.workDir + "/chat/derby/";
+	
+//	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
+	static String dbName = "jdbc:sqlite:work/sqlite/demo_chat";
+	static String driverClassName = "org.sqlite.JDBC";
 	static String tableName = "message";
 	
 	static public Sql sql = new Sql(driverClassName, dbName);

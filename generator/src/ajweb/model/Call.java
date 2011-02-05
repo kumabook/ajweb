@@ -66,7 +66,7 @@ public class Call implements AbstractModel, Flowable{
 				if(params.get(i).value.isContainCallback()){//select系のコールバックで値を受け取るものがあれば、残りの処理をコールバックで渡す
 					Param param = params.remove(i);
 					String _key = param.key;
-					Get select = (Get) param.value;
+					Value select = (Value) param.value;
 					Param callback_param = new Param();
 					callback_param.key = _key;
 					callback_param.value = new CallBackItems();
@@ -99,7 +99,7 @@ public class Call implements AbstractModel, Flowable{
 				if(params.get(i).value.isContainCallback()){//select系のコールバックで値を受け取るものがあれば、残りの処理をコールバックで渡す
 					Param param = params.remove(i);
 					String _key = param.key;
-					Get select = (Get) param.value;
+					Value select = (Value) param.value;
 					Param callback_param = new Param();
 					callback_param.key = _key;
 					callback_param.value = new CallBackItems();

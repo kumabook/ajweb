@@ -4,6 +4,32 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
+  <display-name>${APPNANE}_by_ajweb_system</display-name>
+  <session-config>
+    <session-timeout>${SESSION_TIMEOUT}</session-timeout>
+  </session-config>
+
+
+  <context-param>
+    <param-name>is-comet</param-name>
+    <param-value>${IS_COMET}</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>long-polling-timeout</param-name>
+    <param-value>${LONG_POLLING_TIMEOUT}</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>long-polling-interval</param-name>
+    <param-value>${LONG_POLLING_INTERVAL}</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>polling-interval</param-name>
+    <param-value>${POLLING_INTERVAL}</param-value>
+  </context-param>
+
   <listener>
     <listener-class>ajweb.servlet.AjWebListener</listener-class>
   </listener>

@@ -1,6 +1,8 @@
 package ajweb.data;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import ajweb.data.Conditions;
 import ajweb.data.Sql;
 import ajweb.data.Date;
 import ajweb.data.Modification;
+import ajweb.utils.FileUtils;
 
 
 public class ConditionTest {
@@ -25,8 +28,9 @@ public class ConditionTest {
 		properties.put("user_name", "string");
 		properties.put("posted", "datetime");
 	}
-	static Sql da = new Sql("org.apache.derby.jdbc.EmbeddedDriver",
-				"jdbc:derby:" + SqlTest.derby_dir + "/test");
+
+	static Sql da = new Sql("org.sqlite.JDBC",
+	"jdbc:sqlite:test/sqlite");
 	static HashMap<String, String> param;
 	{
 		param = new HashMap<String, String>();
@@ -55,11 +59,10 @@ public class ConditionTest {
 	public void tearDown() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		da.drop("test");
 	}
-	/*@AfterClass
+	@AfterClass
 	static public void AfterClass(){
-		FileUtils.delete(new File(SqlTest.derby_dir + "/test"));
-		FileUtils.delete(new File("derby.log"));
-	}*/
+		FileUtils.delete(new File("tes/sqlite"));
+	}
 
 	@Test
 	public void testPreparedSQL() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{

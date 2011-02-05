@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import ajweb.utils.Template;
 
-public class Get implements Parameterable, AbstractModel{
+public class Value implements Parameterable, AbstractModel{
 
 	public static ArrayList<String> elements = new ArrayList<String>();
 	static {
@@ -34,19 +34,19 @@ public class Get implements Parameterable, AbstractModel{
 	public ArrayList<Param> params;
 	public Parameterable param;
 	
-	public Get(String element,String getter, String property, ArrayList<Param> params){
+	public Value(String element,String getter, String property, ArrayList<Param> params){
 		this.element = element;
 		this.getter = getter;
 		this.property = property;
 		this.params = params;
 	}
-	public Get(String element,String getter,String property, Parameterable param){
+	public Value(String element,String getter,String property, Parameterable param){
 		this.element = element;
 		this.getter = getter;
 		this.property = property;
 		this.param = param;
 	}
-	public Get(String element,String getter, String property){
+	public Value(String element,String getter, String property){
 		this.element = element;
 		this.getter = getter;
 		this.property = property;
@@ -90,7 +90,7 @@ public class Get implements Parameterable, AbstractModel{
 
 			jsSource = getter_template.source.trim();
 			
-			if(property.equals("Self"))
+			if(property.equals("Self") || property.equals("self"))
 				jsSource = element;
 				
 		}
@@ -118,7 +118,8 @@ public class Get implements Parameterable, AbstractModel{
 	@Override
 	public boolean isContainCallback() {
 		if(getter.equals("select") || getter.equals("selectById") 
-				|| getter.equals("selectByCondition") || getter.equals("selectRefItem") 
+				|| getter.equals("selectByCondition") || getter.equals("selectRefItem")
+				|| getter.equals("selectByConditionFirst")
 					|| getter.equals(("check")) || getter.equals("login"))
 			return true;
 		else

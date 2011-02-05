@@ -17,6 +17,7 @@ public class Primitive implements Parameterable, AbstractModel{
 		//Šî–{Œ^
 		elements.add("int");
 		elements.add("string");
+		elements.add("stringSelect");
 		elements.add("boolean");
 		elements.add("text");
 		elements.add("datetime");
@@ -46,7 +47,8 @@ public class Primitive implements Parameterable, AbstractModel{
 		
 	public String toJsSource(Flowable func, String key, Action rest){
 		
-		if(type.equals(("string")) || (type.equals(("text")))){
+		if(type.equals(("string")) || (type.equals(("text"))) 
+				|| type.equals("stringSelect")){
 			return "\"" + value + "\""; 
 		}
 		else if(type.equals(("int")) || type.equals(("boolean"))){

@@ -1,6 +1,8 @@
 package ajweb.server;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.net.URI;
 import java.util.logging.Level;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
@@ -14,18 +16,13 @@ import ajweb.Config;
  *
  */
 public class Server {
-	
 	static public void run() throws Exception{
 		ajweb.utils.Log.servletLogger.setLevel(Level.ALL);
-		
+//		System.setProperty("jetty.home", "./work/jetty");
 		//ajwebServer = new org.eclipse.jetty.server.Server(port);
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(Config.port);
 		
-		/*ResourceHandler resource_handler = new ResourceHandler();
-		resource_handler.setDirectoriesListed(true);
-		resource_handler.setCacheControl("no-cache");
-		resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-		resource_handler.setResourceBase(ajwebHome + "/resources/htdocs");*/
+
 		CacheManifestHandler cache_handler = new CacheManifestHandler();
 		cache_handler.setDirectoriesListed(true);
 		cache_handler.setResourceBase(".");
@@ -38,26 +35,27 @@ public class Server {
 		File appDir = new File("webapps/");
 		File[] apps = appDir.listFiles();
 
-		for(int i = 0; i < apps.length; i++){//ディレクトリwebappとしてがあれば、追加
+		for(int i = 0; i < apps.length; i++){//ディレクトリがあれば、追加
 			if(apps[i].isDirectory() && !apps[i].getName().matches("\\..*|log")){
 				WebAppContext webapp = new WebAppContext();
 				webapp.setContextPath("/" + apps[i].getName());
 				webapp.setDescriptor(apps[i].getAbsolutePath() + "/WEB-INF/web.xml");
 				webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
+				webapp.setTempDirectory(new File("./work/jetty/" + apps[i].getName()));
 				File libDir = new File(apps[i].getAbsolutePath() + "/WEB-INF/lib/");
 				webapp.setExtraClasspath("classes");
 				File[] libFiles = libDir.listFiles();
 				for(int j = 0; j < libFiles.length; j++){
 					if(libFiles[j].getName().matches(".*\\.jar")){
 						webapp.setExtraClasspath(libFiles[j].getAbsolutePath());
-						System.out.println(libFiles[j].getAbsolutePath());
+//						System.out.println(libFiles[j].getAbsolutePath());
 					}
 				}
 							
 				webapp.setParentLoaderPriority(true);
 				handlers.addHandler(webapp);
 			}
-			else if(apps[i].getName().matches(".*\\.war")){//warファイルなら追加
+/*			else if(apps[i].getName().matches(".*\\.war")){//warファイルなら追加
 				String appName = apps[i].getName().split("\\.")[0];
 				WebAppContext webapp = new WebAppContext();
 				System.out.println("app " + appName + "  deploy on test server");
@@ -67,12 +65,31 @@ public class Server {
 				//webapp.setResourceBase(apps[i].getAbsolutePath() + "/");
 				webapp.setParentLoaderPriority(true);
 				handlers.addHandler(webapp);
-			}
+			}*/
 		}
 
 		
+		//jslib用のhandlerを追加
+		WebAppContext jslib_handler = new WebAppContext();
+		jslib_handler.setContextPath("/jslib");
+		jslib_handler.setTempDirectory(new File("./work/jetty/jslib"));
+		jslib_handler.setResourceBase("../jslib/src/");
+		handlers.addHandler(jslib_handler);
 		
-//		handlers.addHandler(resource_handler);
+		//jsdoc用のhandlerを追加
+		WebAppContext jsdoc_handler = new WebAppContext();
+		jsdoc_handler.setContextPath("/jsdoc");
+		jsdoc_handler.setTempDirectory(new File("./work/jetty/jsdoc"));
+		jsdoc_handler.setResourceBase("../jslib/doc/");
+		handlers.addHandler(jsdoc_handler);
+		
+		//javaDoc用のhandlerを追加
+		WebAppContext javaDoc_handler = new WebAppContext();
+		javaDoc_handler.setContextPath("/javaDoc");
+		javaDoc_handler.setTempDirectory(new File("./work/jetty/javaDoc"));
+		javaDoc_handler.setResourceBase("./doc");
+		handlers.addHandler(javaDoc_handler);
+
 		handlers.addHandler(new DefaultHandler());
 		//ajwebServer.setHandler(handlers);
 		server.setHandler(handlers);
@@ -91,6 +108,7 @@ public class Server {
 
 		WebAppContext webapp = new WebAppContext();
 		webapp.setContextPath("/"+appName);
+		webapp.setTempDirectory(new File("./work/jetty/"+appName));
 		webapp.setWar(war);
 		//webapp.setParentLoaderPriority(true);
 		
@@ -104,6 +122,10 @@ public class Server {
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		server.start();
 		server.join();
+		
+		System.out.println("display application on browser");
+		Desktop desktop = Desktop.getDesktop();
+		desktop.browse(new URI("http://localhost:" + port+ "/" + appName));
 	}
 	
 
@@ -123,6 +145,7 @@ public class Server {
 //		webapp.setWar(appName+".war");
 		webapp.setDescriptor("./WEB-INF/web.xml");
 		webapp.setResourceBase(sourceDir);
+		webapp.setTempDirectory(new File(sourceDir));
 		webapp.setParentLoaderPriority(true);
 		
 		HandlerList handlers = new HandlerList();
@@ -133,9 +156,9 @@ public class Server {
 		
 		server.start();
 		
-		//System.out.println("display application on browser");
-		//Desktop desktop = Desktop.getDesktop();
-		//desktop.browse(new URI("http://localhost:8080/" + appName));	
+		System.out.println("display application on browser");
+		Desktop desktop = Desktop.getDesktop();
+		desktop.browse(new URI("http://localhost:" + port+ "/" + appName));	
 		server.join();	
 	}
 }

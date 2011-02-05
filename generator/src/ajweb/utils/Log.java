@@ -24,7 +24,8 @@ public class Log {
 		
 		SimpleFormatter sf = new SimpleFormatter(){
 			public String format(LogRecord record){
-				return record.getLevel() + ": " + record.getMessage() + "\n";
+				String time = String.format("%tD %<tT.%<tL", record.getMillis());
+				return time + record.getLevel() + ": " + record.getMessage() + "\n";
 			}
 		};
 //generator logger		

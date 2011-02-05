@@ -2,16 +2,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="index.css"/>
-    <link rel="stylesheet" href="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dijit/themes/soria/soria.css"/>
-    <link rel="stylesheet" href="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojo/resources/dnd.css"/>
-    <link rel="stylesheet" href="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojo/resources/dojo.css"/>
-    <link rel="stylesheet" href="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojox/grid/resources/Grid.css"/>
+    <link rel="stylesheet" href="${JSLIB_URL}/../../dijit/themes/soria/soria.css"/>
+    <link rel="stylesheet" href="${JSLIB_URL}/../../dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="${JSLIB_URL}/../../dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="${JSLIB_URL}/../../dojox/grid/resources/Grid.css"/>
     
-    <script src="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojo/dojo.xd.js" type="text/javascript"></script>
 
-    <script src="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/gear5.js"></script> 
-    <script src="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/json2.js"></script> 
-    <script src="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/md5.js"></script> 
+    <script src="${JSLIB_URL}" type="text/javascript"></script>
+
+<!--    <script src="${JSLIB_URL}/../../gear5.js"></script> -->
+<!--    <script src="${JSLIB_URL}/../../json2.js"></script>  -->
+    <script src="${JSLIB_URL}/../../md5.js"></script> 
     <script src="index.js"></script>
 
 

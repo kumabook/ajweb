@@ -51,6 +51,8 @@ public abstract class AbstractHandler extends DefaultHandler {
                 public AbstractHandler create() { return new ItemHandler(); }});
         	handlers.put("property", new HandlerFactory() {
                 public AbstractHandler create() { return new ParamHandler(); }});
+        	handlers.put("initProperty", new HandlerFactory() {
+                public AbstractHandler create() { return new ParamHandler(); }});
         	
         	handlers.put("interfaces", new HandlerFactory() {
                 public AbstractHandler create() { return new InterfacesHandler(); }});
@@ -58,6 +60,8 @@ public abstract class AbstractHandler extends DefaultHandler {
         	handlers.put("widget", new HandlerFactory() {
                 public AbstractHandler create() { return new WidgetHandler(); }});
         	handlers.put("condition", new HandlerFactory() {
+                public AbstractHandler create() { return new ConditionHandler(); }});
+        	handlers.put("paramCondition", new HandlerFactory() {
                 public AbstractHandler create() { return new ConditionHandler(); }});
         	handlers.put("predicate", new HandlerFactory() {
                 public AbstractHandler create() { return new PredicateHandler(); }});
@@ -77,8 +81,8 @@ public abstract class AbstractHandler extends DefaultHandler {
         	handlers.put("param", new HandlerFactory() {
                 public AbstractHandler create() { return new ParamHandler(); }});
         	
-        	handlers.put("get", new HandlerFactory() {
-                public AbstractHandler create() { return new GetHandler(); }});
+        	handlers.put("value", new HandlerFactory() {
+                public AbstractHandler create() { return new ValueHandler(); }});
         	
         	
         	handlers.put("primitive", new HandlerFactory() {

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -55,13 +56,17 @@ public abstract class AbstractServlet extends HttpServlet{
 		Log.servletLogger.fine("session_id: " + sessionid + " joined ");
 		
 		PrintWriter out = resp.getWriter();
-		if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
+		ServletContext scon = getServletConfig().getServletContext();
+		if(scon.getInitParameter("is-comet").equals("true") && 
+				isContinuationSupport(req)){//jetty のcontinuationが使える場合
 			//System.out.println("LONGPOLLING");
-			out.print(ajweb.Config.LONGPOLLING_INTERVAL);
+//			out.print(ajweb.Config.LONGPOLLING_INTERVAL);
+			out.print(scon.getInitParameter("long-polling-interval"));
 		}
 		else {
 			//System.out.println("AJAX POLLING");
-			out.print(ajweb.Config.POLLING_INTERVAL);
+			out.print(scon.getInitParameter("polling-interval"));
+			//out.print(ajweb.Config.POLLING_INTERVAL);
 		}
 	}
 	
@@ -99,7 +104,10 @@ public abstract class AbstractServlet extends HttpServlet{
 			else {
 				if(isContinuationSupport(req)){//jetty のcontinuationが使える場合
 					Continuation continuation = getContinuation(req);//, resp);
-					continuation.setTimeout(Config.TIMEOUT);
+					ServletContext scon = getServletConfig().getServletContext();
+					//continuation.setTimeout(Config.TIMEOUT);
+					String timeout_str = scon.getInitParameter("long-polling-timeout");
+					continuation.setTimeout(Long.parseLong(timeout_str));
 					if (continuation.isInitial()){
 						// 一時停止してタイムアウトかmodificationをまつ
 						Log.servletLogger.fine( "sessionid: " + member._sessionid + " suspend continuation");
@@ -239,6 +247,7 @@ public abstract class AbstractServlet extends HttpServlet{
 	 * @param modifications
 	 * @throws Exception
 	 */
+	@SuppressWarnings("null")
 	protected synchronized void change(HttpServletRequest req, HttpServletResponse resp,
 			String sessionid, ArrayList<Modification> modifications) throws Exception {
 		Log.servletLogger.fine( "sessionid: が変更を加えたよ sessionid:" + sessionid + " " + modifications);

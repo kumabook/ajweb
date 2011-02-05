@@ -4,6 +4,8 @@ import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
 
+import ajweb.Config;
+
 /**
  * ajwebに組み込みのサーバを立ち上げる
  * @author hiroki
@@ -13,6 +15,7 @@ public class Main extends Thread{
 	static String ajwebHome = ".";
 	
 	public static void main(String[] args) throws Exception {
+		Config.setBaseDir(".");
 		//String[]  testArgs = {"chat.war"};
 		//args = testArgs;
 		int port = 8080;

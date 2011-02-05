@@ -15,12 +15,38 @@ public class Application implements AbstractModel{
 	public String rootElement = "root";//application rootid ëÆê´ÇéQè∆
 	public String appName = "default";
 	
+	public String sessionTimeout = "20"; 
+	public String isComet = "true";
+	public String longPollingTimeout = ajweb.Config.TIMEOUT+"";
+	public String longPollingInterval = ajweb.Config.LONGPOLLING_INTERVAL+"";
+	public String pollingInterval = ajweb.Config.POLLING_INTERVAL+"";
+	
 	public ArrayList<Widget> widgets = new ArrayList<Widget>();
 	public Databases databases = new Databases();
 	public Events events;
 	
 	public Application(String appName, Widget widget, Databases databases,Events events){
 		this.appName = appName;
+		this.widgets.add(widget);
+		this.databases = databases;
+		this.events = events;
+	}
+	
+	public Application(String appName, String sessionTimeout, String isComet,
+				String longPollingTimeout, String longPollingInterval, String pollingInterval,
+			Widget widget, Databases databases,Events events){
+		if(appName!=null)
+			this.appName = appName;
+
+		if(sessionTimeout!=null)
+			this.sessionTimeout = sessionTimeout;
+		if(isComet!=null)
+			this.isComet = isComet;
+		if(longPollingTimeout!=null)
+			this.longPollingTimeout = longPollingTimeout;
+		if(longPollingInterval!=null)
+			this.longPollingInterval = longPollingInterval;
+		
 		this.widgets.add(widget);
 		this.databases = databases;
 		this.events = events;
@@ -70,6 +96,10 @@ public class Application implements AbstractModel{
 	public void htmlGenerate(String outDir) throws FileNotFoundException, UnsupportedEncodingException, IOException{
 		Template html_template;
 		html_template = new Template("resources/html");
+
+		html_template.apply("JSLIB_URL", "../jslib/dojo/dojo.js");
+//		html_template.apply("JSLIB_URL", "http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojo/dojo.xd.js" type="text/javascript");
+		
 		FileUtils.writeFile(outDir + "/index.html", html_template.source, Config.isOverWrite);
 		Log.logger.fine("generate " + outDir + "/index.html");
 		
@@ -150,6 +180,13 @@ public class Application implements AbstractModel{
 		Config.out.println("generate " + outDir + "/WEB-INF/src/ajweb/servlet/AjWebLietener.java");
 		
 		Template web_xml_template = new Template("resources/web.xml");
+		web_xml_template.apply("APPNAME", this.appName);
+		web_xml_template.apply("SESSION_TIMEOUT", this.sessionTimeout);
+		web_xml_template.apply("IS_COMET", this.isComet);
+		web_xml_template.apply("LONG_POLLING_TIMEOUT", this.longPollingTimeout);
+		web_xml_template.apply("LONG_POLLING_INTERVAL", this.longPollingInterval);
+		web_xml_template.apply("POLLING_INTERVAL", this.pollingInterval);
+		
 		FileUtils.writeFile(outDir +"/WEB-INF/web.xml", web_xml_template.source, Config.isOverWrite);
 		Config.out.println("generate " + outDir + "/WEB-INF/web.xml");
 	}

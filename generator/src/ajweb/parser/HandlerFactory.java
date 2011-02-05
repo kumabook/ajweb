@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ajweb.model.Action;
 import ajweb.model.Call;
 import ajweb.model.Condition;
-import ajweb.model.Get;
+import ajweb.model.Value;
 import ajweb.model.Primitive;
 import ajweb.model.Widget;
 
@@ -21,8 +21,8 @@ public abstract class HandlerFactory {
 		if(Widget.widgets.contains(qName)){
 			return "widget";
 		}
-		else if(Get.elements.contains(qName)){
-			return "get";
+		else if(Value.elements.contains(qName)){
+			return "value";
 		}
 		else if(Call.elements.contains(qName)){
 			return "call";
@@ -35,6 +35,9 @@ public abstract class HandlerFactory {
 		}
 		else if(Action.elements.contains(qName)){
 			return "action";
+		}
+		else {
+			//File jslib_
 		}
 		return qName;		
 	}

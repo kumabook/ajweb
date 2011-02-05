@@ -2,6 +2,7 @@ dojo.require("ajweb.connect");
 dojo.require("ajweb.date");
 dojo.require("ajweb.widget.Frame");
 dojo.require("ajweb.widget.Label");
+dojo.require("ajweb.widget.Text");
 dojo.require("ajweb.widget.Panel");
 dojo.require("ajweb.widget.Dialog");
 dojo.require("ajweb.widget.Button");

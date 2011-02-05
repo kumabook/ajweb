@@ -19,6 +19,7 @@ public class Widget implements AbstractModel{
 		widgets.add("table");
 		widgets.add("th");
 		widgets.add("label");
+		widgets.add("text");
 		widgets.add("textbox");
 		widgets.add("textarea");
 		widgets.add("dateTextbox");
@@ -29,6 +30,7 @@ public class Widget implements AbstractModel{
 		widgets.add("panel");
 		widgets.add("frame");
 		widgets.add("calendar");
+		
 	}
 	
 	

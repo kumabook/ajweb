@@ -2,34 +2,37 @@
 <ajml>
   <application name="bbs">
     <interfaces>
-      <panel _isDisplay="true" height="574px" id="rootPanel" left="265.5" top="15" width="953px">
+      <panel _isDisplay="true" height="574px" id="rootPanel" left="265.5" top="39.5" width="953px">
         <frame height="497px" id="mainFrame" left="44px" top="67px" width="882px">
-          <panel _isDisplay="true" height="497px" id="categoryPanel" left="301" top="53.5" width="882px">
+          <panel _isDisplay="true" height="497px" id="categoryPanel" left="301" top="78" width="882px">
             <table data="category" height="325px" id="categoryList" left="220px" top="46px" width="300px">
               <th _data="category" field="name" id="name" label="カテゴリ名" left="143" top="38" width="300"/>
             </table>
             <button content="選択" id="selectButton" left="309px" top="425px"/>
           </panel>
-          <panel _isDisplay="true" height="497px" id="threadPanel" left="301" top="53.5" width="882px">
-            <table data="thread" height="312px" id="threadList" left="142px" top="63px" width="484px"/>
+          <panel _isDisplay="true" height="497px" id="threadPanel" left="301" top="78" width="882px">
+            <table data="thread" height="306px" id="threadList" left="200px" top="65px" width="152px">
+              <th _data="thread" field="title" id="th1" label="タイトル" left="178" top="137" width="150"/>
+            </table>
             <button content="選択" id="threadSelectButton" left="223px" top="417px"/>
-            <button content="スレッド追加" id="addThreadButton" left="455px" top="421px"/>
+            <button content="スレッド追加" id="addThreadButton" left="512px" top="421px"/>
+            <textbox id="textbox0" left="520px" top="112px" width="150px"/>
           </panel>
         </frame>
         <label content="掲示板" id="label0" left="50px" top="7px"/>
       </panel>
     </interfaces>
     <databases _isDisplay="true" id="databases0">
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="thread" left="545px" tablename="thread" top="213px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/bbs" id="thread" left="545px" tablename="thread" top="213px" type="server">
         <init/>
         <property left="194" name="title" top="49" type="string" unique="false"/>
         <property left="219" multiplicity="1" name="category" ref="category" top="91" type="ref" unique="false"/>
       </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="category" left="588px" tablename="category" top="26px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/bbs" id="category" left="588px" tablename="category" top="26px" type="server">
         <init/>
         <property left="205" name="name" top="52" type="string" unique="false"/>
       </database>
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/appName" id="message" left="43px" tablename="message" top="71px" type="server">
+      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/bbs" id="message" left="43px" tablename="message" top="71px" type="server">
         <init/>
         <property left="268" name="content" top="58" type="string" unique="false"/>
         <property left="230" name="handle_name" top="89" type="string" unique="false"/>

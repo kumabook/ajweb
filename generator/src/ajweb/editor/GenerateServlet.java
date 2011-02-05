@@ -71,7 +71,7 @@ public class GenerateServlet extends AbstractServlet {
 			try {
 				String ajml = request.getParameter("content");
 //				if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS){
-				ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+				//ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
 	//			}
 				
 				String filename = request.getParameter("filename");
@@ -110,7 +110,7 @@ public class GenerateServlet extends AbstractServlet {
 			try {
 				String ajml = request.getParameter("content");
 				//if(org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS)
-					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
+//					ajml = new String(ajml.getBytes("iso-8859-1"), "UTF-8");
 				
 				String filename = request.getParameter("filename");
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
@@ -141,7 +141,7 @@ public class GenerateServlet extends AbstractServlet {
 				}
 				else 
 					Config.templateFolder = "../generator/resources/template";
-
+				System.out.println(Config.templateFolder);
 				ajweb.generator.Compiler.generateWar(new File(filename+".ajml"), new File(filename+".war"));
 				
 				InputStream warIn = new FileInputStream(filename + ".war");

@@ -101,19 +101,70 @@
 			</javac>
 	</target>
 
-	<target name="run">
-			<java classname="ajweb.server.Main" dir="${basedir}" fork="true">
-					<classpath>
-							<fileset dir="${basedir}/lib/compiler/">
-									<include name="*.jar"/>
-							</fileset>
-							<fileset dir="${basedir}/lib/servlet/">
-									<include name="*.jar"/>
-							</fileset>
-							<pathelement location="${basedir}/classes/"/>
-							<!--<pathelement location="./dist/ajweb.jar"/>--> 
-					</classpath>
-				</java>
-		</target>
-
+	<target name="run" depends="compile">
+		<java classname="ajweb.server.Main" dir="${basedir}"><!-- fork="true"> -->
+			<classpath>
+				<fileset dir="${basedir}/lib/compiler/">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${basedir}/lib/servlet/">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="${basedir}/classes/"/>
+				<!--<pathelement location="./dist/ajweb.jar"/>--> 
+			</classpath>
+		</java>
+	</target>
+	<target name="generate_sample" depends="dist">
+		<java classname="ajweb.generator.Main">
+			<arg value="./webapps/editor/ajml/GuestBook.ajml"/>
+			<arg value="-src"/>
+			<arg value="./webapps/GuestBook/"/>
+			<classpath>
+				<fileset dir="./lib/compiler/">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="./lib/servlet/">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="./classes/"/>
+			</classpath>
+		</java> 
+		<java classname="ajweb.generator.Main">
+			<arg value="./webapps/editor/ajml/Chat.ajml"/>
+			<arg value="-src"/>
+			<arg value="./webapps/Chat/"/>
+			<classpath>
+				<fileset dir="./lib/compiler/">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="./lib/servlet/">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="./classes/"/>
+			</classpath>
+		</java>
+		<java classname="ajweb.generator.Main">
+			<arg value="./webapps/editor/ajml/ToDoList.ajml"/>
+			<arg value="-src"/>
+			<arg value="./webapps/ToDoList/"/>
+			<classpath>
+				<fileset dir="./lib/compiler/">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="./lib/servlet/">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="./classes/"/>
+			</classpath>
+		</java> 
+	</target>
+	<target name="clean_work">
+		<delete includeEmptyDirs="true" verbose="true">
+			<fileset dir="work/">
+				<include name="jetty/**/*"/>
+				<include name="sqlite/*"/>
+			</fileset>
+		</delete>
+	</target>
 </project>

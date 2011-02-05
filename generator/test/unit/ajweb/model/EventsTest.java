@@ -47,19 +47,19 @@ public class EventsTest {
 		Action action = new Action();
 		
 		ArrayList<Param> params = new ArrayList<Param>();
-		params.add(new Param("datum1", new Get("room", "select", null, new ArrayList<Param>())));
-		params.add(new Param("datum2", new Get("message", "select", null, new ArrayList<Param>())));
+		params.add(new Param("datum1", new Value("room", "select", null, new ArrayList<Param>())));
+		params.add(new Param("datum2", new Value("message", "select", null, new ArrayList<Param>())));
 		Call call = new Call("roomSelect", "load", params);
 		
 		assertEquals(2, call.params.size());
 		assertEquals("datum1", call.params.get(0).key);
-		Get get = (Get) call.params.get(0).value;
+		Value get = (Value) call.params.get(0).value;
 		assertEquals("room", get.element);
 		assertEquals("select", get.getter);
 		
 		ArrayList<Param> params1 = new ArrayList<Param>();
-		params1.add(new Param("datum1", new Get("select", "room1", null, new ArrayList<Param>())));
-		params1.add(new Param("datum2", new Get("message1", "select", null, new ArrayList<Param>())));
+		params1.add(new Param("datum1", new Value("select", "room1", null, new ArrayList<Param>())));
+		params1.add(new Param("datum2", new Value("message1", "select", null, new ArrayList<Param>())));
 		Call call1 = new Call("table", "load", params1);
 		
 		action.add(call);
@@ -76,10 +76,10 @@ public class EventsTest {
 	@Test
 	public void testToJsSourceParam() throws IOException{
 		ArrayList<Param> params = new ArrayList<Param>();
-		params.add(new Param("key", new Get("selectBox", "get", "selectItem")));
+		params.add(new Param("key", new Value("selectBox", "get", "selectItem")));
 		params.add(new Param("key1", new Primitive("int", "1")));
 		params.add(new Param("key2", new Primitive("string", "test")));
-		Get select = new Get("select", "selectId", null, params);
+		Value select = new Value("select", "selectId", null, params);
 		assertEquals("{ key: selectBox.getSelectItem(), key1: 1, key2: \"test\"}", select.paramToJsSource(null, null, null));
 	}
 	

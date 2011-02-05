@@ -47,9 +47,9 @@ public class Compiler {
 			
 		final XMLReader r = XMLReaderFactory.createXMLReader();
 		r.setErrorHandler(new SchemaErr());
-		r.setFeature("http://xml.org/sax/features/validation", true);
-		r.setFeature("http://apache.org/xml/features/validation/schema", true);
-		r.setFeature("http://xml.org/sax/features/namespaces", true);
+//		r.setFeature("http://xml.org/sax/features/validation", true);
+//		r.setFeature("http://apache.org/xml/features/validation/schema", true);
+//		r.setFeature("http://xml.org/sax/features/namespaces", true);
 		AjmlHandler  ajmlHandler = new AjmlHandler(){
 				{ 
 					reader = r ;

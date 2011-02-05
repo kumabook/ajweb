@@ -1,0 +1,7 @@
+{
+	"baseDir": ".",
+	"workDir": "work/",
+	"derbyDir": "work/derby",
+	"logDir": "log",
+	"port": 443
+}

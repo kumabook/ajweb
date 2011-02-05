@@ -35,7 +35,7 @@
       </panel>
     </interfaces>
     <databases _isDisplay="true" id="databases0">
-      <database dbDriver="org.apache.derby.jdbc.EmbeddedDriver" dbName="jdbc:derby:work/guest_book" id="message" left="248px" tablename="message" top="123px" type="server">
+      <database dbDriver="org.sqlite.JDBC" dbName="jdbc:sqlite:work/sqlite/GuestBook" id="message" left="248px" tablename="message" top="123px" type="server">
         <init/>
         <property left="198" name="user_name" top="53" type="string" unique="false"/>
         <property left="216" name="message" top="86" type="string" unique="false"/>
@@ -51,7 +51,7 @@
           </call>
           <call element="messageList" func="load" id="call1" left="509px" top="54px">
             <param id="param1" name="items" type="object">
-              <value element="message" func="select" funcName="selectAll"/>
+              <value element="message" func="select" elemType="database" />
             </param>
           </call>
         </action>
@@ -74,7 +74,7 @@
           </call>
           <call element="updateNameTextbox" func="setValue" id="call6" left="273px" top="60px">
             <param id="param8" name="value" type="string">
-              <value element="messageList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+              <value element="messageList" func="getSelectedItemProperty" elemType="widget">
                 <param id="param9" name="property" type="string">
                   <stringSelect target="message" type="data">user_name</stringSelect>
                 </param>
@@ -83,7 +83,7 @@
           </call>
           <call element="updateMessageTextbox" func="setValue" id="call7" left="640px" top="60px">
             <param id="param10" name="value" type="string">
-              <value element="messageList" func="getSelectedItemProperty" funcName="selectedItemProperty">
+              <value element="messageList" func="getSelectedItemProperty" elemType="widget">
                 <param id="param20" name="property" type="string">
                   <stringSelect target="message" type="data">message</stringSelect>
                 </param>
@@ -96,10 +96,10 @@
         <action left="761px" top="34px">
           <insert database="message" id="insert0" left="196px" top="54px">
             <param id="param4" name="user_name" type="string">
-              <value element="createNameTextbox" func="getValue" funcName="getValue"/>
+              <value element="createNameTextbox" func="getValue" elemType="widget"/>
             </param>
             <param id="param5" name="message" type="string">
-              <value element="createMessageTextbox" func="getValue" funcName="getValue"/>
+              <value element="createMessageTextbox" func="getValue" elemType="widget"/>
             </param>
           </insert>
           <call element="mainFrame" func="selectPanel" id="call4" left="524px" top="51px">
@@ -122,13 +122,13 @@
         <action left="506px" top="45px">
           <update database="message" id="update0" left="201px" top="63px">
             <param id="param11" name="item" type="object">
-              <value element="messageList" func="getSelectedItem" funcName="getSelectedItem"/>
+              <value element="messageList" func="getSelectedItem" elemType="widget"/>
             </param>
             <param id="param12" name="user_name" type="string">
-              <value element="updateNameTextbox" func="getValue" funcName="getValue"/>
+              <value element="updateNameTextbox" func="getValue" elemType="widget"/>
             </param>
             <param id="param13" name="message" type="string">
-              <value element="updateMessageTextbox" func="getValue" funcName="getValue"/>
+              <value element="updateMessageTextbox" func="getValue" elemType="widget"/>
             </param>
           </update>
         </action>
@@ -137,7 +137,7 @@
         <action left="462px" top="37px">
           <call element="messageList" func="insert" id="call8" left="190px" top="47px">
             <param id="param14" name="item" type="object">
-              <value element="message:receivedItem" func="self" funcName="self"/>
+              <value element="receivedItem" func="self" elemType="receivedItem"/>
             </param>
           </call>
         </action>
@@ -146,7 +146,7 @@
         <action left="433px" top="26px">
           <call element="messageList" func="update" id="call9" left="190px" top="40px">
             <param id="param15" name="item">
-              <value element="message:receivedItem" func="self" funcName="self"/>
+              <value element="receivedItem" func="self" elemType="widget"/>
             </param>
           </call>
         </action>
@@ -155,7 +155,7 @@
         <action left="471px" top="46px">
           <delete database="message" id="delete0" left="186px" top="46px">
             <param id="param16" name="item" type="object">
-              <value element="messageList" func="getSelectedItem" funcName="getSelectedItem"/>
+              <value element="messageList" func="getSelectedItem" elemType="widget"/>
             </param>
           </delete>
         </action>
@@ -164,7 +164,7 @@
         <action left="450px" top="50px">
           <call element="messageList" func="remove" id="call10" left="194px" top="55px">
             <param id="param18" name="item" type="object">
-              <value element="message:receivedItem" func="self" funcName="self"/>
+              <value element="receivedItem" func="self" elemType="receivedItem"/>
             </param>
           </call>
         </action>

@@ -20,12 +20,12 @@ public class EventsHandlerTest{
 		//for(int i = 0; i < app.dbDatum.size(); i++){
 		
 		assert(app.events instanceof Events);
-		assertEquals(app.events.size(), 6);
+		assertEquals(app.events.size(), 1);
 		assert(app.events.get(0) instanceof Event);
 		Event event0 = app.events.get(0);
 		
-		assertEquals(event0.target.toString(), "root");
-		assertEquals(event0.type, "display");
+		assertEquals(event0.target.toString(), "rootFrame");
+		assertEquals(event0.type, "onDisplay");
 		
 		assert(event0.action.get(0) instanceof Call);
 		

@@ -9,7 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ConditionTest.class,
 	ConditionsTest.class,
-	SqlTest.class,
-	CleanUpDerby.class
+	SqlTest.class
 })
 public class AllTests {}

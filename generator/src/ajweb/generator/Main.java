@@ -37,7 +37,7 @@ public class Main {
 			System.out.println("ajmlc: please input ajml file!");
 			return;
 		}
-		else {
+		else {//‚Ğ‚Æ‚Â‚ß‚Íajml@
 			ajml = args[0];
 			ajmlFile = new File(ajml);
 			appName = new File(ajml).getName().replaceAll("\\..*", ""); //ajml’†‚Éapplicaiton‚Ì–¼‘O‚ª‚È‚¢ê‡
@@ -47,7 +47,7 @@ public class Main {
             if ("-appname".equals(args[i])) {
                 appName = args[++i];
             } 
-            else if ("-source".equals(args[i])) {
+            else if ("-src".equals(args[i])) {
                 isWar = false;
                 out = args[++i];
             }

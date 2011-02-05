@@ -2,334 +2,264 @@
 <ajml  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="./resources/schema/ajml.xsd" >
   <application name="chat">
-
-    
-    <!-- データモデル -->
-    <databases>
-
-    <!-- ユーザテーブル -->
-      <database id="users" tablename="users" dbName="jdbc:derby:work/test/">
-  	<property name="user_id" type="string" primary="true"/>
-  	<property name="password" type="password"/>
-  	<property name="role" type="string"/>
-  	<property name="mail" type="string"/>
-	<init>
-	  <item>
-	    <property name="user_id" value="kumamoto"/>
-	    <property name="password" value="kumamoto"/>
-	    <property name="role" value="admin"/>
-	    <property name="mail" value="hiroki.kum@gmail.com"/>
-	  </item>
-	  <item>
-	    <property name="user_id" value="hiroki"/>
-	    <property name="password" value="hiroki"/>
-	    <property name="role" value="user"/>
-	    <property name="mail" value="hiroki.kum@gmail.com"/>
-	  </item>
-	  <item>
-	    <property name="user_id" value="kumabook"/>
-	    <property name="password" value="kumabook"/>
-	    <property name="role" value="user"/>
-	    <property name="mail" value="hiroki.kum@gmail.com"/>
-	  </item>
-	</init>
-      </database>
-
-
-    <!-- チャットルームの一覧を保持するテーブル -->
-      <database id="room" tablename="room" dbName="jdbc:derby:work/test/">
-  	<property name="name" type="string"/>
-	<property name="message" type="ref" multiplicity="*" ref="message"/>
-	<init>
-	  <item><property name="name" value="ルーム１"/></item>
-	  <item><property name="name" value="ルーム２"/></item>
-	  <item><property name="name" value="ルーム３"/></item>
-	  <item><property name="name" value="ルーム４"/></item>
-	  <item><property name="name" value="ルーム５"/></item>
-	</init>
-      </database>
-      <!-- チャットのメッセージを保持するテーブル -->
-      <database id="message" tablename="message" dbName="jdbc:derby:temp/test/">
-	<property name="room" type="ref" multiplicity="1" ref="room"/>
-      	<property name="message" type="string"/>
-      	<property name="user_name" type="string"/>
-      	<property name="posted" type="datetime"/>
-      </database>
-    </databases>
-
-
-    <!-- UIモデル -->
     <interfaces>
-      <panel id="rootPanel" top="0px" left="0px" width="100%" height="100%">
-	<label id="titleLabel" content="チャットアプリケーション" top="30px" left="30px"/>
-	<frame id="rootFrame" top="100px" left="100px" width="90%" height="90%">
-
-	<!-- ログイン画面 -->
-	<panel id="loginPanel" height="100%" width="100%">
-	  <label id="userIdLabel" content="ユーザID"  top="30px" left="30px"/>
-    	  <textbox id="userIdTextbox" content="" top="30px" left="130px"/>
-	  <label id="passwordLabel" content="パスワード" top="60px" left="30px" />
-    	  <passwordbox id="passwordbox" content="" top="60px" left="130px"/>
-    	  <button id="loginButton"  content="ログイン" top="90px" left="30px"/>
-	</panel>
-
-	<!-- チャットルーム選択画面 -->
-	<panel id="roomSelectPanel" width="100%" height="100%">
-	  <label id="selectRoomLabel" content="ルーム選択" left="0px" top="0px"/>
-    	  <selectbox id="roomSelectbox"  top="50px" left="100px" label="name"/>
-    	  <button id="selectButton"  content="選択"  top="45px" left="370px"/>
-  	</panel>
-
-	<!-- チャットルーム画面-->
-  	<panel id="chatRoomPanel" width="100%" height="100%">
-    	  <label id="nowRoomLabel" content="0" top="0px" left="60px"/>
-
-	  <frame id="contentsFrame" height="120px" width="600px" top="50px">
-	    <!-- ユーザ名入力欄 -->
-	    <panel id="entrancePanel" height="100px" width="600px">
-	      <label id="userNameLabel" content="名前" left="40px" top="6px"/>
-	      <textbox id="userNameTextbox"  left="100px" top="10px" value=""/>
-	      <button id="enterButton" content="入室" left="100px" top="50px"/>
-	      <button id="backButton" content="ルーム選択画面に戻る" left="300px" top="50px"/>
-	    </panel>
-	    <!-- メッセージ入力欄 -->
-	    <panel id="messagePanel" height="100px" width="600px">
-	      <label id="messageLabel" content="メッセージ" left="20px" top="10px"/>
-	      <textbox id="messageTextbox" value="" left="150px" top="10px"/>
-	      <button id="messageSubmitButton" content="送信" left="100px" top="50px"/>
-	      <button id="exitButton" content="退室" left="350px" top="50px"/>
-	    </panel>
-	  </frame>
-
-      	  <table id="messageTable" top="200px" left="100px" width="800px" height="600px">
-      	    <th field="user_name" name="名前" width="auto"/>
-	    <th field="message" name="メッセージ" width="auto"/>
-      	    <th field="posted" name="投稿日時" width="350px"/>
-      	    <th field="id" name="id" width="auto"/>
-      	    <th field="room" name="room" width="auto"/>
-      	  </table>
-	</panel>
-	</frame>
-      </panel>
-      <!-- ログインメッセージダイアログ -->
-      <dialog id="loginFailDialog" title="login failed" width="300px" height="100px" content="ログインに失敗しました"/>
-    </interfaces>
-
-    <!--イベントモデル -->
+      <panel _isDisplay="true" height="500px" id="rootPanel" left="72" top="2" width="700px">
+        <label content="Chat Application" id="label0" left="27px" top="22px"/>
+        <frame height="450px" id="rootFrame" left="25px" top="45px" width="650px">
+          <panel _isDisplay="true" height="450px" id="loginPanel" left="97" top="8" width="650px">
+            <label content="UserID" id="label1" left="29px" top="29px"/>
+            <textbox id="userIdTextbox" left="132px" placeHolder="user name" top="29px" width="100px"/>
+            <label content="Password" id="label2" left="29px" top="59px"/>
+            <button content="Login" id="button1" left="32px" top="91px"/>
+            <passwordbox id="passwordbox" left="131px" top="61px" width="100px"/>
+          </panel>
+          <panel _isDisplay="true" height="450px" id="roomSelectPanel" left="97" top="8" width="650px">
+            <label content="room select" id="label3" left="0px" top="0px"/>
+            <button content="Selection" id="selectButton" left="369px" top="50px"/>
+            <selectbox data="room" id="roomSelect" label="name" left="100px" top="50px"/>
+          </panel>
+          <panel _isDisplay="true" height="450px" id="chatRoomPanel" left="97" top="8" width="650px">
+            <label content="room name" id="nowRoomLabel" left="60px" top="0px"/>
+            <frame height="100px" id="contentsFrame" left="25px" top="80px" width="450px">
+              <panel _isDisplay="true" height="100px" id="entrancePanel" left="197" top="183" width="450px">
+                <label content="Name" id="userNameLabel" left="25px" top="12px"/>
+                <textbox id="userNameTextbox" left="100px" top="10px" width="100px"/>
+                <button content="Entering" id="enterButton" left="99px" top="49px"/>
+                <button content="Back to Room Selection " id="backButton" left="262px" top="50px"/>
+              </panel>
+              <panel _isDisplay="true" height="100px" id="messagePanel" left="197" top="183" width="450px">
+                <label content="Message" id="messageLabel" left="20px" top="10px"/>
+                <textbox id="messageTextbox" left="150px" top="10px" width="100px"/>
+                <button content="Send" id="messageSubmitButton" left="96px" top="46px"/>
+                <button content="Leave" id="exitButton" left="347px" top="47px"/>
+              </panel>            </frame>
+            <table data="message" height="225px" id="messageTable" left="25px" top="200px" width="600px">
+              <th _data="message" field="user_name" id="th0" label="user_name" left="203" top="13" width="100px"/>
+              <th _data="message" field="message" id="th1" label="message" left="343" top="30" width="100px"/>
+              <th _data="message" field="posted" id="th2" label="posted" left="354" top="25" width="350px"/>
+              <th _data="message" field="room" id="th3" label="room" left="350" top="37" width="30px"/>            </table>
+          </panel>        </frame>
+      </panel>    </interfaces>
+    <databases _isDisplay="true" id="databases0">
+      <database dbDriver="org.sqlite.JDBC" dbName="jdbc:sqlite:work/sqlite/Chat" id="users" left="83px" tablename="users" top="104px" type="server">
+        <init>
+          <item>
+            <initProperty name="user_id" type="string" value="kumamoto"/>
+            <initProperty name="password" type="password" value="kumamoto"/>
+            <initProperty name="role" type="string" value="admin"/>
+          </item>
+          <item>
+            <initProperty name="user_id" type="string" value="hiroki"/>
+            <initProperty name="password" type="password" value="hiroki"/>
+            <initProperty name="role" type="string" value="normal"/>
+          </item>
+	</init>
+        <property left="164" name="user_id" top="27" type="string" unique="true"/>
+        <property left="217" name="password" top="61" type="password" unique="false"/>
+        <property left="195" name="role" top="96" type="string" unique="false"/>
+      </database>
+      <database dbDriver="org.sqlite.JDBC" dbName="jdbc:sqlite:work/sqlite/Chat" id="message" left="526px" tablename="message" top="207px" type="server">
+        <init>
+	</init>
+        <property left="212" name="message" top="33" type="string" unique="false"/>
+        <property left="224" name="posted" top="63" type="datetime" unique="false"/>
+        <property left="234" name="room" top="88" type="int" unique="false"/>
+        <property left="228" name="user_name" top="120" type="string" unique="false"/>      </database>
+      <database dbDriver="org.sqlite.JDBC" dbName="jdbc:sqlite:work/sqlite/Chat" id="room" left="612px" tablename="room" top="54px" type="server">
+        <init>
+          <item>
+            <initProperty name="name" type="string" value="room1"/>
+	</item>	
+	</init>
+        <property left="157" name="name" top="23" type="string" unique="false"/>      </database>
+    </databases>
     <events>
-      <!-- 初期画面の設定-->
-      <event target="rootFrame" type="display">
-	<action>
-	  <call element="rootFrame" func="selectPanel">
-	    <param name="panel">
-	      <element>loginPanel</element>
-	    </param>
-	  </call>
-	</action>
+      <event left="25" target="rootFrame" top="50" type="onDisplay">
+        <condition left="10px" top="25px"/>
+        <action left="397px" top="67px">
+          <call element="rootFrame" func="selectPanel" id="call0" left="184px" top="67px">
+            <param id="param13" name="panel" type="element">
+              <element target="rootFrame" type="child">loginPanel</element>
+            </param>          </call>        </action>
       </event>
-
-<!-- ログイン処理 -->
-      <event target="loginButton" type="click">
-	<action>
-	  <login>
-	    <param name="userid">
-	      <get element="userIdTextbox" property="value"/>
-	    </param>
-	    <param name="password">
-	      <get element="passwordbox" property="value"/>
-	    </param>
-	  </login>
-	  <branch>
-	    <condition>
-	      <success/>
-	    </condition>
-	    <then>
-	      <call element="rootFrame" func="selectPanel">
-		<param name="panel">
-		  <element>roomSelectPanel</element>
-		</param>
-	      </call>
-	    </then>
-	    <else>
-	      <call element="loginFailDialog" func="show"/>
-	    </else>
-	  </branch>
-	</action>
+      <event left="25" target="button1" top="50" type="onClick">
+        <action left="411px" top="43px">
+          <login id="login0" left="133px" top="37px">
+            <param id="param1" name="user_id" type="string">
+              <value element="userIdTextbox" func="getValue"  type="element" elemType="widget"/>            </param>
+            <param id="param2" name="password" type="password">
+              <value element="passwordbox" func="getValue"  type="element" elemType="widget"/>            </param>          </login>
+          <branch id="branch1" left="279px" top="32px">
+            <condition left="279px" operator="success" top="32px">
+              <success/>            </condition>
+            <then id="then1" left="655px" top="16px">
+              <call element="rootFrame" func="selectPanel" id="call2" left="496px" top="25px">
+                <param id="param13" name="panel" type="element">
+                  <element target="rootFrame" type="child">roomSelectPanel</element>
+                </param>              </call>            </then>
+            <else id="else1" left="522px" top="86px"/>          </branch>        </action>
       </event>
-
-      <!-- 入室画面の初期化-->
-      <event target="roomSelectPanel" type="display">
-	<action>
-	  <!-- チャットルームの一覧の取得-->
-	  <call element="roomSelectbox" func="load">
-	    <param name="datum">
-	      <select database="room"/>
-	    </param>
-	  </call>
-	</action>
-      </event>
-      <!-- チャットルーム画面の初期化-->
-      <event target="selectButton" type="click">
-	<action>
-	  <!-- ページを遷移-->
-	  <call element="rootFrame" func="selectPanel">
-	    <param name="panel">
-	      <element>chatRoomPanel</element>
-	    </param>
-	  </call>
-	  <!-- ルーム名を表示-->
-	  <call element="nowRoomLabel" func="setContent">
-	    <param name="content">
-	      <get element="roomSelectbox" property="selectItem">
-	        <param name="property">
-		  <string>name</string>
-	        </param>
-	      </get>
+      <event left="25" target="roomSelectPanel" top="50" type="onDisplay">
+        <action left="428px" top="28px">
+          <call element="roomSelect" func="load" id="call2" left="185px" top="25px">
+            <param id="param13" name="items" type="objects">
+              <value element="room" func="select" type="element" elemType="database"/>
             </param>
-	  </call>
-	  <!-- メッセージリストの取得-->
-	  <call element="messageTable" func="load">
-	    <param name="datum">
-	      <selectByCondition database="message">
-		<condition>
-		  <eq>
-		    <targetItem property="room"/>
-		    <get element="roomSelectbox" property="selectItem"/>
-		  </eq>
-		</condition>
-	      </selectByCondition>
-
-	    </param>
-	  </call>
-	</action>
+          </call>
+        </action>
       </event>
-      <!-- 入室処理-->
-      <event target="enterButton" type="click">
-	<action>
-	  <insert database="message">
-	    <param name="message">
-	      <value element="string" func="concat">
-		<param name="left">
-		  <get element="userNameTextbox" property="value"/>
-		</param>
-		<param name="right">
-		  <string>が入室しました。</string>
-		</param>
-	      </value>
-	    </param>
-	    <param name="user_name">
-	      <get element="userNameTextbox" property="value"/>
-	    </param>
-	    <param name="posted"> 
-	      <datetime/>
-	    </param>
-	    <param name="room">
-	      <get element="roomSelectbox" property="selectItem"/>
-	    </param>
-	  </insert>
-	  <call element="contentsFrame" func="selectPanel">
-	    <param name="panel">
-	      <element>messagePanel</element>
-	    </param>
-	  </call>
-	</action>
-      </event> 
-
-      <!-- メッセージの送信-->
-      <event target="messageSubmitButton" type="click">
-	<action>
-	  <insert database="message">
-	    <param name="message">
-	      <get element="messageTextbox" property="value"/>
-	    </param>
-	    <param name="user_name"> 
-	      <get element="userNameTextbox" property="value"/>
-	    </param>
-	    <param name="room">
-	      <get element="roomSelectbox" property="selectItem"/>
-	    </param>
-	    <param name="posted">
-	      <datetime/>
-	    </param>
-	  </insert>
-	  <branch>
-	    <condition>
-	      <success/>
-	    </condition>
-	    <then>
-	    </then>
-	    <else>
-	    </else>
-	  </branch>
-	</action>
+      <event left="25" target="selectButton" top="50" type="onClick">
+        <action left="889px" top="32px">
+          <call element="rootFrame" func="selectPanel" id="call3" left="138px" top="39px">
+            <param id="param14" name="panel" type="element">
+              <element target="rootFrame" type="child">chatRoomPanel</element>
+            </param>
+          </call>
+          <call element="nowRoomLabel" func="setContent" id="call4" left="399px" top="36px">
+            <param id="param15" name="content" type="string">
+              <value element="roomSelect" func="getSelectItemProperty"  elemType="widget" type="element">
+                <param id="param35" name="property" type="string">
+                  <stringSelect target="room" type="data">name</stringSelect>
+                </param>
+              </value>
+            </param>
+          </call>
+          <call element="messageTable" func="load" id="call5" left="700px" top="28px">
+            <param id="param17" name="items" type="object">
+              <value element="message" func="selectByCondition" type="element" elemType="database">
+                <param id="param33" name="condition" type="condition">
+                  <paramCondition operator="eq">
+                    <eq>
+                      <value element="roomSelect" func="getSelectItem"  elemType="widget" left="70px" top="0px"/>
+                      <value element="targetItem" func="property"  left="70px" top="70px" elemType="targetItem">
+                        <param id="param34" name="property" type="string">
+                          <stringSelect target="message" type="data">room</stringSelect>
+                        </param>
+                      </value>
+                    </eq>
+                  </paramCondition>
+                </param>
+              </value>
+            </param>
+          </call>
+        </action>
       </event>
-      <!-- メッセージの変更を反映-->
-      <event target="message" type="insert">
-	<condition>
-	  <eq>
-	    <receivedItem property="room"/>
-	    <get element="roomSelectbox" property="selectItem"/>
-	  </eq>
-	</condition>
-	<action>
-	  <call element="messageTable" func="insert">
-	    <param name="item">
-	      <receivedItem/>
-	    </param>
-<!--	    <param name="user_name">
-	      <receivedItem property="user_name"/>
-	    </param>
-	    <param name="message">
-	      <receivedItem property="message"/>
-	    </param>
-	    <param name="posted">
-	      <receivedItem property="posted"/>
-	    </param> -->
-	  </call>
-	</action>
+      <event left="25" target="enterButton" top="50" type="onClick">
+        <action left="740px" top="84px">
+          <insert database="message" id="insert0" left="165px" top="53px">
+            <param id="param11" name="message" type="string">
+              <value element="string" func="concat"  type="string" elemType="data">
+                <param id="param36" name="first" type="string">
+                  <value element="userNameTextbox" func="getValue"  type="element" elemType="widget"/>
+                </param>
+                <param id="param37" name="second" type="string">
+                  <value element="string" func="direct"  type="string" elemType="data">
+                    <param id="param38" name="value" type="string">
+                      <string>が入室しました｡</string>
+                    </param>
+                  </value>
+                </param>
+              </value>
+            </param>
+            <param id="param12" name="posted" type="datetime">
+              <value element="datetime" func="now"  type="datetime" elemType="data"/>
+            </param>
+            <param id="param13" name="room" type="int">
+              <value element="roomSelect" func="getSelectItem"  type="element" elemType="widget"/>
+            </param>
+            <param id="param14" name="user_name" type="string">
+              <value element="userNameTextbox" func="getValue"  type="element" elemType="widget"/>
+            </param>
+          </insert>
+          <call element="contentsFrame" func="selectPanel" id="call9" left="409px" top="125px">
+            <param id="param34" name="panel" type="element">
+              <element target="contentsFrame" type="child">messagePanel</element>
+            </param>
+          </call>
+        </action>
       </event>
-      <!-- 退室処理-->      
-      <event target="exitButton" type="click">
-	<action>
-	  <insert database="message">
-	    <param name="message">
-	      <value element="string" func="concat">
-		<param name="left">
-		  <get element="userNameTextbox" property="value"/>
-		</param>
-		<param name="right">
-		  <string>が退室しました。</string>
-		</param>
-	      </value>
-	    </param>
-	    <param name="user_name">
-	      <get element="userNameTextbox" property="value"/>
-	    </param>
-	    <param name="posted"> 
-	      <datetime/>
-	    </param>
-	    <param name="room">
-	      <get element="roomSelectbox" property="selectItem"/>
-	    </param>
-	  </insert>
-	  <call element="contentsFrame" func="selectPanel">
-	    <param name="panel">
-	      <element>entrancePanel</element>
-	    </param>
-	  </call>
-	</action>
+      <event left="25" target="backButton" top="50" type="onClick">
+        <action left="525px" top="23px">
+          <call element="rootFrame" func="selectPanel" id="call8" left="237px" top="48px">
+            <param id="param32" name="panel" type="element">
+              <element target="rootFrame" type="child">roomSelectPanel</element>
+            </param>
+          </call>
+        </action>
       </event>
-      <event target="backButton" type="click"> 
-	<action>
-	  <call element="rootFrame" func="selectPanel">
-	    <param name="panel">
-	      <element>roomSelectPanel</element>
-	    </param>
-	  </call>
-	</action>
+      <event target="messageSubmitButton" type="onClick">
+        <action left="586px" top="9px">
+          <insert database="message" id="insert1" left="243px" top="44px">
+            <param id="param18" name="message" type="string">
+              <value element="messageTextbox" func="getValue"  type="element" elemType="widget"/>
+            </param>
+            <param id="param19" name="posted" type="datetime">
+              <value element="datetime" func="now"  type="datetime" elemType="data"/>
+            </param>
+            <param id="param20" name="room" type="int">
+              <value element="roomSelect" func="getSelectItem" type="element" elemType="widget">
+              </value>
+            </param>
+            <param id="param21" name="user_name" type="string">
+              <value element="userNameTextbox" func="getValue"  type="element" elemType="widget"/>
+            </param>
+          </insert>
+        </action>
       </event>
-      <!-- ルーム選択画面戻る-->      
-      
+      <event left="25" target="message" top="50" type="onInsert">
+        <condition left="12px" operator="eq" top="27px">
+          <eq>
+            <value element="receivedItem" func="property"  left="70px" top="0px" type="message:receivedItem" elemType="receivedItem">
+              <param id="param34" name="property" type="string">
+                <stringSelect target="message" type="data">room</stringSelect>
+              </param>
+            </value>
+            <value element="roomSelect" func="getSelectItem"  left="70px" top="70px" type="element" elemType="widget"/>
+          </eq>
+        </condition>
+        <action left="457px" top="11px">
+          <call element="messageTable" func="insert" id="call6" left="191px" top="42px">
+            <param id="param22" name="item" type="object">
+              <value element="receivedItem" func="self"  type="message:receivedItem" elemType="receivedItem"/>
+            </param>
+          </call>
+        </action>
+      </event>
+      <event left="25" target="exitButton" top="50" type="onClick">
+        <action left="770px" top="64px">
+          <insert database="message" id="insert3" left="159px" top="38px">
+            <param id="param23" name="message" type="string">
+              <value element="string" func="concat"  type="string" elemType="data">
+                <param id="param39" name="first" type="string">
+                  <value element="userNameTextbox" func="getValue"  type="element" elemType="widget"/>
+                </param>
+                <param id="param40" name="second" type="string">
+                  <value element="string" func="direct" type="string" elemType="data">
+                    <param id="param41" name="value" type="string">
+                      <string>が退室しました｡</string>
+                    </param>
+                  </value>
+                </param>
+              </value>
+            </param>
+            <param id="param24" name="posted" type="datetime">
+              <value element="datetime" func="now" type="datetime" elemType="data"/>
+            </param>
+            <param id="param25" name="room" type="int">
+              <value element="roomSelect" func="getSelectItem"  type="element" elemType="widget"/>
+            </param>
+            <param id="param26" name="user_name" type="string">
+              <value element="userNameTextbox" func="getValue"  type="element" elemType="widget"/>
+            </param>
+          </insert>
+          <call element="contentsFrame" func="selectPanel" id="call7" left="447px" top="62px">
+            <param id="param35" name="panel" type="element">
+              <element target="contentsFrame" type="child">entrancePanel</element>
+            </param>
+          </call>
+        </action>
+      </event>
+    
     </events>
   </application>
 </ajml>
