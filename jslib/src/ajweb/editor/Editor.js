@@ -603,7 +603,7 @@ dojo.declare(
       var applicationElement = applicationModel.toXMLElement(true);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "ajml", applicationModel.properties.name);
+      this.sendForm(content, "ajml", applicationModel.properties.name, 1000);
     },
     downloadAjml: function(applicationModel){
       ajweb.editor.isPreventUnload = null;
@@ -612,7 +612,7 @@ dojo.declare(
       var applicationElement = applicationModel.toXMLElement(false);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "ajml", applicationModel.properties.name);
+      this.sendForm(content, "ajml", applicationModel.properties.name, 1000);
     },
     /**
      * モデルから、warファイルを作成
@@ -629,12 +629,12 @@ dojo.declare(
       var applicationElement = applicationModel.toXMLElement(false);
       rootElement.appendChild(applicationElement);
       var content = ajweb.xml.serialize(xml);
-      this.sendForm(content, "war", applicationModel.properties.name);
+      this.sendForm(content, "war", applicationModel.properties.name, 10000);
     },
     /**
      * 文字列ajmlを送信して結果fileme.typeを受け取る
      */
-    sendForm: function(ajml, type, filename){
+    sendForm: function(ajml, type, filename, prevent_time){
       var generateForm = new dijit.form.Form(
 	{
 	  id: "generate_form",
@@ -656,7 +656,7 @@ dojo.declare(
       generateForm.destroyRecursive();
       window.setTimeout(function(){//webKitだとスタックに積まないとフォームの送信より先にこっちが実行されちゃう
 			  ajweb.editor.isPreventUnload = true;
-			}, 1000);
+			}, prevent_time);
     },
     /**
      * 保存してあるファイルからプロジェクトを復元
@@ -703,8 +703,7 @@ dojo.declare(
 	    defaultProperties[propertyName] = properties[propertyName];
 	}
       }
-      var label = ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
-
+      var label = ajweb.locale == "" || ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
       var newModel =  new ajweb.editor.model[ModelClass](
 	{
 	  id: id,

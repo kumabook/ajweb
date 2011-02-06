@@ -254,7 +254,7 @@ ajweb.editor.initResource = function(){
 ajweb.resources = dojo.i18n.getLocalization("ajweb.editor", "resources");//, ajweb.locale);//, "ja");
 
   ajweb.editor.toolboxItems = (function(){
-				 var label = ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
+				 var label = ajweb.locale == "" || ajweb.locale == "en" ? "label" : "label_"+ajweb.locale;
 				 var toolboxItemWidget = [];
 				 var toolboxItemDatabase = [];
 				 var toolboxItemEvent = [];

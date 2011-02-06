@@ -153,9 +153,11 @@ dojo.declare("ajweb.editor.model.Model", null,
     * @param {XMLDocument} ウィジェットタイプ
     */
     toXMLElement: function(isSave){
+      var that = this;
       var xml = ajweb.xml._xml;//createDocument("ajml");
+      
       var node =  xml.createElement(this.tagName);
-	var propertyList = dojo.clone(this.propertyList);
+      var propertyList = dojo.clone(this.propertyList);
       if(isSave){
 	propertyList = propertyList ? propertyList : [];
 	propertyList.push("top");
@@ -174,8 +176,11 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  if(child)
 	    node.appendChild(child);
 	}, this);
-      if(this.properties._character)
-	node.appendChild(document.createTextNode(this.properties._character));
+	
+      if(this.properties._character){
+	node.appendChild(ajweb.xml._xml.createTextNode(this.properties._character));
+      }
+	
       return node;
     },
     xmlToModel: function(node, doc){
@@ -185,16 +190,8 @@ dojo.declare("ajweb.editor.model.Model", null,
 	  if(v.tagName != undefined){// || v instanceof Element){
 	    var attrs = ajweb.editor.getNodeAttributes(v);
 	    var child, container = this.element;
-/*	    if(v.tagName == "application" || v.tagName == "databases" 
-	       || v.tagName == "panel"){//プロジェクトエクスプローラ、およびcenterTcに表示するもの
-	      container = this.editor.centerTc;
-	      child = this.editor.createModel(v.tagName, attrs, this, container);
-	      child.xmlToModel(v, doc);
-	    }
-	    else*/// {
 	    child = this.editor.createModel(v.tagName, attrs, this, container);
 	    child.xmlToModel(v, doc);
-//	    }
 	  }
 	}, this);
     },

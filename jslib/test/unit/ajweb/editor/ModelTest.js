@@ -7,7 +7,8 @@ dojo.require("ajweb.editor.model.Application");
 dojo.require("ajweb.editor.model.Eventable");
 
 function testToXMLElement(){
-var editor = new ajweb.editor.Editor();
+  var editor = new ajweb.editor.Editor();
+  ajweb.editor.isPreventUnload = null;
   var application =  new ajweb.editor.model.Application(
     {
       id: "application",
@@ -40,7 +41,7 @@ function testToSaveXMLElement(){
 
 function testXmlToModel(){
 var editor = new ajweb.editor.Editor("test");
-
+  ajweb.editor.isPreventUnload = null;
   var xml_str =
 '<?xml version="1.0" encoding="UTF-8"?>' +
  '<ajml>' +

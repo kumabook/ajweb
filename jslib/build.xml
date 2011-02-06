@@ -36,16 +36,6 @@
 			<delete dir="./error.log"/>
 			<delete dir="./doc/"/>
 	</target>
-	<target name="run_api_server">
-		<java classname="ajweb.js.AjwebApiServer">
-			<classpath>
-				<fileset dir="../generator/lib">
-					<include name="*.jar"/>
-				</fileset>
-				<pathelement location="../generator/classes/"/>
-			</classpath>
-		</java>
-	</target>
 
 	<target name="dist">
 		<antcall target="dist_${os}"/>

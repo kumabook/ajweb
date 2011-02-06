@@ -4,16 +4,51 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+  <display-name>ajweb test chat app </display-name>
+
+  <context-param>
+    <param-name>is-comet</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>long-polling-timeout</param-name>
+    <param-value>60000</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>long-polling-interval</param-name>
+    <param-value>1</param-value>
+  </context-param>
+
+
+  <context-param>
+    <param-name>polling-interval</param-name>
+    <param-value>3000</param-value>
+  </context-param>
+
+
   <listener>
   	<listener-class>ajweb.jsunit.TestListener</listener-class>
   </listener>
   <servlet>
-    <servlet-name>TestServlet</servlet-name>
-	<servlet-class>ajweb.jsunit.TestServlet</servlet-class>
+    <servlet-name>dbservlet</servlet-name>
+    <servlet-class>ajweb.jsunit.TestServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>TestServlet</servlet-name>
-    <url-pattern>/servlet</url-pattern>
+    <servlet-name>dbservlet</servlet-name>
+    <url-pattern>/dbservlet</url-pattern>
   </servlet-mapping>
+  
+  <context-param>
+  	<param-name>app_name</param-name>
+  	<param-value>chat</param-value>
+  </context-param>
+  
 </web-app>
