@@ -1,9 +1,6 @@
 package ajweb.server;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.net.URI;
-
 import ajweb.Config;
 
 /**
@@ -16,82 +13,56 @@ public class Main extends Thread{
 	
 	public static void main(String[] args) throws Exception {
 		Config.setBaseDir(".");
-		//String[]  testArgs = {"chat.war"};
-		//args = testArgs;
 		int port = 8080;
-		String appName = null;
-		String target = null; //
+		String webappsDir = "webapps";
+		boolean isLaunchBrowser = false;
+		String appName = null; //app name
+		String target = null; //file
 		boolean isWar = true; //war か　ソースディレクトリか
-		Boolean isClean = false; // データベースを削除するかどうか
-		if(args.length == 0){
-			//System.out.println("ajweb: please input war file!");
-			Server.run();
-			return;
-		}
-		else {
-//			 target = args[0];
-//			appName = new File(target).getName().replaceAll("\\..*", ""); //ajml中にapplicaitonの名前がない場合
-		}
+
 		//オプションを取得
 		for (int i = 0; i < args.length; ++i) {
             if ("-appname".equals(args[i])) {
                 appName = args[++i];
             } 
-            else if ("-source".equals(args[i])) {
+            else if ("-src".equals(args[i])) {//作成されたアプリを立ち上げる   ディレクトリ指定
                 isWar = false;
                 File targetFile = new File(args[++i]);
                 if(appName==null)
                 	appName = targetFile.getName();
                 target = targetFile.getPath();
-                
             } 
-            else if ("-war".equals(args[i])) {
+            else if ("-war".equals(args[i])) {//作成されたアプリを立ち上げる  warファイル指定　  
                 isWar = true;
                 File targetFile = new File(args[++i]);
                 appName = targetFile.getName().replaceAll("\\..*", "");;
                 target = targetFile.getPath();
-                
             } 
-            else if ("-port".equals(args[i])) {//作成されたアプリを立ち上げる  
+            else if ("-port".equals(args[i])) {
                 port = Integer.parseInt(args[++i]);
-            } 
-            else if ("-clean".equals(args[i])) {//データベース初期化するか
-                isClean = true;
-            } 
+            }
+            else if("-webapps".equals(args[i])){
+            	webappsDir = args[++i];
+            }
+            else if("-browser".equals(args[i])){
+            	isLaunchBrowser = true;
+            }
             else if ("-help".equals(args[i])){
             	System.err.println("ajweb:引数指定の誤り：未知の引数が指定されました");
             }
 		}
-		
-
-		if(isClean){
-			
-		}
 
 		if(appName==null){
-			File targetFile = new File(args[0]);
-			if(targetFile.isDirectory())
-				appName = targetFile.getName();
-			else {
-				appName = targetFile.getName().replaceAll("\\..*", "");
-			}
+			Server.run(port, webappsDir, isLaunchBrowser);
 		}
-		
-		if(target==null){
-			target = new File(args[0]).getPath();
-		}
-		if(isWar)
+
+		if(isWar){
 			System.out.println("ajweb launch application by War File: " + target +" appName " +  appName + ":" + port);
-		else 
+			ajweb.server.Server.runWar(target, appName, port, isLaunchBrowser);
+		}
+		else {
 			System.out.println("ajweb launch application by Source Folder: " + target +" appName " +  appName + ":" + port);
-		if(isWar)
-			ajweb.server.Server.runWar(target, appName, port);
-		else
-			ajweb.server.Server.runSource(target, appName, port);
-	
-		
-		System.out.println("access application on browser");
-		Desktop desktop = Desktop.getDesktop();
-		desktop.browse(new URI("http://localhost:" + port + "/" + appName));	
+			ajweb.server.Server.runSource(target, appName, port, isLaunchBrowser);
+		}
 	}
 }

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import ajweb.data.*;
 
-import ajweb.Config;
-
 public class users {
 	public static HashMap<String, String> properties = new HashMap<String, String>();
 	public static ArrayList<String> idProperties = new ArrayList<String>();
@@ -18,8 +16,9 @@ public class users {
 		idProperties.add("userid");
 	}
 	
-	static String dbName = "jdbc:derby:" + Config.workDir + "/chat/derby";
-	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
+	static String dbName = "jdbc:sqlite:connect_test_db";
+	static String driverClassName = "org.sqlite.JDBC";
+	
 	static String tableName = "users";
 	
 	static public Sql sql = new Sql(driverClassName, dbName);

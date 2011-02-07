@@ -92,7 +92,7 @@ public class GenerateServlet extends AbstractServlet {
 				
 				transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "2");
 							
-				response.setContentType("application/octet-stream");
+				response.setContentType("applition/octet-stream");
 				response.setHeader("Content-Disposition", "filename=\""+ filename + ".ajml\"");
 				transformer.transform(new DOMSource(doc), result);
 				

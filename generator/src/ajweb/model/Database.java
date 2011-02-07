@@ -1,5 +1,6 @@
 package ajweb.model;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +8,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import org.eclipse.jetty.util.ajax.JSON;
 
-import ajweb.Config;
 import ajweb.utils.Template;
 /**
  * データベーステーブルをあらわすクラス
@@ -17,8 +17,8 @@ import ajweb.utils.Template;
 public class Database implements AbstractModel{
 	public String id;
 	public String tablename;
-	public String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-	public String dbName = "jdbc:derby:" + Config.derbyDir;
+	public String dbDriver;
+	public String dbName;
 	public String type = "server";
 	public String persistence = "permanent";
 	public HashMap<String, String> properties = new HashMap<String, String>();

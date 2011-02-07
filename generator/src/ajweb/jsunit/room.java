@@ -1,11 +1,8 @@
 package ajweb.jsunit;
 
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ajweb.Config;
 import ajweb.data.Sql;
 import ajweb.data.AbstractCondition;
 
@@ -18,9 +15,10 @@ public class room {
 	static {
 		properties.put("name", "string");
 	}
+
+	static String dbName = "jdbc:sqlite:connect_test_db";
+	static String driverClassName = "org.sqlite.JDBC";
 	
-	static String dbName = "jdbc:derby:" + Config.workDir + "/chat/derby";
-	static String driverClassName = "org.apache.derby.jdbc.EmbeddedDriver";
 	static String tableName = "room";
 	
 	static public Sql sql = new Sql(driverClassName, dbName);

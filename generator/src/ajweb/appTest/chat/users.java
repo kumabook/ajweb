@@ -1,7 +1,7 @@
-package ajweb.jsunit;
+package ajweb.appTest.chat;
+
 
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,29 +9,25 @@ import ajweb.data.Sql;
 import ajweb.data.AbstractCondition;
 
 
+public class users {
 
-
-
-public class message {
-	
 	public static HashMap<String, String> properties = new HashMap<String, String>();
 	public static ArrayList<String> idProperties = new ArrayList<String>();
 	static {
-		properties.put("message", "string");
-		properties.put("user_name", "string");
-		properties.put("posted", "datetime");
-		properties.put("room", "int");
+		properties.put("role", "string");
+		properties.put("user_id", "string");
+		properties.put("password", "password");
 	}
 	
-	static String dbName = "jdbc:sqlite:connect_test_db";
+	static String dbName = "jdbc:sqlite:work/sqlite/AppTestChat";
 	static String driverClassName = "org.sqlite.JDBC";
-	static String tableName = "message";
+	static String tableName = "users";
 	
 	static public Sql sql = new Sql(driverClassName, dbName);
 	
 	
 	public static void create() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
-	    sql.create(tableName, properties);
+	    sql.create(tableName, properties, idProperties);
 	}
 	
 	public static void drop() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -57,9 +53,16 @@ public class message {
 	public static HashMap<String, String> update(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		return sql.update(tableName, properties, param);
 	}
-	
-	public static boolean check(HashMap<String, String> param) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+
+	public static boolean check(AbstractCondition con) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		return sql.check(tableName, properties, con);
+	}
+
+	public static boolean login(String user_id, String password) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put("user_id", user_id);
+		param.put("password", password);
+		param.put("idProperty", "user_id");
 		return sql.check(tableName, properties, param);
 	}
 }
-

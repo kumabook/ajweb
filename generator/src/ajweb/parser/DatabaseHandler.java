@@ -1,11 +1,11 @@
 package ajweb.parser;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import ajweb.Config;
 import ajweb.model.Database;
 import ajweb.model.AbstractModel;
 import ajweb.model.Items;
@@ -16,8 +16,8 @@ import ajweb.model.Primitive;
 public class DatabaseHandler extends AbstractHandler{
 	String id;
 	String tablename;
-	String dbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-	String dbName = "jdbc:derby:" + Config.derbyDir;
+	String dbDriver = "org.sqlite.JDBC";
+	String dbName = "jdbc:sqlite:work/sqlite/ajweb_default_db";
 	String type = "server";
 	String persistence = "permanent";
 	ArrayList<HashMap<String, String>> ref = new ArrayList<HashMap<String, String>>();

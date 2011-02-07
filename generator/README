@@ -12,23 +12,54 @@ Directory Structure
 
 - src ソースコード
 
-- test テスト用ソースコードなど
+- test テスト用ソースコードなど 
+  - unit
+  - file 
+  - temp 
+  - stress
+  - ajml
 
-- resources templateファイルやサンプルajmlファイルなど
+- resources templateファイル
+  - template
+  - schema
+  - extension
 
 - lib 外部ライブラリ
+  - compiler
+  - servlet
 
 --------------------
 --------------------
 
 
 
-環境変数AJWEB_HOME をajwebをインストールしたディレクトリを設定し、
-AJWEB_HOME/generator/bin/をパスに追加。
-
+how to build
 ---------------------
 ---------------------
 
-%ajmlc [ajml file] 
-でwar作成
 
+
+
+
+
+
+
+how to use
+---------------------
+---------------------
+1.model editorの起動
+
+
+
+
+
+
+2.program generator を直接起動
+
+
+
+
+
+
+
+3.作成したwarファイルの実行の仕方

@@ -1,22 +1,16 @@
 package ajweb;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashMap;
-
-import org.eclipse.jetty.util.ajax.JSON;
-
 import ajweb.utils.FileUtils;
 
-@SuppressWarnings("unchecked")
 public class Config {
 	public static String fs = FileUtils.fs;
 	public static String ps = System.getProperty("path.separator");
 	
 	public static String baseDir = ".";
-	public static String workDir;
-	public static String derbyDir = "work/derby";
+	public static String workDir = baseDir + fs + "work/generator";
+
 	public static String libDir;
 	public static String distDir;
 	public static String templateFolder;
@@ -33,27 +27,6 @@ public class Config {
 	
 	public static boolean isJar 	= false;
 	static {
-		File conf_json = new File("conf/generator.json");
-		String json;
-		try {
-			json = ajweb.utils.FileUtils.read(conf_json);
-			HashMap<String, ?> configs = (HashMap<String, ?>) JSON.parse(json);
-			
-			Long port_long = (Long) configs.get("port"); 
-			port = port_long.intValue();
-			String derbyDir_str = (String) configs.get("derbyDir");
-			if(derbyDir != null)
-				derbyDir = derbyDir_str;
-			else 
-				derbyDir = "work/derby";
-			String logDir_str = (String) configs.get("logDir");
-			if(logDir_str != null)
-				logDir = logDir_str;
-			else 
-				logDir = "log/";
-		} catch (IOException e) {
-			System.out.println("conf file‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
-		}
 		try {
 			setBaseDir(".");
 		} catch (IOException e) {

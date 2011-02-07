@@ -8,7 +8,6 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.webapp.WebAppContext;
-import ajweb.Config;
 
 /**
  * アプリを立ち上げる
@@ -16,12 +15,10 @@ import ajweb.Config;
  *
  */
 public class Server {
-	static public void run() throws Exception{
+	static public void run(int port, String webappsDir,boolean isLaunchBrowser) throws Exception{
 		ajweb.utils.Log.servletLogger.setLevel(Level.ALL);
-//		System.setProperty("jetty.home", "./work/jetty");
-		//ajwebServer = new org.eclipse.jetty.server.Server(port);
-		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(Config.port);
 		
+		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 
 		CacheManifestHandler cache_handler = new CacheManifestHandler();
 		cache_handler.setDirectoriesListed(true);
@@ -32,7 +29,7 @@ public class Server {
 		handlers.addHandler(new LogHandler());
 		handlers.addHandler(cache_handler);
 		
-		File appDir = new File("webapps/");
+		File appDir = new File(webappsDir);
 		File[] apps = appDir.listFiles();
 
 		for(int i = 0; i < apps.length; i++){//ディレクトリがあれば、追加
@@ -44,6 +41,7 @@ public class Server {
 				webapp.setTempDirectory(new File("./work/jetty/" + apps[i].getName()));
 				File libDir = new File(apps[i].getAbsolutePath() + "/WEB-INF/lib/");
 				webapp.setExtraClasspath("classes");
+				webapp.setExtraClasspath("dist/ajweb.jar");
 				File[] libFiles = libDir.listFiles();
 				for(int j = 0; j < libFiles.length; j++){
 					if(libFiles[j].getName().matches(".*\\.jar")){
@@ -93,17 +91,18 @@ public class Server {
 		handlers.addHandler(new DefaultHandler());
 		//ajwebServer.setHandler(handlers);
 		server.setHandler(handlers);
-		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + Config.port);
+		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 				
 		server.start();
-		server.join();	
-		//System.out.println("display application on browser");
-		//Desktop desktop = Desktop.getDesktop();
-		//desktop.browse(new URI("http://localhost:8080/" + appName));	
-		
+		if(isLaunchBrowser){
+			System.out.println("display application on browser");
+			Desktop desktop = Desktop.getDesktop();
+			desktop.browse(new URI("http://localhost:" + port + "/"));
+		}
+		server.join();
 	}
 	
-	static public void runWar(String war, String appName, int port) throws Exception{
+	static public void runWar(String war, String appName, int port, boolean isLaunchBrowser) throws Exception{
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 
 		WebAppContext webapp = new WebAppContext();
@@ -121,15 +120,16 @@ public class Server {
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		server.start();
+		if(isLaunchBrowser){
+			System.out.println("display application on browser");
+			Desktop desktop = Desktop.getDesktop();
+			desktop.browse(new URI("http://localhost:" + port+ "/" + appName));
+		}
 		server.join();
-		
-		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
-		desktop.browse(new URI("http://localhost:" + port+ "/" + appName));
 	}
 	
 
-	static public void runSource(String sourceDir, String appName, int port) throws Exception{
+	static public void runSource(String sourceDir, String appName, int port, boolean isLaunchBrowser) throws Exception{
 		System.out.println(sourceDir + "   " + appName  + "  "  + port);
 		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(port);
 		
@@ -155,10 +155,11 @@ public class Server {
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		
 		server.start();
-		
-		System.out.println("display application on browser");
-		Desktop desktop = Desktop.getDesktop();
-		desktop.browse(new URI("http://localhost:" + port+ "/" + appName));	
+		if(isLaunchBrowser){
+			System.out.println("display application on browser");
+			Desktop desktop = Desktop.getDesktop();
+			desktop.browse(new URI("http://localhost:" + port+ "/" + appName));
+		}
 		server.join();	
 	}
 }

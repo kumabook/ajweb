@@ -103,6 +103,9 @@
 
 	<target name="run" depends="compile">
 		<java classname="ajweb.server.Main" dir="${basedir}"><!-- fork="true"> -->
+			<arg value="-port"/>
+			<arg value="443"/>
+			<arg value="-browser"/>
 			<classpath>
 				<fileset dir="${basedir}/lib/compiler/">
 					<include name="*.jar"/>
@@ -159,6 +162,25 @@
 			</classpath>
 		</java> 
 	</target>
+	<target name="app_test">
+		<java classname="ajweb.server.Main" dir="${basedir}"><!-- fork="true"> -->
+			<arg value="-port"/>
+			<arg value="8000"/>
+			<arg value="-webapps"/>
+			<arg value="./test/app/"/>
+			<arg value="-browser"/>
+			<classpath>
+				<fileset dir="${basedir}/lib/compiler/">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${basedir}/lib/servlet/">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="${basedir}/classes/"/>
+			</classpath>
+		</java>
+
+	</target>
 	<target name="clean_work">
 		<delete includeEmptyDirs="true" verbose="true">
 			<fileset dir="work/">
@@ -174,7 +196,6 @@
 			<fileset dir="webapps/">
 				<include name="**/*"/>
 				<exclude name="editor/**/*"/>
-				<exclude name="demo_chat/**/*"/>
 			</fileset>
 		</delete>
 	</target>
