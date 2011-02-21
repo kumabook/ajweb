@@ -2,25 +2,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="index.css"/>
-    <link rel="stylesheet" href="${JSLIB_URL}/../../dijit/themes/soria/soria.css"/>
-    <link rel="stylesheet" href="${JSLIB_URL}/../../dojo/resources/dnd.css"/>
-    <link rel="stylesheet" href="${JSLIB_URL}/../../dojo/resources/dojo.css"/>
-    <link rel="stylesheet" href="${JSLIB_URL}/../../dojox/grid/resources/Grid.css"/>
+    <link rel="stylesheet" href="${JSLIB_LOCATION}/../../dijit/themes/soria/soria.css"/>
+    <link rel="stylesheet" href="${JSLIB_LOCATION}/../../dojo/resources/dnd.css"/>
+    <link rel="stylesheet" href="${JSLIB_LOCATION}/../../dojo/resources/dojo.css"/>
+    <link rel="stylesheet" href="${JSLIB_LOCATION}/../../dojox/grid/resources/Grid.css"/>
     
-
-    <script src="${JSLIB_URL}" type="text/javascript"></script>
-
-<!--    <script src="${JSLIB_URL}/../../gear5.js"></script> -->
-<!--    <script src="${JSLIB_URL}/../../json2.js"></script>  -->
-    <script src="${JSLIB_URL}/../../md5.js"></script> 
+    <script src="${JSLIB_LOCATION}" type="text/javascript"></script>
     <script src="index.js"></script>
-
-
-
-</head>
-<body class="soria">
-  <div id="menu"></div>
-  <div id="ajweb_container"> </div>
-
-</body>
+  </head>
+  <body class="soria">
+    <div id="ajweb_container"/>
+  </body>
 </html>

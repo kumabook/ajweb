@@ -2,19 +2,20 @@
 ajweb project 
 Copyright (C) 2010, Hiroki Kumamoto(kumamoto@tt.cs.titech.ac.jp).
 
----------------------
 
-
-Build and install
---------------------
-
+REQUIREMENTS
+=======================
 ビルドにはJava, およびApache ant が必要です。
+Windowの場合は、Cygwinが必要です。
 
-% cd generator 
-% ant dist
+DIRECTORY STRUCTURE
+=======================
+- generator プログラムジェネレータ
+- jslib AjWeb JavaScript Libary
 
--------------
 
-Usage:
-----------
-% generator/bin/ajmlc 
+HOW TO BUILD 
+======================
+
+それぞれ、generator、 jslib以下のREADMEを参照。
+

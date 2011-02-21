@@ -1,7 +1,4 @@
-ajweb generator 
-
-XML記述(ajmlファイル)から、warファイルを生成するJavaプログラムです。
-
+AjWeb System プログラムジェネレータ
 
 
 Directory Structure
@@ -19,7 +16,7 @@ Directory Structure
   - stress
   - ajml
 
-- resources templateファイル
+- resources templateファイルやスキーマなど
   - template
   - schema
   - extension
@@ -28,38 +25,39 @@ Directory Structure
   - compiler
   - servlet
 
---------------------
---------------------
 
-
-
-how to build
+How to Build
 ---------------------
 ---------------------
+ビルドには、JavaおよびApache Antが必要です。
+% ant dist
 
-
-
-
-
-
-
-
-how to use
+How to Use
 ---------------------
 ---------------------
-1.model editorの起動
+1.サーバの起動
+% ant run 
+でポート443でモデルエディターを含むサーバを起動
+
+もしくは、
+%bin/ajweb.sh -port [ポート番号]
+で指定したポートでサーバ起動
 
 
+2.モデルエディターへアクセス
+http://localhost:443/editor/
+をブラウザで開く。
 
 
+3.モデルエディターを用いてアプリを作成して、warファイルをダウンロード。
+詳しくは、チュートリアルを参照
 
 
-2.program generator を直接起動
+4.作成したwarファイルの実行
 
+webapp/以下にwarファイル、もしくは展開したものを配置して、
+サーバ再起動。
 
-
-
-
-
-
-3.作成したwarファイルの実行の仕方
+(作成したwarのみ起動する場合)
+%bin/ajweb.sh -war [warファイル] -port [ポート番号] 
+で起動

@@ -36,6 +36,7 @@ public class ApplicationHandler extends AbstractHandler {
 			new Application(attributes.get("name"), attributes.get("sessionTimeout"),
 					attributes.get("isComet"), attributes.get("longPollingTimeout"),
 					attributes.get("longPollingInterval"), attributes.get("pollingInterval"),
+					attributes.get("jslibLocation"),
 					widget, databases, events);
 		
 		setModel(application);

@@ -20,6 +20,7 @@ public class Application implements AbstractModel{
 	public String longPollingTimeout = ajweb.Config.TIMEOUT+"";
 	public String longPollingInterval = ajweb.Config.LONGPOLLING_INTERVAL+"";
 	public String pollingInterval = ajweb.Config.POLLING_INTERVAL+"";
+	public String jslibLocation = ajweb.Config.JSLIB_LOCATION;
 	
 	public ArrayList<Widget> widgets = new ArrayList<Widget>();
 	public Databases databases = new Databases();
@@ -33,11 +34,11 @@ public class Application implements AbstractModel{
 	}
 	
 	public Application(String appName, String sessionTimeout, String isComet,
-				String longPollingTimeout, String longPollingInterval, String pollingInterval,
+				String longPollingTimeout, String longPollingInterval, 
+				String pollingInterval, String jslibLocation,
 			Widget widget, Databases databases,Events events){
 		if(appName!=null)
 			this.appName = appName;
-
 		if(sessionTimeout!=null)
 			this.sessionTimeout = sessionTimeout;
 		if(isComet!=null)
@@ -46,6 +47,8 @@ public class Application implements AbstractModel{
 			this.longPollingTimeout = longPollingTimeout;
 		if(longPollingInterval!=null)
 			this.longPollingInterval = longPollingInterval;
+		if(jslibLocation!=null)
+			this.jslibLocation = jslibLocation;
 		
 		this.widgets.add(widget);
 		this.databases = databases;
@@ -97,7 +100,7 @@ public class Application implements AbstractModel{
 		Template html_template;
 		html_template = new Template("resources/html");
 
-		html_template.apply("JSLIB_URL", "../jslib/dojo/dojo.js");
+		html_template.apply("JSLIB_LOCATION", "../jslib/dojo/dojo.js");
 //		html_template.apply("JSLIB_URL", "http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib/dojo/dojo.xd.js" type="text/javascript");
 		
 		FileUtils.writeFile(outDir + "/index.html", html_template.source, Config.isOverWrite);

@@ -25,3 +25,11 @@ dojo付属のjsdocはPHPサーバを使って動的に解析してdocumentを見
 firefoxでmenuableとmovableの入れ子が競合。今のところ両方同時に起こる箇所はないので、menuableを優先. 1/1 0:21
 menuableのインスタンスかどうかを判定すること + 右クリックどうか直接判定すること + menu._openMyselfで無理矢理解決.
 なぜかinstanceof　が使えない. thisがobject扱いになっている. 1/1 0:43
+
+xDomainのときは，明示的にdojo.config["userXDomain"]をtrueにすべし． 1/14 2:19
+
+今は，modellistの取り込みが汚いので，xDomainのときも考慮しつつ，モデルエディターの拡張を考慮したものにしよう 1/14 2:20 
+jsのグローバル変数の存在チェックは, windowオブジェクト経由で． 1/14 18:25
+
+gridのcellをclearするときに,edit情報をクリア、セレクトボックスタイプはプロパティを保存するように変更 1/14 22:30
+eventの中のconditionとactionの順番を逆な時に対応していないバグを修正 1/17 19:43

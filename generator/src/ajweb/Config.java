@@ -24,6 +24,7 @@ public class Config {
 	public static long LONGPOLLING_INTERVAL = 1;//ロングポーリングのタイムアウトmillsecond
 	public static long POLLING_INTERVAL = 3000;//ポーリングのインターバル
 	public static int port = 443;
+	public static String JSLIB_LOCATION = "http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/jslib";
 	
 	public static boolean isJar 	= false;
 	static {
