@@ -93,6 +93,15 @@ dojo.declare("ajweb.editor.element.Application",
 								  }});
 
 
+      this.jslibLocation = new dijit.layout.ContentPane({content: "jslibLocation",
+							   style: { position: "absolute", top: "200px", left: "100px"}});
+      this.jslibLocationTextbox = new dijit.form.TextBox({style:{ position: "absolute", width: "100px", top: "200px", left: "250px"},
+								  value: that.model.properties.jslibLocation,
+								  onChange: function(value){
+								    that.model.properties.jslibLocation = value;
+								  }});
+
+
       this.widget.domNode.appendChild(this.appName.domNode);
       this.widget.domNode.appendChild(this.appNameTextbox.domNode);
       this.widget.domNode.appendChild(this.isComet.domNode);
@@ -105,6 +114,8 @@ dojo.declare("ajweb.editor.element.Application",
       this.widget.domNode.appendChild(this.longPollingIntervalTextbox.domNode);
       this.widget.domNode.appendChild(this.pollingInterval.domNode);
       this.widget.domNode.appendChild(this.pollingIntervalTextbox.domNode);
+      this.widget.domNode.appendChild(this.jslibLocation.domNode);
+      this.widget.domNode.appendChild(this.jslibLocationTextbox.domNode);
 
 
       return this.widget.domNode;

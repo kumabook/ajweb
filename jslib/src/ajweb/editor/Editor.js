@@ -490,8 +490,6 @@ dojo.declare(
 	 return event.returnValue = "プロジェクトはまだ保存されていません";
 	}
       }
-//	return ajweb.editor.isPreventUnload;
-//      this.contextMenu.addChild(new dijit.MenuItem({label: ajweb.resources.contextMenu, disabled: true}));
     },
 
     /**
@@ -500,7 +498,7 @@ dojo.declare(
      */
     newApplication : function(appName){
       var that = this;
-      var application = this.createModel("application", {name: appName}, null);
+      var application = this.newModel("application", {name: appName}, null);
 
       this.application = application;
       this.applications.push(application);
@@ -731,7 +729,7 @@ dojo.declare(
       var model = this.createModel(name, properties, parent);
       model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がないので
       if(model.createDom){
-	model.createDom(container);
+	model.createDom();
 	model.startup();	
       }
       return model;

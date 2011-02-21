@@ -25,10 +25,10 @@ ajweb.editor.MODELLIST =  [
     acceptModelType: ["interfaces", "databases", "events"],
     propertyList: ["name", "isComet", "sessionTimeout",
 		   "longPollingTimeout", "longPollingInterval",
-		   "pollingInterval", "_isDisplay"],
+		   "pollingInterval", "jslibLocation", "_isDisplay"],
     container: "layout",
     defaultProperties: {isComet: "true", sessionTimeout: 30, longPollingTimeout: 60000, longPollingInterval: 1,
-		       pollingInterval: 3000 }
+		       pollingInterval: 3000, jslibLocation: "../jslib/" }
   },
   {
     name:"interfaces",

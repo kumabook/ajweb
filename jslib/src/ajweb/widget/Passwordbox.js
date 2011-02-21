@@ -1,4 +1,5 @@
 dojo.provide("ajweb.widget.Passwordbox");
+dojo.provide("ajweb.md5");
 dojo.require("dijit.form.TextBox");
 dojo.require("ajweb.widget.Widget");
 dojo.declare("ajweb.widget.Passwordbox",ajweb.widget.Widget,

@@ -6,6 +6,7 @@
 	<property name="jsUnitPort" value="8000"/>
 	<property name="unitTestSuiteURL" value="http://localhost:${unitTestPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${unitTestPort}/jsunit/test/unit/AllTests.html&amp;autoRun=true"/>
 	<property name="jsUnitURL" value="http://localhost:${jsUnitPort}/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:${jsUnitPort}/jsunit/test/unit/AllTests.html&amp;autoRun=true"/>
+	<property name="lib_URL" value="http://www.tt.cs.titech.ac.jp/~kumamoto/ajweb/lib"/>
 	<condition property="os" value="win">
 		<os family="windows"/>
 	</condition>
@@ -17,7 +18,7 @@
 		<antcall target="dist"/>
 		<antcall target="unittest"/>
 	</target>
-	<target name="doc"
+	<target name="doc" depends="get_lib"
 		description="make jsDoc">
 		<property name="jsdoc" value="lib/jsdoc-toolkit" />
 		<java jar="${jsdoc}/jsrun.jar" fork="true">
@@ -136,5 +137,15 @@
 	<target name="stop_jsunit_server_win" >
 		<echo message="please exec bin/stop_server"/>
 	</target>
+
+<!--	<target name="get_">
+	  <mkdir dir="lib/"/>
+	  <get src="${lib_URL}/js/js.jar" dest="lib/js.jar"/>
+	</taget>-->
+	<target name="get_lib">
+	  <get src="${lib_URL}/js/jsdoc-toolkit.zip" dest="lib/jsdoc-toolkit.zip"/>
+	  <unzip src="lib/jsdoc-toolkit.zip" dest="lib/jsdoc-toolkit"/>
+	</target>
+
 </project>
-<!--	http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html&autoRun=true&browserId=0&submitResults=localhost:8080/jsunit/acceptor -->
+	<!--	http://localhost:8080/jsunit/test/jsunit/testRunner.html?testPage=http://localhost:8080/jsunit/test/unit/ajwebTestSuite.html&autoRun=true&browserId=0&submitResults=localhost:8080/jsunit/acceptor -->
