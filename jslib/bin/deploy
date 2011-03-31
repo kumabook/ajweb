@@ -4,7 +4,7 @@ cd ./dist/dojo
 tar zcvf ajweb_jslib.tar.gz ./ajweb #./dojo/ ./dijit/ ./dojox 
 
 ftp -ivn 192.168.96.2 << _EOF_
-user kumamoto ahoahoman2
+user kumamoto xxxxxxx
 bin 
 cd public_html/ajweb/jslib
 put ajweb_jslib.tar.gz

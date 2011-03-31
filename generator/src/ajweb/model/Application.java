@@ -78,7 +78,8 @@ public class Application implements AbstractModel{
 		FileUtils.mkdir(outDir + "/WEB-INF/lib");
 		  
 		JarClassLoader jcl = new JarClassLoader();
-		if(jcl.isLaunchedFromJar()) {			
+		if(jcl.isLaunchedFromJar()) {		
+		
 			String lib_servletDir = "lib/servlet/";
 			String web_inf_libDir = outDir + "/WEB-INF/lib/";
 			

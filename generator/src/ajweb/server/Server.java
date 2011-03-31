@@ -114,8 +114,16 @@ public class Server {
 		HandlerList handlers = new HandlerList();
 		handlers.addHandler(new LogHandler());
 		handlers.addHandler(webapp);
-		handlers.addHandler(new DefaultHandler());
+				
+		//jslib—p‚Ìhandler‚ð’Ç‰Á
+		WebAppContext jslib_handler = new WebAppContext();
+		jslib_handler.setContextPath("/jslib");
+		jslib_handler.setTempDirectory(new File("./work/jetty/jslib"));
+		jslib_handler.setResourceBase("../jslib/src/");
 		
+		handlers.addHandler(jslib_handler);
+		
+		handlers.addHandler(new DefaultHandler());
 		//handlers.setHandlers(new Handler[] { new LogHandler(), webapp, /*resource_handler,*/  new DefaultHandler() });
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
@@ -148,9 +156,21 @@ public class Server {
 		webapp.setTempDirectory(new File(sourceDir));
 		webapp.setParentLoaderPriority(true);
 		
+		//jslib—p‚Ìhandler‚ð’Ç‰Á
+		WebAppContext jslib_handler = new WebAppContext();
+		jslib_handler.setContextPath("/jslib");
+		jslib_handler.setTempDirectory(new File("./work/jetty/jslib"));
+		jslib_handler.setResourceBase("../jslib/src/");
+				
 		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { new LogHandler(), cache_handler, webapp, /*resource_handler,*/  new DefaultHandler() });
+		handlers.setHandlers(new Handler[] { new LogHandler(), cache_handler, webapp, jslib_handler,/*resource_handler,*/  new DefaultHandler() });
 		server.setHandler(handlers);
+		
+		
+	
+		
+		
+		
 		
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
 		

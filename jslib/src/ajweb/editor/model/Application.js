@@ -222,7 +222,6 @@ dojo.declare("ajweb.editor.model.Application", ajweb.editor.model.Visible,
       child = this.editor.createModel(eventsNode.tagName, eventsAttrs, this, this.element);
       child.xmlToModel(eventsNode, doc);
       this.setRefProperty();
-
       this.projectRestore();
     },
     getPath: function(){

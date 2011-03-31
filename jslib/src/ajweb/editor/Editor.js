@@ -677,7 +677,7 @@ dojo.declare(
  * @param {dojo.data.ItemFileReadStore} propertyDataStore 表示するプロパティを保持するdojoストア
  * @param {dijit.layout.TabContainer} eventTc イベントリストを保持するcenterTc
  */
-    createModel : function(name, properties, parent){
+    createModel : function(name, properties, parent, container){
       var modelInfo = ajweb.editor.getModelInfo(name);
       var elementClass = modelInfo.elementClass;
       var modelClass = modelInfo.modelClass;
@@ -685,10 +685,12 @@ dojo.declare(
       var propertyList = dojo.clone(modelInfo.propertyList);
       var defaultProperties = dojo.clone(modelInfo.defaultProperties ? modelInfo.defaultProperties : {});
       var id = name + ajweb.editor.modelCount(name);
-      var container = modelInfo.container == "layout" ? this.centerTc : parent.element;
+      var container = container ? container : 
+	    modelInfo.container == "layout" ? this.centerTc :
+	    parent ? parent.element : null;
       propertyList.push("_character");
 
-      if(properties){
+	if(properties){
 	if(!properties.id && !defaultProperties.id)
 	  properties.id = id;
 	propertyList.push("id");
@@ -725,13 +727,14 @@ dojo.declare(
       newModel.startup();
       return newModel;
     },
-    newModel: function(name, properties, parent){
-      var model = this.createModel(name, properties, parent);
+    newModel: function(name, properties, parent, container){
+      var model = this.createModel(name, properties, parent, container);
       model.setRefProperty();//プロパティが実際に挿入されるときに呼び出さないと意味がないので
       if(model.createDom){
 	model.createDom();
 	model.startup();	
       }
+
       return model;
     },
     /**

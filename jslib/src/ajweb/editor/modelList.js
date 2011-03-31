@@ -476,6 +476,7 @@ ajweb.editor.MODELLIST =  [
     elementClass: "Event",
     acceptModelType: ["action", "condition"],
     propertyList: ["tagName", "type", {name: "target", type: "element", ref: true, refProp: "id"}],
+    container: "events",
     eventList: [],
     defaultProperties: {}
   },

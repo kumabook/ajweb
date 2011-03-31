@@ -135,17 +135,18 @@ dojo.declare("ajweb.editor.model.Eventable", ajweb.editor.model.Visible,
 	   label: eventName,
 	   onClick: function(eventName) {
 	     return function(){
-	       var event = that.editor.newModel(
-		 "event",
-		 { title: eventName, target: that.properties.id, type: eventName,
-		   top: ajweb.editor.CONDITION_DROP_AREA_TOP+"px", 
-		   left: ajweb.editor.CONDITION_DROP_AREA_LEFT+"px"
-		 },
-		 that.application.getEventsModel(), that.editor.eventTc);
-	       that.editor.newModel("action", 
-				    {top: ajweb.editor.FUNCTION_DROP_AREA_TOP+"px", 
-				     left: ajweb.editor.FUNCTION_DROP_AREA_LEFT+"px"}, 
-				    event, event.element);
+		 var event = that.editor.newModel(
+		     "event",
+		     { title: eventName, target: that.properties.id, type: eventName,
+		       top: ajweb.editor.CONDITION_DROP_AREA_TOP+"px", 
+		       left: ajweb.editor.CONDITION_DROP_AREA_LEFT+"px"
+		     },
+		     that.application.getEventsModel(), that.editor.eventTc);
+
+		 that.editor.newModel("action", 
+				      {top: ajweb.editor.FUNCTION_DROP_AREA_TOP+"px", 
+				       left: ajweb.editor.FUNCTION_DROP_AREA_LEFT+"px"}, 
+				      event, event.element);
 	     };
 	   }(eventName)
 	 }));

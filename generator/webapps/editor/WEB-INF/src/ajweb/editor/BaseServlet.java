@@ -3,14 +3,11 @@ package ajweb.editor;
 import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedWriter;
 import java.io.PrintWriter;
 
 
@@ -42,7 +39,7 @@ import ajweb.servlet.AbstractServlet;
 public class BaseServlet extends AbstractServlet {
 
 		
-		@SuppressWarnings("unchecked")
+
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	    {	
 			System.out.println("doGet");
@@ -55,7 +52,7 @@ public class BaseServlet extends AbstractServlet {
 			
 	     }
 
-		@SuppressWarnings("unchecked")
+
 		protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 				throws ServletException, IOException {
 			System.out.println("doPost");
@@ -86,7 +83,6 @@ public class BaseServlet extends AbstractServlet {
 				HttpServletResponse response) throws ServletException, IOException {
 			
 			
-			OutputStream out = null;
 			InputStream in = null;
 			
 			PrintWriter writer = response.getWriter();
@@ -135,8 +131,8 @@ public class BaseServlet extends AbstractServlet {
 			try {
 				String ajml = request.getParameter("content");
 				String filename = request.getParameter("filename");
-				Config.appName = filename;
-				ajweb.generator.Main.appName = Config.appName;
+				
+				ajweb.generator.Main.appName = filename;
 				StreamResult result = new StreamResult(new File(filename + ".ajml"));
 				in = new ByteArrayInputStream(ajml.getBytes());
 				
@@ -157,7 +153,7 @@ public class BaseServlet extends AbstractServlet {
 				
 				transformer.transform(new DOMSource(doc), result);
 				Config.templateFolder = "../generator/resources/template";
-				ajweb.generator.Main.generate(filename + ".ajml");
+				ajweb.generator.Compiler.generateWar(new File(filename + ".ajml"), new File(filename + ".war"));
 				InputStream warIn = new FileInputStream(filename + ".war");
 				response.setContentType("application/octet-stream");
 				response.setHeader("Content-Disposition", "filename=\""+ filename + ".war\"");
