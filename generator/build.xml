@@ -106,7 +106,7 @@
 			</javac>
 	</target>
 
-	<target name="run" depends="compile">
+	<target name="run" depends="dist, compile">
 		<java classname="ajweb.server.Main" dir="${basedir}"><!-- fork="true"> -->
 			<arg value="-port"/>
 			<arg value="${port}"/>
