@@ -38,7 +38,7 @@
 				<fileset dir="classes/">
 					<include name="**/*.class"/>
 				</fileset>
-				<fileset dir="./">
+<!--				<fileset dir="./">
 					<include name="dist/ajweb.jar"/>
 					<include name="lib/**/*.jar"/>
 				</fileset>
@@ -47,9 +47,9 @@
 				</fileset>
 				<manifest>
 					<attribute name="Main-Class" value="ajweb.Launcher"/>
-				</manifest>
+				</manifest>  -->
 			</jar>
-			<jar destfile="${basedir}/dist/start.jar" 
+<!--			<jar destfile="${basedir}/dist/start.jar" 
 				update="true">
 				<fileset dir="classes/">
 					<include name="ajweb/Launcher.class"/>
@@ -61,9 +61,7 @@
 				<manifest>
 					<attribute name="Main-Class" value="ajweb.Launcher"/>
 				</manifest>
-			</jar>
-	
-
+			</jar> -->
 	</target>
 
 
@@ -210,21 +208,21 @@
 
 	<target name="get_lib" >
 	  <mkdir dir="lib/servlet/"/>
-	  <get src="${lib_URL}/servlet/commons-fileupload-1.2.2.jar" dest="lib/servlet/commons-fileupdload-1.2.2.jar" usetimestamp="true"/>
-	  <get src="${lib_URL}/servlet/commons-io-2.0.jar" dest="lib/servlet/commons-io-2.0.jar" usetimestamp="true"/>
-	  <get src="${lib_URL}/servlet/commons-lang-2.5.jar" dest="lib/servlet/commons-lang-2.5.jar"  usetimestamp="true"/>
-	  <get src="${lib_URL}/servlet/derby.jar" dest="lib/servlet/derby.jar"/>
+	  <!-- <get src="${lib_URL}/servlet/derby.jar" dest="lib/servlet/derby.jar"/> -->
 	  <get src="${lib_URL}/servlet/jetty-all-7.0.2.v20100331.jar" dest="lib/servlet/jetty-all-7.0.2.v20100331.jar" usetimestamp="true"/>
-	  <get src="${lib_URL}/servlet/servlet-api.jar" dest="lib/servlet/servlet-api.jar"  usetimestamp="true" />
+	  <!-- <get src="${lib_URL}/servlet/servlet-api.jar" dest="lib/servlet/servlet-api.jar"  usetimestamp="true" /> -->
 	  <get src="${lib_URL}/servlet/servlet-api-2.5.jar" dest="lib/servlet/servlet-api-2.5.jar"  usetimestamp="true" />
 	  <get src="${lib_URL}/servlet/sqlite-jdbc-3.7.2.jar" dest="lib/servlet/sqlite-jdbc-3.7.2.jar"  usetimestamp="true" />
 
 	  <mkdir dir="lib/compiler/"/>
+	  <get src="${lib_URL}/compiler/commons-fileupload-1.2.2.jar" dest="lib/compiler/commons-fileupload-1.2.2.jar" usetimestamp="true"/>
+	  <get src="${lib_URL}/compiler/commons-io-2.0.jar" dest="lib/compiler/commons-io-2.0.jar" usetimestamp="true"/>
+	  <get src="${lib_URL}/compiler/commons-lang-2.5.jar" dest="lib/compiler/commons-lang-2.5.jar"  usetimestamp="true"/>
 	  <get src="${lib_URL}/compiler/xercesImpl.jar" dest="lib/compiler/xercesImpl.jar"  usetimestamp="true"/>
 	  <get src="${lib_URL}/compiler/tools.jar" dest="lib/compiler/tools.jar"  usetimestamp="true"/>
 	  <get src="${lib_URL}/compiler/junit.jar" dest="lib/compiler/junit.jar"  usetimestamp="true"/>
 	  <get src="${lib_URL}/compiler/compiler.jar" dest="lib/compiler/compiler.jar"  usetimestamp="true" />
-	  <get src="${lib_URL}/compiler/commons-io-1.4.jar" dest="lib/compiler/commons-io-1.4.jar"   usetimestamp="true"/>
+	  <!-- <get src="${lib_URL}/compiler/commons-io-1.4.jar" dest="lib/compiler/commons-io-1.4.jar"   usetimestamp="true"/>  -->
 	  <get src="${lib_URL}/compiler/ant-launcher.jar" dest="lib/compiler/ant-launcher.jar"   usetimestamp="true"/>
 	  <get src="${lib_URL}/compiler/ant.jar" dest="lib/compiler/ant.jar"  usetimestamp="true"/>
 	</target>
