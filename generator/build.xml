@@ -30,7 +30,7 @@
 
 
 
-	<target name="dist" depends="compile">
+	<target name="dist" depends="compile, setup">
 			<delete file="${basedir}/dist/ajweb.jar"/> 
 			<mkdir dir="dist"/>
 			<jar destfile="${basedir}/dist/ajweb.jar" 
