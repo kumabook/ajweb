@@ -4,9 +4,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
 import java.util.logging.Level;
+
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -92,7 +95,14 @@ public class Server {
 		//ajwebServer.setHandler(handlers);
 		server.setHandler(handlers);
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
-				
+		
+		
+		Connector connector = new SelectChannelConnector();
+		connector.setPort(8088);
+		
+		server.addConnector(connector);
+
+		
 		server.start();
 		if(isLaunchBrowser){
 			System.out.println("display application on browser");
@@ -173,7 +183,6 @@ public class Server {
 		
 		
 		System.out.println("start ajweb server on " + java.net.InetAddress.getLocalHost().getHostName() + ":" + port);
-		
 		server.start();
 		if(isLaunchBrowser){
 			System.out.println("display application on browser");
