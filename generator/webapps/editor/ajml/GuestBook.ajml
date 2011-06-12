@@ -181,11 +181,3 @@
     </events>
   </application>
 </ajml>
-element target="mainFrame" type="child">indexPanel</element>
-            </param>
-          </call>
-        </action>
-      </event>
-    </events>
-  </application>
-</ajml>
