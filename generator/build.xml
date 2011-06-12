@@ -196,6 +196,14 @@
 			</fileset>
 		</delete>
 	</target>
+
+	<target name="setup">
+	  <mkdir dir="work/"/>
+	  <mkdir dir="work/jetty"/>
+	  <mkdir dir="webapps/editor/WEB-INF/lib"/>
+
+	</target>
+
 	<target name="clean_webapps">
 		<delete includeEmptyDirs="true" verbose="true">
 			<fileset dir="webapps/">
