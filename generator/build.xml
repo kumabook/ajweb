@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="generator" default="dist" basedir=".">
 	<property name="port" value="443"/>
 	<property name="port_test" value="8000"/>
@@ -15,7 +15,7 @@
 	</target>
 	<target name="compile" depends="get_lib">
 			<mkdir dir="classes"/>
-			<javac destdir="classes/" includeAntRuntime="no">
+			<javac destdir="classes/" encoding="shift_jis" includeAntRuntime="no">
 					<src path="src"/>
 					<classpath>
 							<fileset dir="lib/servlet/">
@@ -94,7 +94,7 @@
 	</target>
 	<target name="compile_unittest" depends="compile">
 			<mkdir dir="./test/classes"/>
-			<javac destdir="./test/classes" includeAntRuntime="no">
+			<javac  destdir="./test/classes" includeAntRuntime="no">
 					<src path="./test/unit/"/>
 					<classpath>
 						<fileset dir="./lib/compiler/">
